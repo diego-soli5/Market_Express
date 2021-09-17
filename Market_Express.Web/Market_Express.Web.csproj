@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Market_Express.Application\Market_Express.Application.csproj" />
+    <ProjectReference Include="..\Market_Express.Domain\Market_Express.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Market_Express.Domain\Market_Express.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
