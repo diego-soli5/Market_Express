@@ -3,9 +3,74 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation", "1. Presentation", "{BFA22BFC-4915-41AB-A743-7A3A219047A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Application", "2. Application", "{696442CD-5121-4AFE-AFD2-376A8197F928}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Domain", "3. Domain", "{C9B6603A-F594-44A9-A109-B0AB02C845DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Infrastructure", "4. Infrastructure", "{3812E205-ED5B-4F21-8326-80BDCA52E158}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Application", "Market_Express.Application\Market_Express.Application.csproj", "{0B0F1078-7AD4-41A0-93A4-094753ACAFD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Domain", "Market_Express.Domain\Market_Express.Domain.csproj", "{DFB66B5F-41F1-4DE2-9A42-F13840055B88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Infrastructure", "Market_Express.Infrastructure\Market_Express.Infrastructure.csproj", "{6409C8DF-39B9-4C3F-B67E-DF6C6E39524E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Infrastructure.Data", "Market_Express.Infrastructure.Data\Market_Express.Infrastructure.Data.csproj", "{FA239E76-33D6-4A8A-A87F-563E3A955A7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Infrastructure.ExternalServices", "Market_Express.Infrastructure.ExternalServices\Market_Express.Infrastructure.ExternalServices.csproj", "{7FE7D74C-67F8-4BD3-9E5A-9B0A3E96CD36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Infrastructure.EmailServices", "Market_Express.Infrastructure.EmailServices\Market_Express.Infrastructure.EmailServices.csproj", "{963A5EEF-D9EF-4D2B-835C-95E53A479054}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Market_Express.Web", "Market_Express.Web\Market_Express.Web.csproj", "{283B6210-9234-428D-919D-BEF7B2798F55}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B0F1078-7AD4-41A0-93A4-094753ACAFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0F1078-7AD4-41A0-93A4-094753ACAFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0F1078-7AD4-41A0-93A4-094753ACAFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0F1078-7AD4-41A0-93A4-094753ACAFD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB66B5F-41F1-4DE2-9A42-F13840055B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB66B5F-41F1-4DE2-9A42-F13840055B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB66B5F-41F1-4DE2-9A42-F13840055B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB66B5F-41F1-4DE2-9A42-F13840055B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6409C8DF-39B9-4C3F-B67E-DF6C6E39524E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6409C8DF-39B9-4C3F-B67E-DF6C6E39524E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6409C8DF-39B9-4C3F-B67E-DF6C6E39524E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6409C8DF-39B9-4C3F-B67E-DF6C6E39524E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA239E76-33D6-4A8A-A87F-563E3A955A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA239E76-33D6-4A8A-A87F-563E3A955A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA239E76-33D6-4A8A-A87F-563E3A955A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA239E76-33D6-4A8A-A87F-563E3A955A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FE7D74C-67F8-4BD3-9E5A-9B0A3E96CD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE7D74C-67F8-4BD3-9E5A-9B0A3E96CD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE7D74C-67F8-4BD3-9E5A-9B0A3E96CD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE7D74C-67F8-4BD3-9E5A-9B0A3E96CD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{963A5EEF-D9EF-4D2B-835C-95E53A479054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{963A5EEF-D9EF-4D2B-835C-95E53A479054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{963A5EEF-D9EF-4D2B-835C-95E53A479054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{963A5EEF-D9EF-4D2B-835C-95E53A479054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{283B6210-9234-428D-919D-BEF7B2798F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{283B6210-9234-428D-919D-BEF7B2798F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{283B6210-9234-428D-919D-BEF7B2798F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{283B6210-9234-428D-919D-BEF7B2798F55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B0F1078-7AD4-41A0-93A4-094753ACAFD3} = {696442CD-5121-4AFE-AFD2-376A8197F928}
+		{DFB66B5F-41F1-4DE2-9A42-F13840055B88} = {C9B6603A-F594-44A9-A109-B0AB02C845DB}
+		{6409C8DF-39B9-4C3F-B67E-DF6C6E39524E} = {3812E205-ED5B-4F21-8326-80BDCA52E158}
+		{FA239E76-33D6-4A8A-A87F-563E3A955A7C} = {3812E205-ED5B-4F21-8326-80BDCA52E158}
+		{7FE7D74C-67F8-4BD3-9E5A-9B0A3E96CD36} = {3812E205-ED5B-4F21-8326-80BDCA52E158}
+		{963A5EEF-D9EF-4D2B-835C-95E53A479054} = {3812E205-ED5B-4F21-8326-80BDCA52E158}
+		{283B6210-9234-428D-919D-BEF7B2798F55} = {BFA22BFC-4915-41AB-A743-7A3A219047A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {927A0CFD-5553-478E-9484-CC3A6763F699}
