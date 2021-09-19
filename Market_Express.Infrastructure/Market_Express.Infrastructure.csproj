@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Market_Express.Domain\Market_Express.Domain.csproj" />
+    <ProjectReference Include="..\Market_Express.Infrastructure.Data\Market_Express.Infrastructure.Data.csproj" />
   </ItemGroup>
 
 </Project>
