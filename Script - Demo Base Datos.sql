@@ -1,8 +1,8 @@
 USE master;
 GO
 
---DROP DATABASE MARKET_EXPRESS;
---GO
+DROP DATABASE MARKET_EXPRESS;
+GO
 
 CREATE DATABASE MARKET_EXPRESS;
 GO
@@ -27,13 +27,51 @@ CREATE TABLE Usuario(
 	Nombre_Acceso VARCHAR(7) UNIQUE NOT NULL,
 	Clave_Acceso VARCHAR(80) NOT NULL,
 	Tipo VARCHAR(15) NOT NULL,
-	Estado VARCHAR(8),
+	Estado VARCHAR(8) NOT NULL,
 
 
 	PRIMARY KEY(Id),
 	FOREIGN KEY(Id_Persona) REFERENCES Persona(Id),
 	CONSTRAINT CHK_Usuario_Tipo CHECK (Tipo = 'ADMINISTRADOR' OR Tipo = 'CLIENTE'),
 	CONSTRAINT CHK_Usuario_Estado CHECK (Estado = 'ACTIVO' OR Estado = 'INACTIVO')
+);
+GO
+
+CREATE TABLE Permiso(		-- Permisos para crear Roles que serán asignados a un usuario
+	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
+	Nombre VARCHAR(15) NOT NULL,
+	Descripcion VARCHAR(50),
+
+	PRIMARY KEY(Id)
+);
+GO
+
+CREATE TABLE Rol(	-- Roles los cuales definiran los permisos de cada usuario
+	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
+	Nombre VARCHAR(15) NOT NULL,
+	Descripcion VARCHAR(50),
+
+	PRIMARY KEY(Id)	
+);
+GO
+
+CREATE TABLE Rol_Permiso( -- Para almacenar los permisos que tendra un Rol
+	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
+	Id_Rol UNIQUEIDENTIFIER NOT NULL,
+	Id_Permiso UNIQUEIDENTIFIER NOT NULL,
+
+	PRIMARY KEY(Id),
+	FOREIGN KEY(Id_Rol) REFERENCES Rol(Id),
+	FOREIGN KEY(Id_Permiso) REFERENCES Permiso(Id)
+);
+GO
+
+CREATE TABLE Usuario_Rol( --Para almacenar los roles asignados a cada usuario
+	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
+	Id_Usuario UNIQUEIDENTIFIER NOT NULL,
+
+	PRIMARY KEY(Id),
+	FOREIGN KEY(Id_Usuario) REFERENCES Usuario(Id)
 );
 GO
 
@@ -85,7 +123,7 @@ CREATE TABLE Inventario_Categoria(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Nombre VARCHAR(20) NOT NULL,
 	Descripcion VARCHAR(200),
-	Estado VARCHAR(8),
+	Estado VARCHAR(8) NOT NULL,
 
 	PRIMARY KEY(Id),
 	CONSTRAINT CHK_Categoria_Estado CHECK (Estado = 'ACTIVO' OR Estado = 'INACTIVO')
@@ -99,7 +137,8 @@ CREATE TABLE Inventario_Articulo(
 	Codigo_Barras VARCHAR(255) NOT NULL,
 	Precio DECIMAL(19,2) NOT NULL,
 	Imagen VARCHAR(30),
-	Estado VARCHAR(8),
+	Auto_Sinc BIT NOT NULL,
+	Estado VARCHAR(8) NOT NULL,
 
 	PRIMARY KEY(Id),
 	CONSTRAINT CHK_Articulo_Estado CHECK (Estado = 'ACTIVO' OR Estado = 'INACTIVO')
