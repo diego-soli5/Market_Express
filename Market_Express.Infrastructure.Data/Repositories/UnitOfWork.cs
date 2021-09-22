@@ -8,12 +8,12 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         #region ATTRIBUTES
-        private readonly DbContext _context;
+        private readonly MARKET_EXPRESSContext _context;
         private readonly IConfiguration _configuration;
         #endregion
 
         #region CONSTRUCTOR
-        public UnitOfWork(DbContext context, IConfiguration configuration)
+        public UnitOfWork(MARKET_EXPRESSContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
