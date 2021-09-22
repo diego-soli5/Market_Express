@@ -14,9 +14,4 @@
     <ProjectReference Include="..\Market_Express.Infrastructure\Market_Express.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

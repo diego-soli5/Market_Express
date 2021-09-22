@@ -54,6 +54,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
             _dbEntity.Add(entity);
         }
 
+        public void Create(List<TEntity> entities)
+        {
+            _dbEntity.AddRange(entities);
+        }
+
         public void Delete(TEntity entity)
         {
             _dbEntity.Remove(entity);

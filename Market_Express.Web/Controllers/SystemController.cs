@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Market_Express.Application.DTOs.System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace Market_Express.Web.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Sync(string type)
+        [HttpPost(nameof(SyncArticulos))]
+        public async Task<IActionResult> SyncArticulos([FromBody] List<ArticuloSyncDTO> articulos)
         {
             return Ok();
         }
