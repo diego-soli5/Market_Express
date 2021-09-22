@@ -14,7 +14,7 @@ namespace Market_Express.Infrastructure.Data
 
         protected SqlConnection GetConnection()
         {
-            return new SqlConnection(_configuration.GetConnectionString("DESA"));
+            return new SqlConnection(_configuration.GetConnectionString("Local_Desa"));
         }
     }
 }

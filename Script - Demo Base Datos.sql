@@ -171,7 +171,7 @@ CREATE TABLE Pedido(
 CREATE TABLE Pedido_Detalle(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Pedido UNIQUEIDENTIFIER NOT NULL,
-	Id_Articulo UNIQUEIDENTIFIER NOT NULL,
+	Id_Articulo UNIQUEIDENTIFIER NOT NULL, -- Se agrega para realizar el promedio de art. más solicitados
 	Descripcion VARCHAR(255) NOT NULL,
 	Codigo_Barras VARCHAR(255) NOT NULL,
 	Precio DECIMAL(19,2) NOT NULL,
