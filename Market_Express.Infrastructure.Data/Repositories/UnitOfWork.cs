@@ -8,8 +8,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         #region ATTRIBUTES
-        private readonly MARKET_EXPRESSContext _context;
         private readonly IConfiguration _configuration;
+        private readonly MARKET_EXPRESSContext _context;
+        private readonly IInventarioArticuloRepository _inventarioArticuloRepository;
         #endregion
 
         #region CONSTRUCTOR
@@ -21,6 +22,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         #endregion
 
         #region PROPERTIES
+        public IInventarioArticuloRepository Articulo => _inventarioArticuloRepository ?? new InventarioArticuloRepository(_context, _configuration);
         #endregion
 
         #region METHODS

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public partial class Rol : BaseEntity
+    public class Rol : BaseEntity
     {
         public Rol()
         {
@@ -15,6 +15,6 @@ namespace Market_Express.Domain.Entities
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        public virtual ICollection<RolPermiso> RolPermisos { get; set; }
+        public ICollection<RolPermiso> RolPermisos { get; set; }
     }
 }

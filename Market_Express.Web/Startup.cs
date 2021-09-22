@@ -23,6 +23,10 @@ namespace Market_Express.Web
             services.AddRepositories();
 
             services.AddDbContext(Configuration);
+
+            services.AddAntiforgery(setup => setup.HeaderName = "X-Anti-Forgery-Token");
+
+            services.AddAppAuthentication();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,10 +46,16 @@ namespace Market_Express.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

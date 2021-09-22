@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable disable
 
 namespace Market_Express.Domain.Entities
 {
-    public partial class Usuario : BaseEntity
+    public class Usuario : BaseEntity
     {
         public Usuario()
         {
@@ -22,9 +21,9 @@ namespace Market_Express.Domain.Entities
         public string Tipo { get; set; }
         public string Estado { get; set; }
 
-        public virtual Cliente Cliente { get; set; }
-        public virtual ICollection<BitacoraAcceso> BitacoraAccesos { get; set; }
-        public virtual ICollection<BitacoraMovimiento> BitacoraMovimientos { get; set; }
-        public virtual ICollection<UsuarioRol> UsuarioRols { get; set; }
+        public Cliente Cliente { get; set; }
+        public ICollection<BitacoraAcceso> BitacoraAccesos { get; set; }
+        public ICollection<BitacoraMovimiento> BitacoraMovimientos { get; set; }
+        public ICollection<UsuarioRol> UsuarioRols { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public partial class Carrito : BaseEntity
+    public class Carrito : BaseEntity
     {
         public Carrito()
         {
@@ -16,7 +16,7 @@ namespace Market_Express.Domain.Entities
         public DateTime FechaApertura { get; set; }
         public string Estado { get; set; }
 
-        public virtual Cliente IdClienteNavigation { get; set; }
-        public virtual ICollection<CarritoDetalle> CarritoDetalles { get; set; }
+        public Cliente IdClienteNavigation { get; set; }
+        public ICollection<CarritoDetalle> CarritoDetalles { get; set; }
     }
 }

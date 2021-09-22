@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #nullable disable
 
 namespace Market_Express.Domain.Entities
 {
-    public partial class CarritoDetalle : BaseEntity
+    public class CarritoDetalle : BaseEntity
     {
         public Guid IdCarrito { get; set; }
         public Guid IdArticulo { get; set; }
 
-        public virtual InventarioArticulo IdArticuloNavigation { get; set; }
-        public virtual Carrito IdCarritoNavigation { get; set; }
+        public InventarioArticulo IdArticuloNavigation { get; set; }
+        public Carrito IdCarritoNavigation { get; set; }
     }
 }

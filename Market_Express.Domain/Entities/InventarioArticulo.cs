@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public partial class InventarioArticulo : BaseEntity
+    public class InventarioArticulo : BaseEntity
     {
         public InventarioArticulo()
         {

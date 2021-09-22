@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
+﻿#nullable disable
 
 namespace Market_Express.Domain.Entities
 {
-    public partial class InventarioCategoria : BaseEntity
+    public class InventarioCategoria : BaseEntity
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
