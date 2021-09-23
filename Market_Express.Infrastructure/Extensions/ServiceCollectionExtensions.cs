@@ -3,6 +3,8 @@ using Market_Express.CrossCutting.Options;
 using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.Abstractions.Validations;
+using Market_Express.Domain.EntityValidations;
 using Market_Express.Infrastructure.Data;
 using Market_Express.Infrastructure.Data.Repositories;
 using Market_Express.Infrastructure.Services;
@@ -36,6 +38,15 @@ namespace Market_Express.Infrastructure.Extensions
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddScoped(typeof(IAuthenticationService), typeof(AuthenticationService));
+        }
+
+        public static void AddValidations(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(IUsuarioValidations), typeof(UsuarioValidations));
+
+            services.AddTransient(typeof(IClienteValidations), typeof(ClienteValidations));
+
+            services.AddTransient(typeof(IArticuloValidations), typeof(ArticuloValidations));
         }
 
         public static void AddOptions(this IServiceCollection services, IConfiguration configuration)

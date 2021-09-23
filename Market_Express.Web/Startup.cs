@@ -29,6 +29,8 @@ namespace Market_Express.Web
 
             services.AddDomainServices();
 
+            services.AddValidations();
+
             services.AddOptions(Configuration);
 
             services.AddDbContext(Configuration);

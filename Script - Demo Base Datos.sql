@@ -26,7 +26,7 @@ CREATE TABLE Usuario(
 );
 GO
 
-CREATE TABLE Permiso(		-- Permisos para crear Roles que serán asignados a un usuario
+CREATE TABLE Permiso(		-- Permisos para crear Roles que serï¿½n asignados a un usuario
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Nombre VARCHAR(15) NOT NULL,
 	Descripcion VARCHAR(50),
@@ -123,7 +123,7 @@ CREATE TABLE Inventario_Articulo(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Categoria UNIQUEIDENTIFIER,
 	Descripcion VARCHAR(255) NOT NULL,
-	Codigo_Barras VARCHAR(255) NOT NULL,
+	Codigo_Barras VARCHAR(255) UNIQUE NOT NULL,
 	Precio DECIMAL(19,2) NOT NULL,
 	Imagen VARCHAR(30),
 	Auto_Sinc BIT NOT NULL,
@@ -171,7 +171,7 @@ CREATE TABLE Pedido(
 CREATE TABLE Pedido_Detalle(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Pedido UNIQUEIDENTIFIER NOT NULL,
-	Id_Articulo UNIQUEIDENTIFIER NOT NULL, -- Se agrega para realizar el promedio de art. más solicitados
+	Id_Articulo UNIQUEIDENTIFIER NOT NULL, -- Se agrega para realizar el promedio de art. mï¿½s solicitados
 	Descripcion VARCHAR(255) NOT NULL,
 	Codigo_Barras VARCHAR(255) NOT NULL,
 	Precio DECIMAL(19,2) NOT NULL,

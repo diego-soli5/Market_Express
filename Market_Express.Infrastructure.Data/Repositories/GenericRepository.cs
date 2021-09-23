@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -47,6 +48,29 @@ namespace Market_Express.Infrastructure.Data.Repositories
             }
 
             return await query.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> where,
+                                         string includeProperties = null)
+        {
+            IQueryable<TEntity> query = _dbEntity;
+
+            if (where == null)
+            {
+                throw new ArgumentNullException(nameof(where));
+            }
+
+            query = query.Where(where);
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return query.FirstOrDefault();
         }
 
         public void Create(TEntity entity)

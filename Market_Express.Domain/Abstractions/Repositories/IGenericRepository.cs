@@ -1,6 +1,7 @@
 ﻿using Market_Express.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Abstractions.Repositories
@@ -9,6 +10,7 @@ namespace Market_Express.Domain.Abstractions.Repositories
     {
         Task<TEntity> GetByIdAsync(Guid id, string includeProperties = null);
         IEnumerable<TEntity> GetAll(string includeProperties = null);
+        TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> where, string includeProperties = null);
         void Create(TEntity entity); 
         void Create(List<TEntity> entities);
         void Update(TEntity entity);
