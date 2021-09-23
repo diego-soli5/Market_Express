@@ -7,11 +7,12 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Market_Express.CrossCutting\Market_Express.CrossCutting.csproj" />
     <ProjectReference Include="..\Market_Express.Domain\Market_Express.Domain.csproj" />
-    <ProjectReference Include="..\Market_Express.Infrastructure\Market_Express.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,7 +18,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Market_Express.Application\Market_Express.Application.csproj" />
+    <ProjectReference Include="..\Market_Express.CrossCutting\Market_Express.CrossCutting.csproj" />
     <ProjectReference Include="..\Market_Express.Domain\Market_Express.Domain.csproj" />
+    <ProjectReference Include="..\Market_Express.Infrastructure\Market_Express.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

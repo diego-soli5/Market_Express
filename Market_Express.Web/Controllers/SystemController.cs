@@ -1,7 +1,9 @@
-﻿using Market_Express.Application.DTOs.System;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Market_Express.Application.DTOs.System;
+using Market_Express.Domain.Abstractions.ApplicationServices;
+using Market_Express.Domain.Abstractions.InfrastructureServices;
+using Market_Express.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,15 +14,64 @@ namespace Market_Express.Web.Controllers
     [ApiController]
     public class SystemController : ControllerBase
     {
-        public SystemController()
-        {
+        private readonly IMapper _mapper;
+        private readonly ISystemService _systemService;
+        private readonly IAuthenticationService _authenticationService;
 
+        public SystemController(IMapper mapper, ISystemService systemService, IAuthenticationService authenticationService)
+        {
+            _mapper = mapper;
+            _systemService = systemService;
+            _authenticationService = authenticationService;
         }
 
-        [HttpPost(nameof(SyncArticulos))]
-        public async Task<IActionResult> SyncArticulos([FromBody] List<ArticuloSyncDTO> articulos)
+        [HttpPost(nameof(SyncArticles))]
+        public async Task<IActionResult> SyncArticles([FromBody] List<ArticuloSyncDTO> lstArticulosToSyncDTO)
         {
-            return Ok();
+            if (IsSyncAuthorized())
+                return Unauthorized();
+
+            var lstArticulosToSync = new List<InventarioArticulo>();
+
+            lstArticulosToSyncDTO?.ForEach(art =>
+            {
+                lstArticulosToSync.Add(_mapper.Map<InventarioArticulo>(art));
+            });
+
+            var response = await _systemService.SyncArticles(lstArticulosToSync);
+
+            return Ok(response);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SyncClients([FromBody] List<object> lstClientToSyncDTO)
+        {
+            if (IsSyncAuthorized())
+                return Unauthorized();
+
+            var lstClientsToSync = new List<Cliente>();
+
+            lstClientToSyncDTO?.ForEach(cli =>
+            {
+                lstClientsToSync.Add(_mapper.Map<Cliente>(cli));
+            });
+
+            var response = await _systemService.SyncClients(lstClientsToSync);
+
+            return Ok(response);
+        }
+
+        #region UTILITY METHODS
+        private bool IsSyncAuthorized()
+        {
+            if (!Request.Headers.ContainsKey("X-Sync-Authorization"))
+                return false;
+
+            if (!_authenticationService.IsSyncAuthorized(Request.Headers.First(h => h.Key == "X-Sync-Authorization").ToString()))
+                return false;
+
+            return true;
+        }
+        #endregion
     }
 }

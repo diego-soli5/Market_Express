@@ -1,14 +1,15 @@
-﻿using Market_Express.Application.DTOs.System;
-using Market_Express.Domain.Abstractions.Repositories;
+﻿using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.EntityConstants;
 using Market_Express.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Market_Express.CrossCutting.Response;
+using Market_Express.Domain.Abstractions.ApplicationServices;
 
 namespace Market_Express.Application.Services
 {
-    public class SystemService
+    public class SystemService : ISystemService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,65 +18,129 @@ namespace Market_Express.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> SyncArticulos(List<ArticuloSyncDTO> articulosPOS)
+
+        public async Task<SyncResponse> SyncClients(List<Cliente> clientsPOS)
         {
-            if (articulosPOS?.Count < 0)
-                return false;
+            SyncResponse response = new();
 
-            List<InventarioArticulo> articulosNuevosParaAgregar = new List<InventarioArticulo>();
-            bool esNuevo = false;
-            int articulosActualizados = 0;
-            int articulosAgregados = 0;
+            if (clientsPOS?.Count <= 0)
+                return response;
 
+            List<Cliente> clientsToAdd = new();
+            bool isNew = false;
+            int added = 0;
+            int updated = 0;
 
-            var articulosBD = _unitOfWork.Articulo.GetAll();
+            var clientsDB = _unitOfWork.Cliente.GetAll(nameof(Cliente.Usuario));
 
-            articulosPOS.ForEach(articuloPOS =>
+            clientsPOS.ForEach(clientPOS =>
             {
-                esNuevo = true;
+                isNew = true;
 
-                articulosBD.ToList().ForEach(articuloBD =>
+                clientsDB.ToList().ForEach(clientDB =>
                 {
-                    if(articuloBD.Id == articuloPOS.Id)
+                    if (clientDB.Id == clientPOS.Id)
+                    {
+                        if (clientDB.AutoSinc)
+                        {
+                            if (clientDB.Usuario.Nombre != clientPOS.Usuario.Nombre ||
+                               clientDB.Usuario.Cedula != clientPOS.Usuario.Cedula ||
+                               clientDB.Usuario.Email != clientPOS.Usuario.Email ||
+                               clientDB.Usuario.Telefono != clientPOS.Usuario.Telefono)
+                            {
+                                clientDB.Usuario.Nombre = clientPOS.Usuario.Nombre;
+                                clientDB.Usuario.Cedula = clientPOS.Usuario.Cedula;
+                                clientDB.Usuario.Email = clientPOS.Usuario.Email;
+                                clientDB.Usuario.Telefono = clientPOS.Usuario.Telefono;
+
+                                _unitOfWork.Usuario.Update(clientDB.Usuario);
+
+                                updated++;
+                            }
+                        }
+
+                        isNew = false;
+                    }
+
+                    if (isNew)
+                    {
+                        clientDB.Usuario.Estado = EstadoUsuario.ACTIVADO;
+                        clientsToAdd.Add(clientDB);
+                    }
+                });
+            });
+
+            added = clientsToAdd.Count;
+
+            if (added > 0)
+                _unitOfWork.Cliente.Create(clientsToAdd);
+
+            if (added > 0 || updated > 0)
+                await _unitOfWork.Save();
+
+            return response;
+        }
+
+        public async Task<SyncResponse> SyncArticles(List<InventarioArticulo> articlesPOS)
+        {
+            SyncResponse response = new();
+
+            if (articlesPOS?.Count <= 0)
+                return response;
+
+            List<InventarioArticulo> articlesToAdd = new();
+            bool isNew = false;
+            int added = 0;
+            int updated = 0;
+
+
+            var articlesDB = _unitOfWork.Articulo.GetAll();
+
+            articlesPOS.ForEach(articuloPOS =>
+            {
+                isNew = true;
+
+                articlesDB.ToList().ForEach(articuloBD =>
+                {
+                    if (articuloBD.Id == articuloPOS.Id)
                     {
                         if (articuloBD.AutoSinc)
                         {
-                            articuloBD.Descripcion = articuloPOS.Descripcion;
-                            articuloBD.CodigoBarras = articuloPOS.CodigoBarras;
-                            articuloBD.Precio = articuloPOS.Precio;
+                            if (articuloBD.Descripcion.Trim() != articuloPOS.Descripcion.Trim() ||
+                               articuloBD.CodigoBarras.Trim() != articuloPOS.CodigoBarras.Trim() ||
+                               articuloBD.Precio != articuloPOS.Precio)
+                            {
+                                articuloBD.Descripcion = articuloPOS.Descripcion.Trim();
+                                articuloBD.CodigoBarras = articuloPOS.CodigoBarras.Trim();
+                                articuloBD.Precio = articuloPOS.Precio;
 
-                            _unitOfWork.Articulo.Update(articuloBD);
+                                _unitOfWork.Articulo.Update(articuloBD);
 
-                            articulosActualizados++;
+                                updated++;
+                            }
                         }
 
-                        esNuevo = false;
+                        isNew = false;
                     }
                 });
 
-                if (esNuevo)
+                if (isNew)
                 {
-                    articulosNuevosParaAgregar.Add(new InventarioArticulo
-                    {
-                        Id = articuloPOS.Id,
-                        Descripcion = articuloPOS.Descripcion,
-                        CodigoBarras = articuloPOS.CodigoBarras,
-                        Precio = articuloPOS.Precio,
-                        Estado = EstadoArticulo.ACTIVADO
-                    });
-                }
+                    articuloPOS.Estado = EstadoArticulo.ACTIVADO;
 
+                    articlesToAdd.Add(articuloPOS);
+                }
             });
 
-            articulosAgregados = articulosNuevosParaAgregar.Count;
+            added = articlesToAdd.Count;
 
-            if (articulosAgregados > 0)
-                _unitOfWork.Articulo.Create(articulosNuevosParaAgregar);
+             if (added > 0)
+                _unitOfWork.Articulo.Create(articlesToAdd);
 
-            if (articulosActualizados > 0 || articulosAgregados > 0)
+            if (added > 0 || updated > 0)
                 await _unitOfWork.Save();
-            
-            return true;
+
+            return response;
         }
     }
 }

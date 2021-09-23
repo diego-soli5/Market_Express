@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Market_Express.Infrastructure.Extensions;
+using Market_Express.Infrastructure.Mappings;
 
 namespace Market_Express.Web
 {
@@ -22,11 +23,21 @@ namespace Market_Express.Web
 
             services.AddRepositories();
 
+            services.AddApplicationServices();
+
+            services.AddInfrastructureServices();
+
+            services.AddDomainServices();
+
+            services.AddOptions(Configuration);
+
             services.AddDbContext(Configuration);
 
             services.AddAntiforgery(setup => setup.HeaderName = "X-Anti-Forgery-Token");
 
             services.AddAppAuthentication();
+
+            services.AddAutoMapper(typeof(AppMappings));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
