@@ -44,7 +44,7 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SyncClients([FromBody] List<object> lstClientToSyncDTO)
+        public async Task<IActionResult> SyncClients([FromBody] List<ClienteSyncDTO> lstClientToSyncDTO)
         {
             if (IsSyncAuthorized())
                 return Unauthorized();

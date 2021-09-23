@@ -17,21 +17,21 @@ namespace Market_Express.Infrastructure.Data
         {
         }
 
-        public virtual DbSet<BitacoraAcceso> BitacoraAcceso { get; set; }
-        public virtual DbSet<BitacoraMovimiento> BitacoraMovimiento { get; set; }
-        public virtual DbSet<Carrito> Carrito { get; set; }
-        public virtual DbSet<CarritoDetalle> CarritoDetalle { get; set; }
-        public virtual DbSet<Cliente> Cliente { get; set; }
-        public virtual DbSet<Direccion> Direccion { get; set; }
-        public virtual DbSet<InventarioArticulo> InventarioArticulo { get; set; }
-        public virtual DbSet<InventarioCategoria> InventarioCategoria { get; set; }
-        public virtual DbSet<Pedido> Pedido { get; set; }
-        public virtual DbSet<PedidoDetalle> PedidoDetalle { get; set; }
-        public virtual DbSet<Permiso> Permiso { get; set; }
-        public virtual DbSet<Rol> Rol { get; set; }
-        public virtual DbSet<RolPermiso> RolPermiso { get; set; }
-        public virtual DbSet<Usuario> Usuario { get; set; }
-        public virtual DbSet<UsuarioRol> UsuarioRol { get; set; }
+        public DbSet<BitacoraAcceso> BitacoraAcceso { get; set; }
+        public DbSet<BitacoraMovimiento> BitacoraMovimiento { get; set; }
+        public DbSet<Carrito> Carrito { get; set; }
+        public DbSet<CarritoDetalle> CarritoDetalle { get; set; }
+        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Direccion> Direccion { get; set; }
+        public DbSet<InventarioArticulo> InventarioArticulo { get; set; }
+        public DbSet<InventarioCategoria> InventarioCategoria { get; set; }
+        public DbSet<Pedido> Pedido { get; set; }
+        public DbSet<PedidoDetalle> PedidoDetalle { get; set; }
+        public DbSet<Permiso> Permiso { get; set; }
+        public DbSet<Rol> Rol { get; set; }
+        public DbSet<RolPermiso> RolPermiso { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<UsuarioRol> UsuarioRol { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
