@@ -36,6 +36,14 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .IsUnicode(false);
 
             builder.Property(e => e.Precio).HasColumnType("decimal(19, 2)");
+
+            builder.Property(e => e.AdicionadoPor)
+                .HasMaxLength(12)
+                .IsUnicode(false);
+
+            builder.Property(e => e.ModificadoPor)
+                .HasMaxLength(12)
+                .IsUnicode(false);
         }
     }
 }

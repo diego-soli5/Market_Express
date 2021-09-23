@@ -20,6 +20,8 @@ namespace Market_Express.Domain.Entities
         public string Clave { get; set; }
         public string Tipo { get; set; }
         public string Estado { get; set; }
+        public string AdicionadoPor { get; set; }
+        public string ModificadoPor { get; set; }
 
         public Cliente Cliente { get; set; }
         public ICollection<BitacoraAcceso> BitacoraAccesos { get; set; }

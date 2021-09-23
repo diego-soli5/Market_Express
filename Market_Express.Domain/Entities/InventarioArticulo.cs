@@ -20,8 +20,10 @@ namespace Market_Express.Domain.Entities
         public string Imagen { get; set; }
         public bool AutoSinc { get; set; }
         public string Estado { get; set; }
+        public string AdicionadoPor { get; set; }
+        public string ModificadoPor { get; set; }
 
-        public virtual ICollection<CarritoDetalle> CarritoDetalles { get; set; }
-        public virtual ICollection<PedidoDetalle> PedidoDetalles { get; set; }
+        public ICollection<CarritoDetalle> CarritoDetalles { get; set; }
+        public ICollection<PedidoDetalle> PedidoDetalles { get; set; }
     }
 }

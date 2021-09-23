@@ -19,6 +19,8 @@ CREATE TABLE Usuario(
 	Clave VARCHAR(80) NOT NULL,
 	Tipo VARCHAR(15) NOT NULL,
 	Estado VARCHAR(11) NOT NULL,
+	Adicionado_Por VARCHAR(12),
+	Modificado_Por VARCHAR(12)
 
 	PRIMARY KEY(Id),
 	CONSTRAINT CHK_Usuario_Tipo CHECK (Tipo = 'ADMINISTRADOR' OR Tipo = 'CLIENTE'),
@@ -113,6 +115,8 @@ CREATE TABLE Inventario_Categoria(
 	Nombre VARCHAR(20) NOT NULL,
 	Descripcion VARCHAR(200),
 	Estado VARCHAR(11) NOT NULL,
+	Adicionado_Por VARCHAR(12),
+	Modificado_Por VARCHAR(12)
 
 	PRIMARY KEY(Id),
 	CONSTRAINT CHK_Categoria_Estado CHECK (Estado = 'ACTIVADO' OR Estado = 'DESACTIVADO')
@@ -128,6 +132,8 @@ CREATE TABLE Inventario_Articulo(
 	Imagen VARCHAR(30),
 	Auto_Sinc BIT NOT NULL,
 	Estado VARCHAR(11) NOT NULL,
+	Adicionado_Por VARCHAR(12),
+	Modificado_Por VARCHAR(12)
 
 	PRIMARY KEY(Id),
 	CONSTRAINT CHK_Articulo_Estado CHECK (Estado = 'ACTIVADO' OR Estado = 'DESACTIVADO')

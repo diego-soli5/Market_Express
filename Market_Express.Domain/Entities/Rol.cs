@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable disable
 
@@ -14,6 +13,8 @@ namespace Market_Express.Domain.Entities
 
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+        public string AdicionadoPor { get; set; }
+        public string ModificadoPor { get; set; }
 
         public ICollection<RolPermiso> RolPermisos { get; set; }
     }
