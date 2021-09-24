@@ -3,6 +3,8 @@ using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.EntityConstants;
+using System;
+using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
@@ -49,6 +51,11 @@ namespace Market_Express.Domain.Services
             usuarioRequest = oUsuarioDB;
 
             return result;
+        }
+
+        public async Task<object> GetUserRoles(Guid IdUsuario)
+        {
+            return null;
         }
     }
 }
