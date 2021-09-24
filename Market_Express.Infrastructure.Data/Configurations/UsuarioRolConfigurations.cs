@@ -15,7 +15,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
             builder.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
 
             builder.HasOne(d => d.IdUsuarioNavigation)
-                .WithMany(p => p.UsuarioRols)
+                .WithMany(p => p.UsuarioRol)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Usuario_R__Id_Us__36B12243");

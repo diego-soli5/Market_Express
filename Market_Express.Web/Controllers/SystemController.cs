@@ -67,7 +67,7 @@ namespace Market_Express.Web.Controllers
             if (!Request.Headers.ContainsKey("X-Sync-Authorization"))
                 return false;
 
-            if (!_authenticationService.IsSyncAuthorized(Request.Headers.First(h => h.Key == "X-Sync-Authorization").ToString()))
+            if (!_authenticationService.CheckSyncAuthHeader(Request.Headers.First(h => h.Key == "X-Sync-Authorization").ToString()))
                 return false;
 
             return true;

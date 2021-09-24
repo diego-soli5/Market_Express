@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Market_Express.CrossCutting.Response;
 using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.Validations;
+using Market_Express.Domain.Abstractions.InfrastructureServices;
 
 namespace Market_Express.Application.Services
 {
@@ -15,16 +16,19 @@ namespace Market_Express.Application.Services
         private readonly IUsuarioValidations _usuarioValidations;
         private readonly IClienteValidations _clienteValidations;
         private readonly IArticuloValidations _articuloValidations;
+        private readonly IPasswordService _passwordService;
 
         public SystemService(IUnitOfWork unitOfWork,
                              IUsuarioValidations usuarioValidations,
                              IClienteValidations clienteValidations,
-                             IArticuloValidations articuloValidations)
+                             IArticuloValidations articuloValidations,
+                             IPasswordService passwordService)
         {
             _unitOfWork = unitOfWork;
             _usuarioValidations = usuarioValidations;
             _clienteValidations = clienteValidations;
             _articuloValidations = articuloValidations;
+            _passwordService = passwordService;
         }
 
 
@@ -70,6 +74,8 @@ namespace Market_Express.Application.Services
                                 clientDB.Usuario.Nombre ??= clientPOS.Usuario.Nombre?.Trim();
                                 clientDB.Usuario.Telefono ??= clientPOS.Usuario.Telefono?.Trim();
 
+                                clientDB.Usuario.ModificadoPor = SystemConstants.SYSTEM;
+
                                 _unitOfWork.Usuario.Update(clientDB.Usuario);
 
                                 updated++;
@@ -94,7 +100,10 @@ namespace Market_Express.Application.Services
                             !_usuarioValidations.ExistsEmail())
                         {
 
-                            clientPOS.Usuario.Estado = EstadoUsuario.ACTIVADO;
+                            clientPOS.Usuario.Estado = UsuarioConstants.ACTIVADO;
+                            clientPOS.Usuario.AdicionadoPor = SystemConstants.SYSTEM;
+                            clientPOS.Usuario.Clave = _passwordService.Hash(clientPOS.Usuario.GetCedulaSinGuiones);
+
                             clientsToAdd.Add(clientPOS);
                         }
                     }
@@ -151,6 +160,7 @@ namespace Market_Express.Application.Services
 
                                 articleDB.Descripcion ??= articlePOS.Descripcion.Trim();
                                 articleDB.Precio = articlePOS.Precio;
+                                articleDB.ModificadoPor = SystemConstants.SYSTEM;
 
                                 _unitOfWork.Articulo.Update(articleDB);
 
@@ -172,7 +182,9 @@ namespace Market_Express.Application.Services
 
                         if (!_articuloValidations.ExistsCodigoBarras())
                         {
-                            articlePOS.Estado = EstadoArticulo.ACTIVADO;
+                            articlePOS.Estado = ArticuloConstants.ACTIVADO;
+                            articlePOS.AdicionadoPor = SystemConstants.SYSTEM;
+
                             articlesToAdd.Add(articlePOS);
                         }
                     }

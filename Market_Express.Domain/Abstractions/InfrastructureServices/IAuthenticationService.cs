@@ -2,6 +2,6 @@
 {
     public interface IAuthenticationService
     {
-        bool IsSyncAuthorized(string authHeader);
+        bool CheckSyncAuthHeader(string authHeader);
     }
 }

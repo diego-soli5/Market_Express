@@ -27,7 +27,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .IsUnicode(false);
 
             builder.HasOne(d => d.IdUsuarioNavigation)
-                .WithMany(p => p.BitacoraMovimientos)
+                .WithMany(p => p.BitacoraMovimiento)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Bitacora___Id_Us__45F365D3");

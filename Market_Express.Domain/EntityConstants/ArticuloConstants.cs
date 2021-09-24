@@ -1,6 +1,6 @@
 ﻿namespace Market_Express.Domain.EntityConstants
 {
-    public static class EstadoArticulo
+    public static class ArticuloConstants
     {
         private const string _ACTIVADO = "ACTIVADO";
         private const string _DESACTIVADO = "DESACTIVADO";

@@ -38,6 +38,8 @@ namespace Market_Express.Infrastructure.Extensions
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddScoped(typeof(IAuthenticationService), typeof(AuthenticationService));
+
+            services.AddScoped(typeof(IPasswordService), typeof(PasswordService));
         }
 
         public static void AddValidations(this IServiceCollection services)
@@ -52,6 +54,8 @@ namespace Market_Express.Infrastructure.Extensions
         public static void AddOptions(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AuthenticationOptions>(configuration.GetSection("Options:AuthenticationOptions"));
+
+            services.Configure<PasswordOptions>(configuration.GetSection("Options:PasswordOptions"));
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)

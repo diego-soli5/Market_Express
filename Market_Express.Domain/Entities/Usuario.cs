@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 #nullable disable
 
@@ -8,9 +9,9 @@ namespace Market_Express.Domain.Entities
     {
         public Usuario()
         {
-            BitacoraAccesos = new HashSet<BitacoraAcceso>();
-            BitacoraMovimientos = new HashSet<BitacoraMovimiento>();
-            UsuarioRols = new HashSet<UsuarioRol>();
+            BitacoraAcceso = new HashSet<BitacoraAcceso>();
+            BitacoraMovimiento = new HashSet<BitacoraMovimiento>();
+            UsuarioRol = new HashSet<UsuarioRol>();
         }
 
         public string Nombre { get; set; }
@@ -23,9 +24,19 @@ namespace Market_Express.Domain.Entities
         public string AdicionadoPor { get; set; }
         public string ModificadoPor { get; set; }
 
+        #region HELPER PROP
+        public string GetCedulaSinGuiones
+        {
+            get
+            {
+                return Cedula.Trim().Replace('-', Convert.ToChar(string.Empty));
+            }
+        }
+        #endregion
+
         public Cliente Cliente { get; set; }
-        public ICollection<BitacoraAcceso> BitacoraAccesos { get; set; }
-        public ICollection<BitacoraMovimiento> BitacoraMovimientos { get; set; }
-        public ICollection<UsuarioRol> UsuarioRols { get; set; }
+        public ICollection<BitacoraAcceso> BitacoraAcceso { get; set; }
+        public ICollection<BitacoraMovimiento> BitacoraMovimiento { get; set; }
+        public ICollection<UsuarioRol> UsuarioRol { get; set; }
     }
 }
