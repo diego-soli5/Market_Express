@@ -5,6 +5,7 @@ using Market_Express.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -40,13 +41,20 @@ namespace Market_Express.Web.Controllers
 
             if (result.Success)
             {
-                var claims = new[]
+                var permisos = await _accountService.GetPermisos(oUser.Id);
+
+                List<Claim> claims = new();
+
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
+                claims.Add(new Claim(ClaimTypes.Name, oUser.Nombre));
+                claims.Add(new Claim(ClaimTypes.Email, oUser.Email));
+                claims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Telefono));
+                claims.Add(new Claim(ClaimTypes.Role, oUser.Tipo));
+
+                permisos.ForEach(per =>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()),
-                    new Claim(ClaimTypes.Name, oUser.Nombre),
-                    new Claim(ClaimTypes.Email, oUser.Email),
-                    new Claim(ClaimTypes.MobilePhone, oUser.Telefono)
-                };
+                    claims.Add(new Claim(ClaimTypes.Role, per.Nombre));
+                });
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -63,7 +71,7 @@ namespace Market_Express.Web.Controllers
             }
 
             ViewData["LoginMessage"] = result.Message;
-            
+
             return View();
         }
 

@@ -4,6 +4,7 @@ using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.EntityConstants;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
@@ -53,9 +54,9 @@ namespace Market_Express.Domain.Services
             return result;
         }
 
-        public async Task<object> GetUserRoles(Guid IdUsuario)
+        public async Task<List<Permiso>> GetPermisos(Guid id)
         {
-            return null;
+            return await _unitOfWork.Usuario.GetPermisosAsync(id);
         }
     }
 }

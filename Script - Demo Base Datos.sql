@@ -253,6 +253,24 @@ AND p.Id = rp.Id_Permiso
 */
 
 
+CREATE PROCEDURE Sp_Usuario_GetPermisos
+(
+	@Id VARCHAR
+)
+AS
+	BEGIN
+	SELECT DISTINCT 
+		   p.Id,
+		   p.Descripcion,
+		   p.Nombre
+	FROM Usuario u, Usuario_Rol ur, Rol r, Rol_Permiso rp, Permiso p
+	WHERE ur.Id_Usuario = @Id
+	AND ur.Id_Rol = r.Id
+	AND ur.Id_Rol = rp.Id_Rol
+	AND p.Id = rp.Id_Permiso
+END;
+
+
 
 
 
