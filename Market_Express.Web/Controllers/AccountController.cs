@@ -1,15 +1,25 @@
-﻿using Market_Express.Application.DTOs.Access;
+﻿using AutoMapper;
+using Market_Express.Application.DTOs.Access;
+using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Market_Express.Web.Controllers
 {
     public class AccountController : Controller
     {
-        public AccountController()
-        {
+        private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
+        public AccountController(IAccountService accountService,
+                                 IMapper mapper)
+        {
+            _accountService = accountService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,23 +32,20 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignIn(LoginRequestDTO model, string returnUrl)
+        public async Task<IActionResult> SignIn(LoginRequestDTO model, string returnUrl)
         {
-            /*
-            var result = await _service.TryAuthenticateAsync(credential, password);
+            var oUser = _mapper.Map<Usuario>(model);
+
+            var result = _accountService.TryAuthenticate(oUser);
 
             if (result.Success)
             {
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id.ToString()),
-                    new Claim(ClaimTypes.Name, result.Data.FullName),
-                    new Claim(ClaimTypes.Email,result.Data.Email),
-                    new Claim(ClaimTypes.MobilePhone, result.Data.PhoneNumber.ToString()),
-                    new Claim("ImageName", result.Data.ImageName),
-                    new Claim(ClaimTypes.Role, result.Data.AppUserRole.ToString()),
-                    new Claim(ClaimTypes.Role, result.Data.EmployeeRole.ToString()),
-                    new Claim("Token", result.Data.Token)
+                    new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()),
+                    new Claim(ClaimTypes.Name, oUser.Nombre),
+                    new Claim(ClaimTypes.Email, oUser.Email),
+                    new Claim(ClaimTypes.MobilePhone, oUser.Telefono)
                 };
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -56,7 +63,7 @@ namespace Market_Express.Web.Controllers
             }
 
             ViewData["LoginMessage"] = result.Message;
-            */
+            
             return View();
         }
 

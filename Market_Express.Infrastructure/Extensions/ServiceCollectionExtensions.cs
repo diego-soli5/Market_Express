@@ -1,10 +1,12 @@
 ﻿using Market_Express.Application.Services;
 using Market_Express.CrossCutting.Options;
 using Market_Express.Domain.Abstractions.ApplicationServices;
+using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Abstractions.Validations;
 using Market_Express.Domain.EntityValidations;
+using Market_Express.Domain.Services;
 using Market_Express.Infrastructure.Data;
 using Market_Express.Infrastructure.Data.Repositories;
 using Market_Express.Infrastructure.Services;
@@ -27,7 +29,7 @@ namespace Market_Express.Infrastructure.Extensions
 
         public static void AddDomainServices(this IServiceCollection services)
         {
-            
+            services.AddScoped(typeof(IAccountService), typeof(AccountService));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)

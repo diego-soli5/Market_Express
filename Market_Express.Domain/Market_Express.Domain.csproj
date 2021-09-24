@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\DomainServices\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Market_Express.CrossCutting\Market_Express.CrossCutting.csproj" />
   </ItemGroup>
 
