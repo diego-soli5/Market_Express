@@ -33,8 +33,8 @@
                     <header class="card-header">
                         <h1 class="text-center font-weight-normal text-light">Iniciar Sesión</h1>
                     </header>
-                    <form method="post" asp-area="" asp-controller="Account" asp-action="Login" class="card-body" id="frm">
-                        <input type="text" name="credential" value="" placeholder="Identificación o Correo Electrónico" class="form-control mb-3" />
+                    <form method="post" asp-area="" asp-controller="Account" asp-action="SignIn" class="card-body" id="frm">
+                        <input type="text" name="email" value="" placeholder="Correo Electrónico" class="form-control mb-3" />
                         <input type="password" name="password" value="" placeholder="Contraseña" class="form-control" />
                         <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
                     </form>

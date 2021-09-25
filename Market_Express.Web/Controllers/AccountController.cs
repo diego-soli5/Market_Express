@@ -32,7 +32,7 @@ namespace Market_Express.Web.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> SignIn(LoginRequestDTO model, string returnUrl)
         {
             var oUser = _mapper.Map<Usuario>(model);
