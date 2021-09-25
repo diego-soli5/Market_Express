@@ -220,7 +220,7 @@ INSERT INTO Rol_Permiso(IdRol,IdPermiso) VALUES
 GO
 
 INSERT INTO Usuario(Id,Nombre,Cedula,Email,Telefono,Clave,Tipo,Estado,FecCreacion,AdicionadoPor) VALUES
-('EA16E721-5E1D-EC11-9953-3863BBBB3AE0','Luis Diego Solís Camacho','1-1731-0010','1diego321@gmail.com','83358092','clave','ADMINISTRADOR','ACTIVADO',GETDATE(),'SYSTEM');
+('EA16E721-5E1D-EC11-9953-3863BBBB3AE0','Luis Diego Solís Camacho','1-1731-0010','1diego321@gmail.com','83358092','10000.+UfMddrk8Z1k7UZBQDNPvA==.705k1c4kJPT9uYc77Fkjw2/VAl257UUmJkSj0jGY/Zo=','ADMINISTRADOR','ACTIVADO',GETDATE(),'SYSTEM');
 GO
 
 INSERT INTO Usuario_Rol(IdRol,IdUsuario) VALUES
@@ -259,7 +259,7 @@ AND p.Id = rp.IdPermiso
 
 CREATE PROCEDURE Sp_Usuario_GetPermisos
 (
-	@Id VARCHAR
+	@Id UNIQUEIDENTIFIER
 )
 AS
 	BEGIN

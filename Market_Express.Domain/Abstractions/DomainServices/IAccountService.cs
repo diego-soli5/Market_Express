@@ -7,7 +7,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
 {
     public interface IAccountService
     {
-        BusisnessResult TryAuthenticate(Usuario usuarioRequest);
+        BusisnessResult TryAuthenticate(ref Usuario usuarioRequest);
         Task<List<Permiso>> GetPermisos(Guid id);
     }
 }

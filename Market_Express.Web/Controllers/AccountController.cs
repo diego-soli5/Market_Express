@@ -37,7 +37,7 @@ namespace Market_Express.Web.Controllers
         {
             var oUser = _mapper.Map<Usuario>(model);
 
-            var result = _accountService.TryAuthenticate(oUser);
+            var result = _accountService.TryAuthenticate(ref oUser);
 
             if (result.Success)
             {

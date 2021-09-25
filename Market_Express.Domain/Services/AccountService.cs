@@ -21,12 +21,14 @@ namespace Market_Express.Domain.Services
             _passwordService = passwordService;
         }
 
-        public BusisnessResult TryAuthenticate(Usuario usuarioRequest)
+        public BusisnessResult TryAuthenticate(ref Usuario usuarioRequest)
         {
             BusisnessResult result = new();
 
+            string reqEmail = usuarioRequest.Email.Trim();
+
             var oUsuarioDB = _unitOfWork.Usuario
-                .GetFirstOrDefault(x => x.Email.Trim() == usuarioRequest.Email.Trim());
+                .GetFirstOrDefault(x => x.Email.Trim() == reqEmail);
 
             if (oUsuarioDB == null)
             {
@@ -50,6 +52,8 @@ namespace Market_Express.Domain.Services
             }
 
             usuarioRequest = oUsuarioDB;
+
+            result.Success = true;
 
             return result;
         }
