@@ -13,17 +13,17 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.FechaInicio)
+            builder.Property(e => e.FecInicio)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_Inicio");
 
-            builder.Property(e => e.FechaSalida)
+            builder.Property(e => e.FecSalida)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_Salida");
 
             builder.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
 
-            builder.HasOne(d => d.IdUsuarioNavigation)
+            builder.HasOne(d => d.Usuario)
                 .WithMany(p => p.BitacoraAcceso)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)

@@ -17,14 +17,14 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(7)
                 .IsUnicode(false);
 
-            builder.Property(e => e.FechaApertura)
+            builder.Property(e => e.FecApertura)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_Apertura");
 
             builder.Property(e => e.IdCliente).HasColumnName("Id_Cliente");
 
             builder.HasOne(d => d.IdClienteNavigation)
-                .WithMany(p => p.Carritos)
+                .WithMany(p => p.Carrito)
                 .HasForeignKey(d => d.IdCliente)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Carrito__Id_Clie__5165187F");

@@ -17,7 +17,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Fecha).HasColumnType("datetime");
+            builder.Property(e => e.FecRealiza).HasColumnType("datetime");
 
             builder.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
 
@@ -26,7 +26,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(10)
                 .IsUnicode(false);
 
-            builder.HasOne(d => d.IdUsuarioNavigation)
+            builder.HasOne(d => d.Usuario)
                 .WithMany(p => p.BitacoraMovimiento)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)

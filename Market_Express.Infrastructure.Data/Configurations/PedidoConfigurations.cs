@@ -17,7 +17,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(9)
                 .IsUnicode(false);
 
-            builder.Property(e => e.FechaCreacion)
+            builder.Property(e => e.FecCreacion)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_Creacion");
 

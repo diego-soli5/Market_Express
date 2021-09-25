@@ -9,7 +9,7 @@ namespace Market_Express.Domain.Entities
         public Guid IdCarrito { get; set; }
         public Guid IdArticulo { get; set; }
 
-        public InventarioArticulo IdArticuloNavigation { get; set; }
-        public Carrito IdCarritoNavigation { get; set; }
+        public InventarioArticulo Articulo { get; set; }
+        public Carrito Carrito { get; set; }
     }
 }

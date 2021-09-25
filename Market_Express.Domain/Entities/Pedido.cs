@@ -13,7 +13,7 @@ namespace Market_Express.Domain.Entities
         }
 
         public Guid IdCliente { get; set; }
-        public DateTime FechaCreacion { get; set; }
+        public DateTime FecCreacion { get; set; }
         public decimal Total { get; set; }
         public string Estado { get; set; }
 

@@ -9,7 +9,7 @@ namespace Market_Express.Domain.Entities
     {
         public Cliente()
         {
-            Carritos = new HashSet<Carrito>();
+            Carrito = new HashSet<Carrito>();
         }
 
         public Guid IdUsuario { get; set; }
@@ -17,6 +17,6 @@ namespace Market_Express.Domain.Entities
         public bool AutoSinc { get; set; }
 
         public Usuario Usuario { get; set; }
-        public ICollection<Carrito> Carritos { get; set; }
+        public ICollection<Carrito> Carrito { get; set; }
     }
 }

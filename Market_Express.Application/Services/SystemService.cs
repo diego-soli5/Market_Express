@@ -7,6 +7,7 @@ using Market_Express.CrossCutting.Response;
 using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.Validations;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
+using System;
 
 namespace Market_Express.Application.Services
 {
@@ -99,7 +100,8 @@ namespace Market_Express.Application.Services
                             !_usuarioValidations.ExistsCedula() &&
                             !_usuarioValidations.ExistsEmail())
                         {
-
+                            clientPOS.Usuario.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
+                                                            TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
                             clientPOS.Usuario.Estado = UsuarioConstants.ACTIVADO;
                             clientPOS.Usuario.AdicionadoPor = SystemConstants.SYSTEM;
                             clientPOS.Usuario.Clave = _passwordService.Hash(clientPOS.Usuario.GetCedulaSinGuiones);
@@ -182,6 +184,8 @@ namespace Market_Express.Application.Services
 
                         if (!_articuloValidations.ExistsCodigoBarras())
                         {
+                            articlePOS.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
+                                                            TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
                             articlePOS.Estado = ArticuloConstants.ACTIVADO;
                             articlePOS.AdicionadoPor = SystemConstants.SYSTEM;
 
