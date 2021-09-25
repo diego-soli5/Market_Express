@@ -19,6 +19,7 @@ CREATE TABLE Usuario(
 	Clave VARCHAR(80) NOT NULL,
 	Tipo VARCHAR(15) NOT NULL,
 	Estado VARCHAR(11) NOT NULL,
+	Fec_Creacion DATETIME NOT NULL,
 	Adicionado_Por VARCHAR(12),
 	Modificado_Por VARCHAR(12)
 
@@ -41,6 +42,7 @@ CREATE TABLE Rol(	-- Roles los cuales definiran los permisos de cada usuario
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Nombre VARCHAR(30) NOT NULL,
 	Descripcion VARCHAR(200),
+	Fec_Creacion DATETIME NOT NULL,
 
 	PRIMARY KEY(Id)	
 );
@@ -92,8 +94,8 @@ GO
 CREATE TABLE Bitacora_Acceso(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Usuario UNIQUEIDENTIFIER NOT NULL,
-	Fecha_Inicio DATETIME NOT NULL,
-	Fecha_Salida DATETIME,
+	Fec_Inicio DATETIME NOT NULL,
+	Fec_Salida DATETIME,
 
 	PRIMARY KEY(Id),
 	FOREIGN KEY(Id_Usuario) REFERENCES Usuario(Id)
@@ -103,7 +105,7 @@ GO
 CREATE TABLE Bitacora_Movimiento(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Usuario UNIQUEIDENTIFIER NOT NULL,
-	Fecha DATETIME NOT NULL,
+	Fec_Realiza DATETIME NOT NULL,
 	Tipo VARCHAR(10) NOT NULL,
 	Detalle Varchar(100) NOT NULL,
 
@@ -117,6 +119,7 @@ CREATE TABLE Inventario_Categoria(
 	Nombre VARCHAR(20) NOT NULL,
 	Descripcion VARCHAR(200),
 	Estado VARCHAR(11) NOT NULL,
+	Fec_Creacion DATETIME NOT NULL,
 	Adicionado_Por VARCHAR(12),
 	Modificado_Por VARCHAR(12)
 
@@ -134,6 +137,7 @@ CREATE TABLE Inventario_Articulo(
 	Imagen VARCHAR(30),
 	Auto_Sinc BIT NOT NULL,
 	Estado VARCHAR(11) NOT NULL,
+	Fec_Creacion DATETIME NOT NULL,
 	Adicionado_Por VARCHAR(12),
 	Modificado_Por VARCHAR(12)
 
@@ -145,7 +149,7 @@ GO
 CREATE TABLE Carrito(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Cliente UNIQUEIDENTIFIER NOT NULL,
-	Fecha_Apertura DATETIME NOT NULL,
+	Fec_Apertura DATETIME NOT NULL,
 	Estado VARCHAR(7) NOT NULL,
 
 	PRIMARY KEY(Id),
@@ -168,7 +172,7 @@ GO
 CREATE TABLE Pedido(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Id_Cliente UNIQUEIDENTIFIER NOT NULL,
-	Fecha_Creacion DATETIME NOT NULL,
+	Fec_Creacion DATETIME NOT NULL,
 	Total DECIMAL(19,2) NOT NULL,
 	Estado VARCHAR(9) NOT NULL,
 

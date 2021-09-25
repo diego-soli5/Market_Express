@@ -33,6 +33,8 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(40)
                 .IsUnicode(false);
 
+            builder.Property(e => e.FecCreacion).HasColumnType("datetime");
+
             builder.Property(e => e.Estado)
                 .IsRequired()
                 .HasMaxLength(11)

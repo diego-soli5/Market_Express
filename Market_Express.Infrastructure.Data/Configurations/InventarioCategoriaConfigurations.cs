@@ -26,6 +26,8 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
+            builder.Property(e => e.FecCreacion).HasColumnType("datetime");
+
             builder.Property(e => e.AdicionadoPor)
                 .HasMaxLength(12)
                 .IsUnicode(false);

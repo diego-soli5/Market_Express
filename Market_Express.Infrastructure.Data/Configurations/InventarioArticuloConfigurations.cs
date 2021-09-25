@@ -37,6 +37,8 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Precio).HasColumnType("decimal(19, 2)");
 
+            builder.Property(e => e.FecCreacion).HasColumnType("datetime");
+
             builder.Property(e => e.AdicionadoPor)
                 .HasMaxLength(12)
                 .IsUnicode(false);
