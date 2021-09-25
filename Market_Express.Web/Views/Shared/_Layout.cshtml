@@ -17,25 +17,24 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <!-- Font Awesome 5 -->
-    <link href="fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
+    <link href="~/lib/fontawesome/css/all.min.css" type="text/css" rel="stylesheet">
 
     <!-- Custom Style -->
     <link href="~/css/ui.css" rel="stylesheet" type="text/css" />
     <link href="~/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    
 
 </head>
 
 <body>
-
     <!-- ========================= BARRA PRINCIPAL // ========================= -->
     <header class="section-header">
         <section class="header-main border-bottom">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-4">
-                        <a href="http://bootstrap-ecommerce.com" class="brand-wrap">
-                            <img class="logo" src="images/logo.png">
+                        <a href="#" class="brand-wrap">
+                            <img class="logo" src="~/img/logo.png">
                         </a> <!-- brand-wrap.// -->
                     </div>
                     <div class="col-lg-6 col-sm-12">
@@ -63,7 +62,14 @@
                                 <div class="text">
                                     <span class="text-muted">Bienvenido!</span>
                                     <div>
-                                        <a href="#">Iniciar Sesión</a>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-area="" asp-controller="Account" asp-action="SignIn">Iniciar Sesión</a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +82,7 @@
     </header> <!-- section-header.// -->
     <!-- ========================= FIN BARRA PRINCIPAL // ========================= -->
     <!-- ========================= NAVEGACION // ========================= -->
-    <nav class="navbar navbar-main navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-main navbar-expand-lg navbar-light border-bottom">
         <div class="container">
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav"
@@ -103,7 +109,7 @@
                     -->
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Inicio</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pedidos</a>
@@ -129,6 +135,13 @@
     </nav>
     <!-- ========================= FIN NAVEGACION // ========================= -->
     <!-- ========================= CONTENIDO // ========================= -->
+
+        <div class="container-fluid">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
     <!-- ========================= CONTENIDO FIN // ========================= -->
     <!-- ========================= FOOTER ========================= -->
     <footer class="section-footer border-top">
@@ -152,22 +165,19 @@
                     <aside class="col-md col-6">
                         <h6 class="title">Cuenta</h6>
                         <ul class="list-unstyled">
-                            <li> <a href="#">Iniciar Sesión</a></li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li> <a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+                            }
+                            else
+                            {
+                                <li> <a asp-area="" asp-controller="Account" asp-action="SignIn">Iniciar Sesión</a></li>
+                            }
+
+
                             <li> <a href="#">Mis Pedidos</a></li>
                         </ul>
                     </aside>
-
-                    <!--
-                    <aside class="col-md">
-                        <h6 class="title">Social</h6>
-                        <ul class="list-unstyled">
-                            <li><a href="#"> <i class="fab fa-facebook"></i> Facebook </a></li>
-                            <li><a href="#"> <i class="fab fa-twitter"></i> Twitter </a></li>
-                            <li><a href="#"> <i class="fab fa-instagram"></i> Instagram </a></li>
-                            <li><a href="#"> <i class="fab fa-youtube"></i> Youtube </a></li>
-                        </ul>
-                    </aside>
-                    -->
 
                     <aside class="col-md col-6">
                         <h6 class="title">Sistema</h6>
@@ -193,10 +203,9 @@
                 </div>
             </section>
         </div><!-- //container -->
+
     </footer>
     <!-- ========================= FOOTER FIN // ========================= -->
-    
-    
     <!-- jQuery -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -206,7 +215,6 @@
     <!-- Custom Scripts-->
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 
 </html>
