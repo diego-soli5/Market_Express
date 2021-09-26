@@ -33,19 +33,19 @@ namespace Market_Express.Application.Services
         }
 
 
-        public async Task<SyncResponse> SyncClients(List<Cliente> lstClientsToClient)
+        public async Task<SyncResponse> SyncClients(List<Client> lstClientsToClient)
         {
             SyncResponse oResponse = new();
 
             if (lstClientsToClient?.Count <= 0)
                 return oResponse;
 
-            List<Cliente> lstClientsToAdd = new();
+            List<Client> lstClientsToAdd = new();
             bool bIsNew = false;
             int iAdded = 0;
             int iUpdated = 0;
 
-            var lstClientsFromDb = _unitOfWork.Cliente.GetAll(nameof(Cliente.Usuario));
+            var lstClientsFromDb = _unitOfWork.Cliente.GetAll(nameof(Client.Usuario));
 
             lstClientsToClient.ForEach(oClientPOS =>
             {
@@ -126,14 +126,14 @@ namespace Market_Express.Application.Services
             return oResponse;
         }
 
-        public async Task<SyncResponse> SyncArticles(List<InventarioArticulo> lstArticlesToSync)
+        public async Task<SyncResponse> SyncArticles(List<Article> lstArticlesToSync)
         {
             SyncResponse oResponse = new();
 
             if (lstArticlesToSync?.Count <= 0)
                 return oResponse;
 
-            List<InventarioArticulo> lstArticlesToAdd = new();
+            List<Article> lstArticlesToAdd = new();
             bool bIsNew = false;
             int iAdded = 0;
             int iUpdated = 0;

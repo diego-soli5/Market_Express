@@ -5,6 +5,6 @@ namespace Market_Express.Domain.Abstractions.Validations
     public interface IArticuloValidations
     {
         bool ExistsCodigoBarras();
-        InventarioArticulo Articulo { set; }
+        Article Articulo { set; }
     }
 }

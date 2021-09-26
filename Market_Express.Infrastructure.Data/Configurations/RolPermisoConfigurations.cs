@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class RolPermisoConfigurations : IEntityTypeConfiguration<RolPermiso>
+    public class RolPermisoConfigurations : IEntityTypeConfiguration<RolePermission>
     {
-        public void Configure(EntityTypeBuilder<RolPermiso> builder)
+        public void Configure(EntityTypeBuilder<RolePermission> builder)
         {
             builder.ToTable("Rol_Permiso");
 

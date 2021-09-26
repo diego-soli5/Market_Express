@@ -21,7 +21,7 @@ CREATE TABLE Usuario(
 	Estado VARCHAR(11) NOT NULL,
 	FecCreacion DATETIME NOT NULL,
 	AdicionadoPor VARCHAR(12),
-	ModificadoPor VARCHAR(12)
+	ModificadoPor VARCHAR(12),
 
 	PRIMARY KEY(Id),
 	CONSTRAINT CHK_Usuario_Tipo CHECK (Tipo = 'ADMINISTRADOR' OR Tipo = 'CLIENTE'),

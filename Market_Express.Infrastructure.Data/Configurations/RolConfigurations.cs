@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class RolConfigurations : IEntityTypeConfiguration<Rol>
+    public class RolConfigurations : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<Rol> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.ToTable("Rol");
 

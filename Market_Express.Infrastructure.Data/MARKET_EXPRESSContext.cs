@@ -17,21 +17,21 @@ namespace Market_Express.Infrastructure.Data
         {
         }
 
-        public DbSet<BitacoraAcceso> BitacoraAcceso { get; set; }
-        public DbSet<BitacoraMovimiento> BitacoraMovimiento { get; set; }
-        public DbSet<Carrito> Carrito { get; set; }
-        public DbSet<CarritoDetalle> CarritoDetalle { get; set; }
-        public DbSet<Cliente> Cliente { get; set; }
-        public DbSet<Direccion> Direccion { get; set; }
-        public DbSet<InventarioArticulo> InventarioArticulo { get; set; }
-        public DbSet<InventarioCategoria> InventarioCategoria { get; set; }
-        public DbSet<Pedido> Pedido { get; set; }
-        public DbSet<PedidoDetalle> PedidoDetalle { get; set; }
-        public DbSet<Permiso> Permiso { get; set; }
-        public DbSet<Rol> Rol { get; set; }
-        public DbSet<RolPermiso> RolPermiso { get; set; }
-        public DbSet<Usuario> Usuario { get; set; }
-        public DbSet<UsuarioRol> UsuarioRol { get; set; }
+        public DbSet<BinnacleAccess> BitacoraAcceso { get; set; }
+        public DbSet<BinnacleMovement> BitacoraMovimiento { get; set; }
+        public DbSet<Cart> Carrito { get; set; }
+        public DbSet<CartDetail> CarritoDetalle { get; set; }
+        public DbSet<Client> Cliente { get; set; }
+        public DbSet<Address> Direccion { get; set; }
+        public DbSet<Article> InventarioArticulo { get; set; }
+        public DbSet<Category> InventarioCategoria { get; set; }
+        public DbSet<Order> Pedido { get; set; }
+        public DbSet<OrderDetail> PedidoDetalle { get; set; }
+        public DbSet<Permission> Permiso { get; set; }
+        public DbSet<Role> Rol { get; set; }
+        public DbSet<RolePermission> RolPermiso { get; set; }
+        public DbSet<AppUser> Usuario { get; set; }
+        public DbSet<AppUserRole> UsuarioRol { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

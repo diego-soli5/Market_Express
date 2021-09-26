@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class InventarioArticuloConfigurations : IEntityTypeConfiguration<InventarioArticulo>
+    public class InventarioArticuloConfigurations : IEntityTypeConfiguration<Article>
     {
-        public void Configure(EntityTypeBuilder<InventarioArticulo> builder)
+        public void Configure(EntityTypeBuilder<Article> builder)
         {
             builder.ToTable("Inventario_Articulo");
 

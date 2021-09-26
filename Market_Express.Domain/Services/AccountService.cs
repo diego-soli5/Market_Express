@@ -21,7 +21,7 @@ namespace Market_Express.Domain.Services
             _passwordService = passwordService;
         }
 
-        public BusisnessResult TryAuthenticate(ref Usuario oUserRequest)
+        public BusisnessResult TryAuthenticate(ref AppUser oUserRequest)
         {
             BusisnessResult oResult = new();
 
@@ -66,7 +66,7 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<List<Permiso>> GetPermisos(Guid id)
+        public async Task<List<Permission>> GetPermisos(Guid id)
         {
             return await _unitOfWork.Usuario.GetPermisosAsync(id);
         }

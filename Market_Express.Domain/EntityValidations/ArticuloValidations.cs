@@ -6,7 +6,7 @@ namespace Market_Express.Domain.EntityValidations
 {
     public class ArticuloValidations : IArticuloValidations
     {
-        private InventarioArticulo _articulo;
+        private Article _articulo;
         private readonly IUnitOfWork _unitOfWork;
 
         public ArticuloValidations(IUnitOfWork unitOfWork)
@@ -14,7 +14,7 @@ namespace Market_Express.Domain.EntityValidations
             _unitOfWork = unitOfWork;
         }
 
-        public InventarioArticulo Articulo
+        public Article Articulo
         {
             private get { return _articulo; }
             set { _articulo = value; }

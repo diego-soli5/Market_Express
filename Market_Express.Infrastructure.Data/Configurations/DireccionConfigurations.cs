@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class DireccionConfigurations : IEntityTypeConfiguration<Direccion>
+    public class DireccionConfigurations : IEntityTypeConfiguration<Address>
     {
-        public void Configure(EntityTypeBuilder<Direccion> builder)
+        public void Configure(EntityTypeBuilder<Address> builder)
         {
             builder.ToTable("Direccion");
 

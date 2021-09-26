@@ -37,7 +37,7 @@ namespace Market_Express.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO oModel, string sReturnUrl)
         {
-            var oUser = _mapper.Map<Usuario>(oModel);
+            var oUser = _mapper.Map<AppUser>(oModel);
 
             var oResult = _accountService.TryAuthenticate(ref oUser);
 

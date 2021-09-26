@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
 {
-    public class UsuarioRepository : GenericRepository<Usuario>, IUsuarioRepository
+    public class UsuarioRepository : GenericRepository<AppUser>, IUsuarioRepository
     {
         private const string _Sp_Usuario_GetPermisos = "Sp_Usuario_GetPermisos";
 
@@ -17,9 +17,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public async Task<List<Permiso>> GetPermisosAsync(Guid id)
+        public async Task<List<Permission>> GetPermisosAsync(Guid id)
         {
-            List<Permiso> lstPermissions = new();
+            List<Permission> lstPermissions = new();
 
             var arrParams = new[]
             {
@@ -30,7 +30,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             foreach (DataRow oRow in oDTResult.Rows)
             {
-                lstPermissions.Add(new Permiso
+                lstPermissions.Add(new Permission
                 {
                     Id = (Guid)oRow["Id"],
                     Nombre = oRow["Nombre"].ToString(),

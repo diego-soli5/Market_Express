@@ -5,9 +5,9 @@ using System;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class BitacoraAccesoConfigurations : IEntityTypeConfiguration<BitacoraAcceso>
+    public class BitacoraAccesoConfigurations : IEntityTypeConfiguration<BinnacleAccess>
     {
-        public void Configure(EntityTypeBuilder<BitacoraAcceso> builder)
+        public void Configure(EntityTypeBuilder<BinnacleAccess> builder)
         {
             builder.ToTable("Bitacora_Acceso");
 

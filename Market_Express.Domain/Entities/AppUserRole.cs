@@ -4,10 +4,10 @@
 
 namespace Market_Express.Domain.Entities
 {
-    public class UsuarioRol : BaseEntity
+    public class AppUserRole : BaseEntity
     {
         public Guid IdUsuario { get; set; }
 
-        public Usuario IdUsuarioNavigation { get; set; }
+        public AppUser IdUsuarioNavigation { get; set; }
     }
 }

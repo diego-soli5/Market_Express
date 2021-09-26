@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class ClienteConfigurations : IEntityTypeConfiguration<Cliente>
+    public class ClienteConfigurations : IEntityTypeConfiguration<Client>
     {
-        public void Configure(EntityTypeBuilder<Cliente> builder)
+        public void Configure(EntityTypeBuilder<Client> builder)
         {
             builder.ToTable("Cliente");
 
@@ -26,7 +26,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.HasOne(d => d.Usuario)
                 .WithOne(p => p.Cliente)
-                .HasForeignKey<Cliente>(d => d.IdUsuario)
+                .HasForeignKey<Client>(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Cliente__Id_Usua__3B75D760");
         }

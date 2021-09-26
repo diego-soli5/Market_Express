@@ -7,7 +7,7 @@ namespace Market_Express.Domain.Abstractions.ApplicationServices
 {
     public interface ISystemService
     {
-        Task<SyncResponse> SyncArticles(List<InventarioArticulo> articulosPOS);
-        Task<SyncResponse> SyncClients(List<Cliente> clientsPOS);
+        Task<SyncResponse> SyncArticles(List<Article> articulosPOS);
+        Task<SyncResponse> SyncClients(List<Client> clientsPOS);
     }
 }

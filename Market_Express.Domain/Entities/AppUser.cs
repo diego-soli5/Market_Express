@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class Usuario : BaseEntity
+    public class AppUser : BaseEntity
     {
-        public Usuario()
+        public AppUser()
         {
-            BitacoraAcceso = new HashSet<BitacoraAcceso>();
-            BitacoraMovimiento = new HashSet<BitacoraMovimiento>();
-            UsuarioRol = new HashSet<UsuarioRol>();
+            BitacoraAcceso = new HashSet<BinnacleAccess>();
+            BitacoraMovimiento = new HashSet<BinnacleMovement>();
+            UsuarioRol = new HashSet<AppUserRole>();
         }
 
         public string Nombre { get; set; }
@@ -35,9 +35,9 @@ namespace Market_Express.Domain.Entities
         }
         #endregion
 
-        public Cliente Cliente { get; set; }
-        public ICollection<BitacoraAcceso> BitacoraAcceso { get; set; }
-        public ICollection<BitacoraMovimiento> BitacoraMovimiento { get; set; }
-        public ICollection<UsuarioRol> UsuarioRol { get; set; }
+        public Client Cliente { get; set; }
+        public ICollection<BinnacleAccess> BitacoraAcceso { get; set; }
+        public ICollection<BinnacleMovement> BitacoraMovimiento { get; set; }
+        public ICollection<AppUserRole> UsuarioRol { get; set; }
     }
 }

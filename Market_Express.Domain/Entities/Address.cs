@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class Direccion : BaseEntity
+    public class Address : BaseEntity
     {
         public Guid IdCliente { get; set; }
         public string Nombre { get; set; }

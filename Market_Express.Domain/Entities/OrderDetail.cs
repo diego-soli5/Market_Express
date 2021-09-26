@@ -4,7 +4,7 @@
 
 namespace Market_Express.Domain.Entities
 {
-    public class PedidoDetalle : BaseEntity
+    public class OrderDetail : BaseEntity
     {
         public Guid IdPedido { get; set; }
         public Guid IdArticulo { get; set; }
@@ -12,7 +12,7 @@ namespace Market_Express.Domain.Entities
         public string CodigoBarras { get; set; }
         public decimal Precio { get; set; }
 
-        public InventarioArticulo IdArticuloNavigation { get; set; }
-        public Pedido IdPedidoNavigation { get; set; }
+        public Article IdArticuloNavigation { get; set; }
+        public Order IdPedidoNavigation { get; set; }
     }
 }

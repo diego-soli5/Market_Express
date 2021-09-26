@@ -4,16 +4,16 @@
 
 namespace Market_Express.Domain.Entities
 {
-    public class Permiso : BaseEntity
+    public class Permission : BaseEntity
     {
-        public Permiso()
+        public Permission()
         {
-            RolPermisos = new HashSet<RolPermiso>();
+            RolPermisos = new HashSet<RolePermission>();
         }
 
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        public ICollection<RolPermiso> RolPermisos { get; set; }
+        public ICollection<RolePermission> RolPermisos { get; set; }
     }
 }

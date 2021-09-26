@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Market_Express.Infrastructure.Data.Repositories
 {
-    public class InventarioArticuloRepository : GenericRepository<InventarioArticulo>, IInventarioArticuloRepository
+    public class InventarioArticuloRepository : GenericRepository<Article>, IInventarioArticuloRepository
     {
         public InventarioArticuloRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context,configuration)

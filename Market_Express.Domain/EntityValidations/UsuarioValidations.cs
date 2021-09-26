@@ -7,14 +7,14 @@ namespace Market_Express.Domain.EntityValidations
     public class UsuarioValidations : IUsuarioValidations
     {
         private readonly IUnitOfWork _unitOfWork;
-        private Usuario _usuario;
+        private AppUser _usuario;
 
         public UsuarioValidations(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public Usuario Usuario
+        public AppUser Usuario
         {
             private get { return _usuario; }
             set { _usuario = value; }

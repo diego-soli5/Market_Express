@@ -5,18 +5,18 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class Carrito : BaseEntity
+    public class Cart : BaseEntity
     {
-        public Carrito()
+        public Cart()
         {
-            CarritoDetalle = new HashSet<CarritoDetalle>();
+            CarritoDetalle = new HashSet<CartDetail>();
         }
 
         public Guid IdCliente { get; set; }
         public DateTime FecApertura { get; set; }
         public string Estado { get; set; }
 
-        public Cliente Cliente { get; set; }
-        public ICollection<CarritoDetalle> CarritoDetalle { get; set; }
+        public Client Cliente { get; set; }
+        public ICollection<CartDetail> CarritoDetalle { get; set; }
     }
 }

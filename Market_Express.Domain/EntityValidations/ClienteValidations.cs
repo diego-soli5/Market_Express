@@ -6,7 +6,7 @@ namespace Market_Express.Domain.EntityValidations
 {
     public class ClienteValidations : IClienteValidations
     {
-        private Cliente _cliente;
+        private Client _cliente;
         private readonly IUnitOfWork _unitOfWork;
 
         public ClienteValidations(IUnitOfWork unitOfWork)
@@ -14,7 +14,7 @@ namespace Market_Express.Domain.EntityValidations
             _unitOfWork = unitOfWork;
         }
 
-        public Cliente Cliente
+        public Client Cliente
         {
             private get { return _cliente; }
             set { _cliente = value; }

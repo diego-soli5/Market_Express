@@ -5,18 +5,18 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class Cliente : BaseEntity
+    public class Client : BaseEntity
     {
-        public Cliente()
+        public Client()
         {
-            Carrito = new HashSet<Carrito>();
+            Carrito = new HashSet<Cart>();
         }
 
         public Guid IdUsuario { get; set; }
         public string CodCliente { get; set; }
         public bool AutoSinc { get; set; }
 
-        public Usuario Usuario { get; set; }
-        public ICollection<Carrito> Carrito { get; set; }
+        public AppUser Usuario { get; set; }
+        public ICollection<Cart> Carrito { get; set; }
     }
 }

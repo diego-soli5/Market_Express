@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Market_Express.Infrastructure.Data.Repositories
 {
-    public class ClienteRepository : GenericRepository<Cliente>, IClienteRepository
+    public class ClienteRepository : GenericRepository<Client>, IClienteRepository
     {
         public ClienteRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)

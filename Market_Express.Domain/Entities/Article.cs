@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class InventarioArticulo : BaseEntity
+    public class Article : BaseEntity
     {
-        public InventarioArticulo()
+        public Article()
         {
-            CarritoDetalle = new HashSet<CarritoDetalle>();
-            PedidoDetalle = new HashSet<PedidoDetalle>();
+            CarritoDetalle = new HashSet<CartDetail>();
+            PedidoDetalle = new HashSet<OrderDetail>();
         }
 
         public Guid? IdCategoria { get; set; }
@@ -24,7 +24,7 @@ namespace Market_Express.Domain.Entities
         public string AdicionadoPor { get; set; }
         public string ModificadoPor { get; set; }
 
-        public ICollection<CarritoDetalle> CarritoDetalle { get; set; }
-        public ICollection<PedidoDetalle> PedidoDetalle { get; set; }
+        public ICollection<CartDetail> CarritoDetalle { get; set; }
+        public ICollection<OrderDetail> PedidoDetalle { get; set; }
     }
 }

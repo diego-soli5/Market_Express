@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class PedidoDetalleConfigurations : IEntityTypeConfiguration<PedidoDetalle>
+    public class PedidoDetalleConfigurations : IEntityTypeConfiguration<OrderDetail>
     {
-        public void Configure(EntityTypeBuilder<PedidoDetalle> builder)
+        public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
             builder.ToTable("Pedido_Detalle");
 

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class InventarioCategoriaConfigurations : IEntityTypeConfiguration<InventarioCategoria>
+    public class InventarioCategoriaConfigurations : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<InventarioCategoria> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.ToTable("Inventario_Categoria");
 

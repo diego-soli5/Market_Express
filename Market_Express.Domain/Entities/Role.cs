@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class Rol : BaseEntity
+    public class Role : BaseEntity
     {
-        public Rol()
+        public Role()
         {
-            RolPermisos = new HashSet<RolPermiso>();
+            RolPermisos = new HashSet<RolePermission>();
         }
 
         public string Nombre { get; set; }
@@ -18,6 +18,6 @@ namespace Market_Express.Domain.Entities
         public string AdicionadoPor { get; set; }
         public string ModificadoPor { get; set; }
 
-        public ICollection<RolPermiso> RolPermisos { get; set; }
+        public ICollection<RolePermission> RolPermisos { get; set; }
     }
 }

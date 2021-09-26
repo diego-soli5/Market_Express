@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class UsuarioConfigurations : IEntityTypeConfiguration<Usuario>
+    public class UsuarioConfigurations : IEntityTypeConfiguration<AppUser>
     {
-        public void Configure(EntityTypeBuilder<Usuario> builder)
+        public void Configure(EntityTypeBuilder<AppUser> builder)
         {
             builder.ToTable("Usuario");
 

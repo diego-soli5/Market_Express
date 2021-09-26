@@ -16,13 +16,13 @@ namespace Market_Express.Infrastructure.Mappings
 
         private void CreateArticuloMappings()
         {
-            CreateMap<InventarioArticulo, ArticuloSyncDTO>()
+            CreateMap<Article, ArticuloSyncDTO>()
                 .ReverseMap();
         }
 
         private void CreateClientMappings()
         {
-            CreateMap<Cliente, ClienteSyncDTO>()
+            CreateMap<Client, ClienteSyncDTO>()
                 .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Usuario.Nombre))
                 .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.Usuario.Cedula))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Usuario.Email))
@@ -34,7 +34,7 @@ namespace Market_Express.Infrastructure.Mappings
 
         private void CreateUsuarioMappings()
         {
-            CreateMap<Usuario, LoginRequestDTO>()
+            CreateMap<AppUser, LoginRequestDTO>()
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Clave))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ReverseMap();

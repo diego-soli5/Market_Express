@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class PermisoConfigurations : IEntityTypeConfiguration<Permiso>
+    public class PermisoConfigurations : IEntityTypeConfiguration<Permission>
     {
-        public void Configure(EntityTypeBuilder<Permiso> builder)
+        public void Configure(EntityTypeBuilder<Permission> builder)
         {
             builder.ToTable("Permiso");
 

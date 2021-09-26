@@ -31,11 +31,11 @@ namespace Market_Express.Web.Controllers
             if (IsSyncAuthorized())
                 return Unauthorized();
 
-            var lstArticlesToSync = new List<InventarioArticulo>();
+            var lstArticlesToSync = new List<Article>();
 
             lstArticlesToSyncDTO?.ForEach(art =>
             {
-                lstArticlesToSync.Add(_mapper.Map<InventarioArticulo>(art));
+                lstArticlesToSync.Add(_mapper.Map<Article>(art));
             });
 
             var oResponse = await _systemService.SyncArticles(lstArticlesToSync);
@@ -49,11 +49,11 @@ namespace Market_Express.Web.Controllers
             if (IsSyncAuthorized())
                 return Unauthorized();
 
-            var lstClientsToSync = new List<Cliente>();
+            var lstClientsToSync = new List<Client>();
 
             lstClientsToSyncDTO?.ForEach(cli =>
             {
-                lstClientsToSync.Add(_mapper.Map<Cliente>(cli));
+                lstClientsToSync.Add(_mapper.Map<Client>(cli));
             });
 
             var oResponse = await _systemService.SyncClients(lstClientsToSync);

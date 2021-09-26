@@ -4,7 +4,7 @@ using System;
 
 namespace Market_Express.Domain.Entities
 {
-    public class InventarioCategoria : BaseEntity
+    public class Category : BaseEntity
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }

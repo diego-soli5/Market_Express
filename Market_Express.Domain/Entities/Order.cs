@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.Entities
 {
-    public class Pedido : BaseEntity
+    public class Order : BaseEntity
     {
-        public Pedido()
+        public Order()
         {
-            PedidoDetalles = new HashSet<PedidoDetalle>();
+            PedidoDetalles = new HashSet<OrderDetail>();
         }
 
         public Guid IdCliente { get; set; }
@@ -17,6 +17,6 @@ namespace Market_Express.Domain.Entities
         public decimal Total { get; set; }
         public string Estado { get; set; }
 
-        public ICollection<PedidoDetalle> PedidoDetalles { get; set; }
+        public ICollection<OrderDetail> PedidoDetalles { get; set; }
     }
 }
