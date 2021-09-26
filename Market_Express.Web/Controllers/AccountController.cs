@@ -4,7 +4,9 @@ using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,7 +26,7 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignIn(string sReturnUrl)
+        public IActionResult Login(string sReturnUrl)
         {
             if (sReturnUrl != null)
                 ViewData["returnUrl"] = sReturnUrl;
@@ -33,7 +35,7 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(LoginRequestDTO oModel, string sReturnUrl)
+        public async Task<IActionResult> Login(LoginRequestDTO oModel, string sReturnUrl)
         {
             var oUser = _mapper.Map<Usuario>(oModel);
 
@@ -60,7 +62,11 @@ namespace Market_Express.Web.Controllers
 
                 var oPrincipal = new ClaimsPrincipal(oIdentity);
 
-                await HttpContext.SignInAsync(oPrincipal);
+                await HttpContext.SignInAsync(oPrincipal, new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.Now.AddMonths(12),
+                });
 
                 if (!string.IsNullOrEmpty(sReturnUrl))
                 {
