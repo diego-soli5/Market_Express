@@ -8,17 +8,21 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<AppUserRole> builder)
         {
-            builder.ToTable("Usuario_Rol");
+            builder.ToTable("AppUser_Role");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
-
-            builder.Property(e => e.AppUserId).HasColumnName("Id_Usuario");
 
             builder.HasOne(d => d.AppUser)
                 .WithMany(p => p.AppUserRoles)
                 .HasForeignKey(d => d.AppUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Usuario_R__Id_Us__36B12243");
+                .HasConstraintName("FK__AppUser_R__AppUs__37A5467C");
+
+            builder.HasOne(d => d.Role)
+                .WithMany(p => p.AppUserRoles)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__AppUser_R__RoleI__36B12243");
         }
     }
 }

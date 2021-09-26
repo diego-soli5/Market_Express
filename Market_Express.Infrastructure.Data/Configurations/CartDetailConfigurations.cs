@@ -4,29 +4,27 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class CarritoDetalleConfigurations : IEntityTypeConfiguration<CartDetail>
+    public class CartDetailConfigurations : IEntityTypeConfiguration<CartDetail>
     {
         public void Configure(EntityTypeBuilder<CartDetail> builder)
         {
-            builder.ToTable("Carrito_Detalle");
+            builder.ToTable("Cart_Detail");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.ArticleId).HasColumnName("Id_Articulo");
-
-            builder.Property(e => e.CartId).HasColumnName("Id_Carrito");
+            builder.Property(e => e.Quantity).HasColumnType("decimal(19, 2)");
 
             builder.HasOne(d => d.Article)
                 .WithMany(p => p.CartDetails)
                 .HasForeignKey(d => d.ArticleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Carrito_D__Id_Ar__571DF1D5");
+                .HasConstraintName("FK__Cart_Deta__Artic__5AEE82B9");
 
             builder.HasOne(d => d.Cart)
                 .WithMany(p => p.CartDetails)
                 .HasForeignKey(d => d.CartId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Carrito_D__Id_Ca__5629CD9C");
+                .HasConstraintName("FK__Cart_Deta__CartI__59FA5E80");
         }
     }
 }

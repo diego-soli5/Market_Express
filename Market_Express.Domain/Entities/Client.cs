@@ -9,14 +9,18 @@ namespace Market_Express.Domain.Entities
     {
         public Client()
         {
-            Cart = new HashSet<Cart>();
+            Addresses = new HashSet<Address>();
+            Carts = new HashSet<Cart>();
+            TbOrders = new HashSet<Order>();
         }
 
-        public Guid UserId { get; set; }
+        public Guid AppUserId { get; set; }
         public string ClientCode { get; set; }
         public bool AutoSync { get; set; }
 
         public AppUser AppUser { get; set; }
-        public IEnumerable<Cart> Cart { get; set; }
+        public ICollection<Address> Addresses { get; set; }
+        public ICollection<Cart> Carts { get; set; }
+        public ICollection<Order> TbOrders { get; set; }
     }
 }

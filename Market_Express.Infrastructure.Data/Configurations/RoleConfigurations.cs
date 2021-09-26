@@ -8,27 +8,19 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.ToTable("Rol");
+            builder.ToTable("Role");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
+            builder.Property(e => e.CreationDate).HasColumnType("datetime");
+
             builder.Property(e => e.Description)
-                .HasMaxLength(50)
+                .HasMaxLength(200)
                 .IsUnicode(false);
 
             builder.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(15)
-                .IsUnicode(false);
-
-            builder.Property(e => e.CreationDate).HasColumnType("datetime");
-
-            builder.Property(e => e.AddedBy)
-                .HasMaxLength(12)
-                .IsUnicode(false);
-
-            builder.Property(e => e.ModifiedBy)
-                .HasMaxLength(12)
+                .HasMaxLength(30)
                 .IsUnicode(false);
         }
     }

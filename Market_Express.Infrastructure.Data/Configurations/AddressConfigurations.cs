@@ -8,7 +8,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
-            builder.ToTable("Direccion");
+            builder.ToTable("Address");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
@@ -17,12 +17,16 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            builder.Property(e => e.ClientId).HasColumnName("Id_Cliente");
-
             builder.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(10)
+                .HasMaxLength(30)
                 .IsUnicode(false);
+
+            builder.HasOne(d => d.Client)
+                .WithMany(p => p.Addresses)
+                .HasForeignKey(d => d.ClientId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Address__ClientI__403A8C7D");
         }
     }
 }

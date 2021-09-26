@@ -8,38 +8,35 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
-            builder.ToTable("Pedido_Detalle");
+            builder.ToTable("Order_Detail");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
             builder.Property(e => e.BarCode)
                 .IsRequired()
                 .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("Codigo_Barras");
+                .IsUnicode(false);
 
             builder.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            builder.Property(e => e.ArticleId).HasColumnName("Id_Articulo");
-
-            builder.Property(e => e.OrderId).HasColumnName("Id_Pedido");
-
             builder.Property(e => e.Price).HasColumnType("decimal(19, 2)");
+
+            builder.Property(e => e.Quantity).HasColumnType("decimal(19, 2)");
 
             builder.HasOne(d => d.Article)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ArticleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Pedido_De__Id_Ar__5FB337D6");
+                .HasConstraintName("FK__Order_Det__Artic__6477ECF3");
 
             builder.HasOne(d => d.Order)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Pedido_De__Id_Pe__5EBF139D");
+                .HasConstraintName("FK__Order_Det__Order__6383C8BA");
         }
     }
 }

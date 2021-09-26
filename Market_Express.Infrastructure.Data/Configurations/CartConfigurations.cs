@@ -8,26 +8,22 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {
-            builder.ToTable("Carrito");
+            builder.ToTable("Cart");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
+
+            builder.Property(e => e.OpeningDate).HasColumnType("datetime");
 
             builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(7)
                 .IsUnicode(false);
 
-            builder.Property(e => e.OpeningDate)
-                .HasColumnType("datetime")
-                .HasColumnName("Fecha_Apertura");
-
-            builder.Property(e => e.ClientId).HasColumnName("Id_Cliente");
-
             builder.HasOne(d => d.Client)
-                .WithMany(p => p.Cart)
+                .WithMany(p => p.Carts)
                 .HasForeignKey(d => d.ClientId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Carrito__Id_Clie__5165187F");
+                .HasConstraintName("FK__Cart__ClientId__5535A963");
         }
     }
 }

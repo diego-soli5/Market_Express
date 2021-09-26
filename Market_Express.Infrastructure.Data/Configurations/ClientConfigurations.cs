@@ -8,27 +8,22 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.ToTable("Cliente");
+            builder.ToTable("Client");
 
-            builder.HasIndex(e => e.UserId, "UQ__Cliente__63C76BE34667CEEB")
+            builder.HasIndex(e => e.AppUserId, "UQ__Client__FC65C731D41FFC29")
                 .IsUnique();
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.AutoSync).HasColumnName("Auto_Sinc");
-
             builder.Property(e => e.ClientCode)
                 .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("Cod_Cliente");
-
-            builder.Property(e => e.UserId).HasColumnName("Id_Usuario");
+                .IsUnicode(false);
 
             builder.HasOne(d => d.AppUser)
                 .WithOne(p => p.Client)
-                .HasForeignKey<Client>(d => d.UserId)
+                .HasForeignKey<Client>(d => d.AppUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Cliente__Id_Usua__3B75D760");
+                .HasConstraintName("FK__Client__AppUserI__3C69FB99");
         }
     }
 }

@@ -9,9 +9,9 @@ namespace Market_Express.Domain.Entities
     {
         public AppUser()
         {
-            BinnacleAccess = new HashSet<BinnacleAccess>();
-            BinnacleMovements = new HashSet<BinnacleMovement>();
             AppUserRoles = new HashSet<AppUserRole>();
+            BinnacleAccesses = new HashSet<BinnacleAccess>();
+            BinnacleMovements = new HashSet<BinnacleMovement>();
         }
 
         public string Name { get; set; }
@@ -25,19 +25,11 @@ namespace Market_Express.Domain.Entities
         public string AddedBy { get; set; }
         public string ModifiedBy { get; set; }
 
-        #region HELPER PROP
-        public string IdentificationWithoutHyphens
-        {
-            get
-            {
-                return Identification.Trim().Replace('-', Convert.ToChar(string.Empty));
-            }
-        }
-        #endregion
+        public string IdentificationWithoutHypens => Identification;
 
         public Client Client { get; set; }
-        public IEnumerable<BinnacleAccess> BinnacleAccess { get; set; }
-        public IEnumerable<BinnacleMovement> BinnacleMovements { get; set; }
-        public IEnumerable<AppUserRole> AppUserRoles { get; set; }
+        public ICollection<AppUserRole> AppUserRoles { get; set; }
+        public ICollection<BinnacleAccess> BinnacleAccesses { get; set; }
+        public ICollection<BinnacleMovement> BinnacleMovements { get; set; }
     }
 }

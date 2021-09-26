@@ -17,6 +17,6 @@ namespace Market_Express.Domain.Entities
         public string Status { get; set; }
 
         public Client Client { get; set; }
-        public IEnumerable<CartDetail> CartDetails { get; set; }
+        public ICollection<CartDetail> CartDetails { get; set; }
     }
 }

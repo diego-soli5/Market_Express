@@ -8,17 +8,17 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            builder.ToTable("Permiso");
+            builder.ToTable("Permission");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
             builder.Property(e => e.Description)
-                .HasMaxLength(50)
+                .HasMaxLength(200)
                 .IsUnicode(false);
 
             builder.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(15)
+                .HasMaxLength(30)
                 .IsUnicode(false);
         }
     }

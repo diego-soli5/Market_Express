@@ -17,6 +17,7 @@ namespace Market_Express.Domain.Entities
         public decimal Total { get; set; }
         public string Status { get; set; }
 
-        public IEnumerable<OrderDetail> OrderDetails { get; set; }
+        public Client Client { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -8,25 +8,19 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<BinnacleAccess> builder)
         {
-            builder.ToTable("Bitacora_Acceso");
+            builder.ToTable("Binnacle_Access");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.EntryDate)
-                .HasColumnType("datetime")
-                .HasColumnName("Fecha_Inicio");
+            builder.Property(e => e.EntryDate).HasColumnType("datetime");
 
-            builder.Property(e => e.ExitDate)
-                .HasColumnType("datetime")
-                .HasColumnName("Fecha_Salida");
-
-            builder.Property(e => e.UserId).HasColumnName("Id_Usuario");
+            builder.Property(e => e.ExitDate).HasColumnType("datetime");
 
             builder.HasOne(d => d.AppUser)
-                .WithMany(p => p.BinnacleAccess)
-                .HasForeignKey(d => d.UserId)
+                .WithMany(p => p.BinnacleAccesses)
+                .HasForeignKey(d => d.AppUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Bitacora___Id_Us__4222D4EF");
+                .HasConstraintName("FK__Binnacle___AppUs__440B1D61");
         }
     }
 }

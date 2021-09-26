@@ -19,12 +19,14 @@ namespace Market_Express.Domain.Entities
         public decimal Price { get; set; }
         public string Image { get; set; }
         public bool AutoSync { get; set; }
+        public bool AutoSyncDescription { get; set; }
         public string Status { get; set; }
         public DateTime CreationDate { get; set; }
         public string AddedBy { get; set; }
         public string ModifiedBy { get; set; }
 
-        public IEnumerable<CartDetail> CartDetails { get; set; }
-        public IEnumerable<OrderDetail> OrderDetails { get; set; }
+        public Category Category { get; set; }
+        public ICollection<CartDetail> CartDetails { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

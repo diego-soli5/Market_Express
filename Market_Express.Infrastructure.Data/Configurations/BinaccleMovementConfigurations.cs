@@ -8,7 +8,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<BinnacleMovement> builder)
         {
-            builder.ToTable("Bitacora_Movimiento");
+            builder.ToTable("Binnacle_Movement");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
@@ -19,8 +19,6 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.MovementDate).HasColumnType("datetime");
 
-            builder.Property(e => e.UserId).HasColumnName("Id_Usuario");
-
             builder.Property(e => e.Type)
                 .IsRequired()
                 .HasMaxLength(10)
@@ -28,9 +26,9 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.HasOne(d => d.AppUser)
                 .WithMany(p => p.BinnacleMovements)
-                .HasForeignKey(d => d.UserId)
+                .HasForeignKey(d => d.AppUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Bitacora___Id_Us__45F365D3");
+                .HasConstraintName("FK__Binnacle___AppUs__47DBAE45");
         }
     }
 }

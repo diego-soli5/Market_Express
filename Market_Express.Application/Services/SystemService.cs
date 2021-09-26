@@ -104,7 +104,7 @@ namespace Market_Express.Application.Services
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
                             oClientPOS.AppUser.Status = AppUserConstants.ACTIVADO;
                             oClientPOS.AppUser.AddedBy = SystemConstants.SYSTEM;
-                            oClientPOS.AppUser.Password = _passwordService.Hash(oClientPOS.AppUser.IdentificationWithoutHyphens);
+                            oClientPOS.AppUser.Password = _passwordService.Hash(oClientPOS.AppUser.IdentificationWithoutHypens);
 
                             lstClientsToAdd.Add(oClientPOS);
                         }

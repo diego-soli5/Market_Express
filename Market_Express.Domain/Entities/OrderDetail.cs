@@ -11,6 +11,7 @@ namespace Market_Express.Domain.Entities
         public string Description { get; set; }
         public string BarCode { get; set; }
         public decimal Price { get; set; }
+        public decimal Quantity { get; set; }
 
         public Article Article { get; set; }
         public Order Order { get; set; }

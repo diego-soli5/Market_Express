@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Market_Express.Infrastructure.Data
 {
-    public partial class MARKET_EXPRESSContext : DbContext
+    public class MARKET_EXPRESSContext : DbContext
     {
         public MARKET_EXPRESSContext()
         {
@@ -17,21 +17,21 @@ namespace Market_Express.Infrastructure.Data
         {
         }
 
-        public DbSet<BinnacleAccess> BitacoraAcceso { get; set; }
-        public DbSet<BinnacleMovement> BitacoraMovimiento { get; set; }
-        public DbSet<Cart> Carrito { get; set; }
-        public DbSet<CartDetail> CarritoDetalle { get; set; }
-        public DbSet<Client> Cliente { get; set; }
-        public DbSet<Address> Direccion { get; set; }
-        public DbSet<Article> InventarioArticulo { get; set; }
-        public DbSet<Category> InventarioCategoria { get; set; }
-        public DbSet<Order> Pedido { get; set; }
-        public DbSet<OrderDetail> PedidoDetalle { get; set; }
-        public DbSet<Permission> Permiso { get; set; }
-        public DbSet<Role> Rol { get; set; }
-        public DbSet<RolePermission> RolPermiso { get; set; }
-        public DbSet<AppUser> Usuario { get; set; }
-        public DbSet<AppUserRole> UsuarioRol { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<AppUser> AppUser { get; set; }
+        public DbSet<AppUserRole> AppUserRole { get; set; }
+        public DbSet<Article> Article { get; set; }
+        public DbSet<BinnacleAccess> BinnacleAccess { get; set; }
+        public DbSet<BinnacleMovement> BinnacleMovement { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<CartDetail> CartDetail { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Client> Client { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+        public DbSet<Permission> Permission { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<RolePermission> RolePermission { get; set; }
+        public DbSet<Order> Order { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
