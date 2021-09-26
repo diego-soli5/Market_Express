@@ -9,9 +9,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
         #region ATTRIBUTES
         private readonly IConfiguration _configuration;
         private readonly MARKET_EXPRESSContext _context;
-        private readonly IInventarioArticuloRepository _inventarioArticuloRepository;
-        private readonly IClienteRepository _clienteRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IArticleRepository _articleRepository;
+        private readonly IClientRepository _clientRepository;
+        private readonly IAppUserRepository _appUserRepository;
         #endregion
 
         #region CONSTRUCTOR
@@ -23,9 +23,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
         #endregion
 
         #region PROPERTIES
-        public IInventarioArticuloRepository Articulo => _inventarioArticuloRepository ?? new InventarioArticuloRepository(_context, _configuration);
-        public IClienteRepository Cliente => _clienteRepository ?? new ClienteRepository(_context, _configuration);
-        public IUsuarioRepository Usuario => _usuarioRepository ?? new UsuarioRepository(_context, _configuration);
+        public IArticleRepository Article => _articleRepository ?? new ArticleRepository(_context, _configuration);
+        public IClientRepository Client => _clientRepository ?? new ClientRepository(_context, _configuration);
+        public IAppUserRepository AppUser => _appUserRepository ?? new AppUserRepository(_context, _configuration);
         #endregion
 
         #region METHODS

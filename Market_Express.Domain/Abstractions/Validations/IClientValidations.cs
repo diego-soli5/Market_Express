@@ -2,7 +2,7 @@
 
 namespace Market_Express.Domain.Abstractions.Validations
 {
-    public interface IClienteValidations
+    public interface IClientValidations
     {
         bool ExistsCodCliente();
         Client Cliente { set; }

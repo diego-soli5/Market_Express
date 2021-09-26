@@ -2,7 +2,7 @@
 
 namespace Market_Express.Domain.Abstractions.Validations
 {
-    public interface IUsuarioValidations
+    public interface IAppUserValidations
     {
         bool ExistsCedula();
         bool ExistsEmail();

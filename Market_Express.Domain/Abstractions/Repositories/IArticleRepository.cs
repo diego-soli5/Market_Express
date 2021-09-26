@@ -2,7 +2,7 @@
 
 namespace Market_Express.Domain.Abstractions.Repositories
 {
-    public interface IInventarioArticuloRepository : IGenericRepository<Article>
+    public interface IArticleRepository : IGenericRepository<Article>
     {
     }
 }

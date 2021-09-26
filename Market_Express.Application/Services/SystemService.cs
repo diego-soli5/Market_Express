@@ -14,15 +14,15 @@ namespace Market_Express.Application.Services
     public class SystemService : ISystemService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUsuarioValidations _usuarioValidations;
-        private readonly IClienteValidations _clienteValidations;
-        private readonly IArticuloValidations _articuloValidations;
+        private readonly IAppUserValidations _usuarioValidations;
+        private readonly IClientValidations _clienteValidations;
+        private readonly IArticleValidations _articuloValidations;
         private readonly IPasswordService _passwordService;
 
         public SystemService(IUnitOfWork unitOfWork,
-                             IUsuarioValidations usuarioValidations,
-                             IClienteValidations clienteValidations,
-                             IArticuloValidations articuloValidations,
+                             IAppUserValidations usuarioValidations,
+                             IClientValidations clienteValidations,
+                             IArticleValidations articuloValidations,
                              IPasswordService passwordService)
         {
             _unitOfWork = unitOfWork;
@@ -45,7 +45,7 @@ namespace Market_Express.Application.Services
             int iAdded = 0;
             int iUpdated = 0;
 
-            var lstClientsFromDb = _unitOfWork.Cliente.GetAll(nameof(Client.AppUser));
+            var lstClientsFromDb = _unitOfWork.Client.GetAll(nameof(Client.AppUser));
 
             lstClientsToClient.ForEach(oClientPOS =>
             {
@@ -77,7 +77,7 @@ namespace Market_Express.Application.Services
 
                                 oClientDb.AppUser.ModifiedBy = SystemConstants.SYSTEM;
 
-                                _unitOfWork.Usuario.Update(oClientDb.AppUser);
+                                _unitOfWork.AppUser.Update(oClientDb.AppUser);
 
                                 iUpdated++;
                             }
@@ -102,7 +102,7 @@ namespace Market_Express.Application.Services
                         {
                             oClientPOS.AppUser.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-                            oClientPOS.AppUser.Status = UsuarioConstants.ACTIVADO;
+                            oClientPOS.AppUser.Status = AppUserConstants.ACTIVADO;
                             oClientPOS.AppUser.AddedBy = SystemConstants.SYSTEM;
                             oClientPOS.AppUser.Password = _passwordService.Hash(oClientPOS.AppUser.IdentificationWithoutHyphens);
 
@@ -115,7 +115,7 @@ namespace Market_Express.Application.Services
             iAdded = lstClientsToAdd.Count;
 
             if (iAdded > 0)
-                _unitOfWork.Cliente.Create(lstClientsToAdd);
+                _unitOfWork.Client.Create(lstClientsToAdd);
 
             if (iAdded > 0 || iUpdated > 0)
                 await _unitOfWork.Save();
@@ -139,7 +139,7 @@ namespace Market_Express.Application.Services
             int iUpdated = 0;
 
 
-            var lstArticlesFromDb = _unitOfWork.Articulo.GetAll();
+            var lstArticlesFromDb = _unitOfWork.Article.GetAll();
 
             lstArticlesToSync.ForEach(oArticlePOS =>
             {
@@ -164,7 +164,7 @@ namespace Market_Express.Application.Services
                                 oArticleDb.Price = oArticlePOS.Price;
                                 oArticleDb.ModifiedBy = SystemConstants.SYSTEM;
 
-                                _unitOfWork.Articulo.Update(oArticleDb);
+                                _unitOfWork.Article.Update(oArticleDb);
 
                                 iUpdated++;
                             }
@@ -186,7 +186,7 @@ namespace Market_Express.Application.Services
                         {
                             oArticlePOS.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-                            oArticlePOS.Status = ArticuloConstants.ACTIVADO;
+                            oArticlePOS.Status = ArticleConstants.ACTIVADO;
                             oArticlePOS.AddedBy = SystemConstants.SYSTEM;
 
                             lstArticlesToAdd.Add(oArticlePOS);
@@ -198,7 +198,7 @@ namespace Market_Express.Application.Services
             iAdded = lstArticlesToAdd.Count;
 
             if (iAdded > 0)
-                _unitOfWork.Articulo.Create(lstArticlesToAdd);
+                _unitOfWork.Article.Create(lstArticlesToAdd);
 
             if (iAdded > 0 || iUpdated > 0)
                 await _unitOfWork.Save();

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Abstractions.Repositories
 {
-    public interface IUsuarioRepository : IGenericRepository<AppUser>
+    public interface IAppUserRepository : IGenericRepository<AppUser>
     {
         Task<List<Permission>> GetPermisosAsync(Guid id);
     }

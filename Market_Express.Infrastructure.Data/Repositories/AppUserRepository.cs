@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
 {
-    public class UsuarioRepository : GenericRepository<AppUser>, IUsuarioRepository
+    public class AppUserRepository : GenericRepository<AppUser>, IAppUserRepository
     {
         private const string _Sp_Usuario_GetPermisos = "Sp_Usuario_GetPermisos";
 
-        public UsuarioRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
+        public AppUserRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
         { }
 

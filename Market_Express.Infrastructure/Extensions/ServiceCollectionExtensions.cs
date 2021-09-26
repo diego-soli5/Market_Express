@@ -46,11 +46,11 @@ namespace Market_Express.Infrastructure.Extensions
 
         public static void AddValidations(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IUsuarioValidations), typeof(UsuarioValidations));
+            services.AddTransient(typeof(IAppUserValidations), typeof(AppUserValidations));
 
-            services.AddTransient(typeof(IClienteValidations), typeof(ClienteValidations));
+            services.AddTransient(typeof(IClientValidations), typeof(ClientValidations));
 
-            services.AddTransient(typeof(IArticuloValidations), typeof(ArticuloValidations));
+            services.AddTransient(typeof(IArticleValidations), typeof(ArticleValidations));
         }
 
         public static void AddOptions(this IServiceCollection services, IConfiguration configuration)

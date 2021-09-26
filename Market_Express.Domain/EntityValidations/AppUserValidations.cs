@@ -4,12 +4,12 @@ using Market_Express.Domain.Entities;
 
 namespace Market_Express.Domain.EntityValidations
 {
-    public class UsuarioValidations : IUsuarioValidations
+    public class AppUserValidations : IAppUserValidations
     {
         private readonly IUnitOfWork _unitOfWork;
         private AppUser _usuario;
 
-        public UsuarioValidations(IUnitOfWork unitOfWork)
+        public AppUserValidations(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -22,19 +22,19 @@ namespace Market_Express.Domain.EntityValidations
 
         public bool ExistsCedula()
         {
-            return _unitOfWork.Usuario
+            return _unitOfWork.AppUser
                 .GetFirstOrDefault(x => x.Identification == Usuario.Identification) != null;
         }
 
         public bool OwnsExistingCedula()
         {
-            return _unitOfWork.Usuario
+            return _unitOfWork.AppUser
                 .GetFirstOrDefault(x => x.Identification == Usuario.Identification && x.Id == Usuario.Id) != null;
         }
 
         public bool ExistsEmail()
         {
-            return _unitOfWork.Usuario
+            return _unitOfWork.AppUser
                 .GetFirstOrDefault(x => x.Email == Usuario.Email) != null;
         }
     }

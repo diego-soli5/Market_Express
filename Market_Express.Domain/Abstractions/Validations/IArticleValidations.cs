@@ -2,7 +2,7 @@
 
 namespace Market_Express.Domain.Abstractions.Validations
 {
-    public interface IArticuloValidations
+    public interface IArticleValidations
     {
         bool ExistsCodigoBarras();
         Article Articulo { set; }

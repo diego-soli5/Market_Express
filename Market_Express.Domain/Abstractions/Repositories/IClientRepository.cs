@@ -2,7 +2,7 @@
 
 namespace Market_Express.Domain.Abstractions.Repositories
 {
-    public interface IClienteRepository : IGenericRepository<Client>
+    public interface IClientRepository : IGenericRepository<Client>
     {
     }
 }

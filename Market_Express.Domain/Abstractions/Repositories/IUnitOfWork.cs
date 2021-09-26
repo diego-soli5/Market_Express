@@ -5,9 +5,9 @@ namespace Market_Express.Domain.Abstractions.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        public IInventarioArticuloRepository Articulo { get; }
-        public IClienteRepository Cliente { get; }
-        public IUsuarioRepository Usuario { get; }
+        public IArticleRepository Article { get; }
+        public IClientRepository Client { get; }
+        public IAppUserRepository AppUser { get; }
 
         Task BeginTransactionAsync();
         Task RollBackAsync();

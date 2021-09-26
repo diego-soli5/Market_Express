@@ -4,12 +4,12 @@ using Market_Express.Domain.Entities;
 
 namespace Market_Express.Domain.EntityValidations
 {
-    public class ArticuloValidations : IArticuloValidations
+    public class ArticleValidations : IArticleValidations
     {
         private Article _articulo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ArticuloValidations(IUnitOfWork unitOfWork)
+        public ArticleValidations(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -22,7 +22,7 @@ namespace Market_Express.Domain.EntityValidations
 
         public bool ExistsCodigoBarras()
         {
-            return _unitOfWork.Articulo.GetFirstOrDefault(x => x.BarCode == Articulo.BarCode) != null;
+            return _unitOfWork.Article.GetFirstOrDefault(x => x.BarCode == Articulo.BarCode) != null;
         }
     }
 }

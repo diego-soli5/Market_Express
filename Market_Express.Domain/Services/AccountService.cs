@@ -35,7 +35,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            var oUsuarioDB = _unitOfWork.Usuario
+            var oUsuarioDB = _unitOfWork.AppUser
                 .GetFirstOrDefault(x => x.Email.Trim() == sRequestEmail);
 
             if (oUsuarioDB == null)
@@ -52,7 +52,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if (oUsuarioDB.Status == UsuarioConstants.DESACTIVADO)
+            if (oUsuarioDB.Status == AppUserConstants.DESACTIVADO)
             {
                 oResult.Message = "La cuenta está desactivada.";
 
@@ -68,7 +68,7 @@ namespace Market_Express.Domain.Services
 
         public async Task<List<Permission>> GetPermisos(Guid id)
         {
-            return await _unitOfWork.Usuario.GetPermisosAsync(id);
+            return await _unitOfWork.AppUser.GetPermisosAsync(id);
         }
     }
 }

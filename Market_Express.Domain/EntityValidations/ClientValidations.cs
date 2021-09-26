@@ -4,12 +4,12 @@ using Market_Express.Domain.Entities;
 
 namespace Market_Express.Domain.EntityValidations
 {
-    public class ClienteValidations : IClienteValidations
+    public class ClientValidations : IClientValidations
     {
         private Client _cliente;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ClienteValidations(IUnitOfWork unitOfWork)
+        public ClientValidations(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -22,7 +22,7 @@ namespace Market_Express.Domain.EntityValidations
 
         public bool ExistsCodCliente()
         {
-            return _unitOfWork.Cliente.GetFirstOrDefault(x => x.ClientCode == Cliente.ClientCode) != null;
+            return _unitOfWork.Client.GetFirstOrDefault(x => x.ClientCode == Cliente.ClientCode) != null;
         }
     }
 }
