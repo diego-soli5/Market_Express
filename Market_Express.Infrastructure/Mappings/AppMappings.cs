@@ -9,12 +9,12 @@ namespace Market_Express.Infrastructure.Mappings
     {
         public AppMappings()
         {
-            CreateArticuloMappings();
+            CreateArticleMappings();
             CreateClientMappings();
-            CreateUsuarioMappings();
+            CreateAppUserMappings();
         }
 
-        private void CreateArticuloMappings()
+        private void CreateArticleMappings()
         {
             CreateMap<Article, ArticuloSyncDTO>()
                 .ReverseMap();
@@ -32,7 +32,7 @@ namespace Market_Express.Infrastructure.Mappings
                 .ReverseMap();
         }
 
-        private void CreateUsuarioMappings()
+        private void CreateAppUserMappings()
         {
             CreateMap<AppUser, LoginRequestDTO>()
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))

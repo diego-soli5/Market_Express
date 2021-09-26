@@ -442,7 +442,7 @@ GO
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 
-CREATE PROCEDURE Sp_Usuario_GetPermissions
+CREATE PROCEDURE Sp_AppUser_GetPermissions
 (
 	@Id UNIQUEIDENTIFIER
 )
