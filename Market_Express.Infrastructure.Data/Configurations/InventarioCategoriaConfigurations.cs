@@ -12,27 +12,27 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.Descripcion)
+            builder.Property(e => e.Description)
                 .HasMaxLength(200)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Estado)
+            builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(11)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Nombre)
+            builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
-            builder.Property(e => e.FecCreacion).HasColumnType("datetime");
+            builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
-            builder.Property(e => e.AdicionadoPor)
+            builder.Property(e => e.AddedBy)
                 .HasMaxLength(12)
                 .IsUnicode(false);
 
-            builder.Property(e => e.ModificadoPor)
+            builder.Property(e => e.ModifiedBy)
                 .HasMaxLength(12)
                 .IsUnicode(false);
         }

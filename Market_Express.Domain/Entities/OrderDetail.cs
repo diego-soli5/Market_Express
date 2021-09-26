@@ -6,13 +6,13 @@ namespace Market_Express.Domain.Entities
 {
     public class OrderDetail : BaseEntity
     {
-        public Guid IdPedido { get; set; }
-        public Guid IdArticulo { get; set; }
-        public string Descripcion { get; set; }
-        public string CodigoBarras { get; set; }
-        public decimal Precio { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid ArticleId { get; set; }
+        public string Description { get; set; }
+        public string BarCode { get; set; }
+        public decimal Price { get; set; }
 
-        public Article IdArticuloNavigation { get; set; }
-        public Order IdPedidoNavigation { get; set; }
+        public Article Article { get; set; }
+        public Order Order { get; set; }
     }
 }

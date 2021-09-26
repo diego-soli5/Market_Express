@@ -23,11 +23,11 @@ namespace Market_Express.Infrastructure.Mappings
         private void CreateClientMappings()
         {
             CreateMap<Client, ClienteSyncDTO>()
-                .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Usuario.Nombre))
-                .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.Usuario.Cedula))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Usuario.Email))
-                .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.Usuario.Telefono))
-                .ForMember(dest => dest.CodCliente, opt => opt.MapFrom(src => src.CodCliente))
+                .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.AppUser.Name))
+                .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.AppUser.Identification))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.AppUser.Email))
+                .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.AppUser.Phone))
+                .ForMember(dest => dest.CodCliente, opt => opt.MapFrom(src => src.ClientCode))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap();
         }
@@ -35,7 +35,7 @@ namespace Market_Express.Infrastructure.Mappings
         private void CreateUsuarioMappings()
         {
             CreateMap<AppUser, LoginRequestDTO>()
-                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Clave))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ReverseMap();
         }

@@ -11,39 +11,39 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.AutoSinc).HasColumnName("Auto_Sinc");
+            builder.Property(e => e.AutoSync).HasColumnName("Auto_Sinc");
 
-            builder.Property(e => e.CodigoBarras)
+            builder.Property(e => e.BarCode)
                 .IsRequired()
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("Codigo_Barras");
 
-            builder.Property(e => e.Descripcion)
+            builder.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Estado)
+            builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(11)
                 .IsUnicode(false);
 
-            builder.Property(e => e.IdCategoria).HasColumnName("Id_Categoria");
+            builder.Property(e => e.CategoryId).HasColumnName("Id_Categoria");
 
-            builder.Property(e => e.Imagen)
+            builder.Property(e => e.Image)
                 .HasMaxLength(30)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Precio).HasColumnType("decimal(19, 2)");
+            builder.Property(e => e.Price).HasColumnType("decimal(19, 2)");
 
-            builder.Property(e => e.FecCreacion).HasColumnType("datetime");
+            builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
-            builder.Property(e => e.AdicionadoPor)
+            builder.Property(e => e.AddedBy)
                 .HasMaxLength(12)
                 .IsUnicode(false);
 
-            builder.Property(e => e.ModificadoPor)
+            builder.Property(e => e.ModifiedBy)
                 .HasMaxLength(12)
                 .IsUnicode(false);
         }

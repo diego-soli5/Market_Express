@@ -12,14 +12,14 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.Detalle)
+            builder.Property(e => e.Detail)
                 .IsRequired()
                 .HasMaxLength(255)
                 .IsUnicode(false);
 
-            builder.Property(e => e.IdCliente).HasColumnName("Id_Cliente");
+            builder.Property(e => e.ClientId).HasColumnName("Id_Cliente");
 
-            builder.Property(e => e.Nombre)
+            builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsUnicode(false);

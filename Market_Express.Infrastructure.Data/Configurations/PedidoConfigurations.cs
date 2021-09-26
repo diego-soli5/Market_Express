@@ -12,16 +12,16 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.Estado)
+            builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(9)
                 .IsUnicode(false);
 
-            builder.Property(e => e.FecCreacion)
+            builder.Property(e => e.CreationDate)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_Creacion");
 
-            builder.Property(e => e.IdCliente).HasColumnName("Id_Cliente");
+            builder.Property(e => e.ClientId).HasColumnName("Id_Cliente");
 
             builder.Property(e => e.Total).HasColumnType("decimal(19, 2)");
         }

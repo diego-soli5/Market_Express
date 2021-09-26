@@ -10,23 +10,23 @@ namespace Market_Express.Infrastructure.Data.Configurations
         {
             builder.ToTable("Cliente");
 
-            builder.HasIndex(e => e.IdUsuario, "UQ__Cliente__63C76BE34667CEEB")
+            builder.HasIndex(e => e.UserId, "UQ__Cliente__63C76BE34667CEEB")
                 .IsUnique();
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.AutoSinc).HasColumnName("Auto_Sinc");
+            builder.Property(e => e.AutoSync).HasColumnName("Auto_Sinc");
 
-            builder.Property(e => e.CodCliente)
+            builder.Property(e => e.ClientCode)
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("Cod_Cliente");
 
-            builder.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
+            builder.Property(e => e.UserId).HasColumnName("Id_Usuario");
 
-            builder.HasOne(d => d.Usuario)
-                .WithOne(p => p.Cliente)
-                .HasForeignKey<Client>(d => d.IdUsuario)
+            builder.HasOne(d => d.AppUser)
+                .WithOne(p => p.Client)
+                .HasForeignKey<Client>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Cliente__Id_Usua__3B75D760");
         }

@@ -45,7 +45,7 @@ namespace Market_Express.Application.Services
             int iAdded = 0;
             int iUpdated = 0;
 
-            var lstClientsFromDb = _unitOfWork.Cliente.GetAll(nameof(Client.Usuario));
+            var lstClientsFromDb = _unitOfWork.Cliente.GetAll(nameof(Client.AppUser));
 
             lstClientsToClient.ForEach(oClientPOS =>
             {
@@ -55,29 +55,29 @@ namespace Market_Express.Application.Services
                 {
                     if (oClientDb.Id == oClientPOS.Id)
                     {
-                        if (oClientDb.AutoSinc)
+                        if (oClientDb.AutoSync)
                         {
-                            if (oClientDb.Usuario.Nombre.Trim() != oClientPOS.Usuario.Nombre?.Trim() ||
-                                oClientDb.Usuario.Cedula.Trim() != oClientPOS.Usuario.Cedula?.Trim() ||
-                                oClientDb.Usuario.Email.Trim() != oClientPOS.Usuario.Email?.Trim() ||
-                                oClientDb.Usuario.Telefono.Trim() != oClientPOS.Usuario.Telefono?.Trim())
+                            if (oClientDb.AppUser.Name.Trim() != oClientPOS.AppUser.Name?.Trim() ||
+                                oClientDb.AppUser.Identification.Trim() != oClientPOS.AppUser.Identification?.Trim() ||
+                                oClientDb.AppUser.Email.Trim() != oClientPOS.AppUser.Email?.Trim() ||
+                                oClientDb.AppUser.Phone.Trim() != oClientPOS.AppUser.Phone?.Trim())
                             {
-                                _usuarioValidations.Usuario = oClientPOS.Usuario;
+                                _usuarioValidations.Usuario = oClientPOS.AppUser;
 
                                 if (!_usuarioValidations.ExistsEmail())
-                                    oClientDb.Usuario.Email ??= oClientPOS.Usuario.Email?.Trim();
+                                    oClientDb.AppUser.Email ??= oClientPOS.AppUser.Email?.Trim();
 
 
                                 if (!_usuarioValidations.ExistsCedula())
-                                    oClientDb.Usuario.Cedula ??= oClientPOS.Usuario.Cedula?.Trim();
+                                    oClientDb.AppUser.Identification ??= oClientPOS.AppUser.Identification?.Trim();
 
 
-                                oClientDb.Usuario.Nombre ??= oClientPOS.Usuario.Nombre?.Trim();
-                                oClientDb.Usuario.Telefono ??= oClientPOS.Usuario.Telefono?.Trim();
+                                oClientDb.AppUser.Name ??= oClientPOS.AppUser.Name?.Trim();
+                                oClientDb.AppUser.Phone ??= oClientPOS.AppUser.Phone?.Trim();
 
-                                oClientDb.Usuario.ModificadoPor = SystemConstants.SYSTEM;
+                                oClientDb.AppUser.ModifiedBy = SystemConstants.SYSTEM;
 
-                                _unitOfWork.Usuario.Update(oClientDb.Usuario);
+                                _unitOfWork.Usuario.Update(oClientDb.AppUser);
 
                                 iUpdated++;
                             }
@@ -94,17 +94,17 @@ namespace Market_Express.Application.Services
                     if (!lstClientsToAdd.Contains(oClientPOS))
                     {
                         _clienteValidations.Cliente = oClientPOS;
-                        _usuarioValidations.Usuario = oClientPOS.Usuario;
+                        _usuarioValidations.Usuario = oClientPOS.AppUser;
 
                         if (!_clienteValidations.ExistsCodCliente() &&
                             !_usuarioValidations.ExistsCedula() &&
                             !_usuarioValidations.ExistsEmail())
                         {
-                            oClientPOS.Usuario.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
+                            oClientPOS.AppUser.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-                            oClientPOS.Usuario.Estado = UsuarioConstants.ACTIVADO;
-                            oClientPOS.Usuario.AdicionadoPor = SystemConstants.SYSTEM;
-                            oClientPOS.Usuario.Clave = _passwordService.Hash(oClientPOS.Usuario.GetCedulaSinGuiones);
+                            oClientPOS.AppUser.Status = UsuarioConstants.ACTIVADO;
+                            oClientPOS.AppUser.AddedBy = SystemConstants.SYSTEM;
+                            oClientPOS.AppUser.Password = _passwordService.Hash(oClientPOS.AppUser.IdentificationWithoutHyphens);
 
                             lstClientsToAdd.Add(oClientPOS);
                         }
@@ -149,20 +149,20 @@ namespace Market_Express.Application.Services
                 {
                     if (oArticleDb.Id == oArticlePOS.Id)
                     {
-                        if (oArticleDb.AutoSinc)
+                        if (oArticleDb.AutoSync)
                         {
-                            if (oArticleDb.Descripcion.Trim() != oArticlePOS.Descripcion?.Trim() ||
-                                oArticleDb.CodigoBarras.Trim() != oArticlePOS.CodigoBarras?.Trim() ||
-                                oArticleDb.Precio != oArticlePOS.Precio)
+                            if (oArticleDb.Description.Trim() != oArticlePOS.Description?.Trim() ||
+                                oArticleDb.BarCode.Trim() != oArticlePOS.BarCode?.Trim() ||
+                                oArticleDb.Price != oArticlePOS.Price)
                             {
                                 _articuloValidations.Articulo = oArticlePOS;
 
                                 if (!_articuloValidations.ExistsCodigoBarras())
-                                    oArticleDb.CodigoBarras ??= oArticlePOS.CodigoBarras.Trim();
+                                    oArticleDb.BarCode ??= oArticlePOS.BarCode.Trim();
 
-                                oArticleDb.Descripcion ??= oArticlePOS.Descripcion.Trim();
-                                oArticleDb.Precio = oArticlePOS.Precio;
-                                oArticleDb.ModificadoPor = SystemConstants.SYSTEM;
+                                oArticleDb.Description ??= oArticlePOS.Description.Trim();
+                                oArticleDb.Price = oArticlePOS.Price;
+                                oArticleDb.ModifiedBy = SystemConstants.SYSTEM;
 
                                 _unitOfWork.Articulo.Update(oArticleDb);
 
@@ -184,10 +184,10 @@ namespace Market_Express.Application.Services
 
                         if (!_articuloValidations.ExistsCodigoBarras())
                         {
-                            oArticlePOS.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
+                            oArticlePOS.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-                            oArticlePOS.Estado = ArticuloConstants.ACTIVADO;
-                            oArticlePOS.AdicionadoPor = SystemConstants.SYSTEM;
+                            oArticlePOS.Status = ArticuloConstants.ACTIVADO;
+                            oArticlePOS.AddedBy = SystemConstants.SYSTEM;
 
                             lstArticlesToAdd.Add(oArticlePOS);
                         }

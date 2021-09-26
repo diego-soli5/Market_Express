@@ -8,12 +8,12 @@ namespace Market_Express.Domain.Entities
     {
         public Permission()
         {
-            RolPermisos = new HashSet<RolePermission>();
+            RolePermissions = new HashSet<RolePermission>();
         }
 
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
-        public ICollection<RolePermission> RolPermisos { get; set; }
+        public IEnumerable<RolePermission> RolePermissions { get; set; }
     }
 }

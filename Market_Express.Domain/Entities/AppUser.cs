@@ -9,35 +9,35 @@ namespace Market_Express.Domain.Entities
     {
         public AppUser()
         {
-            BitacoraAcceso = new HashSet<BinnacleAccess>();
-            BitacoraMovimiento = new HashSet<BinnacleMovement>();
-            UsuarioRol = new HashSet<AppUserRole>();
+            BinnacleAccess = new HashSet<BinnacleAccess>();
+            BinnacleMovements = new HashSet<BinnacleMovement>();
+            AppUserRoles = new HashSet<AppUserRole>();
         }
 
-        public string Nombre { get; set; }
-        public string Cedula { get; set; }
+        public string Name { get; set; }
+        public string Identification { get; set; }
         public string Email { get; set; }
-        public string Telefono { get; set; }
-        public string Clave { get; set; }
-        public string Tipo { get; set; }
-        public string Estado { get; set; }
-        public DateTime FecCreacion { get; set; }
-        public string AdicionadoPor { get; set; }
-        public string ModificadoPor { get; set; }
+        public string Phone { get; set; }
+        public string Password { get; set; }
+        public string Type { get; set; }
+        public string Status { get; set; }
+        public DateTime CreationDate { get; set; }
+        public string AddedBy { get; set; }
+        public string ModifiedBy { get; set; }
 
         #region HELPER PROP
-        public string GetCedulaSinGuiones
+        public string IdentificationWithoutHyphens
         {
             get
             {
-                return Cedula.Trim().Replace('-', Convert.ToChar(string.Empty));
+                return Identification.Trim().Replace('-', Convert.ToChar(string.Empty));
             }
         }
         #endregion
 
-        public Client Cliente { get; set; }
-        public ICollection<BinnacleAccess> BitacoraAcceso { get; set; }
-        public ICollection<BinnacleMovement> BitacoraMovimiento { get; set; }
-        public ICollection<AppUserRole> UsuarioRol { get; set; }
+        public Client Client { get; set; }
+        public IEnumerable<BinnacleAccess> BinnacleAccess { get; set; }
+        public IEnumerable<BinnacleMovement> BinnacleMovements { get; set; }
+        public IEnumerable<AppUserRole> AppUserRoles { get; set; }
     }
 }

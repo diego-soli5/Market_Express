@@ -65,8 +65,8 @@ CREATE TABLE Usuario_Rol( --Para almacenar los roles asignados a cada usuario
 	IdUsuario UNIQUEIDENTIFIER NOT NULL,
 
 	PRIMARY KEY(Id),
-	FOREIGN KEY(IdUsuario) REFERENCES Usuario(Id),
-	FOREIGN KEY(IdRol) REFERENCES Rol(Id)
+	FOREIGN KEY(IdRol) REFERENCES Rol(Id),
+	FOREIGN KEY(IdUsuario) REFERENCES Usuario(Id)
 );
 GO
 
@@ -87,7 +87,8 @@ CREATE TABLE Direccion(
 	Nombre VARCHAR(10) NOT NULL,
 	Detalle VARCHAR(255) NOT NULL,
 
-	PRIMARY KEY(Id)
+	PRIMARY KEY(Id),
+	FOREIGN KEY(IdCliente) REFERENCES Cliente(Id)
 );
 GO
 

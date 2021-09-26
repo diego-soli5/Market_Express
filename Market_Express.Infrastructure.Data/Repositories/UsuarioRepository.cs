@@ -33,8 +33,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 lstPermissions.Add(new Permission
                 {
                     Id = (Guid)oRow["Id"],
-                    Nombre = oRow["Nombre"].ToString(),
-                    Descripcion = oRow["Descripcion"].ToString()
+                    Name = oRow["Nombre"].ToString(),
+                    Description = oRow["Descripcion"].ToString()
                 });
             }
 

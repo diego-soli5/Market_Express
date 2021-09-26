@@ -12,23 +12,23 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.Detalle)
+            builder.Property(e => e.Detail)
                 .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false);
 
-            builder.Property(e => e.FecRealiza).HasColumnType("datetime");
+            builder.Property(e => e.MovementDate).HasColumnType("datetime");
 
-            builder.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
+            builder.Property(e => e.UserId).HasColumnName("Id_Usuario");
 
-            builder.Property(e => e.Tipo)
+            builder.Property(e => e.Type)
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsUnicode(false);
 
-            builder.HasOne(d => d.Usuario)
-                .WithMany(p => p.BitacoraMovimiento)
-                .HasForeignKey(d => d.IdUsuario)
+            builder.HasOne(d => d.AppUser)
+                .WithMany(p => p.BinnacleMovements)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Bitacora___Id_Us__45F365D3");
         }

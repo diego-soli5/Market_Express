@@ -22,7 +22,7 @@ namespace Market_Express.Domain.EntityValidations
 
         public bool ExistsCodigoBarras()
         {
-            return _unitOfWork.Articulo.GetFirstOrDefault(x => x.CodigoBarras == Articulo.CodigoBarras) != null;
+            return _unitOfWork.Articulo.GetFirstOrDefault(x => x.BarCode == Articulo.BarCode) != null;
         }
     }
 }

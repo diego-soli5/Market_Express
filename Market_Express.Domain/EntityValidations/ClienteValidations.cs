@@ -22,7 +22,7 @@ namespace Market_Express.Domain.EntityValidations
 
         public bool ExistsCodCliente()
         {
-            return _unitOfWork.Cliente.GetFirstOrDefault(x => x.CodCliente == Cliente.CodCliente) != null;
+            return _unitOfWork.Cliente.GetFirstOrDefault(x => x.ClientCode == Cliente.ClientCode) != null;
         }
     }
 }

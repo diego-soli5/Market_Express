@@ -23,13 +23,13 @@ namespace Market_Express.Domain.EntityValidations
         public bool ExistsCedula()
         {
             return _unitOfWork.Usuario
-                .GetFirstOrDefault(x => x.Cedula == Usuario.Cedula) != null;
+                .GetFirstOrDefault(x => x.Identification == Usuario.Identification) != null;
         }
 
         public bool OwnsExistingCedula()
         {
             return _unitOfWork.Usuario
-                .GetFirstOrDefault(x => x.Cedula == Usuario.Cedula && x.Id == Usuario.Id) != null;
+                .GetFirstOrDefault(x => x.Identification == Usuario.Identification && x.Id == Usuario.Id) != null;
         }
 
         public bool ExistsEmail()

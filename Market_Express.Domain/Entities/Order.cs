@@ -9,14 +9,14 @@ namespace Market_Express.Domain.Entities
     {
         public Order()
         {
-            PedidoDetalles = new HashSet<OrderDetail>();
+            OrderDetails = new HashSet<OrderDetail>();
         }
 
-        public Guid IdCliente { get; set; }
-        public DateTime FecCreacion { get; set; }
+        public Guid ClientId { get; set; }
+        public DateTime CreationDate { get; set; }
         public decimal Total { get; set; }
-        public string Estado { get; set; }
+        public string Status { get; set; }
 
-        public ICollection<OrderDetail> PedidoDetalles { get; set; }
+        public IEnumerable<OrderDetail> OrderDetails { get; set; }
     }
 }

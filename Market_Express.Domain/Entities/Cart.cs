@@ -9,14 +9,14 @@ namespace Market_Express.Domain.Entities
     {
         public Cart()
         {
-            CarritoDetalle = new HashSet<CartDetail>();
+            CartDetails = new HashSet<CartDetail>();
         }
 
-        public Guid IdCliente { get; set; }
-        public DateTime FecApertura { get; set; }
-        public string Estado { get; set; }
+        public Guid ClientId { get; set; }
+        public DateTime OpeningDate { get; set; }
+        public string Status { get; set; }
 
-        public Client Cliente { get; set; }
-        public ICollection<CartDetail> CarritoDetalle { get; set; }
+        public Client Client { get; set; }
+        public IEnumerable<CartDetail> CartDetails { get; set; }
     }
 }

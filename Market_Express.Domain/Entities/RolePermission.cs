@@ -6,10 +6,10 @@ namespace Market_Express.Domain.Entities
 {
     public class RolePermission : BaseEntity
     {
-        public Guid IdRol { get; set; }
-        public Guid IdPermiso { get; set; }
+        public Guid RoleId { get; set; }
+        public Guid PermissionId { get; set; }
 
-        public Permission IdPermisoNavigation { get; set; }
-        public Role IdRolNavigation { get; set; }
+        public Permission Permission { get; set; }
+        public Role Role { get; set; }
     }
 }

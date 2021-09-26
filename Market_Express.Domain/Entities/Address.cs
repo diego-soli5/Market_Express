@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #nullable disable
 
@@ -7,8 +6,10 @@ namespace Market_Express.Domain.Entities
 {
     public class Address : BaseEntity
     {
-        public Guid IdCliente { get; set; }
-        public string Nombre { get; set; }
-        public string Detalle { get; set; }
+        public Guid ClientId { get; set; }
+        public string Name { get; set; }
+        public string Detail { get; set; }
+
+        public Client Client { get; set; }
     }
 }

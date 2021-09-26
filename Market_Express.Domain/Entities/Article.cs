@@ -9,22 +9,22 @@ namespace Market_Express.Domain.Entities
     {
         public Article()
         {
-            CarritoDetalle = new HashSet<CartDetail>();
-            PedidoDetalle = new HashSet<OrderDetail>();
+            CartDetails = new HashSet<CartDetail>();
+            OrderDetails = new HashSet<OrderDetail>();
         }
 
-        public Guid? IdCategoria { get; set; }
-        public string Descripcion { get; set; }
-        public string CodigoBarras { get; set; }
-        public decimal Precio { get; set; }
-        public string Imagen { get; set; }
-        public bool AutoSinc { get; set; }
-        public string Estado { get; set; }
-        public DateTime FecCreacion { get; set; }
-        public string AdicionadoPor { get; set; }
-        public string ModificadoPor { get; set; }
+        public Guid? CategoryId { get; set; }
+        public string Description { get; set; }
+        public string BarCode { get; set; }
+        public decimal Price { get; set; }
+        public string Image { get; set; }
+        public bool AutoSync { get; set; }
+        public string Status { get; set; }
+        public DateTime CreationDate { get; set; }
+        public string AddedBy { get; set; }
+        public string ModifiedBy { get; set; }
 
-        public ICollection<CartDetail> CarritoDetalle { get; set; }
-        public ICollection<OrderDetail> PedidoDetalle { get; set; }
+        public IEnumerable<CartDetail> CartDetails { get; set; }
+        public IEnumerable<OrderDetail> OrderDetails { get; set; }
     }
 }

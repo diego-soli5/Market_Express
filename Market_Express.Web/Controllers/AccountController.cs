@@ -48,14 +48,14 @@ namespace Market_Express.Web.Controllers
                 List<Claim> lstClaims = new();
 
                 lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
-                lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Nombre));
+                lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Name));
                 lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
-                lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Telefono));
-                lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Tipo));
+                lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));
+                lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type));
 
                 lstPermisos.ForEach(per =>
                 {
-                    lstClaims.Add(new Claim(ClaimTypes.Role, per.Nombre));
+                    lstClaims.Add(new Claim(ClaimTypes.Role, per.Name));
                 });
 
                 var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);

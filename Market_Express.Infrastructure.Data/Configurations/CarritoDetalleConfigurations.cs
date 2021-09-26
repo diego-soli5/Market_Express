@@ -12,19 +12,19 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.IdArticulo).HasColumnName("Id_Articulo");
+            builder.Property(e => e.ArticleId).HasColumnName("Id_Articulo");
 
-            builder.Property(e => e.IdCarrito).HasColumnName("Id_Carrito");
+            builder.Property(e => e.CartId).HasColumnName("Id_Carrito");
 
-            builder.HasOne(d => d.Articulo)
-                .WithMany(p => p.CarritoDetalle)
-                .HasForeignKey(d => d.IdArticulo)
+            builder.HasOne(d => d.Article)
+                .WithMany(p => p.CartDetails)
+                .HasForeignKey(d => d.ArticleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Carrito_D__Id_Ar__571DF1D5");
 
-            builder.HasOne(d => d.Carrito)
-                .WithMany(p => p.CarritoDetalle)
-                .HasForeignKey(d => d.IdCarrito)
+            builder.HasOne(d => d.Cart)
+                .WithMany(p => p.CartDetails)
+                .HasForeignKey(d => d.CartId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Carrito_D__Id_Ca__5629CD9C");
         }

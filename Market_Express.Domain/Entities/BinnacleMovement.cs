@@ -5,11 +5,11 @@ namespace Market_Express.Domain.Entities
 {
     public class BinnacleMovement : BaseEntity
     {
-        public Guid IdUsuario { get; set; }
-        public DateTime FecRealiza { get; set; }
-        public string Tipo { get; set; }
-        public string Detalle { get; set; }
+        public Guid UserId { get; set; }
+        public DateTime MovementDate { get; set; }
+        public string Type { get; set; }
+        public string Detail { get; set; }
 
-        public AppUser Usuario { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

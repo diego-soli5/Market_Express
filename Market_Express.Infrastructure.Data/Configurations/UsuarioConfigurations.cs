@@ -13,17 +13,17 @@ namespace Market_Express.Infrastructure.Data.Configurations
             builder.HasIndex(e => e.Email, "UQ__Usuario__A9D10534AA11DB4E")
                 .IsUnique();
 
-            builder.HasIndex(e => e.Cedula, "UQ__Usuario__B4ADFE3861767C97")
+            builder.HasIndex(e => e.Identification, "UQ__Usuario__B4ADFE3861767C97")
                 .IsUnique();
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
-            builder.Property(e => e.Cedula)
+            builder.Property(e => e.Identification)
                 .IsRequired()
                 .HasMaxLength(12)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Clave)
+            builder.Property(e => e.Password)
                 .IsRequired()
                 .HasMaxLength(80)
                 .IsUnicode(false);
@@ -33,33 +33,33 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(40)
                 .IsUnicode(false);
 
-            builder.Property(e => e.FecCreacion).HasColumnType("datetime");
+            builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
-            builder.Property(e => e.Estado)
+            builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(11)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Nombre)
+            builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(40)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Telefono)
+            builder.Property(e => e.Phone)
                 .IsRequired()
                 .HasMaxLength(40)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Tipo)
+            builder.Property(e => e.Type)
                 .IsRequired()
                 .HasMaxLength(15)
                 .IsUnicode(false);
 
-            builder.Property(e => e.AdicionadoPor)
+            builder.Property(e => e.AddedBy)
                 .HasMaxLength(12)
                 .IsUnicode(false);
 
-            builder.Property(e => e.ModificadoPor)
+            builder.Property(e => e.ModifiedBy)
                 .HasMaxLength(12)
                 .IsUnicode(false);
         }

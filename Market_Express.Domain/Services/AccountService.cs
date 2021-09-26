@@ -26,7 +26,7 @@ namespace Market_Express.Domain.Services
             BusisnessResult oResult = new();
 
             string sRequestEmail = oUserRequest?.Email?.Trim();
-            string sRequestPass = oUserRequest?.Clave?.Trim();
+            string sRequestPass = oUserRequest?.Password?.Trim();
 
             if(string.IsNullOrEmpty(sRequestEmail)|| string.IsNullOrEmpty(sRequestPass))
             {
@@ -45,14 +45,14 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }  
 
-            if (!_passwordService.Check(oUsuarioDB.Clave, sRequestPass))
+            if (!_passwordService.Check(oUsuarioDB.Password, sRequestPass))
             {
                 oResult.Message = "Correo Electrónico y/o contraseña incorrectos.";
 
                 return oResult;
             }
 
-            if (oUsuarioDB.Estado == UsuarioConstants.DESACTIVADO)
+            if (oUsuarioDB.Status == UsuarioConstants.DESACTIVADO)
             {
                 oResult.Message = "La cuenta está desactivada.";
 
