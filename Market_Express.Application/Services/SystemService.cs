@@ -33,180 +33,180 @@ namespace Market_Express.Application.Services
         }
 
 
-        public async Task<SyncResponse> SyncClients(List<Cliente> clientsPOS)
+        public async Task<SyncResponse> SyncClients(List<Cliente> lstClientsToClient)
         {
-            SyncResponse response = new();
+            SyncResponse oResponse = new();
 
-            if (clientsPOS?.Count <= 0)
-                return response;
+            if (lstClientsToClient?.Count <= 0)
+                return oResponse;
 
-            List<Cliente> clientsToAdd = new();
-            bool isNew = false;
-            int added = 0;
-            int updated = 0;
+            List<Cliente> lstClientsToAdd = new();
+            bool bIsNew = false;
+            int iAdded = 0;
+            int iUpdated = 0;
 
-            var clientsDB = _unitOfWork.Cliente.GetAll(nameof(Cliente.Usuario));
+            var lstClientsFromDb = _unitOfWork.Cliente.GetAll(nameof(Cliente.Usuario));
 
-            clientsPOS.ForEach(clientPOS =>
+            lstClientsToClient.ForEach(oClientPOS =>
             {
-                isNew = true;
+                bIsNew = true;
 
-                foreach (var clientDB in clientsDB)
+                foreach (var oClientDb in lstClientsFromDb)
                 {
-                    if (clientDB.Id == clientPOS.Id)
+                    if (oClientDb.Id == oClientPOS.Id)
                     {
-                        if (clientDB.AutoSinc)
+                        if (oClientDb.AutoSinc)
                         {
-                            if (clientDB.Usuario.Nombre.Trim() != clientPOS.Usuario.Nombre?.Trim() ||
-                                clientDB.Usuario.Cedula.Trim() != clientPOS.Usuario.Cedula?.Trim() ||
-                                clientDB.Usuario.Email.Trim() != clientPOS.Usuario.Email?.Trim() ||
-                                clientDB.Usuario.Telefono.Trim() != clientPOS.Usuario.Telefono?.Trim())
+                            if (oClientDb.Usuario.Nombre.Trim() != oClientPOS.Usuario.Nombre?.Trim() ||
+                                oClientDb.Usuario.Cedula.Trim() != oClientPOS.Usuario.Cedula?.Trim() ||
+                                oClientDb.Usuario.Email.Trim() != oClientPOS.Usuario.Email?.Trim() ||
+                                oClientDb.Usuario.Telefono.Trim() != oClientPOS.Usuario.Telefono?.Trim())
                             {
-                                _usuarioValidations.Usuario = clientPOS.Usuario;
+                                _usuarioValidations.Usuario = oClientPOS.Usuario;
 
                                 if (!_usuarioValidations.ExistsEmail())
-                                    clientDB.Usuario.Email ??= clientPOS.Usuario.Email?.Trim();
+                                    oClientDb.Usuario.Email ??= oClientPOS.Usuario.Email?.Trim();
 
 
                                 if (!_usuarioValidations.ExistsCedula())
-                                    clientDB.Usuario.Cedula ??= clientPOS.Usuario.Cedula?.Trim();
+                                    oClientDb.Usuario.Cedula ??= oClientPOS.Usuario.Cedula?.Trim();
 
 
-                                clientDB.Usuario.Nombre ??= clientPOS.Usuario.Nombre?.Trim();
-                                clientDB.Usuario.Telefono ??= clientPOS.Usuario.Telefono?.Trim();
+                                oClientDb.Usuario.Nombre ??= oClientPOS.Usuario.Nombre?.Trim();
+                                oClientDb.Usuario.Telefono ??= oClientPOS.Usuario.Telefono?.Trim();
 
-                                clientDB.Usuario.ModificadoPor = SystemConstants.SYSTEM;
+                                oClientDb.Usuario.ModificadoPor = SystemConstants.SYSTEM;
 
-                                _unitOfWork.Usuario.Update(clientDB.Usuario);
+                                _unitOfWork.Usuario.Update(oClientDb.Usuario);
 
-                                updated++;
+                                iUpdated++;
                             }
                         }
 
-                        isNew = false;
+                        bIsNew = false;
 
                         break;
                     }
                 }
 
-                if (isNew)
+                if (bIsNew)
                 {
-                    if (!clientsToAdd.Contains(clientPOS))
+                    if (!lstClientsToAdd.Contains(oClientPOS))
                     {
-                        _clienteValidations.Cliente = clientPOS;
-                        _usuarioValidations.Usuario = clientPOS.Usuario;
+                        _clienteValidations.Cliente = oClientPOS;
+                        _usuarioValidations.Usuario = oClientPOS.Usuario;
 
                         if (!_clienteValidations.ExistsCodCliente() &&
                             !_usuarioValidations.ExistsCedula() &&
                             !_usuarioValidations.ExistsEmail())
                         {
-                            clientPOS.Usuario.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
+                            oClientPOS.Usuario.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-                            clientPOS.Usuario.Estado = UsuarioConstants.ACTIVADO;
-                            clientPOS.Usuario.AdicionadoPor = SystemConstants.SYSTEM;
-                            clientPOS.Usuario.Clave = _passwordService.Hash(clientPOS.Usuario.GetCedulaSinGuiones);
+                            oClientPOS.Usuario.Estado = UsuarioConstants.ACTIVADO;
+                            oClientPOS.Usuario.AdicionadoPor = SystemConstants.SYSTEM;
+                            oClientPOS.Usuario.Clave = _passwordService.Hash(oClientPOS.Usuario.GetCedulaSinGuiones);
 
-                            clientsToAdd.Add(clientPOS);
+                            lstClientsToAdd.Add(oClientPOS);
                         }
                     }
                 }
             });
 
-            added = clientsToAdd.Count;
+            iAdded = lstClientsToAdd.Count;
 
-            if (added > 0)
-                _unitOfWork.Cliente.Create(clientsToAdd);
+            if (iAdded > 0)
+                _unitOfWork.Cliente.Create(lstClientsToAdd);
 
-            if (added > 0 || updated > 0)
+            if (iAdded > 0 || iUpdated > 0)
                 await _unitOfWork.Save();
 
-            response.AddedCount = added;
-            response.UpdatedCount = updated;
+            oResponse.AddedCount = iAdded;
+            oResponse.UpdatedCount = iUpdated;
 
-            return response;
+            return oResponse;
         }
 
-        public async Task<SyncResponse> SyncArticles(List<InventarioArticulo> articlesPOS)
+        public async Task<SyncResponse> SyncArticles(List<InventarioArticulo> lstArticlesToSync)
         {
-            SyncResponse response = new();
+            SyncResponse oResponse = new();
 
-            if (articlesPOS?.Count <= 0)
-                return response;
+            if (lstArticlesToSync?.Count <= 0)
+                return oResponse;
 
-            List<InventarioArticulo> articlesToAdd = new();
-            bool isNew = false;
-            int added = 0;
-            int updated = 0;
+            List<InventarioArticulo> lstArticlesToAdd = new();
+            bool bIsNew = false;
+            int iAdded = 0;
+            int iUpdated = 0;
 
 
-            var articlesDB = _unitOfWork.Articulo.GetAll();
+            var lstArticlesFromDb = _unitOfWork.Articulo.GetAll();
 
-            articlesPOS.ForEach(articlePOS =>
+            lstArticlesToSync.ForEach(oArticlePOS =>
             {
-                isNew = true;
+                bIsNew = true;
 
-                foreach (var articleDB in articlesDB)
+                foreach (var oArticleDb in lstArticlesFromDb)
                 {
-                    if (articleDB.Id == articlePOS.Id)
+                    if (oArticleDb.Id == oArticlePOS.Id)
                     {
-                        if (articleDB.AutoSinc)
+                        if (oArticleDb.AutoSinc)
                         {
-                            if (articleDB.Descripcion.Trim() != articlePOS.Descripcion?.Trim() ||
-                                articleDB.CodigoBarras.Trim() != articlePOS.CodigoBarras?.Trim() ||
-                                articleDB.Precio != articlePOS.Precio)
+                            if (oArticleDb.Descripcion.Trim() != oArticlePOS.Descripcion?.Trim() ||
+                                oArticleDb.CodigoBarras.Trim() != oArticlePOS.CodigoBarras?.Trim() ||
+                                oArticleDb.Precio != oArticlePOS.Precio)
                             {
-                                _articuloValidations.Articulo = articlePOS;
+                                _articuloValidations.Articulo = oArticlePOS;
 
                                 if (!_articuloValidations.ExistsCodigoBarras())
-                                    articleDB.CodigoBarras ??= articlePOS.CodigoBarras.Trim();
+                                    oArticleDb.CodigoBarras ??= oArticlePOS.CodigoBarras.Trim();
 
-                                articleDB.Descripcion ??= articlePOS.Descripcion.Trim();
-                                articleDB.Precio = articlePOS.Precio;
-                                articleDB.ModificadoPor = SystemConstants.SYSTEM;
+                                oArticleDb.Descripcion ??= oArticlePOS.Descripcion.Trim();
+                                oArticleDb.Precio = oArticlePOS.Precio;
+                                oArticleDb.ModificadoPor = SystemConstants.SYSTEM;
 
-                                _unitOfWork.Articulo.Update(articleDB);
+                                _unitOfWork.Articulo.Update(oArticleDb);
 
-                                updated++;
+                                iUpdated++;
                             }
                         }
 
-                        isNew = false;
+                        bIsNew = false;
 
                         break;
                     }
                 }
 
-                if (isNew)
+                if (bIsNew)
                 {
-                    if (!articlesToAdd.Contains(articlePOS))
+                    if (!lstArticlesToAdd.Contains(oArticlePOS))
                     {
-                        _articuloValidations.Articulo = articlePOS;
+                        _articuloValidations.Articulo = oArticlePOS;
 
                         if (!_articuloValidations.ExistsCodigoBarras())
                         {
-                            articlePOS.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
+                            oArticlePOS.FecCreacion = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
-                            articlePOS.Estado = ArticuloConstants.ACTIVADO;
-                            articlePOS.AdicionadoPor = SystemConstants.SYSTEM;
+                            oArticlePOS.Estado = ArticuloConstants.ACTIVADO;
+                            oArticlePOS.AdicionadoPor = SystemConstants.SYSTEM;
 
-                            articlesToAdd.Add(articlePOS);
+                            lstArticlesToAdd.Add(oArticlePOS);
                         }
                     }
                 }
             });
 
-            added = articlesToAdd.Count;
+            iAdded = lstArticlesToAdd.Count;
 
-            if (added > 0)
-                _unitOfWork.Articulo.Create(articlesToAdd);
+            if (iAdded > 0)
+                _unitOfWork.Articulo.Create(lstArticlesToAdd);
 
-            if (added > 0 || updated > 0)
+            if (iAdded > 0 || iUpdated > 0)
                 await _unitOfWork.Save();
 
-            response.AddedCount = added;
-            response.UpdatedCount = updated;
+            oResponse.AddedCount = iAdded;
+            oResponse.UpdatedCount = iUpdated;
 
-            return response;
+            return oResponse;
         }
     }
 }

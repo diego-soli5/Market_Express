@@ -13,9 +13,9 @@ namespace Market_Express.Infrastructure.Services
             _authOptions = authOptions.Value;
         }
 
-        public bool CheckSyncAuthHeader(string authHeader)
+        public bool CheckSyncAuthHeader(string sAuthHeader)
         {
-            return _authOptions.SyncAuthenticationSecret == authHeader;
+            return _authOptions.SyncAuthenticationSecret?.Trim() == sAuthHeader?.Trim();
         }
     }
 }

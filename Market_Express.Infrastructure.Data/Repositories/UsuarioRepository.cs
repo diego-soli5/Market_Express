@@ -19,26 +19,26 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
         public async Task<List<Permiso>> GetPermisosAsync(Guid id)
         {
-            List<Permiso> permisos = new();
+            List<Permiso> lstPermissions = new();
 
-            var oParams = new[]
+            var arrParams = new[]
             {
                 new SqlParameter("@Id",id)
             };
 
-            var result = await ExecuteQuery(_Sp_Usuario_GetPermisos, oParams);
+            var oDTResult = await ExecuteQuery(_Sp_Usuario_GetPermisos, arrParams);
 
-            foreach (DataRow row in result.Rows)
+            foreach (DataRow oRow in oDTResult.Rows)
             {
-                permisos.Add(new Permiso
+                lstPermissions.Add(new Permiso
                 {
-                    Id = (Guid)row["Id"],
-                    Nombre = row["Nombre"].ToString(),
-                    Descripcion = row["Descripcion"].ToString()
+                    Id = (Guid)oRow["Id"],
+                    Nombre = oRow["Nombre"].ToString(),
+                    Descripcion = oRow["Descripcion"].ToString()
                 });
             }
 
-            return permisos;
+            return lstPermissions;
         }
     }
 }

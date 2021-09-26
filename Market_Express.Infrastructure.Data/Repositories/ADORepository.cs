@@ -11,45 +11,45 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(configuration)
         { }
 
-        protected async Task<DataTable> ExecuteQuery(string spName, SqlParameter[] parameters = null)
+        protected async Task<DataTable> ExecuteQuery(string sSpName, SqlParameter[] arrParameters = null)
         {
-            using (var connection = GetConnection())
+            using (var oConnection = GetConnection())
             {
-                using (var command = new SqlCommand(spName, connection))
+                using (var oCommand = new SqlCommand(sSpName, oConnection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
+                    oCommand.CommandType = CommandType.StoredProcedure;
 
-                    if (parameters != null)
-                        command.Parameters.AddRange(parameters);
+                    if (arrParameters != null)
+                        oCommand.Parameters.AddRange(arrParameters);
 
-                    await connection.OpenAsync();
+                    await oConnection.OpenAsync();
 
-                    using (var table = new DataTable())
+                    using (var oTable = new DataTable())
                     {
-                        using (var reader = await command.ExecuteReaderAsync())
+                        using (var oReader = await oCommand.ExecuteReaderAsync())
                         {
-                            table.Load(reader);
+                            oTable.Load(oReader);
 
-                            return table;
+                            return oTable;
                         }
                     }
                 }
             }
         }
 
-        protected int ExecuteNonQuery(string spName, SqlParameter[] parameters)
+        protected int ExecuteNonQuery(string sSpName, SqlParameter[] arrParameters)
         {
-            using (var connection = GetConnection())
+            using (var oConnection = GetConnection())
             {
-                connection.Open();
+                oConnection.Open();
 
-                using (var command = new SqlCommand(spName, connection))
+                using (var oCommand = new SqlCommand(sSpName, oConnection))
                 {
-                    command.Parameters.AddRange(parameters);
+                    oCommand.Parameters.AddRange(arrParameters);
 
-                    int result = command.ExecuteNonQuery();
+                    int iResult = oCommand.ExecuteNonQuery();
 
-                    return result;
+                    return iResult;
                 }
             }
         }

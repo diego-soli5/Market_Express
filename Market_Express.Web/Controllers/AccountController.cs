@@ -24,53 +24,53 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignIn(string returnUrl)
+        public IActionResult SignIn(string sReturnUrl)
         {
-            if (returnUrl != null)
-                ViewData["returnUrl"] = returnUrl;
+            if (sReturnUrl != null)
+                ViewData["returnUrl"] = sReturnUrl;
 
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(LoginRequestDTO model, string returnUrl)
+        public async Task<IActionResult> SignIn(LoginRequestDTO oModel, string sReturnUrl)
         {
-            var oUser = _mapper.Map<Usuario>(model);
+            var oUser = _mapper.Map<Usuario>(oModel);
 
-            var result = _accountService.TryAuthenticate(ref oUser);
+            var oResult = _accountService.TryAuthenticate(ref oUser);
 
-            if (result.Success) 
+            if (oResult.Success) 
             {
-                var permisos = await _accountService.GetPermisos(oUser.Id);
+                var lstPermisos = await _accountService.GetPermisos(oUser.Id);
 
-                List<Claim> claims = new();
+                List<Claim> lstClaims = new();
 
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
-                claims.Add(new Claim(ClaimTypes.Name, oUser.Nombre));
-                claims.Add(new Claim(ClaimTypes.Email, oUser.Email));
-                claims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Telefono));
-                claims.Add(new Claim(ClaimTypes.Role, oUser.Tipo));
+                lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
+                lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Nombre));
+                lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
+                lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Telefono));
+                lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Tipo));
 
-                permisos.ForEach(per =>
+                lstPermisos.ForEach(per =>
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, per.Nombre));
+                    lstClaims.Add(new Claim(ClaimTypes.Role, per.Nombre));
                 });
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var principal = new ClaimsPrincipal(identity);
+                var oPrincipal = new ClaimsPrincipal(oIdentity);
 
-                await HttpContext.SignInAsync(principal);
+                await HttpContext.SignInAsync(oPrincipal);
 
-                if (!string.IsNullOrEmpty(returnUrl))
+                if (!string.IsNullOrEmpty(sReturnUrl))
                 {
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(sReturnUrl);
                 }
 
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewData["LoginMessage"] = result.Message;
+            ViewData["LoginMessage"] = oResult.Message;
 
             return View();
         }

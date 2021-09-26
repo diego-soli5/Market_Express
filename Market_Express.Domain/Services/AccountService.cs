@@ -21,41 +21,49 @@ namespace Market_Express.Domain.Services
             _passwordService = passwordService;
         }
 
-        public BusisnessResult TryAuthenticate(ref Usuario usuarioRequest)
+        public BusisnessResult TryAuthenticate(ref Usuario oUserRequest)
         {
-            BusisnessResult result = new();
+            BusisnessResult oResult = new();
 
-            string reqEmail = usuarioRequest.Email.Trim();
+            string sRequestEmail = oUserRequest?.Email?.Trim();
+            string sRequestPass = oUserRequest?.Clave?.Trim();
+
+            if(string.IsNullOrEmpty(sRequestEmail)|| string.IsNullOrEmpty(sRequestPass))
+            {
+                oResult.Message = "Correo Electrónico y/o contraseña incorrectos.";
+
+                return oResult;
+            }
 
             var oUsuarioDB = _unitOfWork.Usuario
-                .GetFirstOrDefault(x => x.Email.Trim() == reqEmail);
+                .GetFirstOrDefault(x => x.Email.Trim() == sRequestEmail);
 
             if (oUsuarioDB == null)
             {
-                result.Message = "Correo Electrónico y/o contraseña incorrectos.";
+                oResult.Message = "Correo Electrónico y/o contraseña incorrectos.";
 
-                return result;
+                return oResult;
             }  
 
-            if (!_passwordService.Check(oUsuarioDB.Clave, usuarioRequest.Clave))
+            if (!_passwordService.Check(oUsuarioDB.Clave, sRequestPass))
             {
-                result.Message = "Correo Electrónico y/o contraseña incorrectos.";
+                oResult.Message = "Correo Electrónico y/o contraseña incorrectos.";
 
-                return result;
+                return oResult;
             }
 
             if (oUsuarioDB.Estado == UsuarioConstants.DESACTIVADO)
             {
-                result.Message = "La cuenta está desactivada.";
+                oResult.Message = "La cuenta está desactivada.";
 
-                return result;
+                return oResult;
             }
 
-            usuarioRequest = oUsuarioDB;
+            oUserRequest = oUsuarioDB;
 
-            result.Success = true;
+            oResult.Success = true;
 
-            return result;
+            return oResult;
         }
 
         public async Task<List<Permiso>> GetPermisos(Guid id)

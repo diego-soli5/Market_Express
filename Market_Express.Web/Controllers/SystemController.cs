@@ -26,39 +26,39 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpPost(nameof(SyncArticles))]
-        public async Task<IActionResult> SyncArticles([FromBody] List<ArticuloSyncDTO> lstArticulosToSyncDTO)
+        public async Task<IActionResult> SyncArticles([FromBody] List<ArticuloSyncDTO> lstArticlesToSyncDTO)
         {
             if (IsSyncAuthorized())
                 return Unauthorized();
 
-            var lstArticulosToSync = new List<InventarioArticulo>();
+            var lstArticlesToSync = new List<InventarioArticulo>();
 
-            lstArticulosToSyncDTO?.ForEach(art =>
+            lstArticlesToSyncDTO?.ForEach(art =>
             {
-                lstArticulosToSync.Add(_mapper.Map<InventarioArticulo>(art));
+                lstArticlesToSync.Add(_mapper.Map<InventarioArticulo>(art));
             });
 
-            var response = await _systemService.SyncArticles(lstArticulosToSync);
+            var oResponse = await _systemService.SyncArticles(lstArticlesToSync);
 
-            return Ok(response);
+            return Ok(oResponse);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SyncClients([FromBody] List<ClienteSyncDTO> lstClientToSyncDTO)
+        public async Task<IActionResult> SyncClients([FromBody] List<ClienteSyncDTO> lstClientsToSyncDTO)
         {
             if (IsSyncAuthorized())
                 return Unauthorized();
 
             var lstClientsToSync = new List<Cliente>();
 
-            lstClientToSyncDTO?.ForEach(cli =>
+            lstClientsToSyncDTO?.ForEach(cli =>
             {
                 lstClientsToSync.Add(_mapper.Map<Cliente>(cli));
             });
 
-            var response = await _systemService.SyncClients(lstClientsToSync);
+            var oResponse = await _systemService.SyncClients(lstClientsToSync);
 
-            return Ok(response);
+            return Ok(oResponse);
         }
 
         #region UTILITY METHODS

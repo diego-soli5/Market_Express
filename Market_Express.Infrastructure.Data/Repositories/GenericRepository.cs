@@ -20,30 +20,30 @@ namespace Market_Express.Infrastructure.Data.Repositories
             _dbEntity = context.Set<TEntity>();
         }
 
-        public IEnumerable<TEntity> GetAll(string includeProperties = null)
+        public IEnumerable<TEntity> GetAll(string sIncludeProperties = null)
         {
             IQueryable<TEntity> query = _dbEntity;
 
-            if (includeProperties != null)
+            if (sIncludeProperties != null)
             {
-                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var sIncludeProperty in sIncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(sIncludeProperty);
                 }
             }
 
             return query.AsEnumerable();
         }
 
-        public async Task<TEntity> GetByIdAsync(Guid id, string includeProperties = null)
+        public async Task<TEntity> GetByIdAsync(Guid id, string sIncludeProperties = null)
         {
             IQueryable<TEntity> query = _dbEntity;
 
-            if (includeProperties != null)
+            if (sIncludeProperties != null)
             {
-                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var sIncludeProperty in sIncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(sIncludeProperty);
                 }
             }
 
@@ -51,7 +51,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         }
 
         public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> where,
-                                         string includeProperties = null)
+                                         string sIncludeProperties = null)
         {
             IQueryable<TEntity> query = _dbEntity;
 
@@ -62,11 +62,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             query = query.Where(where);
 
-            if (includeProperties != null)
+            if (sIncludeProperties != null)
             {
-                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var sIncludeProperty in sIncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(sIncludeProperty);
                 }
             }
 
