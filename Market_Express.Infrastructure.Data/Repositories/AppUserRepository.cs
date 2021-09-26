@@ -11,7 +11,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 {
     public class AppUserRepository : GenericRepository<AppUser>, IAppUserRepository
     {
-        private const string _Sp_Usuario_GetPermisos = "Sp_Usuario_GetPermisos";
+        private const string _Sp_AppUser_GetPermissions = "Sp_AppUser_GetPermissions";
 
         public AppUserRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -26,7 +26,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 new SqlParameter("@Id",id)
             };
 
-            var oDTResult = await ExecuteQuery(_Sp_Usuario_GetPermisos, arrParams);
+            var oDTResult = await ExecuteQuery(_Sp_AppUser_GetPermissions, arrParams);
 
             foreach (DataRow oRow in oDTResult.Rows)
             {
