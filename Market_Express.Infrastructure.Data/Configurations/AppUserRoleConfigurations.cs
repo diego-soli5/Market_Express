@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class UsuarioRolConfigurations : IEntityTypeConfiguration<AppUserRole>
+    public class AppUserRoleConfigurations : IEntityTypeConfiguration<AppUserRole>
     {
         public void Configure(EntityTypeBuilder<AppUserRole> builder)
         {

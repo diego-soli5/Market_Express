@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class RolPermisoConfigurations : IEntityTypeConfiguration<RolePermission>
+    public class RolePermissionConfigurations : IEntityTypeConfiguration<RolePermission>
     {
         public void Configure(EntityTypeBuilder<RolePermission> builder)
         {

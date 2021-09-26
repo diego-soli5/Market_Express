@@ -1,19 +1,27 @@
 ﻿using Market_Express.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class InventarioCategoriaConfigurations : IEntityTypeConfiguration<Category>
+    public class ArticleConfigurations : IEntityTypeConfiguration<Article>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<Article> builder)
         {
-            builder.ToTable("Inventario_Categoria");
+            builder.ToTable("Inventario_Articulo");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
+            builder.Property(e => e.AutoSync).HasColumnName("Auto_Sinc");
+
+            builder.Property(e => e.BarCode)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("Codigo_Barras");
+
             builder.Property(e => e.Description)
-                .HasMaxLength(200)
+                .IsRequired()
+                .HasMaxLength(255)
                 .IsUnicode(false);
 
             builder.Property(e => e.Status)
@@ -21,10 +29,13 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(11)
                 .IsUnicode(false);
 
-            builder.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(20)
+            builder.Property(e => e.CategoryId).HasColumnName("Id_Categoria");
+
+            builder.Property(e => e.Image)
+                .HasMaxLength(30)
                 .IsUnicode(false);
+
+            builder.Property(e => e.Price).HasColumnType("decimal(19, 2)");
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
 

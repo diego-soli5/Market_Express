@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class BitacoraMovimientoConfigurations : IEntityTypeConfiguration<BinnacleMovement>
+    public class BinaccleMovementConfigurations : IEntityTypeConfiguration<BinnacleMovement>
     {
         public void Configure(EntityTypeBuilder<BinnacleMovement> builder)
         {

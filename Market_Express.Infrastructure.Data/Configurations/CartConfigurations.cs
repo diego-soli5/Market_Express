@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class CarritoConfigurations : IEntityTypeConfiguration<Cart>
+    public class CartConfigurations : IEntityTypeConfiguration<Cart>
     {
         public void Configure(EntityTypeBuilder<Cart> builder)
         {

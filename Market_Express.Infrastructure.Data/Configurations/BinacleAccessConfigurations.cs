@@ -1,11 +1,10 @@
 ﻿using Market_Express.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
-    public class BitacoraAccesoConfigurations : IEntityTypeConfiguration<BinnacleAccess>
+    public class BinacleAccessConfigurations : IEntityTypeConfiguration<BinnacleAccess>
     {
         public void Configure(EntityTypeBuilder<BinnacleAccess> builder)
         {
