@@ -9,8 +9,8 @@ namespace Market_Express.Domain.Entities
     {
         public InventarioArticulo()
         {
-            CarritoDetalles = new HashSet<CarritoDetalle>();
-            PedidoDetalles = new HashSet<PedidoDetalle>();
+            CarritoDetalle = new HashSet<CarritoDetalle>();
+            PedidoDetalle = new HashSet<PedidoDetalle>();
         }
 
         public Guid? IdCategoria { get; set; }
@@ -24,7 +24,7 @@ namespace Market_Express.Domain.Entities
         public string AdicionadoPor { get; set; }
         public string ModificadoPor { get; set; }
 
-        public ICollection<CarritoDetalle> CarritoDetalles { get; set; }
-        public ICollection<PedidoDetalle> PedidoDetalles { get; set; }
+        public ICollection<CarritoDetalle> CarritoDetalle { get; set; }
+        public ICollection<PedidoDetalle> PedidoDetalle { get; set; }
     }
 }

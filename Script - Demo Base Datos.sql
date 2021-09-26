@@ -114,7 +114,7 @@ CREATE TABLE Bitacora_Movimiento(
 );
 GO
 
-CREATE TABLE Inventario_Categoria(
+CREATE TABLE Categoria(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
 	Nombre VARCHAR(20) NOT NULL,
 	Descripcion VARCHAR(200),
@@ -128,9 +128,9 @@ CREATE TABLE Inventario_Categoria(
 );
 GO
 
-CREATE TABLE Inventario_Articulo(
+CREATE TABLE Articulo(
 	Id UNIQUEIDENTIFIER DEFAULT newsequentialid(),
-	Id_Categoria UNIQUEIDENTIFIER,
+	IdCategoria UNIQUEIDENTIFIER,
 	Descripcion VARCHAR(255) NOT NULL,
 	CodigoBarras VARCHAR(255) UNIQUE NOT NULL,
 	Precio DECIMAL(19,2) NOT NULL,
@@ -142,6 +142,7 @@ CREATE TABLE Inventario_Articulo(
 	ModificadoPor VARCHAR(12)
 
 	PRIMARY KEY(Id),
+	FOREIGN KEY(IdCategoria) REFERENCES Categoria(Id),
 	CONSTRAINT CHK_Articulo_Estado CHECK (Estado = 'ACTIVADO' OR Estado = 'DESACTIVADO')
 );
 GO
@@ -165,7 +166,7 @@ CREATE TABLE Carrito_Detalle(
 
 	PRIMARY KEY(Id),
 	FOREIGN KEY(IdCarrito) REFERENCES Carrito(Id),
-	FOREIGN KEY(IdArticulo) REFERENCES Inventario_Articulo(Id)
+	FOREIGN KEY(IdArticulo) REFERENCES Articulo(Id)
 );
 GO
 
@@ -190,7 +191,7 @@ CREATE TABLE Pedido_Detalle(
 
 	PRIMARY KEY(Id),
 	FOREIGN KEY(Id_Pedido) REFERENCES Pedido(Id),
-	FOREIGN KEY(IdArticulo) REFERENCES Inventario_Articulo(Id)
+	FOREIGN KEY(IdArticulo) REFERENCES Articulo(Id)
 );
 
 INSERT INTO Permiso(Id,Nombre) VALUES

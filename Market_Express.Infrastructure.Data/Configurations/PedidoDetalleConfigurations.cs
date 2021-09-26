@@ -30,7 +30,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
             builder.Property(e => e.Precio).HasColumnType("decimal(19, 2)");
 
             builder.HasOne(d => d.IdArticuloNavigation)
-                .WithMany(p => p.PedidoDetalles)
+                .WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdArticulo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Pedido_De__Id_Ar__5FB337D6");

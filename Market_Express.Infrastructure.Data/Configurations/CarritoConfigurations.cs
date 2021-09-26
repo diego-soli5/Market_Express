@@ -23,7 +23,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.IdCliente).HasColumnName("Id_Cliente");
 
-            builder.HasOne(d => d.IdClienteNavigation)
+            builder.HasOne(d => d.Cliente)
                 .WithMany(p => p.Carrito)
                 .HasForeignKey(d => d.IdCliente)
                 .OnDelete(DeleteBehavior.ClientSetNull)

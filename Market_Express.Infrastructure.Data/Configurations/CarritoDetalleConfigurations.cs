@@ -17,13 +17,13 @@ namespace Market_Express.Infrastructure.Data.Configurations
             builder.Property(e => e.IdCarrito).HasColumnName("Id_Carrito");
 
             builder.HasOne(d => d.Articulo)
-                .WithMany(p => p.CarritoDetalles)
+                .WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdArticulo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Carrito_D__Id_Ar__571DF1D5");
 
             builder.HasOne(d => d.Carrito)
-                .WithMany(p => p.CarritoDetalles)
+                .WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdCarrito)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Carrito_D__Id_Ca__5629CD9C");
