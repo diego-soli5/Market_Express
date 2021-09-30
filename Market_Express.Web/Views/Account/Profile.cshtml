@@ -1,0 +1,37 @@
+﻿@model Market_Express.Web.ViewModels.Account.ProfileViewModel 
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<section class="container">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="text-white">Mi Perfil</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Información</h5>
+                    <dl class="row">
+                        <dt class="col-md-3">Nombre</dt>
+                        <dd class="col-md-9"><p>@Model.Name</p></dd>
+                        <dt class="col-md-3">Alias</dt>
+                        <dd class="col-md-9"><p>@Model.NickName</p></dd>
+                        <dt class="col-md-3">Cedula</dt>
+                        <dd class="col-md-9"><p>@Model.Identification</p></dd>
+                        <dt class="col-md-3">Email</dt>
+                        <dd class="col-md-9"><p>@Model.Email</p></dd>
+                        <dt class="col-md-3">Teléfono</dt>
+                        <dd class="col-md-9"><p>@Model.Phone</p></dd>
+                        <dt class="col-md-3">Contraseña</dt>
+                        <dd class="col-md-9"><p>************</p></dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h5>Acciones</h5>
+                    <a href="#">Cambiar Contraseña</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

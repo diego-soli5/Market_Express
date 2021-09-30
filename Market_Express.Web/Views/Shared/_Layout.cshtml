@@ -58,7 +58,7 @@
                                 <span class="badge badge-pill badge-danger notify" id="cartArticlesCount"></span>
                             </div>
                             <div class="widget-header icontext">
-                                <a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+                                <a asp-area="" asp-controller="Account" asp-action="Profile" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
                                 <div class="text">
                                     <span class="text-muted">Bienvenido!</span>
                                     <div>
@@ -141,7 +141,9 @@
 
     <div class="container-fluid">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="my-4">
+                @RenderBody()
+            </div>
         </main>
     </div>
 
@@ -168,6 +170,8 @@
                     <aside class="col-md col-6">
                         <h6 class="title">Cuenta</h6>
                         <ul class="list-unstyled">
+                            <li> <a asp-area="" asp-controller="Account" asp-action="Profile">Mi Perfil</a></li>
+                            <li> <a href="#">Mis Pedidos</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li> <a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
@@ -176,9 +180,6 @@
                             {
                                 <li> <a asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a></li>
                             }
-
-
-                            <li> <a href="#">Mis Pedidos</a></li>
                         </ul>
                     </aside>
 

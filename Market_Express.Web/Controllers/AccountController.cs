@@ -2,8 +2,10 @@
 using Market_Express.Application.DTOs.Access;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
+using Market_Express.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,17 +27,30 @@ namespace Market_Express.Web.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
-        public IActionResult Login(string sReturnUrl)
+        public IActionResult Profile()
         {
-            if (sReturnUrl != null)
-                ViewData["returnUrl"] = sReturnUrl;
+            ProfileViewModel oViewModel = new();
+            oViewModel.Name = User.FindFirstValue(ClaimTypes.Name);
+            oViewModel.Identification = User.FindFirstValue("Identification");
+            oViewModel.Email = User.FindFirstValue(ClaimTypes.Email);
+            oViewModel.Phone = User.FindFirstValue(ClaimTypes.MobilePhone);
+
+            return View(oViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Login(string returnUrl)
+        {
+            if (returnUrl != null)
+                ViewData["returnUrl"] = returnUrl;
 
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequestDTO oModel, string sReturnUrl)
+        public async Task<IActionResult> Login(LoginRequestDTO oModel, string returnUrl)
         {
             var oUser = _mapper.Map<AppUser>(oModel);
 
@@ -49,6 +64,7 @@ namespace Market_Express.Web.Controllers
 
                 lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
                 lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Name));
+                lstClaims.Add(new Claim("Identification", oUser.Identification));
                 lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
                 lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));
                 lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type));
@@ -68,9 +84,9 @@ namespace Market_Express.Web.Controllers
                     ExpiresUtc = DateTime.Now.AddMonths(12),
                 });
 
-                if (!string.IsNullOrEmpty(sReturnUrl))
+                if (!string.IsNullOrEmpty(returnUrl))
                 {
-                    return LocalRedirect(sReturnUrl);
+                    return LocalRedirect(returnUrl);
                 }
 
                 return RedirectToAction("Index", "Home");

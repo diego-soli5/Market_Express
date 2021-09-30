@@ -43,6 +43,10 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(40)
                 .IsUnicode(false);
 
+            builder.Property(e => e.Alias)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+
             builder.Property(e => e.Password)
                 .IsRequired()
                 .HasMaxLength(80)
