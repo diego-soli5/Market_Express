@@ -8,6 +8,7 @@ using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.Validations;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using System;
+using System.Linq;
 
 namespace Market_Express.Application.Services
 {
@@ -100,6 +101,7 @@ namespace Market_Express.Application.Services
                             !_usuarioValidations.ExistsCedula() &&
                             !_usuarioValidations.ExistsEmail())
                         {
+                            oClientPOS.AutoSync = false;
                             oClientPOS.AppUser.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
                             oClientPOS.AppUser.Status = AppUserConstants.ACTIVADO;
@@ -122,6 +124,7 @@ namespace Market_Express.Application.Services
 
             oResponse.AddedCount = iAdded;
             oResponse.UpdatedCount = iUpdated;
+            oResponse.Success = true;
 
             return oResponse;
         }
@@ -139,9 +142,10 @@ namespace Market_Express.Application.Services
             int iUpdated = 0;
 
 
-            var lstArticlesFromDb = _unitOfWork.Article.GetAll();
+            var lstArticlesFromDb = (_unitOfWork.Article.GetAll()).ToList();
 
-            lstArticlesToSync.ForEach(oArticlePOS =>
+            //lstArticlesToSync.ForEach(oArticlePOS =>
+            foreach(var oArticlePOS in lstArticlesToSync)
             {
                 bIsNew = true;
 
@@ -160,7 +164,9 @@ namespace Market_Express.Application.Services
                                 if (!_articuloValidations.ExistsCodigoBarras())
                                     oArticleDb.BarCode ??= oArticlePOS.BarCode.Trim();
 
-                                oArticleDb.Description ??= oArticlePOS.Description.Trim();
+                                if(oArticleDb.AutoSyncDescription)
+                                    oArticleDb.Description ??= oArticlePOS.Description.Trim();
+
                                 oArticleDb.Price = oArticlePOS.Price;
                                 oArticleDb.ModifiedBy = SystemConstants.SYSTEM;
 
@@ -184,6 +190,8 @@ namespace Market_Express.Application.Services
 
                         if (!_articuloValidations.ExistsCodigoBarras())
                         {
+                            oArticlePOS.AutoSync = true;
+                            oArticlePOS.AutoSyncDescription = true;
                             oArticlePOS.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
                                                             TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
                             oArticlePOS.Status = ArticleConstants.ACTIVADO;
@@ -193,7 +201,7 @@ namespace Market_Express.Application.Services
                         }
                     }
                 }
-            });
+            }//);
 
             iAdded = lstArticlesToAdd.Count;
 
@@ -205,6 +213,7 @@ namespace Market_Express.Application.Services
 
             oResponse.AddedCount = iAdded;
             oResponse.UpdatedCount = iUpdated;
+            oResponse.Success = true;
 
             return oResponse;
         }

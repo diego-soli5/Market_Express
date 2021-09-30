@@ -28,7 +28,7 @@ namespace Market_Express.Web.Controllers
         [HttpPost(nameof(SyncArticles))]
         public async Task<IActionResult> SyncArticles([FromBody] List<ArticuloSyncDTO> lstArticlesToSyncDTO)
         {
-            if (IsSyncAuthorized())
+            if (!IsSyncAuthorized())
                 return Unauthorized();
 
             var lstArticlesToSync = new List<Article>();
@@ -46,7 +46,7 @@ namespace Market_Express.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SyncClients([FromBody] List<ClienteSyncDTO> lstClientsToSyncDTO)
         {
-            if (IsSyncAuthorized())
+            if (!IsSyncAuthorized())
                 return Unauthorized();
 
             var lstClientsToSync = new List<Client>();
@@ -67,7 +67,7 @@ namespace Market_Express.Web.Controllers
             if (!Request.Headers.ContainsKey("X-Sync-Authorization"))
                 return false;
 
-            if (!_authenticationService.CheckSyncAuthHeader(Request.Headers.First(h => h.Key == "X-Sync-Authorization").ToString()))
+            if (!_authenticationService.CheckSyncAuthHeader(Request.Headers.First(h => h.Key == "X-Sync-Authorization").Value))
                 return false;
 
             return true;
