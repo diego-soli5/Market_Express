@@ -8,6 +8,7 @@ namespace Market_Express.Domain.Abstractions.Repositories
         public IArticleRepository Article { get; }
         public IClientRepository Client { get; }
         public IAppUserRepository AppUser { get; }
+        public ICartRepository Cart { get; }
 
         Task BeginTransactionAsync();
         Task RollBackAsync();

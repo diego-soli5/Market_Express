@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Market_Express.Domain.Abstractions.DomainServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Client.Controllers
@@ -9,12 +9,30 @@ namespace Market_Express.Web.Areas.Client.Controllers
     [Area("Client")]
     public class CartController : Controller
     {
-        public IActionResult GetCartArticlesCount()
+        private readonly ICartService _cartService;
+
+        public CartController(ICartService cartService)
+        {
+            _cartService = cartService;
+        }
+
+        public async Task<IActionResult> GetCartArticlesCount()
         {
             if (!User.Identity.IsAuthenticated)
                 return Content("0");
 
-            return Content("19");
+            int iCount = await _cartService.GetArticlesCount(GetCurrentUserId());
+
+            return Content(iCount.ToString());
         }
+
+        #region HELPER METHODS
+        private Guid GetCurrentUserId()
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            return new Guid(id);
+        }
+        #endregion
     }
 }
