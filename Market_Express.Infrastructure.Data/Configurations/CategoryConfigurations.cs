@@ -35,6 +35,10 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(11)
                 .IsUnicode(false);
+
+            builder.Property(e => e.Image)
+                .HasMaxLength(30)
+                .IsUnicode(false);
         }
     }
 }

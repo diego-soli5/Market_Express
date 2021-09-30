@@ -174,6 +174,7 @@ CREATE TABLE [dbo].[Category](
 	[Name] [varchar](20) NOT NULL,
 	[Description] [varchar](200) NULL,
 	[Status] [varchar](11) NOT NULL,
+	[Image] [varchar](30) NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[AddedBy] [varchar](12) NULL,
 	[ModifiedBy] [varchar](12) NULL,

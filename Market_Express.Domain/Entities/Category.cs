@@ -15,6 +15,7 @@ namespace Market_Express.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
+        public string Image { get; set; }
         public DateTime CreationDate { get; set; }
         public string AddedBy { get; set; }
         public string ModifiedBy { get; set; }
