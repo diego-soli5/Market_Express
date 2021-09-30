@@ -440,6 +440,13 @@ INSERT INTO Client(AppUserId,AutoSync) VALUES
 ('EA16E721-5E1D-EC11-9953-3863BBBB3AE0',0);  
 GO
 
+INSERT INTO Cart(Id,ClientId,OpeningDate,Status) VALUES
+('321F7AFB-3C22-EC11-9955-3863BBBB3AE0','9229F064-0922-EC11-9955-3863BBBB3AE0',GETDATE(),'ABIERTO')
+
+INSERT INTO Cart_Detail(CartId,ArticleId,Quantity) VALUES
+('321F7AFB-3C22-EC11-9955-3863BBBB3AE0','C812E64E-6F1E-42D5-A47B-0084B6EF265A',1),
+('321F7AFB-3C22-EC11-9955-3863BBBB3AE0','7E851779-83C5-48FD-8A3E-00DA91D9DF3C',3);
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 
