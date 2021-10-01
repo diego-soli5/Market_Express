@@ -33,6 +33,7 @@ namespace Market_Express.Web.Controllers
         {
             ProfileViewModel oViewModel = new();
             oViewModel.Name = User.FindFirstValue(ClaimTypes.Name);
+            oViewModel.Alias = User.FindFirstValue("Alias");
             oViewModel.Identification = User.FindFirstValue("Identification");
             oViewModel.Email = User.FindFirstValue(ClaimTypes.Email);
             oViewModel.Phone = User.FindFirstValue(ClaimTypes.MobilePhone);
@@ -64,6 +65,7 @@ namespace Market_Express.Web.Controllers
 
                 lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
                 lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Name));
+                lstClaims.Add(new Claim("Alias", oUser.Alias));
                 lstClaims.Add(new Claim("Identification", oUser.Identification));
                 lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
                 lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));

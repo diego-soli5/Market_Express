@@ -1,4 +1,4 @@
-﻿@model Market_Express.Web.ViewModels.Account.ProfileViewModel 
+﻿@model Market_Express.Web.ViewModels.Account.ProfileViewModel
 @{
     ViewData["Title"] = "Mi Perfil";
 }
@@ -16,7 +16,7 @@
                         <dt class="col-md-3">Nombre</dt>
                         <dd class="col-md-9"><p>@Model.Name</p></dd>
                         <dt class="col-md-3">Alias</dt>
-                        <dd class="col-md-9"><p>@Model.NickName</p></dd>
+                        <dd class="col-md-9"><p>@Model.Alias</p></dd>
                         <dt class="col-md-3">Cedula</dt>
                         <dd class="col-md-9"><p>@Model.Identification</p></dd>
                         <dt class="col-md-3">Email</dt>
@@ -29,7 +29,14 @@
                 </div>
                 <div class="col-md-6">
                     <h5>Acciones</h5>
-                    <a href="#">Cambiar Contraseña</a>
+                    <dl class="row">
+                        <dd class="col-12">
+                            <a href="#">Cambiar Contraseña</a>
+                        </dd>
+                        <dd class="col-12">
+                            <a href="#">Cambiar Alias</a>
+                        </dd>
+                    </dl>
                 </div>
             </div>
         </div>
