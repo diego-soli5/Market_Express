@@ -17,7 +17,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public async Task<List<Permission>> GetPermisosAsync(Guid id)
+        public async Task<List<Permission>> GetPermissionList(Guid id)
         {
             List<Permission> lstPermissions = new();
 

@@ -13,6 +13,7 @@
                 <div class="col-md-6">
                     <h5>Información</h5>
                     <dl class="row">
+
                         <dt class="col-md-3">Nombre</dt>
                         <dd class="col-md-9"><p>@Model.Name</p></dd>
                         <dt class="col-md-3">Alias</dt>
@@ -31,7 +32,7 @@
                     <h5>Acciones</h5>
                     <dl class="row">
                         <dd class="col-12">
-                            <a href="#">Cambiar Contraseña</a>
+                            <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
                         </dd>
                         <dd class="col-12">
                             <a href="#">Cambiar Alias</a>
@@ -42,3 +43,51 @@
         </div>
     </div>
 </section>
+
+
+
+<div class="modal fade" id="modalChangePassword" tabindex="-1" aria-labelledby="modalChangePasswordLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-area="" asp-controller="Account" asp-action="ChangePassword" id="frmChangePass" method="post">
+                    <div class="form-group">
+                        <label for="currentPass" class="col-form-label">Contraseña Actual</label>
+                        <input type="password" id="currentPass" name="currentPass" class="form-control" data-val="true" data-val-required="Este campo es obligatorio" maxlength="40">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="currentPass" data-valmsg-replace="true"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="newPass" class="col-form-label" data-val-equalto="Las contraseñas no coinciden" data-val-equalto-other="newPassConfirmation">Contraseña Nueva</label>
+                        <input type="password" name="newPass" class="form-control" data-val="true" data-val-required="Este campo es obligatorio" maxlength="40" id="newPass">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="newPass" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassConfirmation" class="col-form-label">Confirmar Contraseña</label>
+                        <input type="password" name="newPassConfirmation" class="form-control" data-val="true" data-val-equalto="Las contraseñas no coinciden" data-val-equalto-other="newPass" data-val-required="Este campo es obligatorio" maxlength="40" id="newPassConfirmation">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="newPassConfirmation" data-valmsg-replace="true"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" form="frmChangePass">Cambiar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+@*
+    <input asp-for="Name" value="" />
+    <input asp-for="Alias" value="" />
+    <span asp-validation-for="Name"></span>
+*@

@@ -7,6 +7,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
 {
     public interface IAppUserRepository : IGenericRepository<AppUser>
     {
-        Task<List<Permission>> GetPermisosAsync(Guid id);
+        Task<List<Permission>> GetPermissionList(Guid id);
     }
 }

@@ -66,9 +66,14 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<List<Permission>> GetPermisos(Guid id)
+        public async Task<AppUser> GetUserInfo(Guid id)
         {
-            return await _unitOfWork.AppUser.GetPermisosAsync(id);
+            return await _unitOfWork.AppUser.GetByIdAsync(id);
+        }
+
+        public async Task<List<Permission>> GetPermissionList(Guid id)
+        {
+            return await _unitOfWork.AppUser.GetPermissionList(id);
         }
     }
 }

@@ -29,16 +29,26 @@ namespace Market_Express.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
             ProfileViewModel oViewModel = new();
-            oViewModel.Name = User.FindFirstValue(ClaimTypes.Name);
-            oViewModel.Alias = User.FindFirstValue("Alias");
-            oViewModel.Identification = User.FindFirstValue("Identification");
-            oViewModel.Email = User.FindFirstValue(ClaimTypes.Email);
-            oViewModel.Phone = User.FindFirstValue(ClaimTypes.MobilePhone);
+
+            var oUser = await _accountService.GetUserInfo(CurrentUserId);
+
+            oViewModel.Name = oUser.Name;
+            oViewModel.Alias = oUser.Alias;
+            oViewModel.Identification = oUser.Identification;
+            oViewModel.Email = oUser.Email;
+            oViewModel.Phone = oUser.Phone;
 
             return View(oViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ChangePassword()
+        {
+            return View("Login");
         }
 
         [HttpGet]
@@ -59,7 +69,7 @@ namespace Market_Express.Web.Controllers
 
             if (oResult.Success) 
             {
-                var lstPermisos = await _accountService.GetPermisos(oUser.Id);
+                var lstPermisos = await _accountService.GetPermissionList(oUser.Id);
 
                 List<Claim> lstClaims = new();
 
@@ -106,5 +116,9 @@ namespace Market_Express.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        #region UTILIY
+        private Guid CurrentUserId => new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        #endregion
     }
 }
