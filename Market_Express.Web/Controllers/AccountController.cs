@@ -67,7 +67,7 @@ namespace Market_Express.Web.Controllers
 
             var oResult = _accountService.TryAuthenticate(ref oUser);
 
-            if (oResult.Success) 
+            if (oResult.Success)
             {
                 var lstPermisos = await _accountService.GetPermissionList(oUser.Id);
 
