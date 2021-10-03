@@ -1,71 +1,281 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿span.text-danger{
+    font-size: 13px;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+
+.form-control-original {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+@media (prefers-reduced-motion: reduce) {
+    .form-control-original {
+        transition: none;
+    }
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.form-control-original::-ms-expand {
+    background-color: transparent;
+    border: 0;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.form-control-original:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+.form-control-original::-webkit-input-placeholder {
+    color: #6c757d;
+    opacity: 1;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.form-control-original::-moz-placeholder {
+    color: #6c757d;
+    opacity: 1;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.form-control-original:-ms-input-placeholder {
+    color: #6c757d;
+    opacity: 1;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+.form-control-original::-ms-input-placeholder {
+    color: #6c757d;
+    opacity: 1;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+.form-control-original::placeholder {
+    color: #6c757d;
+    opacity: 1;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+.form-control-original:disabled, .form-control-original[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
+select.form-control-original:focus::-ms-value {
+    color: #495057;
+    background-color: #fff;
+}
+
+.form-control-original-file,
+.form-control-original-range {
+    display: block;
+    width: 100%;
+}
+
+
+.form-control-original-plaintext {
+    display: block;
+    width: 100%;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+    color: #212529;
+    background-color: transparent;
+    border: solid transparent;
+    border-width: 1px 0;
+}
+
+    .form-control-original-plaintext.form-control-original-sm, .form-control-original-plaintext.form-control-original-lg {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+.form-control-original-sm {
+    height: calc(1.5em + 0.5rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.form-control-original-lg {
+    height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+}
+
+select.form-control-original[size], select.form-control-original[multiple] {
+    height: auto;
+}
+
+textarea.form-control-original {
+    height: auto;
+}
+
+
+.was-validated .form-control-original:valid, .form-control-original.is-valid {
+    border-color: #28a745;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center right calc(0.375em + 0.1875rem);
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+    .was-validated .form-control-original:valid:focus, .form-control-original.is-valid:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .was-validated .form-control-original:valid ~ .valid-feedback,
+    .was-validated .form-control-original:valid ~ .valid-tooltip, .form-control-original.is-valid ~ .valid-feedback,
+    .form-control-original.is-valid ~ .valid-tooltip {
+        display: block;
+    }
+
+.was-validated textarea.form-control-original:valid, textarea.form-control-original.is-valid {
+    padding-right: calc(1.5em + 0.75rem);
+    background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
+}
+
+
+.was-validated .form-control-original-file:valid ~ .valid-feedback,
+.was-validated .form-control-original-file:valid ~ .valid-tooltip, .form-control-original-file.is-valid ~ .valid-feedback,
+.form-control-original-file.is-valid ~ .valid-tooltip {
+    display: block;
+}
+
+
+.was-validated .form-control-original:invalid, .form-control-original.is-invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23dc3545' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center right calc(0.375em + 0.1875rem);
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+    .was-validated .form-control-original:invalid:focus, .form-control-original.is-invalid:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .was-validated .form-control-original:invalid ~ .invalid-feedback,
+    .was-validated .form-control-original:invalid ~ .invalid-tooltip, .form-control-original.is-invalid ~ .invalid-feedback,
+    .form-control-original.is-invalid ~ .invalid-tooltip {
+        display: block;
+    }
+
+.was-validated textarea.form-control-original:invalid, textarea.form-control-original.is-invalid {
+    padding-right: calc(1.5em + 0.75rem);
+    background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
+}
+
+
+.was-validated .form-control-original-file:invalid ~ .invalid-feedback,
+.was-validated .form-control-original-file:invalid ~ .invalid-tooltip, .form-control-original-file.is-invalid ~ .invalid-feedback,
+.form-control-original-file.is-invalid ~ .invalid-tooltip {
+    display: block;
+}
+
+.form-inline .form-control-original {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+
+.form-inline .form-control-original-plaintext {
+    display: inline-block;
+}
+
+
+.input-group > .form-control-original,
+.input-group > .form-control-original-plaintext,
+.input-group > .custom-select,
+.input-group > .custom-file {
+    position: relative;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-bottom: 0;
+}
+
+
+    .input-group > .form-control-original + .form-control-original,
+    .input-group > .form-control-original + .custom-select,
+    .input-group > .form-control-original + .custom-file,
+    .input-group > .form-control-original-plaintext + .form-control-original,
+    .input-group > .form-control-original-plaintext + .custom-select,
+    .input-group > .form-control-original-plaintext + .custom-file,
+    .input-group > .custom-select + .form-control-original,
+    .input-group > .custom-select + .custom-select,
+    .input-group > .custom-select + .custom-file,
+    .input-group > .custom-file + .form-control-original,
+    .input-group > .custom-file + .custom-select,
+    .input-group > .custom-file + .custom-file {
+        margin-left: -1px;
+    }
+
+    .input-group > .form-control-original:focus,
+    .input-group > .custom-select:focus,
+    .input-group > .custom-file .custom-file-input:focus ~ .custom-file-label {
+        z-index: 3;
+    }
+
+
+    .input-group > .form-control-original:not(:last-child),
+    .input-group > .custom-select:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .input-group > .form-control-original:not(:first-child),
+    .input-group > .custom-select:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+
+.input-group-lg > .form-control-original:not(textarea),
+.input-group-lg > .custom-select {
+    height: calc(1.5em + 1rem + 2px);
+}
+
+.input-group-lg > .form-control-original,
+.input-group-lg > .custom-select,
+.input-group-lg > .input-group-prepend > .input-group-text,
+.input-group-lg > .input-group-append > .input-group-text,
+.input-group-lg > .input-group-prepend > .btn,
+.input-group-lg > .input-group-append > .btn {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+}
+
+.input-group-sm > .form-control-original:not(textarea),
+.input-group-sm > .custom-select {
+    height: calc(1.5em + 0.5rem + 2px);
+}
+
+.input-group-sm > .form-control-original,
+.input-group-sm > .custom-select,
+.input-group-sm > .input-group-prepend > .input-group-text,
+.input-group-sm > .input-group-append > .input-group-text,
+.input-group-sm > .input-group-prepend > .btn,
+.input-group-sm > .input-group-append > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
 }
