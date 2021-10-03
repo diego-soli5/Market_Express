@@ -65,11 +65,11 @@
                             <div class="widget-header icontext">
                                 <a asp-area="" asp-controller="Account" asp-action="Profile" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
                                 <div class="text">
-                                    <span class="text-muted">Bienvenido!</span>
                                     <div>
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                            <a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a>
+                                            <p class="text-muted d-inline">Bienvenido <span id="usrAlias" class="d-inline"></span>!</p>
+                                            <a asp-area="" asp-controller="Account" asp-action="Logout" class="d-block">Cerrar Sesión</a>
                                         }
                                         else
                                         {
@@ -160,9 +160,13 @@
     <script>
         $(function () {
 
-            fetch('@Url.Action("GetCartArticlesCount", "Cart", new { area = "Client" })', { method: 'GET' })
-                .then(response => response.text())
+            fetch('/Client/Cart/GetCartArticlesCount', { method: 'GET' })
+            .then(response => response.text())
                 .then(text => $("#cartArticlesCount").html(text));
+
+            fetch('/Account/GetUserAlias', { method: 'GET' })
+                .then(response => response.text())
+                .then(text => $("#usrAlias").html(text));
         });
     </script>
 </body>

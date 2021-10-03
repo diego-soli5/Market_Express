@@ -17,7 +17,7 @@
                         <dt class="col-md-3">Nombre</dt>
                         <dd class="col-md-9"><p>@Model.Name</p></dd>
                         <dt class="col-md-3">Alias</dt>
-                        <dd class="col-md-9"><p>@Model.Alias</p></dd>
+                        <dd class="col-md-9"><p id="usrAlias">@(Model.Alias ?? " ")</p></dd>
                         <dt class="col-md-3">Cedula</dt>
                         <dd class="col-md-9"><p>@Model.Identification</p></dd>
                         <dt class="col-md-3">Email</dt>
@@ -35,7 +35,7 @@
                             <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
                         </dd>
                         <dd class="col-12">
-                            <a href="#" id="btnChangeAlias">Cambiar Alias</a>
+                            <a href="#" id="btnChangeAlias"  data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a>
                         </dd>
                     </dl>
                 </div>

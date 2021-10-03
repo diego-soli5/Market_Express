@@ -7,6 +7,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
 {
     public interface IAccountService
     {
+        Task<BusisnessResult> TryChangeAlias(Guid userId, string alias);
         Task<BusisnessResult> TryChangePassword(Guid userId, string currentPass, string newPass, string newPassConf);
         BusisnessResult TryAuthenticate(ref AppUser usuarioRequest);
         Task<List<Permission>> GetPermissionList(Guid id);

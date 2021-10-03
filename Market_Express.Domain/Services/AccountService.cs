@@ -24,6 +24,40 @@ namespace Market_Express.Domain.Services
             _mailService = mailService;
         }
 
+        public async Task<BusisnessResult> TryChangeAlias(Guid userId, string alias)
+        {
+            BusisnessResult oResult = new();
+
+            if (string.IsNullOrWhiteSpace(alias))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            if(alias.Trim().Length > 10)
+            {
+                oResult.Message = "El alias no puede superar 10 caracteres.";
+
+                return oResult;
+            }
+
+            var oUser = await _unitOfWork.AppUser.GetByIdAsync(userId);
+
+            if (oUser == null)
+            {
+                oResult.Message = "Usuario no existe.";
+
+                return oResult;
+            }
+
+            oUser.Alias = alias.Trim();
+
+            oResult.Success = true;
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> TryChangePassword(Guid userId, string currentPass, string newPass, string newPassConf)
         {
             BusisnessResult oResult = new();

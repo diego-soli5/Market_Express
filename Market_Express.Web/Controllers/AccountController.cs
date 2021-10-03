@@ -44,17 +44,6 @@ namespace Market_Express.Web.Controllers
             return View(oViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
-        {
-            var oResult = await _accountService.TryChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation);
-
-            if (oResult.Success)
-                return Ok(oResult);
-            else
-                return BadRequest(oResult);
-        }
-
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string returnUrl)
@@ -124,6 +113,17 @@ namespace Market_Express.Web.Controllers
         }
 
         #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
+        {
+            var oResult = await _accountService.TryChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation);
+
+            if (oResult.Success)
+                return Ok(oResult);
+            else
+                return BadRequest(oResult);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetUserAlias()
         {
@@ -133,6 +133,17 @@ namespace Market_Express.Web.Controllers
             var oUser = await _accountService.GetUserInfo(CurrentUserId);
 
             return Content(oUser.Alias);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeAlias(string alias)
+        {
+            var oResult = await _accountService.TryChangeAlias(CurrentUserId, alias);
+
+            if (oResult.Success)
+                return Ok(oResult);
+            else
+                return BadRequest(oResult);
         }
         #endregion
     }
