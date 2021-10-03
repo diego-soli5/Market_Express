@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
@@ -121,9 +121,5 @@ namespace Market_Express.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-        #region UTILIY
-        private Guid CurrentUserId => new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        #endregion
     }
 }

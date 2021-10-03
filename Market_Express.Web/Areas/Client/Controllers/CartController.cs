@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace Market_Express.Web.Areas.Client.Controllers
 {
     [Area("Client")]
-    public class CartController : Controller
+    public class CartController : BaseController
     {
         private readonly ICartService _cartService;
 

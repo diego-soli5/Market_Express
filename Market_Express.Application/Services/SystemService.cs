@@ -77,6 +77,7 @@ namespace Market_Express.Application.Services
                                 oClientDb.AppUser.Phone ??= oClientPOS.AppUser.Phone?.Trim();
 
                                 oClientDb.AppUser.ModifiedBy = SystemConstants.SYSTEM;
+                                oClientDb.AppUser.ModificationDate = DateTimeUtility.NowCostaRica;
 
                                 _unitOfWork.AppUser.Update(oClientDb.AppUser);
 
@@ -167,6 +168,7 @@ namespace Market_Express.Application.Services
 
                                 oArticleDb.Price = oArticlePOS.Price;
                                 oArticleDb.ModifiedBy = SystemConstants.SYSTEM;
+                                oArticleDb.ModificationDate = DateTimeUtility.NowCostaRica;
 
                                 _unitOfWork.Article.Update(oArticleDb);
 
