@@ -1,6 +1,6 @@
 using System;
 
-namespace Market_Express.Web.Models
+namespace Market_Express.Web.ViewModels
 {
     public class ErrorViewModel
     {

@@ -3,6 +3,8 @@ var txtCurrentPass = document.querySelector("#currentPass");
 var txtNewPass = document.querySelector("#newPass");
 var txtNewPassConfirmation = document.querySelector("#newPassConfirmation");
 
+var btnChangeAlias = document.querySelector("#btnChangeAlias");
+
 frmChangePass.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -27,3 +29,11 @@ frmChangePass.addEventListener("submit", function (e) {
         });
 });
 
+btnChangeAlias.addEventListener("click", function (e) {
+    const url = "/Account/GetUserAlias";
+    const body = new FormData(frmChangePass);
+
+    fetch(url, { body: body, method: 'GET' })
+        .then(response => response.text())
+        .then(text => $("#txtAlias").val(text));
+});

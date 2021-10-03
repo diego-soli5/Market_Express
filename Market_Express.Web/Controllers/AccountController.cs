@@ -54,6 +54,7 @@ namespace Market_Express.Web.Controllers
             else
                 return BadRequest(oResult);
         }
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string returnUrl)
@@ -63,6 +64,7 @@ namespace Market_Express.Web.Controllers
 
             return View();
         }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO oModel, string returnUrl)
@@ -120,5 +122,18 @@ namespace Market_Express.Web.Controllers
 
             return RedirectToAction(nameof(Login));
         }
+
+        #region API CALLS
+        [HttpGet]
+        public async Task<IActionResult> GetUserAlias()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return Content("");
+
+            var oUser = await _accountService.GetUserInfo(CurrentUserId);
+
+            return Content(oUser.Alias);
+        }
+        #endregion
     }
 }

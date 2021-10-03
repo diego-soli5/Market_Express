@@ -1,4 +1,4 @@
-﻿using Market_Express.Web.Models;
+﻿using Market_Express.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
