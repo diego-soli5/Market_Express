@@ -53,7 +53,11 @@ namespace Market_Express.Domain.Services
 
             oUser.Alias = alias.Trim();
 
-            oResult.Success = true;
+            _unitOfWork.AppUser.Update(oUser);
+
+            oResult.Message = "El alias ha cambiado.";
+
+            oResult.Success = await _unitOfWork.Save();
 
             return oResult;
         }
