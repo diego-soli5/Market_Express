@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Web.Controllers
 {
+    [Authorize]
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
@@ -27,7 +28,6 @@ namespace Market_Express.Web.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
@@ -44,7 +44,6 @@ namespace Market_Express.Web.Controllers
             return View(oViewModel);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
         {
@@ -55,7 +54,7 @@ namespace Market_Express.Web.Controllers
             else
                 return BadRequest(oResult);
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
@@ -64,7 +63,7 @@ namespace Market_Express.Web.Controllers
 
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO oModel, string returnUrl)
         {
@@ -119,7 +118,7 @@ namespace Market_Express.Web.Controllers
         {
             await HttpContext.SignOutAsync();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Login));
         }
     }
 }

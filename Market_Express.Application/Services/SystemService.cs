@@ -144,7 +144,7 @@ namespace Market_Express.Application.Services
 
             var lstArticlesFromDb = _unitOfWork.Article.GetAll().ToList();
 
-            foreach(var oArticlePOS in lstArticlesToSync)
+            foreach (var oArticlePOS in lstArticlesToSync)
             {
                 bIsNew = true;
 
@@ -163,7 +163,7 @@ namespace Market_Express.Application.Services
                                 if (!_articuloValidations.ExistsCodigoBarras())
                                     oArticleDb.BarCode ??= oArticlePOS.BarCode.Trim();
 
-                                if(oArticleDb.AutoSyncDescription)
+                                if (oArticleDb.AutoSyncDescription)
                                     oArticleDb.Description ??= oArticlePOS.Description.Trim();
 
                                 oArticleDb.Price = oArticlePOS.Price;
