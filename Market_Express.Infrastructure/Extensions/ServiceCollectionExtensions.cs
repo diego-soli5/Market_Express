@@ -9,6 +9,7 @@ using Market_Express.Domain.EntityValidations;
 using Market_Express.Domain.Services;
 using Market_Express.Infrastructure.Data;
 using Market_Express.Infrastructure.Data.Repositories;
+using Market_Express.Infrastructure.EmailServices;
 using Market_Express.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IAuthenticationService), typeof(AuthenticationService));
 
             services.AddScoped(typeof(IPasswordService), typeof(PasswordService));
+
+            services.AddScoped(typeof(IBusisnessMailService), typeof(BusisnessMailService));
         }
 
         public static void AddValidations(this IServiceCollection services)
@@ -60,6 +63,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<AuthenticationOptions>(configuration.GetSection("Options:AuthenticationOptions"));
 
             services.Configure<PasswordOptions>(configuration.GetSection("Options:PasswordOptions"));
+
+            services.Configure<EmailServicesOptions>(configuration.GetSection("Options:EmailServicesOptions"));
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)

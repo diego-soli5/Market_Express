@@ -1,4 +1,4 @@
-﻿namespace Market_Express.Application.DTOs.Access
+﻿namespace Market_Express.Application.DTOs.Account
 {
     public class LoginRequestDTO
     {

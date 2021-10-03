@@ -13,12 +13,60 @@ namespace Market_Express.Domain.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordService _passwordService;
+        private readonly IBusisnessMailService _mailService;
 
         public AccountService(IUnitOfWork unitOfWork,
-                              IPasswordService passwordService)
+                              IPasswordService passwordService,
+                              IBusisnessMailService mailService)
         {
             _unitOfWork = unitOfWork;
             _passwordService = passwordService;
+            _mailService = mailService;
+        }
+
+        public async Task<BusisnessResult> TryChangePassword(Guid userId, string currentPass, string newPass, string newPassConf)
+        {
+            BusisnessResult oResult = new();
+
+            if (string.IsNullOrWhiteSpace(currentPass) || string.IsNullOrWhiteSpace(newPass) || string.IsNullOrWhiteSpace(newPassConf))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            var oUser = await _unitOfWork.AppUser.GetByIdAsync(userId);
+
+            if (!_passwordService.Check(oUser.Password, currentPass))
+            {
+                oResult.Message = "La contraseña es incorrecta.";
+
+                return oResult;
+            }
+
+            if (newPass.Trim() != newPassConf.Trim())
+            {
+                oResult.Message = "Las contraseñas no coinciden.";
+
+                return oResult;
+            }
+
+            if (newPass.Trim().Length < 5)
+            {
+                oResult.Message = "La contraseña debe contener al menos 5 caracteres.";
+
+                return oResult;
+            }
+
+            string ecnPass = _passwordService.Hash(newPass);
+
+            oUser.Password = ecnPass;
+
+            _unitOfWork.AppUser.Update(oUser);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            return oResult;
         }
 
         public BusisnessResult TryAuthenticate(ref AppUser oUserRequest)
@@ -28,7 +76,7 @@ namespace Market_Express.Domain.Services
             string sRequestEmail = oUserRequest?.Email?.Trim();
             string sRequestPass = oUserRequest?.Password?.Trim();
 
-            if(string.IsNullOrEmpty(sRequestEmail)|| string.IsNullOrEmpty(sRequestPass))
+            if (string.IsNullOrEmpty(sRequestEmail) || string.IsNullOrEmpty(sRequestPass))
             {
                 oResult.Message = "Correo Electrónico y/o contraseña incorrectos.";
 
@@ -43,7 +91,7 @@ namespace Market_Express.Domain.Services
                 oResult.Message = "Correo Electrónico y/o contraseña incorrectos.";
 
                 return oResult;
-            }  
+            }
 
             if (!_passwordService.Check(oUsuarioDB.Password, sRequestPass))
             {

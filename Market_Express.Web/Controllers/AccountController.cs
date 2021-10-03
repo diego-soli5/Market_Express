@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Market_Express.Application.DTOs.Access;
+using Market_Express.Application.DTOs.Account;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
 using Market_Express.Web.ViewModels.Account;
@@ -46,9 +46,14 @@ namespace Market_Express.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
         {
-            return View("Login");
+            var oResult = await _accountService.TryChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation);
+
+            if (oResult.Success)
+                return Ok(oResult);
+            else
+                return BadRequest(oResult);
         }
 
         [HttpGet]
