@@ -37,6 +37,13 @@ namespace Market_Express.Domain.Services
 
             var oUser = await _unitOfWork.AppUser.GetByIdAsync(userId);
 
+            if (oUser == null)
+            {
+                oResult.Message = "Usuario no existe.";
+
+                return oResult;
+            }
+
             if (!_passwordService.Check(oUser.Password, currentPass))
             {
                 oResult.Message = "La contraseña es incorrecta.";
@@ -58,13 +65,15 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            string ecnPass = _passwordService.Hash(newPass);
+            string ecnPass = _passwordService.Hash(newPass.Trim());
 
             oUser.Password = ecnPass;
 
             _unitOfWork.AppUser.Update(oUser);
 
             oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "La contraseña ha cambiado";
 
             _mailService.SendMail("Market Express", "Su contraseña ha cambiado.", oUser.Email);
 
