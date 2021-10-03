@@ -78,7 +78,7 @@ namespace Market_Express.Domain.Services
             #pragma warning disable CS4014 // El envío del correo se ejecuta en 1 hilo alterno
             Task.Run(() =>
             {
-                _mailService.SendMail("Market Express", "Su contraseña ha cambiado. 2", oUser.Email);
+                _mailService.SendMail("Market Express", "Su contraseña ha cambiado.", oUser.Email);
             });
             #pragma warning restore CS4014 
 

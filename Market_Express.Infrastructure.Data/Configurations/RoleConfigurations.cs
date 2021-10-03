@@ -14,6 +14,17 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
+            builder.Property(e => e.ModificationDate).HasColumnType("datetime");
+
+            builder.Property(e => e.ModifiedBy)
+                .HasMaxLength(12)
+                .IsUnicode(false);
+
+            builder.Property(e => e.AddedBy)
+                .HasMaxLength(12)
+                .IsRequired()
+                .IsUnicode(false);
+
             builder.Property(e => e.Description)
                 .HasMaxLength(200)
                 .IsUnicode(false);

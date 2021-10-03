@@ -24,6 +24,8 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
+            builder.Property(e => e.ModificationDate).HasColumnType("datetime");
+
             builder.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(40)

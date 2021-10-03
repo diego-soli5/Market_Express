@@ -25,6 +25,5 @@ frmChangePass.addEventListener("submit", function (e) {
                 txtNewPassConfirmation.value = "";
             }
         });
-
 });
 

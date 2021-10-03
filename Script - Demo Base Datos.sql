@@ -41,7 +41,8 @@ CREATE TABLE [dbo].[AppUser](
 	[Type] [varchar](15) NOT NULL,
 	[Status] [varchar](11) NOT NULL,
 	[CreationDate] [datetime] NOT NULL,
-	[AddedBy] [varchar](12) NULL,
+	[ModificationDate] [datetime] NULL,
+	[AddedBy] [varchar](12) NOT NULL,
 	[ModifiedBy] [varchar](12) NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -88,8 +89,9 @@ CREATE TABLE [dbo].[Article](
 	[AutoSyncDescription] [bit] NOT NULL,
 	[Status] [varchar](11) NOT NULL,
 	[CreationDate] [datetime] NOT NULL,
-	[AddedBy] [varchar](12) NULL,
-	[ModifiedBy] [varchar](12) NULL,
+	[ModificationDate] [datetime] NULL,
+	[AddedBy] [varchar](40) NOT NULL,
+	[ModifiedBy] [varchar](40) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -177,8 +179,9 @@ CREATE TABLE [dbo].[Category](
 	[Status] [varchar](11) NOT NULL,
 	[Image] [varchar](30) NULL,
 	[CreationDate] [datetime] NOT NULL,
-	[AddedBy] [varchar](12) NULL,
-	[ModifiedBy] [varchar](12) NULL,
+	[ModificationDate] [datetime] NULL,
+	[AddedBy] [varchar](40) NOT NULL,
+	[ModifiedBy] [varchar](40) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -249,6 +252,9 @@ CREATE TABLE [dbo].[Role](
 	[Name] [varchar](30) NOT NULL,
 	[Description] [varchar](200) NULL,
 	[CreationDate] [datetime] NOT NULL,
+	[ModificationDate] [datetime] NULL,
+	[AddedBy] [varchar](40) NOT NULL,
+	[ModifiedBy] [varchar](40) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

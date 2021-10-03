@@ -7,7 +7,7 @@ using Market_Express.CrossCutting.Response;
 using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.Validations;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
-using System;
+using Market_Express.CrossCutting.Utility;
 using System.Linq;
 
 namespace Market_Express.Application.Services
@@ -102,8 +102,7 @@ namespace Market_Express.Application.Services
                             !_usuarioValidations.ExistsEmail())
                         {
                             oClientPOS.AutoSync = false;
-                            oClientPOS.AppUser.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
-                                                            TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
+                            oClientPOS.AppUser.CreationDate = DateTimeUtility.NowCostaRica;
                             oClientPOS.AppUser.Status = AppUserConstants.ACTIVADO;
                             oClientPOS.AppUser.AddedBy = SystemConstants.SYSTEM;
                             oClientPOS.AppUser.Password = _passwordService.Hash(oClientPOS.AppUser.IdentificationWithoutHypens);
@@ -142,9 +141,8 @@ namespace Market_Express.Application.Services
             int iUpdated = 0;
 
 
-            var lstArticlesFromDb = (_unitOfWork.Article.GetAll()).ToList();
+            var lstArticlesFromDb = _unitOfWork.Article.GetAll().ToList();
 
-            //lstArticlesToSync.ForEach(oArticlePOS =>
             foreach(var oArticlePOS in lstArticlesToSync)
             {
                 bIsNew = true;
@@ -192,8 +190,7 @@ namespace Market_Express.Application.Services
                         {
                             oArticlePOS.AutoSync = true;
                             oArticlePOS.AutoSyncDescription = true;
-                            oArticlePOS.CreationDate = TimeZoneInfo.ConvertTime(DateTime.Now,
-                                                            TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time"));
+                            oArticlePOS.CreationDate = DateTimeUtility.NowCostaRica;
                             oArticlePOS.Status = ArticleConstants.ACTIVADO;
                             oArticlePOS.AddedBy = SystemConstants.SYSTEM;
 
@@ -201,7 +198,7 @@ namespace Market_Express.Application.Services
                         }
                     }
                 }
-            }//);
+            }
 
             iAdded = lstArticlesToAdd.Count;
 

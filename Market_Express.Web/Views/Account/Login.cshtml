@@ -159,9 +159,10 @@
 
     <script>
         $(function () {
-            $.get('@Url.Action("GetCartArticlesCount", "Cart", new { area = "Client" })', function (content) {
-                $("#cartArticlesCount").html(content);
-            })
+
+            fetch('@Url.Action("GetCartArticlesCount", "Cart", new { area = "Client" })', { method: 'GET' })
+                .then(response => response.text())
+                .then(text => $("#cartArticlesCount").html(text));
         });
     </script>
 </body>
