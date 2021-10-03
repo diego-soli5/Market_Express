@@ -66,6 +66,8 @@ namespace Market_Express.Domain.Services
 
             oResult.Success = await _unitOfWork.Save();
 
+            _mailService.SendMail("Market Express", "Su contraseña ha cambiado.", oUser.Email);
+
             return oResult;
         }
 

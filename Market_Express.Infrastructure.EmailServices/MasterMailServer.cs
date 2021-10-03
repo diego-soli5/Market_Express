@@ -15,6 +15,16 @@ namespace Market_Express.Infrastructure.EmailServices
             _options = options.Value;
         }
 
+        public void SendMail(string subject, string body, string receiverMail)
+        {
+            var receiversMails = new List<string>
+            {
+                receiverMail
+            };
+
+            SendMail(subject, body, receiversMails);
+        }
+
         public void SendMail(string subject, string body, List<string> receiversMails)
         {
             using (var smtpClient = new SmtpClient())
