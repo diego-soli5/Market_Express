@@ -1,3 +1,6 @@
+USE MARKET_EXPRESS
+GO
+
 -- Obtiene los permisos del usuario segun los roles asignados
 CREATE PROCEDURE Sp_AppUser_GetPermissions
 (
@@ -45,4 +48,38 @@ BEGIN
 END;
 GO
 
+CREATE TRIGGER TRG_Article_Insert_RegMovement
+ON Article
+FOR INSERT
+AS
+BEGIN
+	DECLARE curArticles CURSOR FOR SELECT i.Id,
+										  i.CategoryId,
+										  i.Description,
+										  i.BarCode,
+										  i.Price,
+										  i.Image,
+										  i.AutoSync,
+										  i.AutoSyncDescription,
+										  i.Status,
+										  i.CreationDate,
+										  i.ModificationDate,
+										  i.AddedBy,
+										  i.ModifiedBy
+								   FROM inserted i;
+	
+	DECLARE @Description VARCHAR(255);
+	DECLARE @BarCode VARCHAR(255);
+	DECLARE @AddedBy VARCHAR(40);
+	DECLARE @CreationDate DATETIME;
 
+	OPEN curArticles
+	FETCH NEXT FROM curArticles INTO @Description, @BarCode, @AddedBy, @CreationDate
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT ' + 'Articulo ' + @Description + ' | '+@BarCode);
+	END
+	CLOSE curArticles
+END;
+GO
