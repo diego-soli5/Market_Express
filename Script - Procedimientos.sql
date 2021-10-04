@@ -53,28 +53,19 @@ ON Article
 FOR INSERT
 AS
 BEGIN
-	DECLARE curArticles CURSOR FOR SELECT i.Id,
-										  i.CategoryId,
-										  i.Description,
+	DECLARE curArticles CURSOR FOR SELECT i.Description,
 										  i.BarCode,
-										  i.Price,
-										  i.Image,
-										  i.AutoSync,
-										  i.AutoSyncDescription,
-										  i.Status,
 										  i.CreationDate,
-										  i.ModificationDate,
-										  i.AddedBy,
-										  i.ModifiedBy
+										  i.AddedBy
 								   FROM inserted i;
 	
 	DECLARE @Description VARCHAR(255);
 	DECLARE @BarCode VARCHAR(255);
-	DECLARE @AddedBy VARCHAR(40);
 	DECLARE @CreationDate DATETIME;
+	DECLARE @AddedBy VARCHAR(40);
 
 	OPEN curArticles
-	FETCH NEXT FROM curArticles INTO @Description, @BarCode, @AddedBy, @CreationDate
+	FETCH NEXT FROM curArticles INTO @Description, @BarCode, @CreationDate, @AddedBy
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
@@ -83,3 +74,4 @@ BEGIN
 	CLOSE curArticles
 END;
 GO
+

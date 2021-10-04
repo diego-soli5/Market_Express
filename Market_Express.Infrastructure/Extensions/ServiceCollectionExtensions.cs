@@ -71,7 +71,11 @@ namespace Market_Express.Infrastructure.Extensions
         {
             services.AddDbContext<MARKET_EXPRESSContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("Local_Desa"));
+                options.UseSqlServer(configuration.GetConnectionString("Local_Desa"), sqlServerOptions =>
+                {
+                    sqlServerOptions.CommandTimeout(900);
+                });
+                
             });
         }
 
