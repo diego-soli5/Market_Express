@@ -69,9 +69,12 @@ BEGIN
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT ' + 'Articulo ' + @Description + ' | '+@BarCode);
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Articulo ' + @Description + ' | '+@BarCode);
+
+		FETCH NEXT FROM curArticles INTO @Description, @BarCode, @CreationDate, @AddedBy
 	END
 	CLOSE curArticles
+	DEALLOCATE curArticles
 END;
 GO
 
