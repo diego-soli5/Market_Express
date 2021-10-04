@@ -125,7 +125,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Binnacle_Movement](
 	[Id] [uniqueidentifier] NOT NULL,
-	[AppUserId] [uniqueidentifier] NOT NULL,
+	[PerformedBy] [varchar](40) NOT NULL, --Se elimina la relacion FK con la tb AppUser para poder incluir los movimientos de SYSTEM
 	[MovementDate] [datetime] NOT NULL,
 	[Type] [varchar](10) NOT NULL,
 	[Detail] [varchar](100) NOT NULL,
@@ -336,9 +336,6 @@ ALTER TABLE [dbo].[Article]  WITH CHECK ADD FOREIGN KEY([CategoryId])
 REFERENCES [dbo].[Category] ([Id])
 GO
 ALTER TABLE [dbo].[Binnacle_Access]  WITH CHECK ADD FOREIGN KEY([AppUserId])
-REFERENCES [dbo].[AppUser] ([Id])
-GO
-ALTER TABLE [dbo].[Binnacle_Movement]  WITH CHECK ADD FOREIGN KEY([AppUserId])
 REFERENCES [dbo].[AppUser] ([Id])
 GO
 ALTER TABLE [dbo].[Cart]  WITH CHECK ADD FOREIGN KEY([ClientId])

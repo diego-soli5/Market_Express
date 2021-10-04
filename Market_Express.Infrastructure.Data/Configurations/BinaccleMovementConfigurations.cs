@@ -17,18 +17,17 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(100)
                 .IsUnicode(false);
 
+            builder.Property(e => e.PerformedBy)
+                .IsRequired()
+                .HasMaxLength(40)
+                .IsUnicode(false);
+
             builder.Property(e => e.MovementDate).HasColumnType("datetime");
 
             builder.Property(e => e.Type)
                 .IsRequired()
                 .HasMaxLength(10)
                 .IsUnicode(false);
-
-            builder.HasOne(d => d.AppUser)
-                .WithMany(p => p.BinnacleMovements)
-                .HasForeignKey(d => d.AppUserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Binnacle___AppUs__47DBAE45");
         }
     }
 }
