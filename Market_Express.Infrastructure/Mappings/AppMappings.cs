@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.Account;
+using Market_Express.Application.DTOs.Address;
+using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Application.DTOs.System;
 using Market_Express.Domain.Entities;
 
@@ -12,6 +14,7 @@ namespace Market_Express.Infrastructure.Mappings
             CreateArticleMappings();
             CreateClientMappings();
             CreateAppUserMappings();
+            CreateAddressMappings();
         }
 
         private void CreateArticleMappings()
@@ -37,6 +40,15 @@ namespace Market_Express.Infrastructure.Mappings
             CreateMap<AppUser, LoginRequestDTO>()
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ReverseMap();
+
+            CreateMap<AppUser, AppUserProfileDTO>()
+                .ReverseMap();
+        }
+
+        private void CreateAddressMappings()
+        {
+            CreateMap<Address, AddressDTO>()
                 .ReverseMap();
         }
     }

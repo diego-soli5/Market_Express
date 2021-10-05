@@ -51,6 +51,23 @@ BEGIN
 END;
 GO
 
+--Obtiene las direcciones del cliente por Id de usuario
+CREATE PROCEDURE Sp_Address_GetAllByClient
+(
+	@UserId UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	SELECT ad.Id,
+		   ad.Name,
+		   ad.Detail
+	FROM AppUser a, Client c, Address ad
+	WHERE a.Id = @UserId
+	AND c.AppUserId = a.Id
+	AND ad.ClientId = c.Id
+END;
+GO
+
 --Registra movimiento de insercion en la tb Article
 CREATE TRIGGER TRG_Article_Insert_RegMovement
 ON Article

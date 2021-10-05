@@ -15,15 +15,15 @@
                     <dl class="row">
 
                         <dt class="col-md-3">Nombre</dt>
-                        <dd class="col-md-9"><p>@Model.Name</p></dd>
+                        <dd class="col-md-9"><p>@Model.AppUser.Name</p></dd>
                         <dt class="col-md-3">Alias</dt>
-                        <dd class="col-md-9"><p id="usrAlias">@(Model.Alias ?? " ")</p></dd>
+                        <dd class="col-md-9"><p id="usrAlias">@(Model.AppUser.Alias ?? " ")</p></dd>
                         <dt class="col-md-3">Cedula</dt>
-                        <dd class="col-md-9"><p>@Model.Identification</p></dd>
+                        <dd class="col-md-9"><p>@Model.AppUser.Identification</p></dd>
                         <dt class="col-md-3">Email</dt>
-                        <dd class="col-md-9"><p>@Model.Email</p></dd>
+                        <dd class="col-md-9"><p>@Model.AppUser.Email</p></dd>
                         <dt class="col-md-3">Teléfono</dt>
-                        <dd class="col-md-9"><p>@Model.Phone</p></dd>
+                        <dd class="col-md-9"><p>@Model.AppUser.Phone</p></dd>
                         <dt class="col-md-3">Contraseña</dt>
                         <dd class="col-md-9"><p>************</p></dd>
                     </dl>

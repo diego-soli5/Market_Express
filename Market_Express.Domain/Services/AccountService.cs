@@ -35,7 +35,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(alias.Trim().Length > 10)
+            if (alias.Trim().Length > 10)
             {
                 oResult.Message = "El alias no puede superar 10 caracteres.";
 
@@ -113,12 +113,12 @@ namespace Market_Express.Domain.Services
 
             oResult.Message = "La contraseña ha cambiado";
 
-            #pragma warning disable CS4014 // El envío del correo se ejecuta en 1 hilo alterno
+#pragma warning disable CS4014 // El envío del correo se ejecuta en 1 hilo alterno
             Task.Run(() =>
             {
                 _mailService.SendMail("Market Express", "Su contraseña ha cambiado.", oUser.Email);
             });
-            #pragma warning restore CS4014 
+#pragma warning restore CS4014
 
             return oResult;
         }
@@ -171,6 +171,11 @@ namespace Market_Express.Domain.Services
         public async Task<AppUser> GetUserInfo(Guid id)
         {
             return await _unitOfWork.AppUser.GetByIdAsync(id);
+        }
+
+        public IEnumerable<Address> GetAddressList(Guid id)
+        {
+            return _unitOfWork.Address.GetAllByUserId(id);
         }
 
         public async Task<List<Permission>> GetPermissionList(Guid id)

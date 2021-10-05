@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.Account;
+using Market_Express.Application.DTOs.Address;
+using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
 using Market_Express.Web.ViewModels.Account;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -34,12 +37,15 @@ namespace Market_Express.Web.Controllers
             ProfileViewModel oViewModel = new();
 
             var oUser = await _accountService.GetUserInfo(CurrentUserId);
+            var lstAddress = _accountService.GetAddressList(CurrentUserId);
 
-            oViewModel.Name = oUser.Name;
-            oViewModel.Alias = oUser.Alias;
-            oViewModel.Identification = oUser.Identification;
-            oViewModel.Email = oUser.Email;
-            oViewModel.Phone = oUser.Phone;
+            lstAddress.ToList().ForEach(add =>
+            {
+                oViewModel.Addresses.Add(_mapper.Map<AddressDTO>(add));
+            });
+
+            oViewModel.AppUser = _mapper.Map<AppUserProfileDTO>(oUser);
+            
 
             return View(oViewModel);
         }

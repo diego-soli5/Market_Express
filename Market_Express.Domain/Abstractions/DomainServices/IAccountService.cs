@@ -10,6 +10,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<BusisnessResult> TryChangeAlias(Guid userId, string alias);
         Task<BusisnessResult> TryChangePassword(Guid userId, string currentPass, string newPass, string newPassConf);
         BusisnessResult TryAuthenticate(ref AppUser usuarioRequest);
+        IEnumerable<Address> GetAddressList(Guid id);
         Task<List<Permission>> GetPermissionList(Guid id);
         Task<AppUser> GetUserInfo(Guid id);
     }
