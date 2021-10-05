@@ -51,6 +51,7 @@ BEGIN
 END;
 GO
 
+--Registra movimiento de insercion en la tb Article
 CREATE TRIGGER TRG_Article_Insert_RegMovement
 ON Article
 FOR INSERT
@@ -81,7 +82,7 @@ BEGIN
 END;
 GO
 
-
+--Registra movimiento de actualizacion en la tb Article
 CREATE TRIGGER TRG_Article_Update_RegMovement
 ON Article
 FOR UPDATE
