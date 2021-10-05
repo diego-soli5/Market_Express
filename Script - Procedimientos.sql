@@ -40,7 +40,10 @@ BEGIN
 	BEGIN
 		IF (SELECT Status FROM Cart WHERE Id = @vCartId) = 'ABIERTO'
 		BEGIN
-			SET @vCount = (SELECT SUM(Quantity) FROM Cart_Detail WHERE CartId = @vCartId);
+			IF (SELECT COUNT(1) FROM Cart_Detail WHERE CartId = @vCartId) > 0
+			BEGIN
+				SET @vCount = (SELECT SUM(Quantity) FROM Cart_Detail WHERE CartId = @vCartId);
+			END
 		END
 	END 
 
@@ -108,3 +111,5 @@ BEGIN
 	DEALLOCATE curArticles
 END;
 GO
+
+
