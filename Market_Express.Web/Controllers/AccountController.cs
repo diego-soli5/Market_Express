@@ -119,6 +119,21 @@ namespace Market_Express.Web.Controllers
         }
 
         #region API CALLS
+        [HttpGet]
+        public async Task<IActionResult> GetAddressInfo(Guid addressId)
+        {
+            return Ok(new
+            {
+                success = true,
+                data = new
+                {
+                    id = Guid.NewGuid(),
+                    name = "Direccion1",
+                    detail = "Lorem ipsum doloris anoris dual"
+                }
+            });
+        }
+
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
         {

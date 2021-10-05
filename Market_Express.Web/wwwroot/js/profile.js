@@ -15,6 +15,7 @@ function bindAddressEvts() {
     var lblTitle = document.querySelector("#lblAddressTitle");
     var txtName = document.querySelector("#name");
     var txtDetail = document.querySelector("#detail");
+    var hdfrmAddressId = document.querySelector("#hdfrmAddressId");
 
     lstBtnPostAddress.forEach(btn => {
         btn.addEventListener("click", function (e) {
@@ -26,6 +27,14 @@ function bindAddressEvts() {
 
             lblTitle.innerHTML = "Agregar Dirección";
             frmAddress.setAttribute("data-mode", "POST");
+        });
+    });
+
+    lstBtnPutAddress.forEach(btn => {
+        btn.addEventListener("click", function (e) {
+
+            lblTitle.innerHTML = "Editar Dirección";
+            frmAddress.setAttribute("data-mode", "PUT");
 
             const url = "/Account/GetAddressInfo";
 
@@ -33,21 +42,14 @@ function bindAddressEvts() {
                 .then(response => response.json())
                 .then(json => {
                     if (json.success) {
+                        hdfrmAddressId.value = json.data.id;
                         txtName.value = json.data.name;
                         txtDetail.value = json.data.detail;
                     }
                     else {
-
+                        alert("Fallo al intentar recuperar la información de dirección.");
                     }
                 });
-            
-        });
-    });
-
-    lstBtnPutAddress.forEach(btn => {
-        btn.addEventListener("click", function (e) {
-            lblTitle.innerHTML = "Editar Dirección";
-            frmAddress.setAttribute("data-mode", "PUT");
         });
     });
 
