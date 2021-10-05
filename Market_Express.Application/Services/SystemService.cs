@@ -66,15 +66,15 @@ namespace Market_Express.Application.Services
                                 _usuarioValidations.Usuario = oClientPOS.AppUser;
 
                                 if (!_usuarioValidations.ExistsEmail())
-                                    oClientDb.AppUser.Email ??= oClientPOS.AppUser.Email?.Trim();
+                                    oClientDb.AppUser.Email = oClientPOS.AppUser.Email?.Trim();
 
 
                                 if (!_usuarioValidations.ExistsCedula())
-                                    oClientDb.AppUser.Identification ??= oClientPOS.AppUser.Identification?.Trim();
+                                    oClientDb.AppUser.Identification = oClientPOS.AppUser.Identification?.Trim();
 
 
-                                oClientDb.AppUser.Name ??= oClientPOS.AppUser.Name?.Trim();
-                                oClientDb.AppUser.Phone ??= oClientPOS.AppUser.Phone?.Trim();
+                                oClientDb.AppUser.Name = oClientPOS.AppUser.Name?.Trim();
+                                oClientDb.AppUser.Phone = oClientPOS.AppUser.Phone?.Trim();
 
                                 oClientDb.AppUser.ModifiedBy = SystemConstants.SYSTEM;
                                 oClientDb.AppUser.ModificationDate = DateTimeUtility.NowCostaRica;
@@ -161,10 +161,10 @@ namespace Market_Express.Application.Services
                                 _articuloValidations.Articulo = oArticlePOS;
 
                                 if (!_articuloValidations.ExistsCodigoBarras())
-                                    oArticleDb.BarCode ??= oArticlePOS.BarCode.Trim();
+                                    oArticleDb.BarCode = oArticlePOS.BarCode.Trim();
 
                                 if (oArticleDb.AutoSyncDescription)
-                                    oArticleDb.Description ??= oArticlePOS.Description.Trim();
+                                    oArticleDb.Description = oArticlePOS.Description.Trim();
 
                                 oArticleDb.Price = oArticlePOS.Price;
                                 oArticleDb.ModifiedBy = SystemConstants.SYSTEM;

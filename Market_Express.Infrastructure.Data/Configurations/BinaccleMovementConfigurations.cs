@@ -14,7 +14,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Detail)
                 .IsRequired()
-                .HasMaxLength(100)
+                .HasMaxLength(600)
                 .IsUnicode(false);
 
             builder.Property(e => e.PerformedBy)

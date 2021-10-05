@@ -78,3 +78,33 @@ BEGIN
 END;
 GO
 
+
+CREATE TRIGGER TRG_Article_Update_RegMovement
+ON Article
+FOR UPDATE
+AS
+BEGIN
+	DECLARE curArticles CURSOR FOR SELECT i.Description,
+										  i.BarCode,
+										  i.ModificationDate,
+										  i.ModifiedBy
+								   FROM inserted i;
+	
+	DECLARE @Description VARCHAR(255);
+	DECLARE @BarCode VARCHAR(255);
+	DECLARE @ModificationDate DATETIME;
+	DECLARE @ModifiedBy VARCHAR(40);
+
+	OPEN curArticles
+	FETCH NEXT FROM curArticles INTO @Description, @BarCode, @ModificationDate, @ModifiedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE Articulo ' + @Description + ' | '+@BarCode);
+
+		FETCH NEXT FROM curArticles INTO @Description, @BarCode, @ModificationDate, @ModifiedBy
+	END
+	CLOSE curArticles
+	DEALLOCATE curArticles
+END;
+GO

@@ -128,7 +128,7 @@ CREATE TABLE [dbo].[Binnacle_Movement](
 	[PerformedBy] [varchar](40) NOT NULL, --Se elimina la relacion FK con la tb AppUser para poder incluir los movimientos de SYSTEM
 	[MovementDate] [datetime] NOT NULL,
 	[Type] [varchar](10) NOT NULL,
-	[Detail] [varchar](100) NOT NULL,
+	[Detail] [varchar](600) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
