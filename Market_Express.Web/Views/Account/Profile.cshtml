@@ -29,33 +29,56 @@
                     </dl>
                 </div>
                 <div class="col-md-5">
-                    <h5>Direcciones</h5>
-                    <table class="table table-sm table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="width: 7%;">1</td>
-                                <td style="width: 69%;">Casa</td>
-                                <td style="width: 24%;"><a href="#" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Trabajo</td>
-                                <td><a href="#" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td></td>
-                                <td><a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h5>Direcciones <i class="fas fa-info-circle text-primary" title="Las direcciones son necesarias para poder realizar pedidos, al procesar un carrito debes de elegir una dirección para generar el pedido."></i></h5> 
+                    @if (Model.Addresses?.Count > 0)
+                    {
+                        int iCount = 1;
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var address in Model.Addresses)
+                                {
+                                    <tr title="@address.Detail">
+                                        <td style="width: 7%;">@iCount</td>
+                                        <td style="width: 69%;">@address.Name</td>
+                                        <td style="width: 24%;">
+                                            <div class="w-75 mx-auto">
+                                                <a href="#" class="btn btn-sm btn-success" title="Modificar"><i class="fas fa-pen"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    iCount++;
+                                }
+
+                                @if (Model.Addresses.Count < 3)
+                                {
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="w-50 mx-auto">
+                                                <a href="#" class="btn btn-sm btn-primary btn-block">Añadir nueva dirección <i class="fas fa-plus"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    { 
+                        <div>
+                            <p class="text-danger">No tienes direcciones creadas!</p>
+                            <div class="w-50 mx-auto">
+                                <a href="#" class="btn btn-sm btn-primary btn-block">Añadir una nueva dirección <i class="fas fa-plus"></i></a>
+
+                            </div>
+                        </div>
+                    }
                 </div>
                 <div class="col-md-2">
                     <h5>Gestión</h5>
@@ -64,7 +87,7 @@
                             <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
                         </dd>
                         <dd class="col-12">
-                            <a href="#" id="btnChangeAlias"  data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a>
+                            <a href="#" id="btnChangeAlias" data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a>
                         </dd>
                     </dl>
                 </div>

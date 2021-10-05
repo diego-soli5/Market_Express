@@ -173,9 +173,9 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.AppUser.GetByIdAsync(id);
         }
 
-        public IEnumerable<Address> GetAddressList(Guid id)
+        public async Task<IEnumerable<Address>> GetAddressList(Guid id)
         {
-            return _unitOfWork.Address.GetAllByUserId(id);
+            return await _unitOfWork.Address.GetAllByUserId(id);
         }
 
         public async Task<List<Permission>> GetPermissionList(Guid id)

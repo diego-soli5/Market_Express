@@ -37,15 +37,15 @@ namespace Market_Express.Web.Controllers
             ProfileViewModel oViewModel = new();
 
             var oUser = await _accountService.GetUserInfo(CurrentUserId);
-            var lstAddress = _accountService.GetAddressList(CurrentUserId);
+            var lstAddress = await _accountService.GetAddressList(CurrentUserId);
 
-            lstAddress.ToList().ForEach(add =>
+            oViewModel.Addresses = new();
+            oViewModel.AppUser = _mapper.Map<AppUserProfileDTO>(oUser);
+
+            lstAddress?.ToList().ForEach(add =>
             {
                 oViewModel.Addresses.Add(_mapper.Map<AddressDTO>(add));
             });
-
-            oViewModel.AppUser = _mapper.Map<AppUserProfileDTO>(oUser);
-            
 
             return View(oViewModel);
         }
