@@ -6,6 +6,74 @@ var txtNewPassConfirmation = document.querySelector("#newPassConfirmation");
 var btnChangeAlias = document.querySelector("#btnChangeAlias");
 var frmChangeAlias = document.querySelector("#frmChangeAlias");
 
+
+//------------------INICIA DIRECCIONES------------------\\
+function bindAddressEvts() {
+    var frmAddress = document.querySelector("#frmAddress");
+    var lstBtnPutAddress = document.querySelectorAll("#putAddress");
+    var lstBtnPostAddress = document.querySelectorAll("#postAddress");
+    var lblTitle = document.querySelector("#lblAddressTitle");
+    var txtName = document.querySelector("#name");
+    var txtDetail = document.querySelector("#detail");
+
+    lstBtnPostAddress.forEach(btn => {
+        btn.addEventListener("click", function (e) {
+
+            if (frmAddress.getAttribute("data-mode") == "PUT") {
+                txtName.value = "";
+                txtDetail.value = "";
+            }
+
+            lblTitle.innerHTML = "Agregar Dirección";
+            frmAddress.setAttribute("data-mode", "POST");
+
+            const url = "/Account/GetAddressInfo";
+
+            fetch(url, { method: 'GET' })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.success) {
+                        txtName.value = json.data.name;
+                        txtDetail.value = json.data.detail;
+                    }
+                    else {
+
+                    }
+                });
+            
+        });
+    });
+
+    lstBtnPutAddress.forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            lblTitle.innerHTML = "Editar Dirección";
+            frmAddress.setAttribute("data-mode", "PUT");
+        });
+    });
+
+    frmAddress.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        if ($("#name").val().trim() == "" || $("#detail").val().trim() == "") {
+            return;
+        }
+
+        let mode = frmAddress.getAttribute("data-mode");
+
+        const url = "/Account/ChangeAlias";
+        const body = new FormData(frmAddress);
+
+        if (mode == "POST") {
+            alert("POST")
+        }
+        else if (mode == "PUT") {
+            alert("PUT")
+        }
+    });
+}
+//------------------FIN DIRECCIONES------------------\\
+
+//------------------INICIA CONTRASEÑA------------------\\
 frmChangePass.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -29,7 +97,9 @@ frmChangePass.addEventListener("submit", function (e) {
             }
         });
 });
+//------------------FIN CONSTRASEÑA------------------\\
 
+//------------------INICIA ALIAS------------------\\
 btnChangeAlias.addEventListener("click", function (e) {
     const url = "/Account/GetUserAlias";
 
@@ -62,3 +132,9 @@ frmChangeAlias.addEventListener("submit", function (e) {
             }
         });
 });
+//------------------FIN ALIAS------------------\\
+
+
+
+
+bindAddressEvts();
