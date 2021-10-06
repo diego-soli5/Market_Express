@@ -293,9 +293,11 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+/****** Object:  Table [dbo].[Slider]    Script Date: 26/09/2021 13:12:40 ******/
 CREATE TABLE [dbo].[Slider](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](15) NOT NULL,
+	[Image] [varchar](30) NOT NULL,
 	[Status] [varchar](11) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (

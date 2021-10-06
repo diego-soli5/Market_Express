@@ -1,22 +1,38 @@
-﻿using Market_Express.Web.ViewModels;
+﻿using AutoMapper;
+using Market_Express.Application.DTOs.Slider;
+using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Web.ViewModels;
+using Market_Express.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Market_Express.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHomeService _homeService;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHomeService homeService,
+                              IMapper mapper)
         {
-            _logger = logger;
+            _homeService = homeService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeViewModel oViewModel = new();
+
+            var lstSliders = _homeService.GetAllSliders();
+
+            lstSliders?.ToList().ForEach(slider =>
+            {
+                oViewModel.Sliders.Add(_mapper.Map<SliderDTO>(slider));
+            });
+
+            return View(oViewModel);
         }
 
         public IActionResult Privacy()

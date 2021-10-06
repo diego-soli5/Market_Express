@@ -39,7 +39,6 @@ namespace Market_Express.Web.Controllers
             var oUser = await _accountService.GetUserInfo(CurrentUserId);
             var lstAddress = await _accountService.GetAddressList(CurrentUserId);
 
-            oViewModel.Addresses = new();
             oViewModel.AppUser = _mapper.Map<AppUserProfileDTO>(oUser);
 
             lstAddress?.ToList().ForEach(add =>

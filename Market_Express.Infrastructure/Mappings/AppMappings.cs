@@ -2,6 +2,7 @@
 using Market_Express.Application.DTOs.Account;
 using Market_Express.Application.DTOs.Address;
 using Market_Express.Application.DTOs.AppUser;
+using Market_Express.Application.DTOs.Slider;
 using Market_Express.Application.DTOs.System;
 using Market_Express.Domain.Entities;
 
@@ -15,6 +16,7 @@ namespace Market_Express.Infrastructure.Mappings
             CreateClientMappings();
             CreateAppUserMappings();
             CreateAddressMappings();
+            CreateSliderMappings();
         }
 
         private void CreateArticleMappings()
@@ -49,6 +51,12 @@ namespace Market_Express.Infrastructure.Mappings
         private void CreateAddressMappings()
         {
             CreateMap<Address, AddressDTO>()
+                .ReverseMap();
+        }
+
+        private void CreateSliderMappings()
+        {
+            CreateMap<Slider, SliderDTO>()
                 .ReverseMap();
         }
     }

@@ -10,6 +10,7 @@ namespace Market_Express.Domain.Abstractions.Repositories
         public IAppUserRepository AppUser { get; }
         public ICartRepository Cart { get; }
         public IAddressRepository Address { get; }
+        public ISliderRepository Slider { get; }
 
         Task BeginTransactionAsync();
         Task RollBackAsync();

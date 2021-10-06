@@ -35,6 +35,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IAccountService), typeof(AccountService));
 
             services.AddScoped(typeof(ICartService), typeof(CartService));
+
+            services.AddScoped(typeof(IHomeService), typeof(HomeService));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)
