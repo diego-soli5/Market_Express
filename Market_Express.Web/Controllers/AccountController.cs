@@ -118,20 +118,45 @@ namespace Market_Express.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        #region API CALLS
         [HttpGet]
-        public async Task<IActionResult> GetAddressInfo(Guid addressId)
+        public async Task<IActionResult> AddressManager()
         {
-            return Ok(new
+            var lstAddress = await _accountService.GetAddressList(CurrentUserId);
+
+            return PartialView("_AddressManagementPartial", lstAddress);
+        }
+
+        #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> CreateAddress(AddressDTO model)
+        {
+            model.Id = null;
+
+            var oResult = await _accountService.CreateAddress(CurrentUserId, _mapper.Map<Address>(model));
+
+            return Ok(oResult);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditAddress(AddressDTO model)
+        {
+            var oResult = await _accountService.EditAddress(_mapper.Map<Address>(model));
+
+            return Ok(oResult);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAddressInfo([FromQuery(Name = "addressId")] Guid addressId)
+        {
+            var oAddress = await _accountService.GetAddressInfo(addressId);
+
+            var oResult = new
             {
-                success = true,
-                data = new
-                {
-                    id = Guid.NewGuid(),
-                    name = "Direccion1",
-                    detail = "Lorem ipsum doloris anoris dual"
-                }
-            });
+                Success = oAddress != null,
+                Data = _mapper.Map<AddressDTO>(oAddress)
+            };
+
+            return Ok(oResult);
         }
 
         [HttpPost]

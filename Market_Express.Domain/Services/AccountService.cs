@@ -5,6 +5,7 @@ using Market_Express.Domain.Entities;
 using Market_Express.Domain.EntityConstants;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
@@ -55,7 +56,7 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.AppUser.Update(oUser);
 
-            oResult.Message = "El alias ha cambiado.";
+            oResult.Message = "Tu alias ha cambiado.";
 
             oResult.Success = await _unitOfWork.Save();
 
@@ -111,7 +112,7 @@ namespace Market_Express.Domain.Services
 
             oResult.Success = await _unitOfWork.Save();
 
-            oResult.Message = "La contraseña ha cambiado";
+            oResult.Message = "Tu contraseña ha cambiado.";
 
 #pragma warning disable CS4014 // El envío del correo se ejecuta en 1 hilo alterno
             Task.Run(() =>
@@ -166,6 +167,79 @@ namespace Market_Express.Domain.Services
             oResult.Success = true;
 
             return oResult;
+        }
+
+        public async Task<BusisnessResult> EditAddress(Address address)
+        {
+            BusisnessResult oResult = new();
+
+            if (string.IsNullOrEmpty(address.Name) || string.IsNullOrEmpty(address.Detail))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            var addressFromDb = await _unitOfWork.Address.GetByIdAsync(address.Id);
+
+            if (addressFromDb == null)
+            {
+                oResult.Message = "La dirección no existe.";
+
+                return oResult;
+            }
+
+            addressFromDb.Name = address.Name;
+            addressFromDb.Detail = address.Detail;
+
+            _unitOfWork.Address.Update(addressFromDb);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> CreateAddress(Guid userId, Address address)
+        {
+            BusisnessResult oResult = new();
+
+            if (string.IsNullOrEmpty(address.Name) || string.IsNullOrEmpty(address.Detail))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            var oClient = _unitOfWork.Client.GetFirstOrDefault(x => x.AppUserId == userId);
+
+            if (oClient == null)
+            {
+                oResult.Message = "Usuario no existe.";
+
+                return oResult;
+            }
+
+            var lstUserAddresses = (await _unitOfWork.Address.GetAllByUserId(userId)).ToList();
+
+            if (lstUserAddresses?.Count > 3)
+            {
+                oResult.Message = "No se puede crear la dirección, el maximo permitido son 3.";
+
+                return oResult;
+            }
+
+            address.ClientId = oClient.Id;
+
+            _unitOfWork.Address.Create(address);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            return oResult;
+        }
+
+        public async Task<Address> GetAddressInfo(Guid addressId)
+        {
+            return await _unitOfWork.Address.GetByIdAsync(addressId);
         }
 
         public async Task<AppUser> GetUserInfo(Guid id)
