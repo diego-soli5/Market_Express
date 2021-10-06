@@ -195,6 +195,7 @@ namespace Market_Express.Domain.Services
             _unitOfWork.Address.Update(addressFromDb);
 
             oResult.Success = await _unitOfWork.Save();
+            oResult.Message = "La dirección se modificó exitosamente.";
 
             return oResult;
         }
@@ -233,6 +234,7 @@ namespace Market_Express.Domain.Services
             _unitOfWork.Address.Create(address);
 
             oResult.Success = await _unitOfWork.Save();
+            oResult.Message = "La dirección se agregó exitosamente.";
 
             return oResult;
         }

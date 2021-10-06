@@ -123,7 +123,14 @@ namespace Market_Express.Web.Controllers
         {
             var lstAddress = await _accountService.GetAddressList(CurrentUserId);
 
-            return PartialView("_AddressManagementPartial", lstAddress);
+            List<AddressDTO> lstViewModel = new();
+
+            lstAddress?.ToList().ForEach(add =>
+            {
+                lstViewModel.Add(_mapper.Map<AddressDTO>(add));
+            });
+
+            return PartialView("_AddressManagementPartial", lstViewModel);
         }
 
         #region API CALLS

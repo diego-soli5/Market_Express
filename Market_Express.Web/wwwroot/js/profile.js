@@ -6,16 +6,23 @@ var txtNewPassConfirmation = document.querySelector("#newPassConfirmation");
 var btnChangeAlias = document.querySelector("#btnChangeAlias");
 var frmChangeAlias = document.querySelector("#frmChangeAlias");
 
+var frmAddress;
+var lstBtnPutAddress;
+var lstBtnPostAddress;
+var lblTitle;
+var txtName;
+var txtDetail;
+var hdfrmAddressId;
 
 //------------------INICIA DIRECCIONES------------------\\
 function bindAddressEvts() {
-    var frmAddress = document.querySelector("#frmAddress");
-    var lstBtnPutAddress = document.querySelectorAll("#putAddress");
-    var lstBtnPostAddress = document.querySelectorAll("#postAddress");
-    var lblTitle = document.querySelector("#lblAddressTitle");
-    var txtName = document.querySelector("#name");
-    var txtDetail = document.querySelector("#detail");
-    var hdfrmAddressId = document.querySelector("#hdfrmAddressId");
+    frmAddress = document.querySelector("#frmAddress");
+    lstBtnPutAddress = document.querySelectorAll("#putAddress");
+    lstBtnPostAddress = document.querySelectorAll("#postAddress");
+    lblTitle = document.querySelector("#lblAddressTitle");
+    txtName = document.querySelector("#name");
+    txtDetail = document.querySelector("#detail");
+    hdfrmAddressId = document.querySelector("#id");
 
     //Restablece el modal para agregar una nueva direccion
     lstBtnPostAddress.forEach(btn => {
@@ -88,10 +95,12 @@ function bindAddressEvts() {
                     txtName.value = "";
                     txtDetail.value = "";
 
-                    $("#addressContainer").load("/Account/AddressManager")
+                    $("#addressContainer").load("/Account/AddressManager", function () {
+                        bindAddressEvts();
+                    });
                 }
 
-            }).catch(err => popUp(false, "Hubo un error desconocido."));
+            }).catch(err =>  popUp(false, "Hubo un error desconocido.") );
     });
 }
 //------------------FIN DIRECCIONES------------------\\
