@@ -1,5 +1,5 @@
 ﻿@model List<Market_Express.Application.DTOs.Address.AddressDTO>
-<h5>Direcciones <i class="fas fa-info-circle text-primary" title="Las direcciones son necesarias para poder realizar pedidos, al procesar un carrito debes de elegir una dirección para generar el pedido."></i></h5>
+<h5>Direcciones <i class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Las direcciones son necesarias para realizar pedidos, al procesar un carrito debes elegir una dirección a la cual debe ser enviado el pedido generado."></i></h5>
 @if (Model?.Count > 0)
 {
     int iCount = 1;
@@ -43,7 +43,7 @@
 else
 {
     <div>
-        <p><span class="text-danger">No tienes direcciones creadas!</span> Haz click en el botón inferior para crear una.</p>
+        <p class="text-danger">No tienes direcciones creadas! <span class="text-dark">Haz click en el botón inferior para crear una.</span></p>
         <div class="w-50 mx-auto">
             <a href="#" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modalAddress" id="postAddress">Añadir una nueva dirección <i class="fas fa-plus"></i></a>
         </div>

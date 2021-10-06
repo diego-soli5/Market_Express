@@ -222,7 +222,7 @@ namespace Market_Express.Domain.Services
 
             var lstUserAddresses = (await _unitOfWork.Address.GetAllByUserId(userId)).ToList();
 
-            if (lstUserAddresses?.Count > 3)
+            if (lstUserAddresses?.Count >= 3)
             {
                 oResult.Message = "No se puede crear la dirección, el maximo permitido son 3.";
 

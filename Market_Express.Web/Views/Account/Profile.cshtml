@@ -11,9 +11,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-5">
-                    <h5>Información</h5>
+                    <h5>Datos Generales <i class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="No puedes modificar tus datos, únicamente puedes modificar tu alias y contraseña. Si deseas modificar los demás datos debes solicitarlo al administrador."></i></h5> 
                     <dl class="row">
-
                         <dt class="col-md-3">Nombre</dt>
                         <dd class="col-md-9"><p>@Model.AppUser.Name</p></dd>
                         <dt class="col-md-3">Alias</dt>
@@ -29,7 +28,7 @@
                     </dl>
                 </div>
                 <div class="col-md-5" id="addressContainer">
-                    @{ await Html.RenderPartialAsync("_AddressManagementPartial",Model.Addresses); }
+                    @{ await Html.RenderPartialAsync("_AddressManagementPartial", Model.Addresses); }
                 </div>
                 <div class="col-md-2">
                     <h5>Gestión</h5>

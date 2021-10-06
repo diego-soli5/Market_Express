@@ -6,23 +6,55 @@ var txtNewPassConfirmation = document.querySelector("#newPassConfirmation");
 var btnChangeAlias = document.querySelector("#btnChangeAlias");
 var frmChangeAlias = document.querySelector("#frmChangeAlias");
 
-var frmAddress;
-var lstBtnPutAddress;
-var lstBtnPostAddress;
-var lblTitle;
-var txtName;
-var txtDetail;
-var hdfrmAddressId;
+var frmAddress = document.querySelector("#frmAddress");;
+var lblTitle = document.querySelector("#lblAddressTitle");;
+var hdfrmAddressId = document.querySelector("#id");;
 
 //------------------INICIA DIRECCIONES------------------\\
+//Hace el submit segun sea el caso, agregar o editar una direccion
+frmAddress.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (txtName.value.trim() == "" || txtDetail.value.trim() == "") {
+        return;
+    }
+
+    let mode = frmAddress.getAttribute("data-mode");
+
+    const body = new FormData(frmAddress);
+    let url = "";
+
+    if (mode == "POST") {
+        url = "/Account/CreateAddress";
+    }
+    else {
+        url = "/Account/EditAddress";
+    }
+
+    fetch(url, { body: body, method: 'POST' })
+        .then(response => response.json())
+        .then(json => {
+            popUp(json.success, json.message);
+
+            if (json.success) {
+                $("#modalAddress").modal("hide");
+                txtName.value = "";
+                txtDetail.value = "";
+
+                $("#addressContainer").load("/Account/AddressManager", function () {
+                    bindPopOver();
+                    bindAddressEvts();
+                });
+            }
+
+        }).catch(err => popUp(false, "Hubo un error desconocido."));
+});
+
 function bindAddressEvts() {
-    frmAddress = document.querySelector("#frmAddress");
     lstBtnPutAddress = document.querySelectorAll("#putAddress");
     lstBtnPostAddress = document.querySelectorAll("#postAddress");
-    lblTitle = document.querySelector("#lblAddressTitle");
     txtName = document.querySelector("#name");
     txtDetail = document.querySelector("#detail");
-    hdfrmAddressId = document.querySelector("#id");
 
     //Restablece el modal para agregar una nueva direccion
     lstBtnPostAddress.forEach(btn => {
@@ -63,44 +95,6 @@ function bindAddressEvts() {
                     }
                 }).catch(err => popUp(false, "No pudimos cargar la información de la dirección"));
         });
-    });
-
-    //Hace el submit segun sea el caso, agregar o editar una direccion
-    frmAddress.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        if (txtName.value.trim() == "" || txtDetail.value.trim() == "") {
-            return;
-        }
-
-        let mode = frmAddress.getAttribute("data-mode");
-
-        const body = new FormData(frmAddress);
-        let url = "";
-
-        if (mode == "POST") {
-            url = "/Account/CreateAddress";
-        }
-        else {
-            url = "/Account/EditAddress";
-        }
-
-        fetch(url, { body:body, method: 'POST' })
-            .then(response => response.json())
-            .then(json => {
-                popUp(json.success, json.message);
-
-                if (json.success) {
-                    $("#modalAddress").modal("hide");
-                    txtName.value = "";
-                    txtDetail.value = "";
-
-                    $("#addressContainer").load("/Account/AddressManager", function () {
-                        bindAddressEvts();
-                    });
-                }
-
-            }).catch(err =>  popUp(false, "Hubo un error desconocido.") );
     });
 }
 //------------------FIN DIRECCIONES------------------\\
@@ -167,6 +161,12 @@ frmChangeAlias.addEventListener("submit", function (e) {
 //------------------FIN ALIAS------------------\\
 
 
-
+function bindPopOver() {
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+}
 
 bindAddressEvts();
+bindPopOver();
+
