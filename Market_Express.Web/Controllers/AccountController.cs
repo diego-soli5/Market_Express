@@ -137,7 +137,7 @@ namespace Market_Express.Web.Controllers
             return Ok(oResult);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> EditAddress(AddressDTO model)
         {
             var oResult = await _accountService.EditAddress(_mapper.Map<Address>(model));

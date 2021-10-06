@@ -78,7 +78,7 @@ function bindAddressEvts() {
             url = "/Account/EditAddress";
         }
 
-        fetch(url, { body:body, method: mode })
+        fetch(url, { body:body, method: 'POST' })
             .then(response => response.json())
             .then(json => {
                 popUp(json.success, json.message);
@@ -87,6 +87,8 @@ function bindAddressEvts() {
                     $("#modalAddress").modal("hide");
                     txtName.value = "";
                     txtDetail.value = "";
+
+                    $("#addressContainer").load("/Account/AddressManager")
                 }
 
             }).catch(err => popUp(false, "Hubo un error desconocido."));
