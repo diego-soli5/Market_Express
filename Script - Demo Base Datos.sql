@@ -293,6 +293,16 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+CREATE TABLE [dbo].[Slider](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [varchar](15) NOT NULL,
+	[Status] [varchar](11) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 ALTER TABLE [dbo].[Address] ADD  DEFAULT (newsequentialid()) FOR [Id]
 GO
 ALTER TABLE [dbo].[AppUser] ADD  DEFAULT (newsequentialid()) FOR [Id]
@@ -322,6 +332,8 @@ GO
 ALTER TABLE [dbo].[Role_Permission] ADD  DEFAULT (newsequentialid()) FOR [Id]
 GO
 ALTER TABLE [dbo].[TB_Order] ADD  DEFAULT (newsequentialid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[Slider] ADD  DEFAULT (newsequentialid()) FOR [Id]
 GO
 ALTER TABLE [dbo].[Address]  WITH CHECK ADD FOREIGN KEY([ClientId])
 REFERENCES [dbo].[Client] ([Id])
@@ -389,7 +401,10 @@ ALTER TABLE [dbo].[TB_Order]  WITH CHECK ADD  CONSTRAINT [CHK_Order_Status] CHEC
 GO
 ALTER TABLE [dbo].[TB_Order] CHECK CONSTRAINT [CHK_Order_Status]
 GO
-
+ALTER TABLE [dbo].[Slider]  WITH CHECK ADD  CONSTRAINT [CHK_Slider_Status] CHECK  (([Status]='ACTIVADO' OR [Status]='DESACTIVADO'))
+GO
+ALTER TABLE [dbo].[Slider] CHECK CONSTRAINT [CHK_Slider_Status]
+GO
 
 
 
