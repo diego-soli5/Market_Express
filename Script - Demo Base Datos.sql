@@ -296,7 +296,7 @@ GO
 /****** Object:  Table [dbo].[Slider]    Script Date: 26/09/2021 13:12:40 ******/
 CREATE TABLE [dbo].[Slider](
 	[Id] [uniqueidentifier] NOT NULL,
-	[Name] [varchar](15) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
 	[Image] [varchar](30) NOT NULL,
 	[Status] [varchar](11) NOT NULL,
 PRIMARY KEY CLUSTERED 

@@ -38,8 +38,8 @@ INSERT INTO AppUser_Role(RoleId,AppUserId) VALUES
 GO
 
 INSERT INTO Slider(Name,Image,Status) VALUES
-('Nombre Slid 1','no','ACTIVADO'),
-('Name Slid 2','no','ACTIVADO');
+('Llevamos su Pedido Hasta su Casa','no','ACTIVADO'),
+('Verdura Fresca Todos los Miercoles','no','ACTIVADO');
 GO
 
 INSERT INTO Client(Id,AppUserId,AutoSync) VALUES
