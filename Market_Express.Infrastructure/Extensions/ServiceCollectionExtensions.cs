@@ -15,7 +15,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Azure;
 using System;
+using Market_Express.Infrastructure.ExternalServices.Azure;
 
 namespace Market_Express.Infrastructure.Extensions
 {
@@ -47,6 +49,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IPasswordService), typeof(PasswordService));
 
             services.AddScoped(typeof(IBusisnessMailService), typeof(BusisnessMailService));
+            
+            services.AddScoped(typeof(IAzureBlobStorageService), typeof(AzureBlobStorageService));
         }
 
         public static void AddValidations(this IServiceCollection services)
@@ -58,6 +62,14 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddTransient(typeof(IArticleValidations), typeof(ArticleValidations));
         }
 
+        public static void AddAzureClients(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(configuration.GetConnectionString("Local_Desa_AzureBlobStorage"));
+            });
+        }
+
         public static void AddOptions(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AuthenticationOptions>(configuration.GetSection("Options:AuthenticationOptions"));
@@ -65,6 +77,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<PasswordOptions>(configuration.GetSection("Options:PasswordOptions"));
 
             services.Configure<EmailServicesOptions>(configuration.GetSection("Options:EmailServicesOptions"));
+            
+            services.Configure<AzureBlobStorageOptions>(configuration.GetSection("Options:AzureBlobStorageOptions"));
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)

@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
@@ -14,6 +15,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +24,7 @@
     <ProjectReference Include="..\Market_Express.Domain\Market_Express.Domain.csproj" />
     <ProjectReference Include="..\Market_Express.Infrastructure.Data\Market_Express.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\Market_Express.Infrastructure.EmailServices\Market_Express.Infrastructure.EmailServices.csproj" />
+    <ProjectReference Include="..\Market_Express.Infrastructure.ExternalServices\Market_Express.Infrastructure.ExternalServices.csproj" />
   </ItemGroup>
 
 </Project>

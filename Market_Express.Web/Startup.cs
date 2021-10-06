@@ -34,6 +34,8 @@ namespace Market_Express.Web
 
             services.AddOptions(Configuration);
 
+            services.AddAzureClients(Configuration);
+
             services.AddDbContext(Configuration);
 
             services.AddAntiforgery(setup => setup.HeaderName = "X-Anti-Forgery-Token");
