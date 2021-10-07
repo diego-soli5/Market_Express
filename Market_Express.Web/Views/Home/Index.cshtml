@@ -17,8 +17,8 @@
                         var itemDinamico = cnt++ == 0 ? "item active" : "item";
 
                         <div class="carousel-item @itemDinamico">
-                            <img src="~/img/slid1Desarrollo.jpg" class="img-fluid w-100" />
-                            <h4 class="text-dark text-center">@Html.Raw(slider.Name)</h4>
+                            <img src="@Url.Action("GetImage","Resource",new { area = "", n = slider.Image })" class="img-fluid w-100" />
+                            <h4 class="text-dark text-center">@slider.Name</h4>
                         </div>
                     }
                 }
@@ -38,7 +38,7 @@
     else
     {
         <div class="intro-banner-wrap">
-            <img src="~/img/BannerDesarrollo.jpg" class="img-fluid w-100" />
+            <img src="~/img/bannerProductivo3.jpg" class="img-fluid w-100" />
         </div>
     }
 </header>
