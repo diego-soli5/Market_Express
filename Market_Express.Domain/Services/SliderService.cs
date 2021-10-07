@@ -39,6 +39,13 @@ namespace Market_Express.Domain.Services
                 oResult.Message_Code = 1;
             }
 
+            if (!IsValidImage(image))
+            {
+                oResult.Message = "El campo es obligatirio.";
+
+                oResult.Message_Code = 1;
+            }
+
             return oResult;
         }
 
