@@ -2,6 +2,7 @@
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.EntityConstants;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -32,19 +33,47 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrWhiteSpace(name.Trim()))
+            if (string.IsNullOrWhiteSpace(name?.Trim()))
             {
                 oResult.Message = "El campo es obligatirio.";
 
                 oResult.Message_Code = 1;
+
+                return oResult;
+            }
+
+            if(image == null)
+            {
+                oResult.Message = "El campo es obligatorio.";
+
+                oResult.Message_Code = 2;
+
+                return oResult;
             }
 
             if (!IsValidImage(image))
             {
-                oResult.Message = "El campo es obligatirio.";
+                oResult.Message = "El formato de imagen es invalido.";
 
-                oResult.Message_Code = 1;
+                oResult.Message_Code = 2;
+
+                return oResult;
             }
+
+            string sImageName = await _storageService.CreateBlobAsync(image);
+
+            Slider oSlider = new()
+            {
+                Name = name,
+                Image = sImageName,
+                Status = SliderConstants.ACTIVADO
+            };
+
+            _unitOfWork.Slider.Create(oSlider);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "El slider se creó exitosamente!";
 
             return oResult;
         }

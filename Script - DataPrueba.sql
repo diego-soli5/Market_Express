@@ -37,10 +37,11 @@ INSERT INTO AppUser_Role(RoleId,AppUserId) VALUES
 --('C4934D01-205D-4888-827C-8787AB6B3CEE','EA16E721-5E1D-EC11-9953-3863BBBB3AE0') --Permiso 4 y 5
 GO
 
+/*
 INSERT INTO Slider(Name,Image,Status) VALUES
 ('Llevamos su Pedido Hasta su Casa','no','ACTIVADO'),
 ('Verdura Fresca Todos los Miercoles','no','ACTIVADO');
-GO
+GO*/
 
 INSERT INTO Client(Id,AppUserId,AutoSync) VALUES
 ('9229F064-0922-EC11-9955-3863BBBB3AE0','EA16E721-5E1D-EC11-9953-3863BBBB3AE0',0);  

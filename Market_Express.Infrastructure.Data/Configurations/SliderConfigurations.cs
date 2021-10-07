@@ -19,7 +19,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Image)
                 .IsRequired()
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(false);
 
             builder.Property(e => e.Status)

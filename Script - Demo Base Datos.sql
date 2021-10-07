@@ -177,7 +177,7 @@ CREATE TABLE [dbo].[Category](
 	[Name] [varchar](20) NOT NULL,
 	[Description] [varchar](200) NULL,
 	[Status] [varchar](11) NOT NULL,
-	[Image] [varchar](30) NULL,
+	[Image] [varchar](50) NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[ModificationDate] [datetime] NULL,
 	[AddedBy] [varchar](40) NOT NULL,
@@ -297,7 +297,7 @@ GO
 CREATE TABLE [dbo].[Slider](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](50) NOT NULL,
-	[Image] [varchar](30) NOT NULL,
+	[Image] [varchar](50) NOT NULL,
 	[Status] [varchar](11) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (

@@ -9,7 +9,7 @@
             <h4 class="text-white">Crear Slider</h4>
         </div>
         <div class="card-body">
-            <form asp-Area="Admin" asp-controller="Slider" asp-action="Create" id="frm" method="post" class="row">
+            <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Slider" asp-action="Create" id="frm" method="post" class="row">
                 <div class="col-md-5">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label">Nombre</label>
@@ -34,7 +34,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-secondary">Volver</button>
+            <button type="button" class="btn btn-secondary" asp-area="Admin" asp-controller="Slider" asp-action="Index">Volver</button>
             <button type="submit" class="btn btn-primary" form="frm">Crear</button>
         </div>
     </div>
