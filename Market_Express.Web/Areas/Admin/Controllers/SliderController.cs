@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -8,6 +9,18 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(object model)
+        {
+            return RedirectToAction(nameof(Index));
         }
     }
 }
