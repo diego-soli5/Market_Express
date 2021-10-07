@@ -69,7 +69,7 @@ namespace Market_Express.Application.Services
                                     oClientDb.AppUser.Email = oClientPOS.AppUser.Email?.Trim();
 
 
-                                if (!_usuarioValidations.ExistsCedula())
+                                if (!_usuarioValidations.ExistsIdentification())
                                     oClientDb.AppUser.Identification = oClientPOS.AppUser.Identification?.Trim();
 
 
@@ -99,7 +99,7 @@ namespace Market_Express.Application.Services
                         _usuarioValidations.Usuario = oClientPOS.AppUser;
 
                         if (!_clienteValidations.ExistsCodCliente() &&
-                            !_usuarioValidations.ExistsCedula() &&
+                            !_usuarioValidations.ExistsIdentification() &&
                             !_usuarioValidations.ExistsEmail())
                         {
                             oClientPOS.AutoSync = false;
@@ -158,7 +158,7 @@ namespace Market_Express.Application.Services
                                 oArticleDb.BarCode.Trim() != oArticlePOS.BarCode?.Trim() ||
                                 oArticleDb.Price != oArticlePOS.Price)
                             {
-                                _articuloValidations.Articulo = oArticlePOS;
+                                _articuloValidations.Article = oArticlePOS;
 
                                 if (!_articuloValidations.ExistsCodigoBarras())
                                     oArticleDb.BarCode = oArticlePOS.BarCode.Trim();
@@ -186,7 +186,7 @@ namespace Market_Express.Application.Services
                 {
                     if (!lstArticlesToAdd.Contains(oArticlePOS))
                     {
-                        _articuloValidations.Articulo = oArticlePOS;
+                        _articuloValidations.Article = oArticlePOS;
 
                         if (!_articuloValidations.ExistsCodigoBarras())
                         {

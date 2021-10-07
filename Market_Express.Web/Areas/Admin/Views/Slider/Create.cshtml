@@ -1,7 +1,47 @@
-﻿
+﻿@model Market_Express.Application.DTOs.Slider.SliderDTO
 @{
     ViewData["Title"] = "Crear Slider";
 }
 
-<h1>Crear Slider</h1>
+<section class="container">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="text-white">Crear Slider</h4>
+        </div>
+        <div class="card-body">
+            <form asp-Area="Admin" asp-controller="Slider" asp-action="Create" id="frm" method="post" class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label">Nombre</label>
+                        <input type="text" asp-for="Name" class="form-control" placeholder="Escribe el nombre del slider">
+                        <span asp-validation-for="Name" class="text-danger"></span>
 
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Image" class="col-form-label">Imagen</label> <i class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
+                        <input type="file" class="form-control-file" asp-for="Image" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <figure>
+                            <img id="newImagePreview" class="img-fluid img-thumbnail" />
+                            <figcaption>Imagen Cargada</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-secondary">Volver</button>
+            <button type="submit" class="btn btn-primary" form="frm">Crear</button>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/slider.js"></script>
+}

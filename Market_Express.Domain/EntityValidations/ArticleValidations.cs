@@ -14,7 +14,7 @@ namespace Market_Express.Domain.EntityValidations
             _unitOfWork = unitOfWork;
         }
 
-        public Article Articulo
+        public Article Article
         {
             private get { return _articulo; }
             set { _articulo = value; }
@@ -22,7 +22,7 @@ namespace Market_Express.Domain.EntityValidations
 
         public bool ExistsCodigoBarras()
         {
-            return _unitOfWork.Article.GetFirstOrDefault(x => x.BarCode == Articulo.BarCode) != null;
+            return _unitOfWork.Article.GetFirstOrDefault(x => x.BarCode == Article.BarCode) != null;
         }
     }
 }

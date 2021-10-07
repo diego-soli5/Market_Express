@@ -168,5 +168,5 @@ function bindPopOver() {
 }
 
 bindAddressEvts();
-bindPopOver();
+//bindPopOver();
 

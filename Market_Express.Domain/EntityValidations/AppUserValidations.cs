@@ -20,7 +20,7 @@ namespace Market_Express.Domain.EntityValidations
             set { _usuario = value; }
         }
 
-        public bool ExistsCedula()
+        public bool ExistsIdentification()
         {
             return _unitOfWork.AppUser
                 .GetFirstOrDefault(x => x.Identification == Usuario.Identification) != null;
