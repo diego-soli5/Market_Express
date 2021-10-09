@@ -12,10 +12,17 @@ lstBtnStatus.forEach(btn => {
             .then(response => response.json())
             .then(json => {
                 if (json.success) {
-                    alert(json.message);
-                } else {
-                    alert(json.message);
+                    toastr.success(json.message);
+
+                    if (json.resultCode == 0) {
+                        btn.classList.replace("btn-success", "btn-danger");
+                    } else if (json.resultCode == 1) {
+                        btn.classList.replace("btn-danger", "btn-success");
+                    }
                 }
+                else {
+                    popUp(false, "No se pudo cambiar el estado.");
+                } 
             });
     });
 });

@@ -81,7 +81,7 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<BusisnessResult> ChangeStatus(Guid userId, Guid sliderId)
+        public async Task<BusisnessResult> ChangeStatus(Guid sliderId, Guid userId)
         {
             BusisnessResult oResult = new();
 

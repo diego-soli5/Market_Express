@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
-    [Authorize("ADMINISTRADOR")]
+    [Authorize(Roles = "ADMINISTRADOR")]
     [Area("Admin")]
     public class SliderController : BaseController
     {
@@ -74,7 +74,9 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)
         {
+            var oResult = await _sliderService.ChangeStatus(id, CurrentUserId);
 
+            return Ok(oResult);
         }
         #endregion
     }
