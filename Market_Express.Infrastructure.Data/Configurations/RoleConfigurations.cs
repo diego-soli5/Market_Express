@@ -26,7 +26,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .IsUnicode(false);
 
             builder.Property(e => e.Description)
-                .HasMaxLength(200)
+                .HasMaxLength(255)
                 .IsUnicode(false);
 
             builder.Property(e => e.Name)

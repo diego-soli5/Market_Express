@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.Abstractions.DomainServices;
+﻿using Market_Express.CrossCutting.Utility;
+using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
@@ -29,7 +30,7 @@ namespace Market_Express.Domain.Services
             return _unitOfWork.Slider.GetAll();
         }
 
-        public async Task<BusisnessResult> Create(string name, IFormFile image)
+        public async Task<BusisnessResult> Create(string name, IFormFile image, Guid userId)
         {
             BusisnessResult oResult = new();
 
@@ -37,7 +38,7 @@ namespace Market_Express.Domain.Services
             {
                 oResult.Message = "El campo es obligatirio.";
 
-                oResult.Message_Code = 1;
+                oResult.ResultCode = 1;
 
                 return oResult;
             }
@@ -46,7 +47,7 @@ namespace Market_Express.Domain.Services
             {
                 oResult.Message = "El campo es obligatorio.";
 
-                oResult.Message_Code = 2;
+                oResult.ResultCode = 2;
 
                 return oResult;
             }
@@ -55,7 +56,7 @@ namespace Market_Express.Domain.Services
             {
                 oResult.Message = "El formato de imagen es invalido.";
 
-                oResult.Message_Code = 2;
+                oResult.ResultCode = 2;
 
                 return oResult;
             }
@@ -66,7 +67,9 @@ namespace Market_Express.Domain.Services
             {
                 Name = name,
                 Image = sImageName,
-                Status = SliderConstants.ACTIVADO
+                Status = SliderConstants.ACTIVADO,
+                CreationDate = DateTimeUtility.NowCostaRica,
+                AddedBy = userId.ToString()
             };
 
             _unitOfWork.Slider.Create(oSlider);
@@ -74,6 +77,47 @@ namespace Market_Express.Domain.Services
             oResult.Success = await _unitOfWork.Save();
 
             oResult.Message = "El slider se creó exitosamente!";
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> ChangeStatus(Guid userId, Guid sliderId)
+        {
+            BusisnessResult oResult = new();
+
+            var oSlider = await _unitOfWork.Slider.GetByIdAsync(sliderId);
+        
+            if(oSlider == null)
+            {
+                oResult.Message = "Slider no existe.";
+
+                return oResult;
+            }
+
+            if(oSlider.Status == SliderConstants.ACTIVADO)
+            {
+                oSlider.Status = SliderConstants.DESACTIVADO;
+
+                oResult.ResultCode = 0; //Cambia estilo CSS boton (Danger)
+
+                oResult.Message = "El slider se ha desactivado.";
+            }
+            else
+            {
+                oSlider.Status = SliderConstants.ACTIVADO;
+
+                oResult.ResultCode = 1; //Cambia estilo CSS boton (Success)
+
+                oResult.Message = "El slider se ha activado.";
+            }
+
+            oSlider.ModificationDate = DateTimeUtility.NowCostaRica;
+
+            oSlider.ModifiedBy = userId.ToString();
+
+            _unitOfWork.Slider.Update(oSlider);
+
+            oResult.Success = await _unitOfWork.Save();
 
             return oResult;
         }

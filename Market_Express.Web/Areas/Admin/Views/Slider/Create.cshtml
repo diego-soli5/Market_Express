@@ -34,7 +34,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <button type="button" class="btn btn-secondary" asp-area="Admin" asp-controller="Slider" asp-action="Index">Volver</button>
+            <a asp-area="Admin" asp-controller="Slider" asp-action="Index" class="btn btn-secondary">Volver</a>
             <button type="submit" class="btn btn-primary" form="frm">Crear</button>
         </div>
     </div>
@@ -43,5 +43,5 @@
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-    <script src="~/js/slider.js"></script>
+    <script src="~/js/sliderCreate.js"></script>
 }

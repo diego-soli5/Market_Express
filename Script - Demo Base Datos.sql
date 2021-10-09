@@ -42,8 +42,8 @@ CREATE TABLE [dbo].[AppUser](
 	[Status] [varchar](11) NOT NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[ModificationDate] [datetime] NULL,
-	[AddedBy] [varchar](12) NOT NULL,
-	[ModifiedBy] [varchar](12) NULL,
+	[AddedBy] [varchar](40) NOT NULL,
+	[ModifiedBy] [varchar](40) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -175,7 +175,7 @@ GO
 CREATE TABLE [dbo].[Category](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](20) NOT NULL,
-	[Description] [varchar](200) NULL,
+	[Description] [varchar](255) NULL,
 	[Status] [varchar](11) NOT NULL,
 	[Image] [varchar](50) NULL,
 	[CreationDate] [datetime] NOT NULL,
@@ -235,7 +235,7 @@ GO
 CREATE TABLE [dbo].[Permission](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](30) NOT NULL,
-	[Description] [varchar](200) NULL,
+	[Description] [varchar](255) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -250,7 +250,7 @@ GO
 CREATE TABLE [dbo].[Role](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](30) NOT NULL,
-	[Description] [varchar](200) NULL,
+	[Description] [varchar](255) NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[ModificationDate] [datetime] NULL,
 	[AddedBy] [varchar](40) NOT NULL,
@@ -299,6 +299,10 @@ CREATE TABLE [dbo].[Slider](
 	[Name] [varchar](50) NOT NULL,
 	[Image] [varchar](50) NOT NULL,
 	[Status] [varchar](11) NOT NULL,
+	[CreationDate] [datetime] NOT NULL,
+	[ModificationDate] [datetime] NULL,
+	[AddedBy] [varchar](40) NOT NULL,
+	[ModifiedBy] [varchar](40) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

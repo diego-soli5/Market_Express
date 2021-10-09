@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Web.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
+    [Authorize("ADMINISTRADOR")]
     [Area("Admin")]
-    public class SliderController : Controller
+    public class SliderController : BaseController
     {
         private readonly ISliderService _sliderService;
         private readonly IMapper _mapper;
@@ -45,7 +49,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SliderCreateDTO model)
         {
-            var oResult = await _sliderService.Create(model.Name, model.Image);
+            var oResult = await _sliderService.Create(model.Name, model.Image, CurrentUserId);
 
             if (oResult.Success)
             {
@@ -54,16 +58,24 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (oResult.Message_Code == 1)
+            if (oResult.ResultCode == 1)
             {
                 ModelState.AddModelError("Name", oResult.Message);
             }
-            else if (oResult.Message_Code == 2)
+            else if (oResult.ResultCode == 2)
             {
                 ModelState.AddModelError("Image", oResult.Message);
             }
 
             return View(new SliderDTO(model.Name));
         }
+
+        #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)
+        {
+
+        }
+        #endregion
     }
 }

@@ -9,6 +9,6 @@
 
         public bool Success { get; set; }
         public string Message { get; set; }
-        public int Message_Code { get; set; }
+        public int ResultCode { get; set; }
     }
 }

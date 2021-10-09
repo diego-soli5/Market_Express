@@ -13,7 +13,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
             builder.Property(e => e.Description)
-                .HasMaxLength(200)
+                .HasMaxLength(255)
                 .IsUnicode(false);
 
             builder.Property(e => e.Name)

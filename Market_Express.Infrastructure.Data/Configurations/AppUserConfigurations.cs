@@ -19,7 +19,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
             builder.Property(e => e.AddedBy)
-                .HasMaxLength(12)
+                .HasMaxLength(40)
                 .IsUnicode(false);
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
@@ -37,7 +37,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .IsUnicode(false);
 
             builder.Property(e => e.ModifiedBy)
-                .HasMaxLength(12)
+                .HasMaxLength(40)
                 .IsUnicode(false);
 
             builder.Property(e => e.Name)
