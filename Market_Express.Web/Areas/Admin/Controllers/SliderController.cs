@@ -70,6 +70,14 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return View(new SliderDTO(model.Name));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var oSlider = await _sliderService.GetById(id);
+
+            return View(_mapper.Map<SliderDTO>(oSlider));
+        }
+
         #region API CALLS
         [HttpPost]
         public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)

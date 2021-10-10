@@ -30,6 +30,11 @@ namespace Market_Express.Domain.Services
             return _unitOfWork.Slider.GetAll();
         }
 
+        public async Task<Slider> GetById(Guid id)
+        {
+            return await _unitOfWork.Slider.GetByIdAsync(id);
+        }
+
         public async Task<BusisnessResult> Create(string name, IFormFile image, Guid userId)
         {
             BusisnessResult oResult = new();
