@@ -85,29 +85,29 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             var oSlider = _mapper.Map<Slider>(model);
 
-            var oResult = await _sliderService.Update(oSlider, model.Image, CurrentUserId);
+            var oResult = await _sliderService.Update(oSlider, model.NewImage, CurrentUserId);
 
-            if (oResult.Success)
+            if (!oResult.Success)
             {
-                TempData["SliderMessage"] = oResult.Message;
+                if (oResult.ResultCode == 1)
+                {
+                    ModelState.AddModelError("Name", oResult.Message);
+                }
+                else if (oResult.ResultCode == 2)
+                {
+                    ModelState.AddModelError("NewImage", oResult.Message);
+                }
+                else if (oResult.ResultCode == 3)
+                {
+                    ViewData["Message"] = oResult.Message;
+                }
 
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
 
-            if (oResult.ResultCode == 1)
-            {
-                ModelState.AddModelError("Name", oResult.Message);
-            }
-            else if (oResult.ResultCode == 2)
-            {
-                ModelState.AddModelError("Image", oResult.Message);
-            }
-            else if (oResult.ResultCode == 3)
-            {
-                ViewData["Message"] = oResult.Message;
-            }
+            TempData["SliderMessage"] = oResult.Message;
 
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
 
         #region API CALLS

@@ -1,4 +1,5 @@
 ﻿@model Market_Express.Application.DTOs.Slider.SliderUpdateDTO
+@using Market_Express.Domain.Enumerations
 @{
     ViewData["Title"] = "Editar Slider";
 }
@@ -10,7 +11,8 @@
         </div>
         <div class="card-body">
             <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Slider" asp-action="Edit" id="frm" method="post" class="row">
-                <input type="hidden" name="Id" value="" />
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" name="Image" value="@Model.Image" />
 
                 <div class="col-md-5">
                     <div class="form-group">
@@ -20,13 +22,13 @@
 
                     </div>
                     <div class="form-group">
-                        <label asp-for="Image" class="col-form-label">Imagen</label> <i class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
-                        <input type="file" class="form-control-file" name="Image" id="Image" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <label asp-for="NewImage" class="col-form-label">Imagen</label> <i class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
+                        <input type="file" class="form-control-file" name="NewImage" id="Image" />
+                        <span asp-validation-for="NewImage" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Status" class="col-form-label">Estado</label> 
-                        
+                        <label asp-for="Status" class="col-form-label">Estado</label>
+                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<EntityStatus>()" class="form-control"></select>
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 </div>

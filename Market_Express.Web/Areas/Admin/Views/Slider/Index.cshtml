@@ -10,13 +10,12 @@
             <h4 class="text-white">Sliders</h4>
         </div>
         <div class="card-body">
-            <a asp-area="Admin" asp-controller="Slider" asp-action="Create" class="btn btn-primary">Agregar nuevo</a>
             <div class="row align-items-strech">
                 @foreach (var slider in Model)
                 {
                     string active = slider.Status == EntityStatus.ACTIVADO ? "success" : "danger";
 
-                    <div class="col-12 col-md-3 d-flex mt-3 justify-content-center">
+                    <div class="col-md-3 mb-3 d-flex justify-content-center">
                         <div class="card" style="width: 18rem;">
                             <img src="@Url.Action("GetImage","Resource",new { area = "", n = slider.Image })" class="card-img-top" alt="">
                             <div class="card-body">
@@ -32,6 +31,12 @@
                     </div>
                 }
             </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <a asp-area="Admin" asp-controller="Slider" asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+            </div>   
         </div>
     </div>
 </section>

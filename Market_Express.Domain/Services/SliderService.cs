@@ -100,22 +100,16 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if (image == null)
+            if (image?.Length > 0)
             {
-                oResult.Message = "El campo es obligatorio.";
+                if (!IsValidImage(image))
+                {
+                    oResult.Message = "El formato de imagen es invalido.";
 
-                oResult.ResultCode = 2;
+                    oResult.ResultCode = 2;
 
-                return oResult;
-            }
-
-            if (!IsValidImage(image))
-            {
-                oResult.Message = "El formato de imagen es invalido.";
-
-                oResult.ResultCode = 2;
-
-                return oResult;
+                    return oResult;
+                }
             }
 
             var oSliderFromDb = await _unitOfWork.Slider.GetByIdAsync(slider.Id);
@@ -141,6 +135,7 @@ namespace Market_Express.Domain.Services
             oSliderFromDb.Name = slider.Name;
             oSliderFromDb.ModifiedBy = userId.ToString();
             oSliderFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
+            oSliderFromDb.Status = slider.Status;
 
             _unitOfWork.Slider.Update(oSliderFromDb);
 
