@@ -17,7 +17,7 @@ GO
 CREATE TABLE [dbo].[Address](
 	[Id] [uniqueidentifier] NOT NULL,
 	[ClientId] [uniqueidentifier] NOT NULL,
-	[Name] [varchar](30) NOT NULL,
+	[Name] [varchar](15) NOT NULL,
 	[Detail] [varchar](255) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (

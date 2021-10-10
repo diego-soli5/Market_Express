@@ -6,18 +6,20 @@
     <table class="table table-sm table-hover">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
+                <th style="width:3%;">#</th>
+                <th style="width:10%;">Nombre</th>
+                <th style="width:77%;">Detalle</th>
+                <th style="width:10%;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var address in Model)
             {
-                <tr title="@address.Detail">
-                    <td style="width: 7%;">@iCount</td>
-                    <td style="width: 69%;">@address.Name</td>
-                    <td style="width: 24%;">
+                <tr>
+                    <td style="width:3%;">@iCount</td>
+                    <td style="width:10%;">@address.Name</td>
+                    <td style="width:77%;"><p>@address.Detail</p></td>
+                    <td style="width:10%;">
                         <div class="w-75 mx-auto">
                             <input type="hidden" name="hdAddressId" id="hdAddressId" value="@address.Id" />
                             <a href="#" class="btn btn-sm btn-success" title="Modificar" data-toggle="modal" data-target="#modalAddress" id="putAddress"><i class="fas fa-pen"></i></a>
