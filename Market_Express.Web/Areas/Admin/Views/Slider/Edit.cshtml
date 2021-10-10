@@ -1,4 +1,4 @@
-﻿@model Market_Express.Application.DTOs.Slider.SliderDTO
+﻿@model Market_Express.Application.DTOs.Slider.SliderUpdateDTO
 @{
     ViewData["Title"] = "Editar Slider";
 }
@@ -10,6 +10,8 @@
         </div>
         <div class="card-body">
             <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Slider" asp-action="Edit" id="frm" method="post" class="row">
+                <input type="hidden" name="Id" value="" />
+
                 <div class="col-md-5">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label">Nombre</label>
@@ -19,8 +21,13 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Image" class="col-form-label">Imagen</label> <i class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
-                        <input type="file" class="form-control-file" asp-for="Image" />
+                        <input type="file" class="form-control-file" name="Image" id="Image" />
                         <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Status" class="col-form-label">Estado</label> 
+                        
+                        <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-7">
@@ -44,4 +51,13 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
     <script src="~/js/sliderEdit.js"></script>
+
+    @if (ViewData["Message"] != null)
+    {
+        <script>
+            popUp(false, '@ViewData["Message"].ToString()');
+        </script>
+
+    }
+
 }

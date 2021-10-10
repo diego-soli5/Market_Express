@@ -58,6 +58,12 @@ namespace Market_Express.Infrastructure.Mappings
         {
             CreateMap<Slider, SliderDTO>()
                 .ReverseMap();
+
+            CreateMap<Slider, SliderCreateDTO>()
+                .ReverseMap();
+
+            CreateMap<Slider, SliderUpdateDTO>()
+                .ReverseMap();
         }
     }
 }

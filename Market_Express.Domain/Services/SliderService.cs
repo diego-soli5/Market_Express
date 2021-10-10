@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
@@ -86,6 +85,71 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
+        public async Task<BusisnessResult> Update(Slider slider, IFormFile image, Guid userId)
+        {
+            BusisnessResult oResult = new();
+            string sNewImageName;
+
+            if (string.IsNullOrWhiteSpace(slider.Name?.Trim()))
+            {
+                oResult.Message = "El campo es obligatirio.";
+
+                oResult.ResultCode = 1;
+
+                return oResult;
+            }
+
+            if (image == null)
+            {
+                oResult.Message = "El campo es obligatorio.";
+
+                oResult.ResultCode = 2;
+
+                return oResult;
+            }
+
+            if (!IsValidImage(image))
+            {
+                oResult.Message = "El formato de imagen es invalido.";
+
+                oResult.ResultCode = 2;
+
+                return oResult;
+            }
+
+            var oSliderFromDb = await _unitOfWork.Slider.GetByIdAsync(slider.Id);
+
+            if (oSliderFromDb == null)
+            {
+                oResult.Message = "El slider no existe.";
+
+                oResult.ResultCode = 3;
+
+                return oResult;
+            }
+
+            if (image?.Length > 0)
+            {
+                sNewImageName = await _storageService.CreateBlobAsync(image);
+
+                await _storageService.DeleteBlobAsync(oSliderFromDb.Image);
+
+                oSliderFromDb.Image = sNewImageName;
+            }
+
+            oSliderFromDb.Name = slider.Name;
+            oSliderFromDb.ModifiedBy = userId.ToString();
+            oSliderFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
+
+            _unitOfWork.Slider.Update(oSliderFromDb);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "El slider se modificó exitosamente!";
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> ChangeStatus(Guid sliderId, Guid userId)
         {
             BusisnessResult oResult = new();
@@ -94,7 +158,7 @@ namespace Market_Express.Domain.Services
         
             if(oSlider == null)
             {
-                oResult.Message = "Slider no existe.";
+                oResult.Message = "El slider no existe.";
 
                 return oResult;
             }

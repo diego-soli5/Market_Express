@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Entities;
 using Market_Express.Web.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +77,37 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             var oSlider = await _sliderService.GetById(id);
 
-            return View(_mapper.Map<SliderDTO>(oSlider));
+            return View(_mapper.Map<SliderUpdateDTO>(oSlider));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(SliderUpdateDTO model)
+        {
+            var oSlider = _mapper.Map<Slider>(model);
+
+            var oResult = await _sliderService.Update(oSlider, model.Image, CurrentUserId);
+
+            if (oResult.Success)
+            {
+                TempData["SliderMessage"] = oResult.Message;
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (oResult.ResultCode == 1)
+            {
+                ModelState.AddModelError("Name", oResult.Message);
+            }
+            else if (oResult.ResultCode == 2)
+            {
+                ModelState.AddModelError("Image", oResult.Message);
+            }
+            else if (oResult.ResultCode == 3)
+            {
+                ViewData["Message"] = oResult.Message;
+            }
+
+            return View(model);
         }
 
         #region API CALLS
