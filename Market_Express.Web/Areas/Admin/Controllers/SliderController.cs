@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "ADMINISTRADOR")]
     [Area("Admin")]
+    [Authorize(Roles = "ADMINISTRADOR")]
     public class SliderController : BaseController
     {
         private readonly ISliderService _sliderService;
@@ -70,7 +70,8 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return View(new SliderDTO(model.Name));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("Admin/Slider/Edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var oSlider = await _sliderService.GetById(id);

@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Market_Express.Infrastructure.Extensions;
 using Market_Express.Infrastructure.Mappings;
-using System;
 
 namespace Market_Express.Web
 {
