@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Market_Express.Domain.Enumerations;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +13,7 @@ namespace Market_Express.Application.DTOs.Slider
         [StringLength(50)]
         public string Name { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio.")]
-        public string Status { get; set; }
+        public EntityStatus Status { get; set; }
         public IFormFile Image { get; set; }
     }
 }

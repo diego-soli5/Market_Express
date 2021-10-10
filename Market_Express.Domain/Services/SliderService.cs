@@ -4,6 +4,7 @@ using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.EntityConstants;
+using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace Market_Express.Domain.Services
             {
                 Name = name,
                 Image = sImageName,
-                Status = SliderConstants.ACTIVADO,
+                Status = EntityStatus.ACTIVADO,
                 CreationDate = DateTimeUtility.NowCostaRica,
                 AddedBy = userId.ToString()
             };
@@ -163,9 +164,9 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(oSlider.Status == SliderConstants.ACTIVADO)
+            if(oSlider.Status == EntityStatus.ACTIVADO)
             {
-                oSlider.Status = SliderConstants.DESACTIVADO;
+                oSlider.Status = EntityStatus.DESACTIVADO;
 
                 oResult.ResultCode = 0; //Cambia estilo CSS boton (Danger)
 
@@ -173,7 +174,7 @@ namespace Market_Express.Domain.Services
             }
             else
             {
-                oSlider.Status = SliderConstants.ACTIVADO;
+                oSlider.Status = EntityStatus.ACTIVADO;
 
                 oResult.ResultCode = 1; //Cambia estilo CSS boton (Success)
 

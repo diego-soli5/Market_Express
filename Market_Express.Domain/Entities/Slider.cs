@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market_Express.Domain.Enumerations;
+using System;
 
 namespace Market_Express.Domain.Entities
 {
@@ -6,7 +7,7 @@ namespace Market_Express.Domain.Entities
     {
         public string Name { get; set; }
         public string Image { get; set; }
-        public string Status { get; set; }
+        public EntityStatus Status { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? ModificationDate { get; set; }
         public string AddedBy { get; set; }

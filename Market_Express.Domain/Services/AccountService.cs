@@ -3,6 +3,7 @@ using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.EntityConstants;
+using Market_Express.Domain.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -155,7 +156,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if (oUsuarioDB.Status == AppUserConstants.DESACTIVADO)
+            if (oUsuarioDB.Status == EntityStatus.ACTIVADO)
             {
                 oResult.Message = "La cuenta está desactivada.";
 

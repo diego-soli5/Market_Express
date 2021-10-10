@@ -1,4 +1,5 @@
 ﻿@model List<Market_Express.Application.DTOs.Slider.SliderDTO>
+@using Market_Express.Domain.Enumerations
 @{
     ViewData["Title"] = "Sliders";
 }
@@ -13,8 +14,7 @@
             <div class="row align-items-strech">
                 @foreach (var slider in Model)
                 {
-                    @using Market_Express.Domain.EntityConstants
-                    string active = slider.Status == SliderConstants.ACTIVADO ? "success" : "danger";
+                    string active = slider.Status == EntityStatus.ACTIVADO ? "success" : "danger";
 
                     <div class="col-12 col-md-3 d-flex mt-3 justify-content-center">
                         <div class="card" style="width: 18rem;">

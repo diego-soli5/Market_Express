@@ -1,6 +1,9 @@
 ﻿using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+
 namespace Market_Express.Infrastructure.Data.Configurations
 {
     public class ArticleConfigurations : IEntityTypeConfiguration<Article>
@@ -42,10 +45,15 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Price).HasColumnType("decimal(19, 2)");
 
-            builder.Property(e => e.Status)
+            /*builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(11)
-                .IsUnicode(false);
+                .IsUnicode(false);*/
+
+            builder.Property(e => e.Status)
+                .IsRequired()
+                .HasConversion(e => e.ToString(),
+                                    e => (EntityStatus)Enum.Parse(typeof(EntityStatus), e));
 
             builder.HasOne(d => d.Category)
                 .WithMany(p => p.Articles)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market_Express.Domain.Enumerations;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Market_Express.Application.DTOs.Slider
@@ -21,6 +22,6 @@ namespace Market_Express.Application.DTOs.Slider
         public string Name { get; set; }
         [Required(ErrorMessage = "El campo es obligatorio.")]
         public string Image { get; set; }
-        public string Status { get; set; }
+        public EntityStatus Status { get; set; }
     }
 }

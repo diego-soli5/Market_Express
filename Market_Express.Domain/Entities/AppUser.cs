@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market_Express.Domain.Enumerations;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -21,7 +22,7 @@ namespace Market_Express.Domain.Entities
         public string Phone { get; set; }
         public string Password { get; set; }
         public string Type { get; set; }
-        public string Status { get; set; }
+        public EntityStatus Status { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? ModificationDate { get; set; }
         public string AddedBy { get; set; }

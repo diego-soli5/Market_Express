@@ -9,6 +9,7 @@ using Market_Express.Domain.Abstractions.Validations;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.CrossCutting.Utility;
 using System.Linq;
+using Market_Express.Domain.Enumerations;
 
 namespace Market_Express.Application.Services
 {
@@ -104,7 +105,7 @@ namespace Market_Express.Application.Services
                         {
                             oClientPOS.AutoSync = false;
                             oClientPOS.AppUser.CreationDate = DateTimeUtility.NowCostaRica;
-                            oClientPOS.AppUser.Status = AppUserConstants.ACTIVADO;
+                            oClientPOS.AppUser.Status = EntityStatus.ACTIVADO;
                             oClientPOS.AppUser.AddedBy = SystemConstants.SYSTEM;
                             oClientPOS.AppUser.Password = _passwordService.Hash(oClientPOS.AppUser.IdentificationWithoutHypens);
 
@@ -193,7 +194,7 @@ namespace Market_Express.Application.Services
                             oArticlePOS.AutoSync = true;
                             oArticlePOS.AutoSyncDescription = true;
                             oArticlePOS.CreationDate = DateTimeUtility.NowCostaRica;
-                            oArticlePOS.Status = ArticleConstants.ACTIVADO;
+                            oArticlePOS.Status = EntityStatus.ACTIVADO;
                             oArticlePOS.AddedBy = SystemConstants.SYSTEM;
 
                             lstArticlesToAdd.Add(oArticlePOS);
