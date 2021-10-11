@@ -21,7 +21,7 @@ function previewNewImage() {
 }
 
 
-frm.addEventListener("submit",async function (e) {
+frm.addEventListener("submit", async function (e) {
 
     btnSubmit.disabled = true;
 
