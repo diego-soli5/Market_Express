@@ -10,6 +10,7 @@ using System.Linq;
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
     [Authorize(Roles = "ADMINISTRADOR")]
+    [Area("Admin")]
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
