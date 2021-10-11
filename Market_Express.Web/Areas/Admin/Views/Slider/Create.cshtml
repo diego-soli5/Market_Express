@@ -34,8 +34,10 @@
             </form>
         </div>
         <div class="card-footer">
-            <a asp-area="Admin" asp-controller="Slider" asp-action="Index" class="btn btn-secondary">Volver</a>
-            <button type="submit" class="btn btn-primary" form="frm">Crear</button>
+            <div class="float-right">
+                <a asp-area="Admin" asp-controller="Slider" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Crear</button>
+            </div>
         </div>
     </div>
 </section>
