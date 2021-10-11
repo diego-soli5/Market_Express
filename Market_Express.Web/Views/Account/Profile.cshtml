@@ -12,13 +12,13 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Cuenta</a>
-                        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Direcciones</a>
+                        <a class="nav-link active" id="v-pills-acc-tab" data-toggle="pill" href="#v-pills-acc" role="tab" aria-controls="v-pills-home" aria-selected="true">Cuenta</a>
+                        <a class="nav-link" id="v-pills-add-tab" data-toggle="pill" href="#v-pills-add" role="tab" aria-controls="v-pills-profile" aria-selected="false">Direcciones</a>
                     </div>
                 </div>
                 <div class="col-md-10">
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <div class="tab-pane fade show active" id="v-pills-acc" role="tabpanel" aria-labelledby="v-pills-home-tab">
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="py-2">
@@ -54,9 +54,11 @@
                             </div>
 
                         </div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                            <div class="col-md-12 mt-2" id="addressContainer">
-                                @{ await Html.RenderPartialAsync("_AddressManagementPartial", Model.Addresses); }
+                        <div class="tab-pane fade" id="v-pills-add" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <div class="row">
+                                <div class="col-lg-12" id="addressContainer">
+                                    @{ await Html.RenderPartialAsync("_AddressManagementPartial", Model.Addresses); }
+                                </div>
                             </div>
                         </div>
                     </div>
