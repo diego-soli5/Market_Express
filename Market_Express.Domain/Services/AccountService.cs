@@ -156,7 +156,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if (oUsuarioDB.Status == EntityStatus.ACTIVADO)
+            if (oUsuarioDB.Status == EntityStatus.DESACTIVADO)
             {
                 oResult.Message = "La cuenta está desactivada.";
 
