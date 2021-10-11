@@ -1,4 +1,5 @@
-﻿using Market_Express.CrossCutting.Utility;
+﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
@@ -30,9 +31,14 @@ namespace Market_Express.Domain.Services
             return _unitOfWork.Slider.GetAll();
         }
 
-        public async Task<Slider> GetById(Guid id)
+        public async Task<Slider> GetById(Guid sliderId)
         {
-            return await _unitOfWork.Slider.GetByIdAsync(id);
+            var oSlider = await _unitOfWork.Slider.GetByIdAsync(sliderId);
+
+            if (oSlider == null)
+                throw new NotFoundException(sliderId, nameof(Slider));
+
+            return oSlider;
         }
 
         public async Task<BusisnessResult> Create(string name, IFormFile image, Guid userId)

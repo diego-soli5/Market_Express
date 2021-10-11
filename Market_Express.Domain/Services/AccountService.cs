@@ -245,19 +245,19 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.Address.GetByIdAsync(addressId);
         }
 
-        public async Task<AppUser> GetUserInfo(Guid id)
+        public async Task<AppUser> GetUserInfo(Guid userId)
         {
-            return await _unitOfWork.AppUser.GetByIdAsync(id);
+            return await _unitOfWork.AppUser.GetByIdAsync(userId);
         }
 
-        public async Task<IEnumerable<Address>> GetAddressList(Guid id)
+        public async Task<IEnumerable<Address>> GetAddressList(Guid userId)
         {
-            return await _unitOfWork.Address.GetAllByUserId(id);
+            return await _unitOfWork.Address.GetAllByUserId(userId);
         }
 
-        public async Task<List<Permission>> GetPermissionList(Guid id)
+        public async Task<List<Permission>> GetPermissionList(Guid userId)
         {
-            return await _unitOfWork.AppUser.GetPermissionList(id);
+            return await _unitOfWork.AppUser.GetPermissionList(userId);
         }
     }
 }

@@ -132,6 +132,12 @@ namespace Market_Express.Web.Controllers
             return PartialView("_AddressManagementPartial", lstViewModel);
         }
 
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         #region API CALLS
         [HttpPost]
         public async Task<IActionResult> CreateAddress(AddressDTO model)

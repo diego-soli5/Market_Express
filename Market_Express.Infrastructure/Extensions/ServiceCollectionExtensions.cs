@@ -104,7 +104,7 @@ namespace Market_Express.Infrastructure.Extensions
                 {
                     config.Cookie.Name = "App.Auth";
                     config.LoginPath = "/Account/Login";
-                    config.AccessDeniedPath = "/Account/Unauthorizedv";
+                    config.AccessDeniedPath = "/Account/AccessDenied";
                     config.LogoutPath = "/Account/Logout";
                     config.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });

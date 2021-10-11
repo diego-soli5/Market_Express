@@ -48,11 +48,13 @@ namespace Market_Express.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+
+                app.UseExceptionHandler("/Error/Handle");
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/Handle");
                
                 app.UseHsts();
             }
