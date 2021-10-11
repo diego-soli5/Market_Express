@@ -15,6 +15,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private readonly ICartRepository _cartRepository;
         private readonly IAddressRepository _addressRepository;
         private readonly ISliderRepository _sliderRepository;
+        private readonly ICategoryRepository _categoryRepository;
         #endregion
 
         #region CONSTRUCTOR
@@ -32,6 +33,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         public ICartRepository Cart => _cartRepository ?? new CartRepository(_context, _configuration);
         public IAddressRepository Address => _addressRepository ?? new AddressRepository(_context, _configuration);
         public ISliderRepository Slider => _sliderRepository ?? new SliderRepository(_context, _configuration);
+        public ICategoryRepository Category => _categoryRepository ?? new CategoryRepository(_context, _configuration);
         #endregion
 
         #region METHODS
