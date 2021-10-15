@@ -97,10 +97,20 @@
             <form method="post" asp-area="" asp-controller="Account" asp-action="Login" id="frm">
                 <input type="hidden" name="returnUrl" value="@ViewData["returnUrl"]" />
                 <div class="form-group">
-                    <input name="email" value="" placeholder="Correo Electrónico" class="form-control" type="text">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-blue"><i class="fas fa-user text-white"></i></div>
+                        </div>
+                        <input name="email" value="" placeholder="Correo Electrónico" class="form-control" type="text">
+                    </div>
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <input name="password" value="" placeholder="Contraseña" class="form-control" type="password">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-blue"><i class="fas fa-lock text-white"></i></div>
+                        </div>
+                        <input name="password" value="" placeholder="Contraseña" class="form-control" type="password">
+                    </div>
                 </div> <!-- form-group// -->
 
                 <div class="form-group">
@@ -161,7 +171,7 @@
         $(function () {
 
             fetch('/Client/Cart/GetCartArticlesCount', { method: 'GET' })
-            .then(response => response.text())
+                .then(response => response.text())
                 .then(text => $("#cartArticlesCount").html(text));
 
             fetch('/Account/GetUserAlias', { method: 'GET' })

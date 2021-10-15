@@ -6,7 +6,7 @@ lstBtnStatus.forEach(btn => {
 
         let id = btn.getAttribute("data-id");
 
-        const url = `/Admin/Slider/ChangeStatus?id=${id}`;
+        const url = `/Admin/Category/ChangeStatus?id=${id}`;
 
         fetch(url, { method: 'POST' })
             .then(response => response.json())
@@ -22,7 +22,7 @@ lstBtnStatus.forEach(btn => {
                 }
                 else {
                     popUp(false, json.message);
-                } 
+                }
             });
     });
 });

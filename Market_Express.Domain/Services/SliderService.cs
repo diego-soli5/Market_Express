@@ -4,17 +4,15 @@ using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
-using Market_Express.Domain.EntityConstants;
 using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class SliderService : ISliderService
+    public class SliderService : BaseService, ISliderService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAzureBlobStorageService _storageService;
@@ -87,7 +85,7 @@ namespace Market_Express.Domain.Services
 
             oResult.Success = await _unitOfWork.Save();
 
-            oResult.Message = "El slider se creó exitosamente!";
+            oResult.Message = "El slider se creó correctamente!";
 
             return oResult;
         }
@@ -147,7 +145,7 @@ namespace Market_Express.Domain.Services
 
             oResult.Success = await _unitOfWork.Save();
 
-            oResult.Message = "El slider se modificó exitosamente!";
+            oResult.Message = "El slider se modificó correctamente!";
 
             return oResult;
         }
@@ -192,24 +190,5 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
-
-        #region VALIDATION METHODS
-        private bool IsValidImage(IFormFile image)
-        {
-            var validImageTypes = new[] {
-
-                    "image/png",
-                    "image/jpg",
-                    "image/jpeg"
-                };
-
-            if (!validImageTypes.Any(x => x == image.ContentType))
-            {
-                return false;
-            }
-
-            return true;
-        }
-        #endregion
     }
 }

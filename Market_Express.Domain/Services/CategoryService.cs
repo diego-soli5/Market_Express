@@ -1,22 +1,126 @@
-﻿using Market_Express.Domain.Abstractions.DomainServices;
+﻿using Market_Express.CrossCutting.Utility;
+using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService, ICategoryService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAzureBlobStorageService _storageService;
 
-        public CategoryService(IUnitOfWork unitOfWork)
+        public CategoryService(IUnitOfWork unitOfWork,
+                               IAzureBlobStorageService storageService)
         {
             _unitOfWork = unitOfWork;
+            _storageService = storageService;
         }
 
         public IEnumerable<Category> GetAll()
         {
             return _unitOfWork.Category.GetAll();
+        }
+
+        public async Task<BusisnessResult> Create(Category category, IFormFile image, Guid userId)
+        {
+            BusisnessResult oResult = new();
+            string sImageName = null;
+
+            if (string.IsNullOrEmpty(category.Name) || string.IsNullOrWhiteSpace(category.Description))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                oResult.ResultCode = 1;
+
+                return oResult;
+            }
+
+            if (image != null)
+            {
+                if (!IsValidImage(image))
+                {
+                    oResult.Message = "El formato de imagen es invalido.";
+
+                    oResult.ResultCode = 2;
+
+                    return oResult;
+                }
+
+                sImageName = await _storageService.CreateBlobAsync(image);
+            }
+
+            category.Status = EntityStatus.ACTIVADO;
+            category.Image = sImageName;
+
+            category.CreationDate = DateTimeUtility.NowCostaRica;
+            category.AddedBy = userId.ToString();
+
+            _unitOfWork.Category.Create(category);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "La categoría se creó correctamente!";
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> ChangeStatus(Guid categoryId, Guid userId)
+        {
+            BusisnessResult oResult = new();
+
+            var oCategory = await _unitOfWork.Category.GetByIdAsync(categoryId, nameof(Category.Articles));
+
+            if (oCategory == null)
+            {
+                oResult.Message = "La categoría no existe.";
+
+                return oResult;
+            }
+
+            if (oCategory.Status == EntityStatus.ACTIVADO)
+            {
+                if (oCategory.Articles?.Count > 0)
+                {
+                    if (oCategory.Articles.Any(art => art.Status == EntityStatus.ACTIVADO))
+                    {
+                        oResult.Message = "La categoría no se puede desactivar, antes debe desactivar los articulos relacionados.";
+
+                        return oResult;
+                    }
+                }
+
+                oCategory.Status = EntityStatus.DESACTIVADO;
+
+                oResult.ResultCode = 0; //Cambia estilo CSS boton (Danger)
+
+                oResult.Message = "La categoría se ha desactivado.";
+            }
+            else
+            {
+                oCategory.Status = EntityStatus.ACTIVADO;
+
+                oResult.ResultCode = 1; //Cambia estilo CSS boton (Success)
+
+                oResult.Message = "La categoría se ha activado.";
+            }
+
+            oCategory.ModificationDate = DateTimeUtility.NowCostaRica;
+
+            oCategory.ModifiedBy = userId.ToString();
+
+            _unitOfWork.Category.Update(oCategory);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            return oResult;
         }
     }
 }
