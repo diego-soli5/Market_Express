@@ -9,7 +9,10 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface ICategoryService
     {
         IEnumerable<Category> GetAll();
+        Task<Category> GetById(Guid categoryId);
+        Task<(int, int)> GetArticleDetails(Guid categoryId);
         Task<BusisnessResult> Create(Category category, IFormFile image, Guid userId);
+        Task<BusisnessResult> Edit(Category category, IFormFile image, Guid userId);
         Task<BusisnessResult> ChangeStatus(Guid categoryId, Guid userId);
     }
 }

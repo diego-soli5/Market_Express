@@ -19,6 +19,14 @@ namespace Market_Express.Domain.Entities
             Description = description;
         }
 
+        public Category(Guid id,string name, string description,EntityStatus status)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Status = status;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public EntityStatus Status { get; set; }

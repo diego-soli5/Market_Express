@@ -12,7 +12,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="alert-heading"><i class="fas fa-check"></i></h4>
+            <h4 class="alert-heading">Éxito! <i class="fas fa-check"></i></h4>
             <p class="mb-0">
                 @TempData["CategoryMessage"].ToString()
             </p>
@@ -40,29 +40,31 @@
 
                 @if (Model?.Count > 0)
                 {
-                    
-                        @foreach (var category in Model)
-                        {
-                            string active = category.Status == EntityStatus.ACTIVADO ? "success" : "danger";
 
-                            <div class="col-md-3 mb-3 d-flex justify-content-center">
-                                <div class="card" style="width: 18rem;">
-                                    <a asp-area="Admin" asp-controller="Category" asp-action="Details" asp-route-id="@category.Id" class="text-dark">
-                                        <img src="@Url.Action("GetImage","Resource",new { area = "", n = category.Image })" class="card-img-top" alt="">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-center">@category.Name</h5>
-                                            <p class="card-text text-justify">@category.Description</p>
-                                        </div>
-                                    </a>
-                                    <div class="card-footer">
-                                        <div class="text-center">
-                                            <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                            <a href="#" data-id="@category.Id" class="btn btn-sm btn-@active ml-2" id="btnChangeStatus"><i class="fas fa-power-off"></i></a>
-                                        </div>
+                    @foreach (var category in Model)
+                    {
+                        string active = category.Status == EntityStatus.ACTIVADO ? "success" : "danger";
+                        string src = category.Image != null
+                                        ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })
+                                        : "/img/NotAvailable.png";
+                        <div class="col-md-3 mb-3 d-flex justify-content-center">
+                            <div class="card" style="width: 18rem;">
+                                <a asp-area="Admin" asp-controller="Category" asp-action="Details" asp-route-id="@category.Id" class="text-dark">
+                                    <img src="@src" class="card-img-top" alt="">
+                                    <div class="card-body h-100">
+                                        <h5 class="card-title text-center">@category.Name</h5>
+                                        <p class="card-text text-justify">@category.Description</p>
+                                    </div>
+                                </a>
+                                <div class="card-footer mt-auto">
+                                    <div class="text-center">
+                                        <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                        <a href="#" data-id="@category.Id" class="btn btn-sm btn-@active ml-2" id="btnChangeStatus"><i class="fas fa-power-off"></i></a>
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
+                    }
                 }
                 else
                 {

@@ -1,0 +1,49 @@
+﻿@model Market_Express.Web.ViewModels.Category.CategoryDetailsViewModel
+@{
+    ViewData["Title"] = "Detalles Categoría";
+    string src = Model.Category.Image != null
+        ? @Url.Action("GetImage", "Resource", new { area = "", n = Model.Category.Image })
+        : "/img/NotAvailable.png";
+}
+
+
+<section class="container">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="text-white">Detalles de Categoría</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-xl-4 pr-0">Nombre</dt>
+                        <dd class="col-xl-8 px-xl-0"><p>@Model.Category.Name</p></dd>
+                        <dt class="col-xl-4 pr-0">Descripción</dt>
+                        <dd class="col-xl-8 px-xl-0"><p>@Model.Category.Description</p></dd>
+                        <dt class="col-xl-4 pr-0">Estado</dt>
+                        <dd class="col-xl-8 px-xl-0"><p>@Model.Category.Status</p></dd>
+                        <dt class="col-xl-4 pr-0">Artículos Activos</dt>
+                        <dd class="col-xl-8 px-xl-0"><p>@Model.ArticlesEnabledCount</p></dd>
+                        <dt class="col-xl-4 pr-0">Artículos Inactivos</dt>
+                        <dd class="col-xl-8 px-xl-0"><p>@Model.ArticlesDisabledCount</p></dd>
+                        <dt class="col-xl-4 pr-0">Total Articulos</dt>
+                        <dd class="col-xl-8 px-xl-0"><p>@Model.TotalArticlesCount</p></dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <figure>
+                        <img src="@src" class="img-fluid img-thumbnail" alt="">
+                        <figcaption>Imagen</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right">
+                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@Model.Category.Id" class="btn btn-success">Editar</a>
+            </div>
+        </div>
+    </div>
+</section>
+

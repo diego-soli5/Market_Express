@@ -72,6 +72,12 @@ namespace Market_Express.Infrastructure.Mappings
         {
             CreateMap<Category, CategoryDTO>()
                 .ReverseMap();
+
+            CreateMap<Category, CategoryCreateDTO>()
+                .ReverseMap();
+
+            CreateMap<Category, CategoryUpdateDTO>()
+                .ReverseMap();
         }
     }
 }

@@ -1,0 +1,72 @@
+﻿@model Market_Express.Application.DTOs.Category.CategoryUpdateDTO
+@{
+    ViewData["Title"] = "Editar Categoría";
+    string src = Model.Image != null
+        ? @Url.Action("GetImage", "Resource", new { area = "", n = Model.Image })
+        : "/img/NotAvailable.png";
+}
+
+<section class="container">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="text-white">Editar Categoría</h4>
+        </div>
+        <div class="card-body">
+            <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Category" asp-action="Edit" id="frm" method="post" class="row">
+                <div class="col-md-5">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Image" />
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label">Nombre</label>
+                        <input type="text" asp-for="Name" class="form-control" placeholder="Escribe el nombre de la categoría">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-form-label">Descripción</label>
+                        <textarea asp-for="Description" class="form-control" placeholder="Escribe la descripción de la categoría" style="resize: none;"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NewImage" class="col-form-label">Imagen</label> <i type="button" class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
+                        <input type="file" class="form-control-file" asp-for="NewImage" />
+                        <span asp-validation-for="NewImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Status" class="col-form-label">Estado</label>
+                        <select asp-for="Status" asp-items="Html.GetEnumSelectList<EntityStatus>()" class="form-control"></select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <figure>
+                            <img src="@src" id="ImagePreview" class="img-fluid img-thumbnail" />
+                            <figcaption>Imagen Actual</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="float-right">
+                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Guardar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/categoryEdit.js"></script>
+
+    @if (ViewData["MessageResult"] != null)
+    {
+        <script>
+            popUp(false, '@ViewData["MessageResult"].ToString()');
+        </script>
+    }
+}
+

@@ -1,4 +1,5 @@
-﻿using Market_Express.CrossCutting.Utility;
+﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
@@ -27,6 +28,21 @@ namespace Market_Express.Domain.Services
         public IEnumerable<Category> GetAll()
         {
             return _unitOfWork.Category.GetAll();
+        }
+
+        public async Task<Category> GetById(Guid categoryId)
+        {
+            var oCategory = await _unitOfWork.Category.GetByIdAsync(categoryId);
+
+            if (oCategory == null)
+                throw new NotFoundException(categoryId, nameof(Category));
+
+            return oCategory;
+        }
+
+        public async Task<(int, int)> GetArticleDetails(Guid categoryId)
+        {
+            return await _unitOfWork.Category.GetArticleDetails(categoryId);
         }
 
         public async Task<BusisnessResult> Create(Category category, IFormFile image, Guid userId)
@@ -68,6 +84,68 @@ namespace Market_Express.Domain.Services
             oResult.Success = await _unitOfWork.Save();
 
             oResult.Message = "La categoría se creó correctamente!";
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> Edit(Category category, IFormFile image, Guid userId)
+        {
+            BusisnessResult oResult = new();
+            string sNewImageName = null;
+
+            if (string.IsNullOrEmpty(category.Name) || string.IsNullOrWhiteSpace(category.Description))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                oResult.ResultCode = 1;
+
+                return oResult;
+            }
+
+            if (image != null)
+            {
+                if (!IsValidImage(image))
+                {
+                    oResult.Message = "El formato de imagen es invalido.";
+
+                    oResult.ResultCode = 2;
+
+                    return oResult;
+                }
+            }
+
+            var oCategoryFromDb = await _unitOfWork.Category.GetByIdAsync(category.Id);
+
+            if (oCategoryFromDb == null)
+            {
+                oResult.Message = "La categoría no existe.";
+
+                oResult.ResultCode = 1;
+
+                return oResult;
+            }
+
+            if (image != null)
+            {
+                if (oCategoryFromDb.Image != null)
+                    await _storageService.DeleteBlobAsync(oCategoryFromDb.Image);
+
+                sNewImageName = await _storageService.CreateBlobAsync(image);
+
+                oCategoryFromDb.Image = sNewImageName;
+            }
+
+            oCategoryFromDb.Name = category.Name;
+            oCategoryFromDb.Description = category.Description;
+            oCategoryFromDb.Status = category.Status;
+            oCategoryFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
+            oCategoryFromDb.ModifiedBy = userId.ToString();
+
+            _unitOfWork.Category.Update(oCategoryFromDb);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "La categoría se modificó correctamente!";
 
             return oResult;
         }

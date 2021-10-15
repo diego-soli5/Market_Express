@@ -3,6 +3,7 @@ using Market_Express.Application.DTOs.Category;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
 using Market_Express.Web.Controllers;
+using Market_Express.Web.ViewModels.Category;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -42,12 +43,6 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(Guid id)
-        {
-            return View();
-        }
-
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -78,6 +73,57 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            CategoryUpdateDTO categoryUpdateDTO = _mapper.Map<CategoryUpdateDTO>(await _categoryService.GetById(id));
+
+            return View(categoryUpdateDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CategoryUpdateDTO model)
+        {
+            Category oCategory = new(model.Id,model.Name, model.Description, model.Status);
+
+            var oResult = await _categoryService.Edit(oCategory, model.NewImage, CurrentUserId);
+
+            if (oResult.Success)
+            {
+                TempData["CategoryMessage"] = oResult.Message;
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (oResult.ResultCode == 1)
+            {
+                ViewData["MessageResult"] = oResult.Message;
+            }
+            else if (oResult.ResultCode == 2)
+            {
+                ModelState.AddModelError("Image", oResult.Message);
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            CategoryDetailsViewModel oViewModel = new();
+
+            var oCategory = await _categoryService.GetById(id);
+            var tpArticleDetails = await _categoryService.GetArticleDetails(id);
+
+            oViewModel.ArticlesEnabledCount = tpArticleDetails.Item1;
+            oViewModel.ArticlesDisabledCount = tpArticleDetails.Item2;
+            oViewModel.Category = _mapper.Map<CategoryDTO>(oCategory);
+
+            return View(oViewModel);
+        }
+
+       
 
         #region API CALLS
         [HttpPost]
