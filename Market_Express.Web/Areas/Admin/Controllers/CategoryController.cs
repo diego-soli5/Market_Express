@@ -42,6 +42,12 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public IActionResult Details(Guid id)
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View();

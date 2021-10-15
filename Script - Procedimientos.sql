@@ -68,6 +68,35 @@ BEGIN
 END;
 GO
 
+--Obtiene las direcciones del cliente por Id de usuario
+CREATE PROCEDURE Sp_Category_GetArticleDetails
+(
+	@CategoryId UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	DECLARE @ArticlesEnabledCount INT = 0;
+	DECLARE @ArticlesDisabledCount INT = 0;
+
+	IF EXISTS (SELECT 1 FROM Category WHERE Id = @CategoryId)
+	BEGIN
+		SET @ArticlesEnabledCount = ISNULL((SELECT COUNT(1) 
+											FROM Article a 
+											WHERE a.CategoryId = @CategoryId 
+											AND a.Status = 'ACTIVADO'), 0);
+
+		SET @ArticlesDisabledCount = ISNULL((SELECT COUNT(1) 
+											 FROM Article a 
+											 WHERE a.CategoryId = @CategoryId 
+										     AND a.Status = 'DESACTIVADO'), 0);
+	END;
+
+	SELECT @ArticlesEnabledCount,
+		   @ArticlesDisabledCount;
+
+END;
+GO
+
 --Registra movimiento de insercion en la tb Article
 CREATE TRIGGER TRG_Article_Insert_RegMovement
 ON Article
