@@ -239,3 +239,16 @@ BEGIN
 	DEALLOCATE curCategories
 END;
 GO
+
+
+/*
+
+select bm.Type,
+	   bm.Detail,
+	   bm.MovementDate,
+	   CASE
+	   WHEN bm.PerformedBy = 'SYSTEM' THEN bm.PerformedBy
+	   ELSE (SELECT Name FROM AppUser WHERE Id = CONVERT(UNIQUEIDENTIFIER,bm.PerformedBy)) END AS PerformedBY
+from Binnacle_Movement bm
+
+*/
