@@ -68,7 +68,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 ModelState.AddModelError("Image", oResult.Message);
             }
 
-            return View(new SliderDTO(model.Name));
+            return View(model);
         }
 
         [HttpGet]

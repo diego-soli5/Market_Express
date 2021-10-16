@@ -161,7 +161,7 @@ namespace Market_Express.Application.Services
                             {
                                 _articuloValidations.Article = oArticlePOS;
 
-                                if (!_articuloValidations.ExistsCodigoBarras())
+                                if (!_articuloValidations.ExistsBarCode())
                                     oArticleDb.BarCode = oArticlePOS.BarCode.Trim();
 
                                 if (oArticleDb.AutoSyncDescription)
@@ -189,7 +189,7 @@ namespace Market_Express.Application.Services
                     {
                         _articuloValidations.Article = oArticlePOS;
 
-                        if (!_articuloValidations.ExistsCodigoBarras())
+                        if (!_articuloValidations.ExistsBarCode())
                         {
                             oArticlePOS.AutoSync = true;
                             oArticlePOS.AutoSyncDescription = true;

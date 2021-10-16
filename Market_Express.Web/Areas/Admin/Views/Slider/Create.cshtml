@@ -1,4 +1,4 @@
-﻿@model Market_Express.Application.DTOs.Slider.SliderDTO
+﻿@model Market_Express.Application.DTOs.Slider.SliderCreateDTO
 @{
     ViewData["Title"] = "Crear Slider";
 }
@@ -18,8 +18,16 @@
 
                     </div>
                     <div class="form-group">
-                        <label asp-for="Image" class="col-form-label">Imagen</label> <i type="button" class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
-                        <input type="file" class="form-control-file" asp-for="Image" />
+                        <label asp-for="Image" class="col-form-label">Imagen</label> 
+                        <i type="button" 
+                           class="fas fa-info-circle text-primary" 
+                           data-trigger="focus" 
+                           tabindex="0" 
+                           data-toggle="popover" 
+                           title="Información" 
+                           data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616.">
+                        </i>
+                        <input type="file" asp-for="Image" class="form-control-file" />
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
                 </div>

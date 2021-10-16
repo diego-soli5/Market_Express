@@ -1,5 +1,5 @@
 ﻿var newImagePreview = document.querySelector("#ImagePreview");
-var newImageInput = document.querySelector("#Image");
+var newImageInput = document.querySelector("#NewImage");
 
 newImageInput.addEventListener("change", previewNewImage);
 

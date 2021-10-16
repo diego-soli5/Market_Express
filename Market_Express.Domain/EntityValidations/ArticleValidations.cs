@@ -20,7 +20,7 @@ namespace Market_Express.Domain.EntityValidations
             set { _articulo = value; }
         }
 
-        public bool ExistsCodigoBarras()
+        public bool ExistsBarCode()
         {
             return _unitOfWork.Article.GetFirstOrDefault(x => x.BarCode == Article.BarCode) != null;
         }

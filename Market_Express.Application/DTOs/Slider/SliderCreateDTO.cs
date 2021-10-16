@@ -8,6 +8,8 @@ namespace Market_Express.Application.DTOs.Slider
         [Required(ErrorMessage = "El campo es obligatorio.")]
         [StringLength(50)]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "El campo es obligatorio.")]
         public IFormFile Image { get; set; }
     }
 }
