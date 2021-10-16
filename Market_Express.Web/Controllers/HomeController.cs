@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Domain.Abstractions.DomainServices;
-using Market_Express.Web.ViewModels;
 using Market_Express.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Market_Express.Web.Controllers
@@ -35,15 +33,49 @@ namespace Market_Express.Web.Controllers
             return View(oViewModel);
         }
 
-        public IActionResult Privacy()
+        #region MISCELLANEOUS VIEWS
+
+        #region COMPANY VIEWS
+        [HttpGet]
+        [Route("/Home/Company/About")]
+        public IActionResult AboutCompany()
+        {
+            return View();
+        }
+        #endregion
+
+        #region HELP VIEWS
+        [HttpGet]
+        [Route("/Home/Help/Contact")]
+        public IActionResult ContactHelp()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        [Route("/Home/Help/UserManual")]
+        public IActionResult UserManual()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
+        #endregion
+
+        #region SYSTEM VIEWS
+        [HttpGet]
+        [Route("/Home/System/About")]
+        public IActionResult AboutSystem()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("/Home/System/Contact")]
+        public IActionResult ContactSystem()
+        {
+            return View();
+        }
+        #endregion
+
+        #endregion
     }
 }
