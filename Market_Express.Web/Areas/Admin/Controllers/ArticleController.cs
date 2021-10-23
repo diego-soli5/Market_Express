@@ -9,6 +9,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "ADMINISTRADOR")]
+    [Authorize(Roles = "ART_MAN_GEN")]
     public class ArticleController : Controller
     {
         public ArticleController()

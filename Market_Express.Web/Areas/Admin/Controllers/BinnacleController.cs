@@ -9,6 +9,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "ADMINISTRADOR")]
+    [Authorize(Roles = "BIN_USE_GEN")]
     public class BinnacleController : Controller
     {
         public BinnacleController()

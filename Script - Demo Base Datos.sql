@@ -413,7 +413,7 @@ ALTER TABLE [dbo].[Category]  WITH CHECK ADD  CONSTRAINT [CHK_Category_Status] C
 GO
 ALTER TABLE [dbo].[Category] CHECK CONSTRAINT [CHK_Category_Status]
 GO
-ALTER TABLE [dbo].[Permission]  WITH CHECK ADD  CONSTRAINT [CHK_Permission_Type] CHECK  (([Type]='ARTICULOS' OR [Type]='BITACORAS' OR [Type]='CATEGORIAS' OR [Type]='REPORTES' OR [Type]='SLIDERS' OR [Type]='USUARIOS' OR [Type]='ROLES'))
+ALTER TABLE [dbo].[Permission]  WITH CHECK ADD  CONSTRAINT [CHK_Permission_Type] CHECK  (([Type]='ARTICULOS' OR [Type]='BITACORAS' OR [Type]='CATEGORIAS' OR [Type]='REPORTES' OR [Type]='SLIDERS' OR [Type]='USUARIOS' OR [Type]='ROLES' OR [Type]='PEDIDOS'))
 GO
 ALTER TABLE [dbo].[Permission] CHECK CONSTRAINT [CHK_Permission_Type]
 GO

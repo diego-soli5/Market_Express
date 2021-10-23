@@ -14,6 +14,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "ADMINISTRADOR")]
+    [Authorize(Roles = "SLI_MAN_GEN")]
     public class SliderController : BaseController
     {
         private readonly ISliderService _sliderService;

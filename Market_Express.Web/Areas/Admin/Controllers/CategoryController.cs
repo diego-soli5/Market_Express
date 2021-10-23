@@ -13,8 +13,9 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "ADMINISTRADOR")]
     [Area("Admin")]
+    [Authorize(Roles = "ADMINISTRADOR")]
+    [Authorize(Roles = "CAT_MAN_GEN")]
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
