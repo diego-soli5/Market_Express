@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -30,6 +29,23 @@
 
 
 </head>
+@using Market_Express.Domain.Abstractions.DomainServices
+@using System.Security.Claims;
+@inject IAccountService accountService
+@inject ICartService cartService
+@{
+    string currentUserAlias = "";
+    int cartArticlesCount = 0;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        Guid userId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        currentUserAlias = (await accountService.GetUserInfo(userId)).Alias;
+        cartArticlesCount = await cartService.GetArticlesCount(userId);
+    }
+
+}
 
 <body>
     <!-- ========================= BARRA PRINCIPAL // ========================= -->
@@ -60,7 +76,7 @@
                                 <a asp-area="Client" asp-controller="Cart" asp-action="Index" class="icon icon-sm rounded-circle border">
                                     <i class="fa fa-shopping-cart"></i>
                                 </a>
-                                <span class="badge badge-pill badge-danger notify" id="cartArticlesCount"></span>
+                                <span class="badge badge-pill badge-danger notify" id="cartArticlesCount">@cartArticlesCount</span>
                             </div>
                             <div class="widget-header icontext">
                                 <a asp-area="" asp-controller="Account" asp-action="Profile" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
@@ -68,7 +84,7 @@
                                     <div>
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                            <p class="text-muted d-inline">Bienvenido <span id="usrAlias" class="d-inline"></span>!</p>
+                                            <p class="text-muted d-inline">Bienvenido <span id="usrAlias" class="d-inline">@currentUserAlias</span>!</p>
                                             <a asp-area="" asp-controller="Account" asp-action="Logout" class="d-block">Cerrar Sesión</a>
                                         }
                                         else
@@ -169,7 +185,7 @@
 
     <script>
         $(function () {
-
+            /*
             fetch('/Client/Cart/GetCartArticlesCount', { method: 'GET' })
                 .then(response => response.text())
                 .then(text => $("#cartArticlesCount").html(text));
@@ -177,6 +193,7 @@
             fetch('/Account/GetUserAlias', { method: 'GET' })
                 .then(response => response.text())
                 .then(text => $("#usrAlias").html(text));
+            */
         });
     </script>
 </body>
