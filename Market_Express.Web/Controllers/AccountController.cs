@@ -83,7 +83,7 @@ namespace Market_Express.Web.Controllers
 
                 lstPermisos.ForEach(per =>
                 {
-                    lstClaims.Add(new Claim(ClaimTypes.Role, per.Name));
+                    lstClaims.Add(new Claim(ClaimTypes.Role, per.PermissionCode));
                 });
 
                 var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);

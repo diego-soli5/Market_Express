@@ -9,7 +9,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "ADMINISTRADOR")]
-    [Authorize(Roles = "")]
+    [Authorize(Roles = "ORD_MAN_GEN")]
     public class OrderController : Controller
     {
         public OrderController()

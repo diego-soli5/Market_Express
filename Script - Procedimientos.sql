@@ -13,8 +13,10 @@ AS
 	BEGIN
 	SELECT DISTINCT 
 		   p.Id,
+		   p.PermissionCode,
+		   p.Name,
 		   p.Description,
-		   p.Name
+		   p.Type
 	FROM AppUser u, AppUser_Role ur, Role r, Role_Permission rp, Permission p
 	WHERE ur.AppUserId = @Id
 	AND ur.RoleId = r.Id

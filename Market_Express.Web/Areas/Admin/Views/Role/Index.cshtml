@@ -3,6 +3,60 @@
     ViewData["Title"] = "Roles y Permisos";
 }
 
-<h1>Roles</h1>
-<br /><br /><br /><br /><br />
+
+<section class="container">
+
+    @if (TempData["RoleMessage"] != null)
+    {
+        <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="alert-heading">Éxito! <i class="fas fa-check"></i></h4>
+            <p class="mb-0">
+                @TempData["RoleMessage"].ToString()
+            </p>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header bg-primary">
+            <div>
+                <h4 class="text-white d-inline">Roles y Permisos</h4>
+                <i type="button"
+                   class="fas fa-info-circle text-white d-inline"
+                   data-trigger="focus"
+                   tabindex="0"
+                   data-toggle="popover"
+                   title="Información"
+                   data-content="Pulsa sobre cualquier rol para obtener más detalles.">
+                </i>
+            </div>
+            <div class="h4"></div>
+        </div>
+        <div class="card-body">
+
+            <div class="row align-items-strech">
+                <div class="col-12">
+                    <p class="text-danger text-center">No hay roles disponibles.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <div class="float-right">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <a asp-area="Admin" asp-controller="Role" asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+
+    <script src="~/js/roleIndex.js"></script>
+}
+
+
 
