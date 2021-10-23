@@ -17,6 +17,13 @@ namespace Market_Express.Web.Areas.Client.Controllers
             _cartService = cartService;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetCartArticlesCount()
         {
             if (!User.Identity.IsAuthenticated)

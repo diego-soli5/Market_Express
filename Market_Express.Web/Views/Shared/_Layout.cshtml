@@ -33,6 +33,7 @@
 
 </head>
 
+
 <body>
     <!-- ========================= BARRA PRINCIPAL // ========================= -->
     <header class="section-header">
@@ -59,7 +60,7 @@
                     <div class="col-lg-4 col-sm-6 col-12">
                         <div class="widgets-wrap float-md-right">
                             <div class="widget-header  mr-3">
-                                <a href="#" class="icon icon-sm rounded-circle border">
+                                <a asp-area="Client" asp-controller="Cart" asp-action="Index" class="icon icon-sm rounded-circle border">
                                     <i class="fa fa-shopping-cart"></i>
                                 </a>
                                 <span class="badge badge-pill badge-danger notify" id="cartArticlesCount"></span>
@@ -121,25 +122,25 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pedidos</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Pedidos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Articulos</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Article" asp-action="Index">Articulos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Categorias</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Usuarios</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuarios</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="Slider" asp-action="Index">Sliders</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Bitacoras</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Binnacle" asp-action="Index">Bitacoras</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Reportes</a>
+                            <a class="nav-link" asp-area="Admin" asp-controller="Report" asp-action="Index">Reportes</a>
                         </li>
                     </ul>
                 </div> <!-- collapse .// -->
@@ -179,7 +180,7 @@
                         <h6 class="title">Cuenta</h6>
                         <ul class="list-unstyled">
                             <li> <a asp-area="" asp-controller="Account" asp-action="Profile">Mi Perfil</a></li>
-                            <li> <a href="#">Mis Pedidos</a></li>
+                            <li> <a asp-area="Client" asp-controller="Order" asp-action="Index">Mis Pedidos</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li> <a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>

@@ -57,7 +57,7 @@
                     <div class="col-lg-4 col-sm-6 col-12">
                         <div class="widgets-wrap float-md-right">
                             <div class="widget-header  mr-3">
-                                <a href="#" class="icon icon-sm rounded-circle border">
+                                <a asp-area="Client" asp-controller="Cart" asp-action="Index" class="icon icon-sm rounded-circle border">
                                     <i class="fa fa-shopping-cart"></i>
                                 </a>
                                 <span class="badge badge-pill badge-danger notify" id="cartArticlesCount"></span>
@@ -99,7 +99,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text bg-blue"><i class="fas fa-user text-white"></i></div>
+                            <div class="input-group-text"><i class="fas fa-user"></i></div>
                         </div>
                         <input name="email" value="" placeholder="Correo Electrónico" class="form-control" type="text">
                     </div>
@@ -107,7 +107,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text bg-blue"><i class="fas fa-lock text-white"></i></div>
+                            <div class="input-group-text"><i class="fas fa-lock"></i></div>
                         </div>
                         <input name="password" value="" placeholder="Contraseña" class="form-control" type="password">
                     </div>
