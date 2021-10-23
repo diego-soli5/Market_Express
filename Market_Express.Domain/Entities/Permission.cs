@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable disable
 
@@ -13,6 +12,7 @@ namespace Market_Express.Domain.Entities
         }
 
         public string Name { get; set; }
+        public string PermissionCode { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
 

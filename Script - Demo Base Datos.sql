@@ -9,7 +9,7 @@ GO
 
 USE [MARKET_EXPRESS]
 GO
-/****** Object:  Table [dbo].[Address]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Address]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -25,7 +25,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AppUser]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[AppUser]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -58,7 +58,7 @@ UNIQUE NONCLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AppUser_Role]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[AppUser_Role]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -73,7 +73,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Article]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Article]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -102,7 +102,7 @@ UNIQUE NONCLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Binnacle_Access]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Binnacle_Access]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -118,14 +118,14 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Binnacle_Movement]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Binnacle_Movement]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Binnacle_Movement](
 	[Id] [uniqueidentifier] NOT NULL,
-	[PerformedBy] [varchar](40) NOT NULL, --Se elimina la relacion FK con la tb AppUser para poder incluir los movimientos de SYSTEM
+	[PerformedBy] [varchar](40) NOT NULL,
 	[MovementDate] [datetime] NOT NULL,
 	[Type] [varchar](10) NOT NULL,
 	[Detail] [varchar](600) NOT NULL,
@@ -135,7 +135,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Cart]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Cart]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -151,7 +151,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Cart_Detail]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Cart_Detail]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -167,7 +167,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Category]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Category]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -188,7 +188,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Client]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Client]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -208,7 +208,7 @@ UNIQUE NONCLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Order_Detail]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Order_Detail]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -227,23 +227,28 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Permission]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Permission]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Permission](
 	[Id] [uniqueidentifier] NOT NULL,
+	[PermissionCode] [varchar](20) NOT NULL,
 	[Name] [varchar](30) NOT NULL,
 	[Description] [varchar](255) NULL,
-	[Type] [varchar](20) NOT NULL,
+	[Type] [varchar](10) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+UNIQUE NONCLUSTERED 
+(
+	[PermissionCode] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Role]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Role]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -262,7 +267,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Role_Permission]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Role_Permission]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -277,7 +282,27 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_Order]    Script Date: 26/09/2021 13:12:40 ******/
+/****** Object:  Table [dbo].[Slider]    Script Date: 23/10/2021 16:36:07 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Slider](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [varchar](50) NOT NULL,
+	[Image] [varchar](50) NOT NULL,
+	[Status] [varchar](11) NOT NULL,
+	[CreationDate] [datetime] NOT NULL,
+	[ModificationDate] [datetime] NULL,
+	[AddedBy] [varchar](40) NOT NULL,
+	[ModifiedBy] [varchar](40) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TB_Order]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -288,22 +313,6 @@ CREATE TABLE [dbo].[TB_Order](
 	[CreationDate] [datetime] NOT NULL,
 	[Total] [decimal](19, 2) NOT NULL,
 	[Status] [varchar](9) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Slider]    Script Date: 26/09/2021 13:12:40 ******/
-CREATE TABLE [dbo].[Slider](
-	[Id] [uniqueidentifier] NOT NULL,
-	[Name] [varchar](50) NOT NULL,
-	[Image] [varchar](50) NOT NULL,
-	[Status] [varchar](11) NOT NULL,
-	[CreationDate] [datetime] NOT NULL,
-	[ModificationDate] [datetime] NULL,
-	[AddedBy] [varchar](40) NOT NULL,
-	[ModifiedBy] [varchar](40) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -338,9 +347,9 @@ ALTER TABLE [dbo].[Role] ADD  DEFAULT (newsequentialid()) FOR [Id]
 GO
 ALTER TABLE [dbo].[Role_Permission] ADD  DEFAULT (newsequentialid()) FOR [Id]
 GO
-ALTER TABLE [dbo].[TB_Order] ADD  DEFAULT (newsequentialid()) FOR [Id]
-GO
 ALTER TABLE [dbo].[Slider] ADD  DEFAULT (newsequentialid()) FOR [Id]
+GO
+ALTER TABLE [dbo].[TB_Order] ADD  DEFAULT (newsequentialid()) FOR [Id]
 GO
 ALTER TABLE [dbo].[Address]  WITH CHECK ADD FOREIGN KEY([ClientId])
 REFERENCES [dbo].[Client] ([Id])
@@ -386,8 +395,6 @@ REFERENCES [dbo].[Client] ([Id])
 GO
 ALTER TABLE [dbo].[AppUser]  WITH CHECK ADD  CONSTRAINT [CHK_AppUser_Status] CHECK  (([Status]='ACTIVADO' OR [Status]='DESACTIVADO'))
 GO
-ALTER TABLE [dbo].[Permission]  WITH CHECK ADD  CONSTRAINT [CHK_Permission_Type] CHECK  (([Type]='ARTICULOS' OR [Type]='BITACORAS' OR [Type]='CATEGORIAS' OR [Type]='REPORTES' OR [Type]='SLIDERS' OR [Type]='USUARIOS' OR [Type]='ROLES'))
-GO
 ALTER TABLE [dbo].[AppUser] CHECK CONSTRAINT [CHK_AppUser_Status]
 GO
 ALTER TABLE [dbo].[AppUser]  WITH CHECK ADD  CONSTRAINT [CHK_AppUser_Type] CHECK  (([Type]='ADMINISTRADOR' OR [Type]='CLIENTE'))
@@ -406,37 +413,15 @@ ALTER TABLE [dbo].[Category]  WITH CHECK ADD  CONSTRAINT [CHK_Category_Status] C
 GO
 ALTER TABLE [dbo].[Category] CHECK CONSTRAINT [CHK_Category_Status]
 GO
-ALTER TABLE [dbo].[TB_Order]  WITH CHECK ADD  CONSTRAINT [CHK_Order_Status] CHECK  (([Status]='PENDIENTE' OR [Status]='TERMINADO' OR [Status]='CANCELADO'))
+ALTER TABLE [dbo].[Permission]  WITH CHECK ADD  CONSTRAINT [CHK_Permission_Type] CHECK  (([Type]='ARTICULOS' OR [Type]='BITACORAS' OR [Type]='CATEGORIAS' OR [Type]='REPORTES' OR [Type]='SLIDERS' OR [Type]='USUARIOS' OR [Type]='ROLES'))
 GO
-ALTER TABLE [dbo].[TB_Order] CHECK CONSTRAINT [CHK_Order_Status]
+ALTER TABLE [dbo].[Permission] CHECK CONSTRAINT [CHK_Permission_Type]
 GO
 ALTER TABLE [dbo].[Slider]  WITH CHECK ADD  CONSTRAINT [CHK_Slider_Status] CHECK  (([Status]='ACTIVADO' OR [Status]='DESACTIVADO'))
 GO
 ALTER TABLE [dbo].[Slider] CHECK CONSTRAINT [CHK_Slider_Status]
 GO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-----------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
+ALTER TABLE [dbo].[TB_Order]  WITH CHECK ADD  CONSTRAINT [CHK_Order_Status] CHECK  (([Status]='PENDIENTE' OR [Status]='TERMINADO' OR [Status]='CANCELADO'))
+GO
+ALTER TABLE [dbo].[TB_Order] CHECK CONSTRAINT [CHK_Order_Status]
+GO
