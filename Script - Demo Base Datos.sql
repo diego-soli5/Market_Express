@@ -236,6 +236,7 @@ CREATE TABLE [dbo].[Permission](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](30) NOT NULL,
 	[Description] [varchar](255) NULL,
+	[Type] [varchar](20) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -384,6 +385,8 @@ ALTER TABLE [dbo].[TB_Order]  WITH CHECK ADD FOREIGN KEY([ClientId])
 REFERENCES [dbo].[Client] ([Id])
 GO
 ALTER TABLE [dbo].[AppUser]  WITH CHECK ADD  CONSTRAINT [CHK_AppUser_Status] CHECK  (([Status]='ACTIVADO' OR [Status]='DESACTIVADO'))
+GO
+ALTER TABLE [dbo].[Permission]  WITH CHECK ADD  CONSTRAINT [CHK_Permission_Type] CHECK  (([Type]='ARTICULOS' OR [Type]='BITACORAS' OR [Type]='CATEGORIAS' OR [Type]='REPORTES' OR [Type]='SLIDERS' OR [Type]='USUARIOS' OR [Type]='ROLES'))
 GO
 ALTER TABLE [dbo].[AppUser] CHECK CONSTRAINT [CHK_AppUser_Status]
 GO
