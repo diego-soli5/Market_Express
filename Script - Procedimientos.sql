@@ -81,6 +81,27 @@ END;
 GO
 
 ---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS ROLE
+---------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Sp_Permission_GetAllByRoleId
+(
+	@Id UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	SELECT p.Id,
+		   p.Name,
+		   p.Description,
+		   p.PermissionCode,
+		   p.Type
+	FROM Role_Permission rp,
+		 Permission p
+	WHERE rp.RoleId = @Id
+	AND p.Id = rp.PermissionId;
+END;
+GO
+
+---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS CATEGORY
 ---------------------------------------------------------------------------------------------------------------
 --Obtiene las direcciones del cliente por Id de usuario

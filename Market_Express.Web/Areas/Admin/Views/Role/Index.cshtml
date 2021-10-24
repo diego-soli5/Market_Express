@@ -1,7 +1,17 @@
-﻿
+﻿@model List<Market_Express.Application.DTOs.Role.RoleDTO>
 @{
     ViewData["Title"] = "Roles y Permisos";
 }
+
+<style>
+    .text-capitalize-first {
+        text-transform: lowercase;
+    }
+
+    .text-capitalize-first::first-letter {
+        text-transform: capitalize;
+    }
+</style>
 
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
@@ -49,12 +59,40 @@
                 <div class="h4"></div>
             </div>
             <div class="card-body">
-
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay roles disponibles.</p>
-                    </div>
-                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="font-weight-bold">
+                            <td style="width: 30%">Nombre</td>
+                            <td>Descripción</td>
+                            <td class="text-center" style="width: 10%;">Acciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model?.Count > 0)
+                        {
+                            @foreach (var role in Model)
+                            {
+                                <tr>
+                                    <td style="width: 30%"><p class="text-capitalize-first">@role.Name</p></td>
+                                    <td>@role.Description</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-sm btn-success"
+                                           asp-area="Admin"
+                                           asp-controller="Role"
+                                           asp-action="Edit"
+                                           asp-route-id="@role.Id"><i class="fas fa-pen"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3"><p class="text-danger">No hay roles disponibles.</p></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
             </div>
             <div class="card-footer">
