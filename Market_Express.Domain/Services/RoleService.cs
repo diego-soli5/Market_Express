@@ -23,6 +23,11 @@ namespace Market_Express.Domain.Services
             return _unitOfWork.Role.GetAll().ToList();
         }
 
+        public List<Permission> GetAllPermissions()
+        {
+            return _unitOfWork.Permission.GetAll().ToList();
+        }
+
         public async Task<RoleWithPermissions> GetByIdWithPermissions(Guid id)
         {
             RoleWithPermissions oRoleWithPermissions = null;

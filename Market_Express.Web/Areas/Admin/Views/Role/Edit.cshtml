@@ -1,0 +1,79 @@
+﻿@model Market_Express.Web.ViewModels.Role.RoleEditViewModel
+@{
+    ViewData["Title"] = "Editar Rol";
+}
+
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Roles y Permisos</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index">Roles y Permisos</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Editar</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Editar</h4>
+            </div>
+            <div class="card-body">
+                <form asp-Area="Admin" asp-controller="Role" asp-action="Edit" id="frm" method="post" class="row">
+                    <div class="col-md-6">
+                        <h4>Rol</h4>
+                        <hr />
+                        <input type="hidden" asp-for="Role.Id" />
+
+                        <div class="form-group">
+                            <label asp-for="Role.Name" class="col-form-label">Nombre</label>
+                            <input type="text" asp-for="Role.Name" class="form-control" placeholder="Escribe el nombre del rol">
+                            <span asp-validation-for="Role.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Role.Description" class="col-form-label">Descripción</label>
+                            <textarea asp-for="Role.Description" class="form-control" placeholder="Escribe la descripción del rol" style="resize: none;"></textarea>
+                            <span asp-validation-for="Role.Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Permisos</h4>
+                        <hr />
+                        @foreach (var permission in Model.Permissions)
+                        {
+                            <label class="text-capitalize-first">@permission.Name<input type="checkbox" value="@permission.Id" /></label>
+                        }
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="Admin" asp-controller="Role" asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/categoryEdit.js"></script>
+
+    @if (ViewData["MessageResult"] != null)
+    {
+        <script>
+            popUp(false, '@ViewData["MessageResult"].ToString()');
+        </script>
+    }
+}
+
+

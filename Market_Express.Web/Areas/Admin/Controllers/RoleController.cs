@@ -5,6 +5,10 @@ using AutoMapper;
 using System.Collections.Generic;
 using Market_Express.Application.DTOs.Role;
 using System;
+using Market_Express.Web.ViewModels.Role;
+using System.Threading.Tasks;
+using System.Linq;
+using Market_Express.Application.DTOs.Permission;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -39,9 +43,27 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            return View();
+            RoleEditViewModel oViewModel = new();
+
+            var lstPermissions = _roleService.GetAllPermissions();
+
+            var oRoleWithPermissions = await _roleService.GetByIdWithPermissions(id);
+
+            oViewModel.Role = _mapper.Map<RoleDTO>(oRoleWithPermissions);
+
+            oRoleWithPermissions.Permissions.ToList().ForEach(permission =>
+            {
+                oViewModel.Role.Permissions.Add(_mapper.Map<PermissionDTO>(permission));
+            });
+
+            lstPermissions.ForEach(per =>
+            {
+                oViewModel.Permissions.Add(_mapper.Map<PermissionDTO>(per));
+            });
+
+            return View(oViewModel);
         }
     }
 }

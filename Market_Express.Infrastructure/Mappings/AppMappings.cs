@@ -3,9 +3,11 @@ using Market_Express.Application.DTOs.Account;
 using Market_Express.Application.DTOs.Address;
 using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Application.DTOs.Category;
+using Market_Express.Application.DTOs.Permission;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Application.DTOs.System;
+using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.Entities;
 
 namespace Market_Express.Infrastructure.Mappings
@@ -87,11 +89,14 @@ namespace Market_Express.Infrastructure.Mappings
         {
             CreateMap<Role, RoleDTO>()
                 .ReverseMap();
+
+            CreateMap<RoleWithPermissions, RoleDTO>()
+                .ReverseMap();
         }
 
         private void CreatePermissionMappings()
         {
-            CreateMap<Role, RoleDTO>()
+            CreateMap<Permission, PermissionDTO>()
                 .ReverseMap();
         }
     }

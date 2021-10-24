@@ -3,15 +3,6 @@
     ViewData["Title"] = "Roles y Permisos";
 }
 
-<style>
-    .text-capitalize-first {
-        text-transform: lowercase;
-    }
-
-    .text-capitalize-first::first-letter {
-        text-transform: capitalize;
-    }
-</style>
 
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
@@ -74,7 +65,7 @@
                             {
                                 <tr>
                                     <td style="width: 30%"><p class="text-capitalize-first">@role.Name</p></td>
-                                    <td>@role.Description</td>
+                                    <td class="text-capitalize-first">@role.Description</td>
                                     <td class="text-center">
                                         <a class="btn btn-sm btn-success"
                                            asp-area="Admin"

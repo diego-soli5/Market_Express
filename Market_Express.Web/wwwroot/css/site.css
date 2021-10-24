@@ -2,6 +2,13 @@
     font-size: 13px;
 }
 
+.text-capitalize-first {
+    text-transform: lowercase;
+}
+
+    .text-capitalize-first::first-letter {
+        text-transform: capitalize;
+    }
 
 .form-control-original {
     display: block;
