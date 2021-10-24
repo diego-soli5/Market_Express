@@ -3,45 +3,61 @@
     ViewData["Title"] = "Crear Categoría";
 }
 
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Categorías</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Category" asp-action="Index">Categorías</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Crear</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
-<section class="container">
-    <div class="card">
-        <div class="card-header bg-primary">
-            <h4 class="text-white">Crear Categoría</h4>
-        </div>
-        <div class="card-body">
-            <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Category" asp-action="Create" id="frm" method="post" class="row">
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label asp-for="Name" class="col-form-label">Nombre</label>
-                        <input type="text" asp-for="Name" class="form-control" placeholder="Escribe el nombre de la categoría">
-                        <span asp-validation-for="Name" class="text-danger"></span>
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Crear</h4>
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Category" asp-action="Create" id="frm" method="post" class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label asp-for="Name" class="col-form-label">Nombre</label>
+                            <input type="text" asp-for="Name" class="form-control" placeholder="Escribe el nombre de la categoría">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="col-form-label">Descripción</label>
+                            <textarea asp-for="Description" class="form-control" placeholder="Escribe la descripción de la categoría" style="resize: none;"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Image" class="col-form-label">Imagen</label> <i type="button" class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
+                            <input type="file" class="form-control-file" asp-for="Image" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Description" class="col-form-label">Descripción</label>
-                        <textarea asp-for="Description" class="form-control" placeholder="Escribe la descripción de la categoría" style="resize: none;"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <figure>
+                                <img id="newImagePreview" class="img-fluid img-thumbnail" />
+                                <figcaption>Imagen Cargada</figcaption>
+                            </figure>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Image" class="col-form-label">Imagen</label> <i type="button" class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="Sólo se aceptan imagenes de tipo jpg, jpeg y png. La resolución recomendada es de 1922 x 616 ya que el resultado con otras resoluciones puede no ser agradable."></i>
-                        <input type="file" class="form-control-file" asp-for="Image" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
-                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Crear</button>
                 </div>
-                <div class="col-md-7">
-                    <div class="form-group">
-                        <figure>
-                            <img id="newImagePreview" class="img-fluid img-thumbnail" />
-                            <figcaption>Imagen Cargada</figcaption>
-                        </figure>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="card-footer">
-            <div class="float-right">
-                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary">Volver</a>
-                <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Crear</button>
             </div>
         </div>
     </div>

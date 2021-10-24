@@ -3,82 +3,97 @@
     ViewData["Title"] = "Categorias";
 }
 
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Categorías</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Categorías</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
-<section class="container">
+<section class="section-content padding-y">
+    <div class="container">
 
-    @if (TempData["CategoryMessage"] != null)
-    {
-        <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="alert-heading">Éxito! <i class="fas fa-check"></i></h4>
-            <p class="mb-0">
-                @TempData["CategoryMessage"].ToString()
-            </p>
-        </div>
-    }
-
-    <div class="card">
-        <div class="card-header bg-primary">
-            <div>
-                <h4 class="text-white d-inline">Categorias</h4>
-                <i type="button"
-                   class="fas fa-info-circle text-white d-inline"
-                   data-trigger="focus"
-                   tabindex="0"
-                   data-toggle="popover"
-                   title="Información"
-                   data-content="Pulsa sobre cualquier categoría para obtener más detalles.">
-                </i>
+        @if (TempData["CategoryMessage"] != null)
+        {
+            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
+                <p class="mb-0">
+                    @TempData["CategoryMessage"].ToString()
+                </p>
             </div>
-            <div class="h4"></div>
-        </div>
-        <div class="card-body">
+        }
 
-            <div class="row align-items-strech">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <div>
+                    <h4 class="text-white d-inline">Gestionar</h4>
+                    <i type="button"
+                       class="fas fa-info-circle text-white d-inline"
+                       data-trigger="focus"
+                       tabindex="0"
+                       data-toggle="popover"
+                       title="Información"
+                       data-content="Pulsa sobre cualquier categoría para obtener más detalles.">
+                    </i>
+                </div>
+                <div class="h4"></div>
+            </div>
+            <div class="card-body">
 
-                @if (Model?.Count > 0)
-                {
+                <div class="row align-items-strech">
 
-                    @foreach (var category in Model)
+                    @if (Model?.Count > 0)
                     {
-                        string active = category.Status == EntityStatus.ACTIVADO ? "success" : "danger";
-                        string src = category.Image != null
-                                        ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })
-                                        : "/img/NotAvailable.png";
-                        <div class="col-md-3 mb-3 d-flex justify-content-center">
-                            <div class="card" style="width: 18rem;">
-                                <a asp-area="Admin" asp-controller="Category" asp-action="Details" asp-route-id="@category.Id" class="text-dark">
-                                    <img src="@src" class="card-img-top" alt="">
-                                    <div class="card-body h-100">
-                                        <h5 class="card-title text-center">@category.Name</h5>
-                                        <p class="card-text text-justify">@category.Description</p>
-                                    </div>
-                                </a>
-                                <div class="card-footer mt-auto">
-                                    <div class="text-center">
-                                        <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                        <a href="#" data-id="@category.Id" class="btn btn-sm btn-@active ml-2" id="btnChangeStatus"><i class="fas fa-power-off"></i></a>
+
+                        @foreach (var category in Model)
+                        {
+                            string active = category.Status == EntityStatus.ACTIVADO ? "success" : "danger";
+                            string src = category.Image != null
+                                            ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })
+                                            : "/img/NotAvailable.png";
+                            <div class="col-md-3 mb-3 d-flex justify-content-center">
+                                <div class="card" style="width: 18rem;">
+                                    <a asp-area="Admin" asp-controller="Category" asp-action="Details" asp-route-id="@category.Id" class="text-dark">
+                                        <img src="@src" class="card-img-top" alt="">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-center">@category.Name</h5>
+                                            <p class="card-text text-justify">@category.Description</p>
+                                        </div>
+                                    </a>
+                                    <div class="card-footer mt-auto">
+                                        <div class="text-center">
+                                            <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
+                                            <a href="#" data-id="@category.Id" class="btn btn-sm btn-@active ml-2" id="btnChangeStatus"><i class="fas fa-power-off"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <p class="text-danger text-center">No hay categorias disponibles.</p>
                         </div>
                     }
-                }
-                else
-                {
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay categorias disponibles.</p>
-                    </div>
-                }
-            </div>
+                </div>
 
-        </div>
-        <div class="card-footer">
-            <div class="float-right">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
-                <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
+                </div>
             </div>
         </div>
     </div>
