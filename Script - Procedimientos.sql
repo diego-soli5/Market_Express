@@ -97,7 +97,8 @@ BEGIN
 	FROM Role_Permission rp,
 		 Permission p
 	WHERE rp.RoleId = @Id
-	AND p.Id = rp.PermissionId;
+	AND p.Id = rp.PermissionId
+	ORDER BY p.Type ASC;
 END;
 GO
 

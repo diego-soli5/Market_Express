@@ -34,21 +34,42 @@
 
                         <div class="form-group">
                             <label asp-for="Role.Name" class="col-form-label">Nombre</label>
-                            <input type="text" asp-for="Role.Name" class="form-control" placeholder="Escribe el nombre del rol">
+                            <input type="text"
+                                   asp-for="Role.Name"
+                                   class="form-control"
+                                   placeholder="Escribe el nombre del rol">
                             <span asp-validation-for="Role.Name" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Role.Description" class="col-form-label">Descripción</label>
-                            <textarea asp-for="Role.Description" class="form-control" placeholder="Escribe la descripción del rol" style="resize: none;"></textarea>
+                            <textarea asp-for="Role.Description"
+                                      class="form-control"
+                                      placeholder="Escribe la descripción del rol"
+                                      style="resize: none;">
+                            </textarea>
                             <span asp-validation-for="Role.Description" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <h4>Permisos</h4>
                         <hr />
-                        @foreach (var permission in Model.Permissions)
-                        {
-                            <label class="text-capitalize-first">@permission.Name<input type="checkbox" value="@permission.Id" /></label>
+                        @{
+                            bool writeDiv = true;
+
+                            @foreach (var permission in Model.Permissions)
+                            {
+                                string auxType = permission.Type;
+
+                                @if (auxType == permission.Type)
+                                {
+                                    if (writeDiv)
+                                    {
+                                        <div></div>
+                                    }
+                                }
+
+                                <label class="text-capitalize-first">@permission.Name<input type="checkbox" value="@permission.Id" /></label>
+                            }
                         }
                     </div>
                 </form>

@@ -25,7 +25,9 @@ namespace Market_Express.Domain.Services
 
         public List<Permission> GetAllPermissions()
         {
-            return _unitOfWork.Permission.GetAll().ToList();
+            return _unitOfWork.Permission.GetAll()
+                                         .OrderBy(p => p.Type)
+                                         .ToList();
         }
 
         public async Task<RoleWithPermissions> GetByIdWithPermissions(Guid id)
