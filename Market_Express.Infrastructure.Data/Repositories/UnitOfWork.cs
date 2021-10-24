@@ -16,6 +16,15 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private readonly IAddressRepository _addressRepository;
         private readonly ISliderRepository _sliderRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IBinnacleAccessRepository _binnacleAccessRepository;
+        private readonly IBinnacleMovementRepository _binnacleMovementRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IAppUserRoleRepository _appUserRoleRepository;
+        private readonly ICartDetailRepository _cartDetailRepository;
+        private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly IPermissionRepository _permissionRepository;
+        private readonly IRolePermissionRepository _rolePermissionRepository;
         #endregion
 
         #region CONSTRUCTOR
@@ -34,6 +43,15 @@ namespace Market_Express.Infrastructure.Data.Repositories
         public IAddressRepository Address => _addressRepository ?? new AddressRepository(_context, _configuration);
         public ISliderRepository Slider => _sliderRepository ?? new SliderRepository(_context, _configuration);
         public ICategoryRepository Category => _categoryRepository ?? new CategoryRepository(_context, _configuration);
+        public IRoleRepository Role => _roleRepository ?? new RoleRepository(_context, _configuration);
+        public IBinnacleAccessRepository BinnacleAccess => _binnacleAccessRepository ?? new BinnacleAccessRepository(_context, _configuration);
+        public IBinnacleMovementRepository BinnacleMovement => _binnacleMovementRepository ?? new BinnacleMovementRepository(_context, _configuration);
+        public IOrderRepository Order => _orderRepository ?? new OrderRepository(_context, _configuration);
+        public IAppUserRoleRepository AppUserRole => _appUserRoleRepository ?? new AppUserRoleRepository(_context, _configuration);
+        public ICartDetailRepository CartDetail => _cartDetailRepository ?? new CartDetailRepository(_context, _configuration);
+        public IOrderDetailRepository OrderDetail => _orderDetailRepository ?? new OrderDetailRepository(_context, _configuration);
+        public IPermissionRepository Permission => _permissionRepository ?? new PermissionRepository(_context, _configuration);
+        public IRolePermissionRepository RolePermission => _rolePermissionRepository ?? new RolePermissionRepository(_context, _configuration);
         #endregion
 
         #region METHODS

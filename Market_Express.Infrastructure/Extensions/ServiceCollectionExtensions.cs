@@ -41,6 +41,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(ISliderService), typeof(SliderService));
 
             services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+
+            services.AddScoped(typeof(IRoleService), typeof(RoleService));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)
