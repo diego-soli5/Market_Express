@@ -56,9 +56,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(RoleCreateDTO model, List<Guid> permissions)
+        public async Task<IActionResult> Create(RoleCreateDTO model)
         {
-            var oResult = await _roleService.Create(null,null,CurrentUserId);
+            Role oRole = new(model.Name, model.Description);
+
+            var oResult = await _roleService.Create(oRole, model.Permissions, CurrentUserId);
 
             if (!oResult.Success)
             {
@@ -68,8 +70,12 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
                 oViewModel.Role = model;
 
+                ViewData["MessageResult"] = oResult.Message;
+
                 return View(oViewModel);
             }
+
+            TempData["RoleMessage"] = oResult.Message;
 
             return RedirectToAction(nameof(Index));
         }
@@ -99,7 +105,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(RoleDTO model, List<Guid> permissions)
         {
-            Role oRole = _mapper.Map<Role>(model);
+            Role oRole = new(model.Id, model.Name, model.Description);
 
             var oResult = await _roleService.Edit(oRole, permissions, CurrentUserId);
 
@@ -113,7 +119,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
                 oViewModel.Role = model;
 
-                foreach(var per in permissions)
+                foreach (var per in permissions)
                 {
                     oViewModel.Role.Permissions
                               .Add(_mapper.Map<PermissionDTO>(await _roleService.GetPermissionById(per)));

@@ -13,6 +13,19 @@ namespace Market_Express.Domain.Entities
             RolePermissions = new HashSet<RolePermission>();
         }
 
+        public Role(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+
+        public Role(Guid id, string name, string description)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }

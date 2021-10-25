@@ -10,6 +10,7 @@ namespace Market_Express.Web.ViewModels.Role
         {
             PermissionsAvailable = new();
             PermissionTypes = new();
+            Role = new();
         }
 
         public RoleCreateDTO Role { get; set; }

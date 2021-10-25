@@ -37,7 +37,7 @@ namespace Market_Express.Domain.Services
             var oPermission = await _unitOfWork.Permission.GetByIdAsync(id);
 
             if (oPermission == null)
-                throw new NotFoundException(id,nameof(Permission));
+                throw new NotFoundException(id, nameof(Permission));
 
             return oPermission;
         }
@@ -77,6 +77,50 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
+            if (string.IsNullOrEmpty(role.Name?.Trim()) || string.IsNullOrEmpty(role.Description?.Trim()))
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            if (permissions?.Count <= 0)
+            {
+                oResult.Message = "Se debe seleccionar al menos un permiso.";
+
+                return oResult;
+            }
+
+            foreach (var id in permissions)
+            {
+                var permissionToCheck = await _unitOfWork.Permission.GetByIdAsync(id);
+
+                if (permissionToCheck == null)
+                {
+                    oResult.Message = $"El permiso {id} no existe.";
+
+                    return oResult;
+                }
+
+                if (role.RolePermissions == null)
+                    role.RolePermissions = new List<RolePermission>();
+
+                role.RolePermissions.Add(new RolePermission
+                {
+                    PermissionId = id,
+                    RoleId = role.Id
+                });
+            }
+
+            role.AddedBy = currentUserId.ToString();
+            role.CreationDate = DateTimeUtility.NowCostaRica;
+
+            _unitOfWork.Role.Create(role);
+
+            oResult.Message = "El Rol se creó correctamente!";
+
+            oResult.Success = await _unitOfWork.Save();
+
             return oResult;
         }
 
@@ -84,23 +128,23 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if(string.IsNullOrEmpty(role.Name?.Trim()) || string.IsNullOrEmpty(role.Description?.Trim()))
+            if (string.IsNullOrEmpty(role.Name?.Trim()) || string.IsNullOrEmpty(role.Description?.Trim()))
             {
                 oResult.Message = "No se pueden enviar campos vacíos.";
 
                 return oResult;
             }
 
-            if(permissions?.Count <= 0)
+            if (permissions?.Count <= 0)
             {
                 oResult.Message = "Se debe seleccionar al menos un permiso.";
 
                 return oResult;
             }
 
-            var oRoleFromDb = await _unitOfWork.Role.GetByIdAsync(role.Id,nameof(Role.RolePermissions));
+            var oRoleFromDb = await _unitOfWork.Role.GetByIdAsync(role.Id, nameof(Role.RolePermissions));
 
-            if(oRoleFromDb == null)
+            if (oRoleFromDb == null)
             {
                 oResult.Message = "El Rol no existe.";
 
@@ -118,7 +162,7 @@ namespace Market_Express.Domain.Services
             {
                 var permissionToCheck = await _unitOfWork.Permission.GetByIdAsync(id);
 
-                if(permissionToCheck == null)
+                if (permissionToCheck == null)
                 {
                     oResult.Message = $"El permiso {id} no existe.";
 
