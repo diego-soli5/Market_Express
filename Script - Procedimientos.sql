@@ -102,6 +102,16 @@ BEGIN
 END;
 GO
 
+--Obtiene todos los tipos de permisos
+CREATE PROCEDURE Sp_Permission_GetAllTypes
+AS
+BEGIN
+	SELECT DISTINCT p.Type
+	FROM Permission p
+	ORDER BY p.Type ASC
+END;
+GO
+
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS CATEGORY
 ---------------------------------------------------------------------------------------------------------------

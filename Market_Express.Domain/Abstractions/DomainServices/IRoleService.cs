@@ -10,6 +10,9 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     {
         List<Role> GetAll();
         List<Permission> GetAllPermissions();
+        Task<Permission> GetPermissionById(Guid id);
+        Task<List<string>> GetAllPermissionTypes();
         Task<RoleWithPermissions> GetByIdWithPermissions(Guid id);
+        Task<BusisnessResult> Edit(Role role, List<Guid> permissions, Guid currentUserId);
     }
 }

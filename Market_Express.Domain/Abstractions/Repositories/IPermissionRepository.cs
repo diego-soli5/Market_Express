@@ -8,5 +8,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
     public interface IPermissionRepository : IGenericRepository<Permission>
     {
         Task<List<Permission>> GetAllByRoleId(Guid id);
+        Task<List<string>> GetAllTypes();
     }
 }

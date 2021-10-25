@@ -12,6 +12,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class PermissionRepository : GenericRepository<Permission>, IPermissionRepository
     {
         private const string _Sp_Permission_GetAllByRoleId = "Sp_Permission_GetAllByRoleId";
+        private const string _Sp_Permission_GetAllTypes = "Sp_Permission_GetAllTypes";
 
         public PermissionRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -41,6 +42,20 @@ namespace Market_Express.Infrastructure.Data.Repositories
             }
 
             return lstPermissions;
+        }
+
+        public async Task<List<string>> GetAllTypes()
+        {
+            List<string> lstTypes = new();
+
+            var dtResult = await ExecuteQuery(_Sp_Permission_GetAllTypes);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstTypes.Add(oRow[0].ToString());
+            }
+
+            return lstTypes;
         }
     }
 }

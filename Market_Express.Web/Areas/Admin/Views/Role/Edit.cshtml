@@ -36,6 +36,7 @@
                             <label asp-for="Role.Name" class="col-form-label">Nombre</label>
                             <input type="text"
                                    asp-for="Role.Name"
+                                   name="name"
                                    class="form-control"
                                    placeholder="Escribe el nombre del rol">
                             <span asp-validation-for="Role.Name" class="text-danger"></span>
@@ -43,6 +44,7 @@
                         <div class="form-group">
                             <label asp-for="Role.Description" class="col-form-label">Descripción</label>
                             <textarea asp-for="Role.Description"
+                                      name="description"
                                       class="form-control"
                                       placeholder="Escribe la descripción del rol"
                                       style="resize: none;">
@@ -53,26 +55,50 @@
                     <div class="col-md-6">
                         <h4>Permisos</h4>
                         <hr />
-                        @{
-                            bool writeDiv = true;
+                        @foreach (string type in Model?.PermissionTypes)
+                        {
+                            string sChecked;
 
-                            @foreach (var permission in Model.Permissions)
-                            {
-                                string auxType = permission.Type;
-
-                                @if (auxType == permission.Type)
+                            <div>
+                                <h5 class="text-capitalize-first">@type</h5>
+                                @foreach (var permission in Model.Permissions)
                                 {
-                                    if (writeDiv)
+                                    if (permission.Type == type)
                                     {
-                                        <div></div>
-                                    }
-                                }
+                                        if (Model.Role.Permissions.Any(p => p.Id == permission.Id))
+                                        {
+                                            sChecked = "checked";
+                                        }
+                                        else
+                                        {
+                                            sChecked = "";
+                                        }
 
-                                <label class="text-capitalize-first">@permission.Name<input type="checkbox" value="@permission.Id" /></label>
-                            }
+                                        <label class="text-capitalize-first">
+                                            @permission.Name
+                                            <input type="checkbox"
+                                                   value="@permission.Id"
+                                                   name="permissions"
+                                                   id=""
+                                                   @sChecked /> <br />
+                                        </label>
+
+                                        <i type="button"
+                                           class="fas fa-info-circle text-primary d-inline"
+                                           data-trigger="focus"
+                                           tabindex="0"
+                                           data-toggle="popover"
+                                           title="Información"
+                                           data-content="@permission.Description">
+                                        </i>
+                                    }
+
+                                }
+                            </div>
                         }
                     </div>
                 </form>
+
             </div>
             <div class="card-footer">
                 <div class="float-right">
@@ -87,7 +113,9 @@
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-    <script src="~/js/categoryEdit.js"></script>
+    @*
+        <script src="~/js/roleEdit.js"></script>
+    *@
 
     @if (ViewData["MessageResult"] != null)
     {
