@@ -1,4 +1,5 @@
 ﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.CustomEntities;
@@ -89,6 +90,44 @@ namespace Market_Express.Domain.Services
 
                 return oResult;
             }
+
+            var oRoleFromDb = await _unitOfWork.Role.GetByIdAsync(role.Id,nameof(Role.RolePermissions));
+
+            if(oRoleFromDb == null)
+            {
+                oResult.Message = "El Rol no existe.";
+
+                return oResult;
+            }
+
+            oRoleFromDb.Name = role.Name;
+            oRoleFromDb.Description = role.Description;
+            oRoleFromDb.ModifiedBy = currentUserId.ToString();
+            oRoleFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
+
+            _unitOfWork.RolePermission.Delete(oRoleFromDb.RolePermissions.ToList());
+
+            foreach (var id in permissions)
+            {
+                var permissionToCheck = await _unitOfWork.Permission.GetByIdAsync(id);
+
+                if(permissionToCheck == null)
+                {
+                    oResult.Message = $"El permiso {id} no existe.";
+
+                    return oResult;
+                }
+
+                oRoleFromDb.RolePermissions.Add(new RolePermission
+                {
+                    PermissionId = id,
+                    RoleId = oRoleFromDb.Id
+                });
+            }
+
+            oResult.Message = "El Rol se modificó correctamente!";
+
+            oResult.Success = await _unitOfWork.Save();
 
             return oResult;
         }

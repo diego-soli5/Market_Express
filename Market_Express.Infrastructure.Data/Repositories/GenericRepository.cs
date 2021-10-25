@@ -83,14 +83,27 @@ namespace Market_Express.Infrastructure.Data.Repositories
             _dbEntity.AddRange(entities);
         }
 
+        public void Update(TEntity entity)
+        {
+            _dbEntity.Update(entity);
+        }
+
         public void Delete(TEntity entity)
         {
             _dbEntity.Remove(entity);
         }
 
-        public void Update(TEntity entity)
+        public void Delete(List<TEntity> entity)
         {
-            _dbEntity.Update(entity);
+            _dbEntity.RemoveRange(entity);
+        }
+
+        public async Task Delete(List<Guid> ids)
+        {
+            foreach (var id in ids)
+            {
+                Delete(await GetByIdAsync(id));
+            }
         }
 
         public async Task Delete(Guid id)

@@ -39,7 +39,7 @@
                                    name="name"
                                    class="form-control"
                                    placeholder="Escribe el nombre del rol">
-                            <span asp-validation-for="Role.Name" class="text-danger"></span>
+                            <span asp-validation-for="Role.Name" data-valmsg-for="name" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Role.Description" class="col-form-label">Descripción</label>
@@ -49,7 +49,7 @@
                                       placeholder="Escribe la descripción del rol"
                                       style="resize: none;">
                             </textarea>
-                            <span asp-validation-for="Role.Description" class="text-danger"></span>
+                            <span asp-validation-for="Role.Description" data-valmsg-for="description" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -61,7 +61,7 @@
 
                             <div>
                                 <h5 class="text-capitalize-first">@type</h5>
-                                @foreach (var permission in Model.Permissions)
+                                @foreach (var permission in Model.PermissionsAvailable)
                                 {
                                     if (permission.Type == type)
                                     {
@@ -74,13 +74,13 @@
                                             sChecked = "";
                                         }
 
-                                        <label class="text-capitalize-first">
+                                        <label class="text-capitalize-first" type="button">
                                             @permission.Name
                                             <input type="checkbox"
                                                    value="@permission.Id"
                                                    name="permissions"
                                                    id=""
-                                                   @sChecked /> <br />
+                                                   @sChecked /> 
                                         </label>
 
                                         <i type="button"
@@ -90,7 +90,7 @@
                                            data-toggle="popover"
                                            title="Información"
                                            data-content="@permission.Description">
-                                        </i>
+                                        </i><br />
                                     }
 
                                 }

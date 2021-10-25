@@ -65,7 +65,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             lstPermissions.ForEach(per =>
             {
-                oViewModel.Permissions.Add(_mapper.Map<PermissionDTO>(per));
+                oViewModel.PermissionsAvailable.Add(_mapper.Map<PermissionDTO>(per));
             });
 
             return View(oViewModel);
@@ -96,7 +96,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
                 lstPermissions.ForEach(per =>
                 {
-                    oViewModel.Permissions.Add(_mapper.Map<PermissionDTO>(per));
+                    oViewModel.PermissionsAvailable.Add(_mapper.Map<PermissionDTO>(per));
                 });
 
                 ViewData["MessageResult"] = oResult.Message;

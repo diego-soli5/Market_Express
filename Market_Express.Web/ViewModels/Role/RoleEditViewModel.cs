@@ -8,12 +8,12 @@ namespace Market_Express.Web.ViewModels.Role
     {
         public RoleEditViewModel()
         {
-            Permissions = new();
+            PermissionsAvailable = new();
             PermissionTypes = new();
         }
 
         public RoleDTO Role { get; set; }
-        public List<PermissionDTO> Permissions { get; set; }
+        public List<PermissionDTO> PermissionsAvailable { get; set; }
         public List<string> PermissionTypes { get; set; }
     }
 }

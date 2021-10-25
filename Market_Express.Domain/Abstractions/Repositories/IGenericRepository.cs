@@ -15,6 +15,8 @@ namespace Market_Express.Domain.Abstractions.Repositories
         void Create(List<TEntity> entities);
         void Update(TEntity entity);
         void Delete(TEntity entity);
+        Task Delete(List<Guid> ids);
+        void Delete(List<TEntity> entity);
         Task Delete(Guid id);
     }
 }
