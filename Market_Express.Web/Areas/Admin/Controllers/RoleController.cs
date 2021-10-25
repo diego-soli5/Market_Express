@@ -45,6 +45,36 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            RoleCreateViewModel oViewModel = new();
+
+            oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
+            oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
+
+            return View(oViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(RoleCreateDTO model, List<Guid> permissions)
+        {
+            var oResult = await _roleService.Create(null,null,CurrentUserId);
+
+            if (!oResult.Success)
+            {
+                RoleCreateViewModel oViewModel = new();
+
+                oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
+                oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
+                oViewModel.Role = model;
+
+                return View(oViewModel);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         [Route("/Admin/Role/Edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -54,18 +84,13 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
 
-            var lstPermissions = _roleService.GetAllPermissions();
+            oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
 
             oViewModel.Role = _mapper.Map<RoleDTO>(oRoleWithPermissions);
 
             oRoleWithPermissions.Permissions.ToList().ForEach(permission =>
             {
                 oViewModel.Role.Permissions.Add(_mapper.Map<PermissionDTO>(permission));
-            });
-
-            lstPermissions.ForEach(per =>
-            {
-                oViewModel.PermissionsAvailable.Add(_mapper.Map<PermissionDTO>(per));
             });
 
             return View(oViewModel);
@@ -84,7 +109,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
                 oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
 
-                var lstPermissions = _roleService.GetAllPermissions();
+                oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
 
                 oViewModel.Role = model;
 
@@ -93,11 +118,6 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                     oViewModel.Role.Permissions
                               .Add(_mapper.Map<PermissionDTO>(await _roleService.GetPermissionById(per)));
                 }
-
-                lstPermissions.ForEach(per =>
-                {
-                    oViewModel.PermissionsAvailable.Add(_mapper.Map<PermissionDTO>(per));
-                });
 
                 ViewData["MessageResult"] = oResult.Message;
 
@@ -110,9 +130,18 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         #region UTILITY METHODS
-        private async Task<RoleEditViewModel> CreateRoleEditViewModel(Guid id)
+        private List<PermissionDTO> GetAllPermissionsAvailable()
         {
-            return null;
+            List<PermissionDTO> lstPermissionsDTO = new();
+
+            var lstPermissions = _roleService.GetAllPermissions();
+
+            lstPermissions.ForEach(per =>
+            {
+                lstPermissionsDTO.Add(_mapper.Map<PermissionDTO>(per));
+            });
+
+            return lstPermissionsDTO;
         }
         #endregion
     }

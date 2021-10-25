@@ -73,6 +73,13 @@ namespace Market_Express.Domain.Services
             return oRoleWithPermissions;
         }
 
+        public async Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId)
+        {
+            BusisnessResult oResult = new();
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> Edit(Role role, List<Guid> permissions, Guid currentUserId)
         {
             BusisnessResult oResult = new();

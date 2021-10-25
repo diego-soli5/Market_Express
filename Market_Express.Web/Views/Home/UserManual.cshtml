@@ -3,9 +3,41 @@
     ViewData["Title"] = "Manual de Usuario";
 }
 
-<h1>Este es el View Del Manual de Usuario</h1>
-<br />
-<br />
-<br />
-<br />
-<br />
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Manual de Usuario</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manual de Usuario</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h4>Descargar manual de usuario</h4>
+                <hr />
+                <p>Si necesitas ayuda sobre el uso del sistema puedes descargar el manual de usuario.</p>
+                <p>Recuerda que puedes pulsar los botones informativos 
+                    <i type="button"
+                       class="fas fa-info-circle text-primary d-inline"
+                       data-trigger="focus"
+                       tabindex="0"
+                       data-toggle="popover"
+                       title="Información"
+                       data-content="Hola! Suelo contener información de ayuda.">
+                    </i>
+                para obtener información de ayuda.
+                </p>
+                <button class="btn btn-primary" onclick="alert('El manual no está listo, quizás mañana si :)')">Descargar</button>
+            </div>
+        </div>
+    </div>
+</section>

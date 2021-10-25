@@ -3,10 +3,82 @@
     ViewData["Title"] = "Reportes";
 }
 
-<h1>Reportes</h1>
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Reportes de Pedidos</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Reportes de Pedidos</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
-<br />
-<br />
-<br />
-<br />
-<br />
+<section class="section-content padding-y">
+    <div class="container">
+
+        @if (TempData["BinnacleMessage"] != null)
+        {
+            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
+                <p class="mb-0">
+                    @TempData["ArticleMessage"].ToString()
+                </p>
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-body">
+                <h4>Generar Reporte de Pedidos</h4>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Pedido</label>
+                            <input type="text" name="name" value="" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Fecha Inicio</label>
+                            <input type="date" name="name" value="" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Fecha Final</label>
+                            <input type="date" name="name" value="" class="form-control" />
+                        </div>
+                        <button class="btn btn-primary">Generar Reporte</button>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Pedido</th>
+                                    <th>Pedido</th>
+                                    <th>Pedido</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+
+    <script src="~/js/binnacleIndex.js"></script>
+}
+

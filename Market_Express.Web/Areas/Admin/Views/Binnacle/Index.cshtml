@@ -1,11 +1,67 @@
 ﻿
 @{
-    ViewData["Title"] = "Bitacora";
+    ViewData["Title"] = "Bitácora";
 }
 
-<h1>Bitacora</h1>
-<br />
-<br />
-<br />
-<br />
-<br />
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Bitácora Movimientos</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Bitácora Movimientos</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+    <div class="container">
+
+        @if (TempData["BinnacleMessage"] != null)
+        {
+            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
+                <p class="mb-0">
+                    @TempData["ArticleMessage"].ToString()
+                </p>
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-header bg-primary">
+                <div>
+                    <h4 class="text-white d-inline">Gestionar</h4>
+                </div>
+                <div class="h4"></div>
+            </div>
+            <div class="card-body">
+
+                <div class="row align-items-strech">
+                    <div class="col-12">
+                        <p class="text-danger text-center">No hay movimientos registrados en la bitacora.</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+
+    <script src="~/js/binnacleIndex.js"></script>
+}
+
