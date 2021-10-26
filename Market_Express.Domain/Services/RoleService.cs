@@ -187,7 +187,7 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            var oRole = await _unitOfWork.Role.GetByIdAsync(roleId);
+            var oRole = await _unitOfWork.Role.GetByIdAsync(roleId,nameof(Role.RolePermissions));
 
             if(oRole == null)
             {
@@ -213,6 +213,8 @@ namespace Market_Express.Domain.Services
 
                 return oResult;
             }
+
+            _unitOfWork.RolePermission.Delete(oRole.RolePermissions.ToList());
 
             _unitOfWork.Role.Delete(oRole);
 

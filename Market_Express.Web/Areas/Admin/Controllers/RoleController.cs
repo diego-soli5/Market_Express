@@ -32,14 +32,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var lstRoles = _roleService.GetAll();
-
-            List<RoleDTO> lstRoleDTO = new();
-
-            lstRoles.ForEach(role =>
-            {
-                lstRoleDTO.Add(_mapper.Map<RoleDTO>(role));
-            });
+            List<RoleDTO> lstRoleDTO = GetRoleDTOList();
 
             return View(lstRoleDTO);
         }
@@ -135,7 +128,19 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            return View();
+        }
+
         #region API CALLS
+        [HttpGet]
+        public IActionResult GetTable()
+        {
+            return PartialView("_roleTablePartial", GetRoleDTOList());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete([FromQuery(Name = "Id")] Guid id)
         {
@@ -146,6 +151,32 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #endregion
 
         #region UTILITY METHODS
+        private async Task<(RoleDTO,List<PermissionDTO>)> GetRoleDTOWithPermissionDTOListByRoleId(Guid id)
+        {
+            var oRoleWithPermissions = await _roleService.GetByIdWithPermissions(id);
+
+            var oRoleDTO = _mapper.Map<RoleDTO>(oRoleWithPermissions);
+
+            oRoleWithPermissions.Permissions.ToList().ForEach(permission =>
+            {
+                oViewModel.Role.Permissions.Add(_mapper.Map<PermissionDTO>(permission));
+            });
+        }
+
+        private List<RoleDTO> GetRoleDTOList()
+        {
+            var lstRoles = _roleService.GetAll();
+
+            List<RoleDTO> lstRoleDTO = new();
+
+            lstRoles.ForEach(role =>
+            {
+                lstRoleDTO.Add(_mapper.Map<RoleDTO>(role));
+            });
+
+            return lstRoleDTO;
+        }
+
         private List<PermissionDTO> GetAllPermissionsAvailable()
         {
             List<PermissionDTO> lstPermissionsDTO = new();

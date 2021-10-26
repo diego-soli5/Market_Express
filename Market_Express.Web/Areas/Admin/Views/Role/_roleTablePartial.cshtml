@@ -1,0 +1,62 @@
+﻿@model List<Market_Express.Application.DTOs.Role.RoleDTO>
+
+<table class="table table-hover table-sm">
+    <thead>
+        <tr class="font-weight-bold">
+            <td style="width: 30%">Nombre</td>
+            <td>Descripción</td>
+            <td class="text-center" style="width: 10%;">Acciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Count > 0)
+        {
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td style="width: 30%"><p class="text-capitalize-first">@role.Name</p></td>
+                    <td class="text-capitalize-first">@role.Description</td>
+                    <td class="text-center">
+                        <div class="row no-gutters">
+
+                            <div class="col-xl-4">
+                                <a class="btn btn-sm btn-success"
+                                   asp-area="Admin"
+                                   asp-controller="Role"
+                                   asp-action="Details"
+                                   asp-route-id="@role.Id"
+                                   title="Detalles">
+                                    <i class="fas fa-list-alt"></i>
+                                </a>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <a class="btn btn-sm btn-success mt-xl-0 mt-1 "
+                                   asp-area="Admin"
+                                   asp-controller="Role"
+                                   asp-action="Edit"
+                                   asp-route-id="@role.Id"
+                                   title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                            </div>
+                            <div class="col-xl-4">
+                                <button data-id="@role.Id"
+                                        class="btn btn-sm btn-danger mt-xl-0 mt-1"
+                                        title="Eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3"><p class="text-danger">No hay roles disponibles.</p></td>
+            </tr>
+        }
+    </tbody>
+</table>

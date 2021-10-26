@@ -50,53 +50,9 @@
                 <div class="h4"></div>
             </div>
             <div class="card-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr class="font-weight-bold">
-                            <td style="width: 30%">Nombre</td>
-                            <td>Descripción</td>
-                            <td class="text-center" style="width: 10%;">Acciones</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model?.Count > 0)
-                        {
-                            @foreach (var role in Model)
-                            {
-                                <tr>
-                                    <td style="width: 30%"><p class="text-capitalize-first">@role.Name</p></td>
-                                    <td class="text-capitalize-first">@role.Description</td>
-                                    <td class="text-center">
-                                        <a class="btn btn-sm btn-success"
-                                           asp-area="Admin"
-                                           asp-controller="Role"
-                                           asp-action="Details"
-                                           asp-route-id="@role.Id"
-                                           title="Detalles">
-                                            <i class="fas fa-list-alt"></i>
-                                        </a>
-
-                                        <a class="btn btn-sm btn-success"
-                                           asp-area="Admin"
-                                           asp-controller="Role"
-                                           asp-action="Edit"
-                                           asp-route-id="@role.Id"
-                                           title="Editar">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="3"><p class="text-danger">No hay roles disponibles.</p></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
+                <div id="divRoleTable">
+                    @{ await Html.RenderPartialAsync("_roleTablePartial", Model); }
+                </div>
             </div>
             <div class="card-footer">
                 <div class="float-right">
