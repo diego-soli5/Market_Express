@@ -70,6 +70,15 @@
                                         <a class="btn btn-sm btn-success"
                                            asp-area="Admin"
                                            asp-controller="Role"
+                                           asp-action="Details"
+                                           asp-route-id="@role.Id"
+                                           title="Detalles">
+                                            <i class="fas fa-list-alt"></i>
+                                        </a>
+
+                                        <a class="btn btn-sm btn-success"
+                                           asp-area="Admin"
+                                           asp-controller="Role"
                                            asp-action="Edit"
                                            asp-route-id="@role.Id"
                                            title="Editar">

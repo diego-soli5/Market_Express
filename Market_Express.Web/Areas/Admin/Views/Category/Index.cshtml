@@ -72,8 +72,9 @@
                                     </a>
                                     <div class="card-footer mt-auto">
                                         <div class="text-center">
-                                            <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-success"><i class="fas fa-pen"></i></a>
-                                            <a href="#" data-id="@category.Id" class="btn btn-sm btn-@active ml-2" id="btnChangeStatus"><i class="fas fa-power-off"></i></a>
+                                            <a asp-area="Admin" asp-controller="Category" asp-action="Details" asp-route-id="@category.Id" class="btn btn-sm btn-success" title="Detalles"><i class="fas fa-list-alt"></i></a>
+                                            <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-success" title="Editar"><i class="fas fa-pen"></i></a>
+                                            <button data-id="@category.Id" class="btn btn-sm btn-@active" id="btnChangeStatus"><i class="fas fa-power-off"></i></button>
                                         </div>
                                     </div>
                                 </div>
