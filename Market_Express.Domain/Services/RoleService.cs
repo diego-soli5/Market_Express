@@ -182,5 +182,45 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        public async Task<BusisnessResult> Delete(Guid roleId, Guid currentUserId)
+        {
+            BusisnessResult oResult = new();
+
+            var oRole = await _unitOfWork.Role.GetByIdAsync(roleId);
+
+            if(oRole == null)
+            {
+                oResult.Message = "El Rol no existe.";
+
+                return oResult;
+            }
+
+            var oAppUserRoleToValidate = _unitOfWork.AppUserRole.GetFirstOrDefault(userRole => userRole.RoleId == oRole.Id);
+
+            if(oAppUserRoleToValidate != null)
+            {
+                oResult.Message = "El Rol no se puede eliminar porque está en uso.";
+
+                return oResult;
+            }
+
+            var lstRoles = _unitOfWork.Role.GetAll();
+
+            if(lstRoles?.Count() <= 1)
+            {
+                oResult.Message = "El Rol no se puede eliminar porque es el único existente.";
+
+                return oResult;
+            }
+
+            _unitOfWork.Role.Delete(oRole);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "El Rol se eliminó correctamente!";
+
+            return oResult;
+        }
     }
 }

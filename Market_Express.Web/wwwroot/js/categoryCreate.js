@@ -27,7 +27,7 @@ frm.addEventListener("submit", async function (e) {
 
     toastr.info("El botón se habilitará en 3 segundos.");
 
-    await new Promise(r => setTimeout(r, 3000));
+    await delayAsync(3000);
 
     btnSubmit.disabled = false;
 

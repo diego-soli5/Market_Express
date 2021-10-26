@@ -135,6 +135,16 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromQuery(Name = "Id")] Guid id)
+        {
+            var oResult = await _roleService.Delete(id, CurrentUserId);
+            
+            return Ok(oResult);
+        }
+        #endregion
+
         #region UTILITY METHODS
         private List<PermissionDTO> GetAllPermissionsAvailable()
         {
