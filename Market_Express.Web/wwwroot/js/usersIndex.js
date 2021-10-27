@@ -6,7 +6,11 @@
           
             let id = btn.getAttribute("data-id");
             let mode = btn.getAttribute("data-mode");
-            let tdStatus = btn.parentElement.parentElement.parentElement.parentElement.querySelector('td[data-field="Status"]')
+            let tdStatus = btn.parentElement
+                              .parentElement
+                              .parentElement
+                              .parentElement
+                              .querySelector('td[data-field="Status"]')
 
             let url = `/Admin/Users/ChangeStatus?id=${id}`;
 
