@@ -12,7 +12,7 @@ namespace Market_Express.Application.DTOs.AppUser
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
-        public string Type { get; set; }
+        public AppUserType Type { get; set; }
         public EntityStatus Status { get; set; }
     }
 }

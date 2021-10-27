@@ -21,7 +21,7 @@ namespace Market_Express.Domain.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Password { get; set; }
-        public string Type { get; set; }
+        public AppUserType Type { get; set; }
         public EntityStatus Status { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? ModificationDate { get; set; }

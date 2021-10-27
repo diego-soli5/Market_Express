@@ -71,10 +71,15 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasConversion(e => e.ToString(),
                                     e => (EntityStatus)Enum.Parse(typeof(EntityStatus), e));
 
-            builder.Property(e => e.Type)
+            /*builder.Property(e => e.Type)
                 .IsRequired()
                 .HasMaxLength(15)
-                .IsUnicode(false);
+                .IsUnicode(false);*/
+
+            builder.Property(e => e.Type)
+                .IsRequired()
+                .HasConversion(e => e.ToString(),
+                                    e => (AppUserType)Enum.Parse(typeof(AppUserType), e));
         }
     }
 }

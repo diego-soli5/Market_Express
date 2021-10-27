@@ -79,7 +79,7 @@ namespace Market_Express.Web.Controllers
                 lstClaims.Add(new Claim("Identification", oUser.Identification));
                 lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
                 lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));
-                lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type));
+                lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type.ToString()));
 
                 lstPermisos.ForEach(per =>
                 {
