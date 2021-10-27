@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Web.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,7 +14,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     [Area("Admin")]
     [Authorize(Roles = "ADMINISTRADOR")]
     [Authorize(Roles = "USE_MAN_GEN")]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly IAppUserService _appUserService;
         private readonly IMapper _mapper;
@@ -36,12 +37,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)
         {
-            var oResult = new
-            {
-                success = true,
-                message = "Se modificó exitosamente",
-                resultCode = 0
-            };
+            var oResult = await _appUserService.ChangeStatus(id, CurrentUserId);
 
             return Ok(oResult);
         }

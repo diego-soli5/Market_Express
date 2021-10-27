@@ -219,6 +219,9 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
+            oRole.ModifiedBy = currentUserId.ToString();
+            oRole.ModificationDate = DateTimeUtility.NowCostaRica;
+
             _unitOfWork.RolePermission.Delete(oRole.RolePermissions.ToList());
 
             _unitOfWork.Role.Delete(oRole);
