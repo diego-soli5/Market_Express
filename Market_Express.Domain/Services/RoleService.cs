@@ -73,6 +73,11 @@ namespace Market_Express.Domain.Services
             return oRoleWithPermissions;
         }
 
+        public async Task<int> GetUsersCountUsingARoleByRoleId(Guid id)
+        {
+
+        }
+
         public async Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId)
         {
             BusisnessResult oResult = new();

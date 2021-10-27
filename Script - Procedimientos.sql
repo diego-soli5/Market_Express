@@ -80,8 +80,24 @@ BEGIN
 END;
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------
--- PROCEDIMIENTOS Permission
+-- PROCEDIMIENTOS APPUSERROLE
+---------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Sp_AppUserRole_GetUserCountUsingARole
+(
+	@roleId UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	SELECT COUNT(1)
+	FROM AppUser_Role ar
+	WHERE ar.RoleId = @roleId;
+END;
+
+
+---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS PERMISSION
 ---------------------------------------------------------------------------------------------------------------
 CREATE PROCEDURE Sp_Permission_GetAllByRoleId
 (

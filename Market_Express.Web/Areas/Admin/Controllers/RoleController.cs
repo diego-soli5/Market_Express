@@ -79,18 +79,12 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             RoleEditViewModel oViewModel = new();
 
-            var oRoleWithPermissions = await _roleService.GetByIdWithPermissions(id);
+            var tplRoleDTOWithPermissionsDTOList = await GetRoleDTOWithPermissionDTOListByRoleId(id);
 
             oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
-
             oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
-
-            oViewModel.Role = _mapper.Map<RoleDTO>(oRoleWithPermissions);
-
-            oRoleWithPermissions.Permissions.ToList().ForEach(permission =>
-            {
-                oViewModel.Role.Permissions.Add(_mapper.Map<PermissionDTO>(permission));
-            });
+            oViewModel.Role = tplRoleDTOWithPermissionsDTOList.Item1;
+            oViewModel.Role.Permissions = tplRoleDTOWithPermissionsDTOList.Item2;
 
             return View(oViewModel);
         }
@@ -107,9 +101,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 RoleEditViewModel oViewModel = new();
 
                 oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
-
                 oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
-
                 oViewModel.Role = model;
 
                 foreach (var per in permissions)
@@ -131,7 +123,15 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(Guid id)
         {
-            return View();
+            RoleDetailsViewModel oViewModel = new();
+
+            var tplRoleDTOWithPermissionsDTOList = await GetRoleDTOWithPermissionDTOListByRoleId(id);
+
+            oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
+            oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
+            oViewModel.Role = tplRoleDTOWithPermissionsDTOList.Item1;
+
+            return View(oViewModel);
         }
 
         #region API CALLS
@@ -153,14 +153,18 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #region UTILITY METHODS
         private async Task<(RoleDTO,List<PermissionDTO>)> GetRoleDTOWithPermissionDTOListByRoleId(Guid id)
         {
+            List<PermissionDTO> lstPermissionDTO = new();
+
             var oRoleWithPermissions = await _roleService.GetByIdWithPermissions(id);
 
             var oRoleDTO = _mapper.Map<RoleDTO>(oRoleWithPermissions);
 
             oRoleWithPermissions.Permissions.ToList().ForEach(permission =>
             {
-                oViewModel.Role.Permissions.Add(_mapper.Map<PermissionDTO>(permission));
+                lstPermissionDTO.Add(_mapper.Map<PermissionDTO>(permission));
             });
+
+            return (oRoleDTO, lstPermissionDTO);
         }
 
         private List<RoleDTO> GetRoleDTOList()
