@@ -74,23 +74,25 @@
                                             sChecked = "";
                                         }
 
-                                        <label class="text-capitalize-first" type="button">
-                                            @permission.Name
-                                            <input type="checkbox"
-                                                   value="@permission.Id"
-                                                   name="permissions"
-                                                   id=""
-                                                   @sChecked /> 
-                                        </label>
+                                        <div>
+                                            <label type="button">
+                                                <input type="checkbox"
+                                                       value="@permission.Id"
+                                                       name="permissions"
+                                                       id=""
+                                                       @sChecked />
+                                                @permission.Name
+                                            </label>
 
-                                        <i type="button"
-                                           class="fas fa-info-circle text-primary d-inline"
-                                           data-trigger="focus"
-                                           tabindex="0"
-                                           data-toggle="popover"
-                                           title="Información"
-                                           data-content="@permission.Description">
-                                        </i><br />
+                                            <i type="button"
+                                               class="fas fa-info-circle text-primary d-inline"
+                                               data-trigger="focus"
+                                               tabindex="0"
+                                               data-toggle="popover"
+                                               title="Información"
+                                               data-content="@permission.Description">
+                                            </i>
+                                        </div>
                                     }
 
                                 }
