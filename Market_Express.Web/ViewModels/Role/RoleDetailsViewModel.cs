@@ -16,7 +16,10 @@ namespace Market_Express.Web.ViewModels.Role
         public List<PermissionDTO> PermissionsAvailable { get; set; }
         public List<string> PermissionTypes { get; set; }
 
+        public int ActiveUsersUsingThisRole { get; set; }
+        public int DisabledUsersUsingThisRole { get; set; }
+
         public int PermissionsCount => Role.Permissions.Count;
-        public int UsersUsingThisRole { get; set; }
+        public int UsersUsingThisRoleCount => ActiveUsersUsingThisRole + DisabledUsersUsingThisRole;
     }
 }

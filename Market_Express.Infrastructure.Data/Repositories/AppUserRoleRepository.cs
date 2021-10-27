@@ -15,9 +15,10 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public async Task<int> GetUserCountUsingARole(Guid roleId)
+        public async Task<(int,int)> GetUserCountUsingARole(Guid roleId)
         {
-            int count = 0;
+            int activeCount = 0;
+            int disabledCount = 0;
 
             var arrParams = new[]
             {
@@ -30,10 +31,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
             {
                 var drResult = dtResult.Rows[0];
 
-                count = (int)drResult[0];
+                activeCount = (int)drResult[0];
+                disabledCount = (int)drResult[1];
             }
 
-            return count;
+            return (activeCount,disabledCount);
         }
     }
 }

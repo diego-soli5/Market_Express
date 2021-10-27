@@ -90,9 +90,16 @@ CREATE PROCEDURE Sp_AppUserRole_GetUserCountUsingARole
 )
 AS
 BEGIN
-	SELECT COUNT(1)
-	FROM AppUser_Role ar
-	WHERE ar.RoleId = @roleId;
+	SELECT (SELECT COUNT(1)
+			FROM AppUser_Role ar, AppUser au
+			WHERE ar.RoleId = @roleId
+			AND ar.AppUserId = au.Id
+			AND au.Status = 'ACTIVADO') ActiveUsers,
+		   (SELECT COUNT(1)
+			FROM AppUser_Role ar, AppUser au
+			WHERE ar.RoleId = @roleId
+			AND ar.AppUserId = au.Id
+			AND au.Status = 'DESACTIVADO') DisabledUsers;
 END;
 
 

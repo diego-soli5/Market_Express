@@ -6,6 +6,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
 {
     public interface IAppUserRoleRepository : IGenericRepository<AppUserRole>
     {
-        Task<int> GetUserCountUsingARole(Guid roleId);
+        Task<(int, int)> GetUserCountUsingARole(Guid roleId);
     }
 }

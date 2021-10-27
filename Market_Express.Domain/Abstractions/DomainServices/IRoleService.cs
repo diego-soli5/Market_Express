@@ -16,6 +16,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId);
         Task<BusisnessResult> Edit(Role role, List<Guid> permissions, Guid currentUserId);
         Task<BusisnessResult> Delete(Guid roleId, Guid currentUserId);
-        Task<int> GetUsersCountUsingARoleByRoleId(Guid id);
+        Task<(int, int)> GetUsersCountUsingARoleByRoleId(Guid id);
     }
 }

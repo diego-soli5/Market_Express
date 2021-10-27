@@ -73,7 +73,7 @@ namespace Market_Express.Domain.Services
             return oRoleWithPermissions;
         }
 
-        public async Task<int> GetUsersCountUsingARoleByRoleId(Guid id)
+        public async Task<(int,int)> GetUsersCountUsingARoleByRoleId(Guid id)
         {
             return await _unitOfWork.AppUserRole.GetUserCountUsingARole(id);
         }

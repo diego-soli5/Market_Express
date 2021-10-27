@@ -126,9 +126,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             RoleDetailsViewModel oViewModel = new();
 
             var tplRoleDTOWithPermissionsDTOList = await GetRoleDTOWithPermissionDTOListByRoleId(id);
+            var tplRoleStats = await _roleService.GetUsersCountUsingARoleByRoleId(id);
 
             oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
-            oViewModel.UsersUsingThisRole = await _roleService.GetUsersCountUsingARoleByRoleId(id);
+            oViewModel.ActiveUsersUsingThisRole = tplRoleStats.Item1;
+            oViewModel.DisabledUsersUsingThisRole = tplRoleStats.Item2;
             oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
             oViewModel.Role = tplRoleDTOWithPermissionsDTOList.Item1;
             oViewModel.Role.Permissions = tplRoleDTOWithPermissionsDTOList.Item2;
