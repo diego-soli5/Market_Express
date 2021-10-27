@@ -11,7 +11,7 @@
                 method: 'POST'
             }
 
-            if (await confirmDelete()) {
+            if (await confirmChangeStatus()) {
                 fetch(url, body)
                     .then(response => response.json())
                     .then(json => {
@@ -31,7 +31,7 @@
 
 }
 
-async function confirmDelete() {
+async function confirmChangeStatus() {
     let ok = false;
 
     await Swal.fire({

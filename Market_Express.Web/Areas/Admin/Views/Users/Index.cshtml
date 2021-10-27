@@ -1,4 +1,4 @@
-﻿
+﻿@model List<Market_Express.Application.DTOs.AppUser.AppUserDTO>
 @{
     ViewData["Title"] = "Usuarios";
 }
@@ -50,10 +50,8 @@
             </div>
             <div class="card-body">
 
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay usuarios disponibles.</p>
-                    </div>
+                <div id="divUsersTable">
+                    @{ await Html.RenderPartialAsync("_appUserTablePartial", Model); }
                 </div>
 
             </div>
