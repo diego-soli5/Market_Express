@@ -1,4 +1,4 @@
-﻿span.text-danger{
+﻿span.text-danger {
     font-size: 13px;
 }
 
@@ -24,6 +24,10 @@
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="text"].form-control-original, input[type="search"].form-control-original, textarea.form-control-original {
+    box-shadow: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
