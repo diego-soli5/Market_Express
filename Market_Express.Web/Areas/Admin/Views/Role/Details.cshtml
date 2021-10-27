@@ -33,12 +33,12 @@
 
                         <dl class="row">
                             <dt class="col-xl-4 pr-0">Nombre</dt>
-                            <dd class="col-xl-8 px-xl-0"><p>@Model.Role.Name</p></dd>
+                            <dd class="col-xl-8 px-xl-0"><p class="text-capitalize-first">@Model.Role.Name</p></dd>
                             <dt class="col-xl-4 pr-0">Descripción</dt>
-                            <dd class="col-xl-8 px-xl-0"><p>@Model.Role.Description</p></dd>
-                            <dt class="col-xl-4 pr-0">Usuarios Usuarios</dt>
+                            <dd class="col-xl-8 px-xl-0"><p class="text-capitalize-first">@Model.Role.Description</p></dd>
+                            <dt class="col-xl-4 pr-0">Usuarios Activados</dt>
                             <dd class="col-xl-8 px-xl-0"><p>@Model.ActiveUsersUsingThisRole</p></dd>
-                            <dt class="col-xl-4 pr-0">Artículos Usuarios</dt>
+                            <dt class="col-xl-4 pr-0">Usuarios Desactivados</dt>
                             <dd class="col-xl-8 px-xl-0"><p>@Model.DisabledUsersUsingThisRole</p></dd>
                             <dt class="col-xl-4 pr-0">Total Usuarios</dt>
                             <dd class="col-xl-8 px-xl-0"><p>@Model.UsersUsingThisRoleCount</p></dd>
@@ -59,20 +59,23 @@
                                 @foreach (var permission in Model.PermissionsAvailable)
                                 {
                                     <ul>
-                                        @if(permission.Type == type)
+                                        @if (permission.Type == type)
                                         {
-                                        <li>
-                                            <p>@permission.Name</p>
-                                            <i type="button"
-                                               class="fas fa-info-circle text-primary d-inline"
-                                               data-trigger="focus"
-                                               tabindex="0"
-                                               data-toggle="popover"
-                                               title="Información"
-                                               data-content="@permission.Description">
-                                            </i>
+                                            <li>
+                                                <p class="text-capitalize-first">
+                                                    @permission.Name
+                                                <i type="button"
+                                                   class="fas fa-info-circle text-primary d-inline"
+                                                   data-trigger="focus"
+                                                   tabindex="0"
+                                                   data-toggle="popover"
+                                                   title="Información"
+                                                   data-content="@permission.Description">
+                                                </i>
+                                            </p>
+
                                         </li>
-                                        }
+                                    }
                                     </ul>
                                 }
                             </div>

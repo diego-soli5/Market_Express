@@ -120,7 +120,8 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("/Admin/Role/Details/{id}")]
         public async Task<IActionResult> Details(Guid id)
         {
             RoleDetailsViewModel oViewModel = new();
