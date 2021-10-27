@@ -75,7 +75,7 @@ namespace Market_Express.Domain.Services
 
         public async Task<int> GetUsersCountUsingARoleByRoleId(Guid id)
         {
-
+            return await _unitOfWork.AppUserRole.GetUserCountUsingARole(id);
         }
 
         public async Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId)

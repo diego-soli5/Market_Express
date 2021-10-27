@@ -128,8 +128,10 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             var tplRoleDTOWithPermissionsDTOList = await GetRoleDTOWithPermissionDTOListByRoleId(id);
 
             oViewModel.PermissionTypes = await _roleService.GetAllPermissionTypes();
+            oViewModel.UsersUsingThisRole = await _roleService.GetUsersCountUsingARoleByRoleId(id);
             oViewModel.PermissionsAvailable = GetAllPermissionsAvailable();
             oViewModel.Role = tplRoleDTOWithPermissionsDTOList.Item1;
+            oViewModel.Role.Permissions = tplRoleDTOWithPermissionsDTOList.Item2;
 
             return View(oViewModel);
         }
