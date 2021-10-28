@@ -52,7 +52,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreateDTO model)
         {
-            Category oCategory = new(model.Name,model.Description);
+            Category oCategory = new(model.Name, model.Description);
 
             var oResult = await _categoryService.Create(oCategory, model.Image, CurrentUserId);
 
@@ -64,13 +64,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             }
 
             if (oResult.ResultCode == 1)
-            {
                 ViewData["MessageResult"] = oResult.Message;
-            }
+
             else if (oResult.ResultCode == 2)
-            {
                 ModelState.AddModelError("Image", oResult.Message);
-            }
+
 
             return View(model);
         }
@@ -86,7 +84,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CategoryUpdateDTO model)
         {
-            Category oCategory = new(model.Id,model.Name, model.Description, model.Status);
+            Category oCategory = new(model.Id, model.Name, model.Description, model.Status);
 
             var oResult = await _categoryService.Edit(oCategory, model.NewImage, CurrentUserId);
 
@@ -124,7 +122,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return View(oViewModel);
         }
 
-       
+
 
         #region API CALLS
         [HttpPost]

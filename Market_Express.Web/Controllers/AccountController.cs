@@ -4,6 +4,7 @@ using Market_Express.Application.DTOs.Address;
 using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Market_Express.Web.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -61,52 +62,54 @@ namespace Market_Express.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequestDTO oModel, string returnUrl)
+        public async Task<IActionResult> Login(LoginRequestDTO model, string returnUrl)
         {
-            var oUser = _mapper.Map<AppUser>(oModel);
+            AppUser oUser = new(model.Email,model.Password);
 
             var oResult = _accountService.TryAuthenticate(ref oUser);
 
-            if (oResult.Success)
+            if (!oResult.Success)
+            {
+                ViewData["LoginMessage"] = oResult.Message;
+
+                return View();
+            }
+
+            List<Claim> lstClaims = new();
+
+            if (oUser.Type == AppUserType.ADMINISTRADOR)
             {
                 var lstPermisos = await _accountService.GetPermissionList(oUser.Id);
-
-                List<Claim> lstClaims = new();
-
-                lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
-                lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Name));
-                lstClaims.Add(new Claim("Alias", oUser.Alias));
-                lstClaims.Add(new Claim("Identification", oUser.Identification));
-                lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
-                lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));
-                lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type.ToString()));
 
                 lstPermisos.ForEach(per =>
                 {
                     lstClaims.Add(new Claim(ClaimTypes.Role, per.PermissionCode));
                 });
-
-                var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var oPrincipal = new ClaimsPrincipal(oIdentity);
-
-                await HttpContext.SignInAsync(oPrincipal, new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTime.Now.AddMonths(12),
-                });
-
-                if (!string.IsNullOrEmpty(returnUrl))
-                {
-                    return LocalRedirect(returnUrl);
-                }
-
-                return RedirectToAction("Index", "Home");
             }
 
-            ViewData["LoginMessage"] = oResult.Message;
+            lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
+            lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Name));
+            lstClaims.Add(new Claim("Identification", oUser.Identification));
+            lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
+            lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));
+            lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type.ToString()));
 
-            return View();
+            var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var oPrincipal = new ClaimsPrincipal(oIdentity);
+
+            await HttpContext.SignInAsync(oPrincipal, new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTime.Now.AddHours(12),
+            });
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

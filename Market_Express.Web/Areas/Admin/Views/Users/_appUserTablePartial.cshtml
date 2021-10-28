@@ -1,6 +1,6 @@
 ﻿@model List<Market_Express.Application.DTOs.AppUser.AppUserDTO>
 
-<table class="table table-hover table-sm">
+<table class="table table-hover table-sm table-responsive-lg">
     <thead>
         <tr class="font-weight-bold">
             <td>Nombre</td>
@@ -17,48 +17,48 @@
         {
             @foreach (var user in Model)
             {
-        <tr>
-            <td><p class="text-capitalize-first">@user.Name</p></td>
-            <td><p class="text-capitalize-first">@user.Identification</p></td>
-            <td><p class="text-lowercase">@user.Email</p></td>
-            <td><p class="text-capitalize-first">@user.Phone</p></td>
-            <td><p class="text-capitalize-first">@user.Type</p></td>
-            <td data-field="Status"><p class="text-capitalize-first">@user.Status.ToString()</p></td>
-            <td class="text-center">
-                <div class="row no-gutters">
+                <tr>
+                    <td><p class="text-capitalize-first">@user.Name</p></td>
+                    <td><p class="text-capitalize-first">@user.Identification</p></td>
+                    <td><p class="text-lowercase">@user.Email</p></td>
+                    <td><p class="text-capitalize-first">@user.Phone</p></td>
+                    <td><p class="text-capitalize-first">@user.Type</p></td>
+                    <td data-field="Status"><p class="text-capitalize-first">@user.Status.ToString()</p></td>
+                    <td class="text-center">
+                        <div class="row no-gutters">
 
-                    <div class="col-xl-4">
-                        <a class="btn btn-sm btn-success"
-                           asp-area="Admin"
-                           asp-controller="Users"
-                           asp-action="Details"
-                           asp-route-id="@user.Id"
-                           title="Detalles">
-                            <i class="fas fa-list-alt"></i>
-                        </a>
-                    </div>
+                            <div class="col-xl-4">
+                                <a class="btn btn-sm btn-success"
+                                   asp-area="Admin"
+                                   asp-controller="Users"
+                                   asp-action="Details"
+                                   asp-route-id="@user.Id"
+                                   title="Detalles">
+                                    <i class="fas fa-list-alt"></i>
+                                </a>
+                            </div>
 
-                    <div class="col-xl-4">
-                        <a class="btn btn-sm btn-success mt-xl-0 mt-1 "
-                           asp-area="Admin"
-                           asp-controller="Users"
-                           asp-action="Edit"
-                           asp-route-id="@user.Id"
-                           title="Editar">
-                            <i class="fas fa-pen"></i>
-                        </a>
-                    </div>
-                    <div class="col-xl-4">
-                        <button data-id="@user.Id"
-                                data-mode="@(user.Status == EntityStatus.ACTIVADO ? "D" : "E")"
-                                class="btn btn-sm @(user.Status == EntityStatus.ACTIVADO ? "btn-success" : "btn-danger") mt-xl-0 mt-1"
-                                title="@(user.Status == EntityStatus.ACTIVADO ? "Desactivar" : "Activar")">
-                            <i class="fas fa-power-off"></i>
-                        </button>
-                    </div>
-                </div>
-            </td>
-        </tr>
+                            <div class="col-xl-4">
+                                <a class="btn btn-sm btn-success mt-xl-0 mt-1 "
+                                   asp-area="Admin"
+                                   asp-controller="Users"
+                                   asp-action="Edit"
+                                   asp-route-id="@user.Id"
+                                   title="Editar">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                            </div>
+                            <div class="col-xl-4">
+                                <button data-id="@user.Id"
+                                        data-mode="@(user.Status == EntityStatus.ACTIVADO ? "D" : "E")"
+                                        class="btn btn-sm @(user.Status == EntityStatus.ACTIVADO ? "btn-success" : "btn-danger") mt-xl-0 mt-1"
+                                        title="@(user.Status == EntityStatus.ACTIVADO ? "Desactivar" : "Activar")">
+                                    <i class="fas fa-power-off"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             }
         }
         else

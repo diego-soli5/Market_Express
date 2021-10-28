@@ -1,6 +1,7 @@
 ﻿using Market_Express.Domain.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 #nullable disable
 
@@ -13,6 +14,21 @@ namespace Market_Express.Domain.Entities
             AppUserRoles = new HashSet<AppUserRole>();
             BinnacleAccesses = new HashSet<BinnacleAccess>();
             BinnacleMovements = new HashSet<BinnacleMovement>();
+        }
+
+        public AppUser(string email, string password)
+        {
+            Email = email;
+            Password = password;
+        }
+
+        public AppUser(string name, string identification, string email, string phone, AppUserType type)
+        {
+            Name = name;
+            Identification = identification;
+            Email = email;
+            Phone = phone;
+            Type = type;
         }
 
         public string Name { get; set; }
@@ -28,7 +44,8 @@ namespace Market_Express.Domain.Entities
         public string AddedBy { get; set; }
         public string ModifiedBy { get; set; }
 
-        public string IdentificationWithoutHypens => Identification;
+        public string IdentificationWithoutHypens => Regex.Replace(Identification, @"[^\w\.@]", "",
+                                RegexOptions.None, TimeSpan.FromSeconds(1.5));
 
         public Client Client { get; set; }
         public ICollection<AppUserRole> AppUserRoles { get; set; }

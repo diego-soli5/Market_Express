@@ -61,10 +61,12 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="AppUser.Phone" class="col-form-label">Teléfono</label>
-                            <input type="text"
+                            <input type="number"
                                    asp-for="AppUser.Phone"
                                    class="form-control"
-                                   placeholder="Escribe el numero de teléfono">
+                                   placeholder="Escribe el numero de teléfono"
+                                   maxlength="8"
+                                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                             <span asp-validation-for="AppUser.Phone" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -84,12 +86,19 @@
                             {
                                 @foreach (var role in Model.AvailableRoles)
                                 {
+                                    string sChecked = "";
+
+                                    @if (Model.AppUser.Roles.Any(r => r == role.Id))
+                                    {
+                                        sChecked = "checked";
+                                    }
+
                                     <div class="form-group">
                                         <label type="button">
                                             <input type="checkbox"
                                                    value="@role.Id"
-                                                   name="permissions"
-                                                   id="" />
+                                                   name="roles"
+                                                   @sChecked/>
                                             <span>@role.Name</span>
                                         </label>
 
@@ -124,7 +133,7 @@
     <script src="~/lib/jquery/dist/jquery.maskedinput.js"></script>
     <script src="~/js/userCreate.js"></script>
 
-    @if (Model.AppUser.Type == AppUserType.ADMINISTRADOR)
+    @if (Model?.AppUser?.Type == AppUserType.ADMINISTRADOR)
     {
         <script>
             $("#divRoles").collapse('show');

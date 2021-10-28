@@ -1,11 +1,18 @@
 ﻿using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Market_Express.Application.DTOs.AppUser
 {
     public class AppUserCreateDTO
     {
+        public AppUserCreateDTO()
+        {
+            Roles = new();
+        }
+
         [Required(ErrorMessage = "El campo es obligatorio.")]
         [StringLength(40)]
         [BindProperty(Name = "AppUser.Name")]
@@ -22,7 +29,7 @@ namespace Market_Express.Application.DTOs.AppUser
         public string Email { get; set; }
 
         [Required(ErrorMessage = "El campo es obligatorio.")]
-        [StringLength(40)]
+        [StringLength(8)]
         [BindProperty(Name = "AppUser.Phone")]
         [Phone(ErrorMessage = "Ingresa un número de teléfono válido.")]
         public string Phone { get; set; }
@@ -31,6 +38,8 @@ namespace Market_Express.Application.DTOs.AppUser
         [BindProperty(Name = "AppUser.Type")]
         public AppUserType Type { get; set; }
 
+
+        public List<Guid> Roles { get; set; }
 
     }
 }

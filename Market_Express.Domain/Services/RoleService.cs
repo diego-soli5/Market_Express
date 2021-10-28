@@ -122,9 +122,22 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.Role.Create(role);
 
-            oResult.Message = "El Rol se creó correctamente!";
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
 
-            oResult.Success = await _unitOfWork.Save();
+                oResult.Success = await _unitOfWork.Save();
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
+
+            oResult.Message = "El rol se creó correctamente!";
 
             return oResult;
         }
@@ -181,9 +194,22 @@ namespace Market_Express.Domain.Services
                 });
             }
 
-            oResult.Message = "El Rol se modificó correctamente!";
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
 
-            oResult.Success = await _unitOfWork.Save();
+                oResult.Success = await _unitOfWork.Save();
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
+
+            oResult.Message = "El rol se modificó correctamente!";
 
             return oResult;
         }
@@ -196,7 +222,7 @@ namespace Market_Express.Domain.Services
 
             if(oRole == null)
             {
-                oResult.Message = "El Rol no existe.";
+                oResult.Message = "El rol no existe.";
 
                 return oResult;
             }
@@ -205,7 +231,7 @@ namespace Market_Express.Domain.Services
 
             if(oAppUserRoleToValidate != null)
             {
-                oResult.Message = "El Rol no se puede eliminar porque está en uso.";
+                oResult.Message = "El rol no se puede eliminar porque está en uso.";
 
                 return oResult;
             }
@@ -214,7 +240,7 @@ namespace Market_Express.Domain.Services
 
             if(lstRoles?.Count() <= 1)
             {
-                oResult.Message = "El Rol no se puede eliminar porque es el único existente.";
+                oResult.Message = "El rol no se puede eliminar porque es el único existente.";
 
                 return oResult;
             }
@@ -226,9 +252,22 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.Role.Delete(oRole);
 
-            oResult.Success = await _unitOfWork.Save();
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
 
-            oResult.Message = "El Rol se eliminó correctamente!";
+                oResult.Success = await _unitOfWork.Save();
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
+
+            oResult.Message = "El rol se eliminó correctamente!";
 
             return oResult;
         }

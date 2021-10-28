@@ -2,6 +2,7 @@
 using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Entities;
 using Market_Express.Web.Controllers;
 using Market_Express.Web.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -49,9 +50,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AppUserCreateDTO model, List<Guid> roles)
+        public async Task<IActionResult> Create(AppUserCreateDTO model)
         {
-            var oResult = new { Success = false, Message = "Error wacho" };
+            AppUser oUser = new(model.Name, model.Identification, model.Email, model.Phone, model.Type);
+
+            var oResult = await _appUserService.Create(oUser, model.Roles, CurrentUserId);
 
             if (!oResult.Success)
             {
@@ -60,7 +63,14 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 oViewModel.AvailableRoles = GetRoleDTOList();
                 oViewModel.AppUser = model;
 
-                ViewData["MessageResult"] = oResult.Message;
+                if (oResult.ResultCode == 0)
+                    ModelState.AddModelError("AppUser.Identification", oResult.Message);
+                else if (oResult.ResultCode == 1)
+                    ModelState.AddModelError("AppUser.Email", oResult.Message);
+                else if (oResult.ResultCode == 2)
+                    ModelState.AddModelError("AppUser.Phone", oResult.Message);
+                else
+                    ViewData["MessageResult"] = oResult.Message;
 
                 return View(oViewModel);
             }
