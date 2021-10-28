@@ -319,12 +319,12 @@ BEGIN
 	DECLARE @CreationDate DATETIME;
 	DECLARE @AddedBy VARCHAR(40);
 
-	OPEN curRole
+	OPEN curRoles
 	FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Role ' + @Name);
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Rol ' + @Name);
 
 		FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
 	END
@@ -341,23 +341,53 @@ BEGIN
 										  
 	DECLARE curRoles CURSOR FOR SELECT i.Name,
 										  i.Description,
-										  i.CreationDate,
-										  i.AddedBy
+										  i.ModificationDate,
+										  i.ModifiedBy
 								   FROM inserted i;
 	
 	DECLARE @Name VARCHAR(30);
 	DECLARE @Description VARCHAR(255);
-	DECLARE @CreationDate DATETIME;
-	DECLARE @AddedBy VARCHAR(40);
+	DECLARE @ModificationDate DATETIME;
+	DECLARE @ModifiedBy VARCHAR(40);
 
-	OPEN curRole
-	FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
+	OPEN curRoles
+	FETCH NEXT FROM curRoles INTO @Name, @Description, @ModificationDate, @ModifiedBy
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@AddedBy,@CreationDate,'INSERT','Update Role ' + @Name);
+		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE Rol ' + @Name);
 
-		FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
+		FETCH NEXT FROM curRoles INTO @Name, @Description, @ModificationDate, @ModifiedBy
+	END
+	CLOSE curRoles
+	DEALLOCATE curRoles
+END;
+GO
+
+CREATE TRIGGER TRG_Role_RegMovement_Delete
+ON [Role]
+FOR DELETE
+AS
+BEGIN
+										  
+	DECLARE curRoles CURSOR FOR SELECT d.Name,
+										  d.Description,
+										  d.ModifiedBy
+								   FROM deleted d;
+	
+	DECLARE @Name VARCHAR(30);
+	DECLARE @Description VARCHAR(255);
+	DECLARE @ModificationDate DATETIME = GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'UTC';
+	DECLARE @ModifiedBy VARCHAR(40);
+
+	OPEN curRoles
+	FETCH NEXT FROM curRoles INTO @Name, @Description, @ModifiedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@ModifiedBy,@ModificationDate,'DELETE','DELETE Rol ' + @Name);
+
+		FETCH NEXT FROM curRoles INTO @Name, @Description, @ModifiedBy
 	END
 	CLOSE curRoles
 	DEALLOCATE curRoles
