@@ -50,18 +50,7 @@
                 <div class="h4"></div>
             </div>
             <div class="card-body">
-                @*
-                    <div class="row mb-5">
-                        <div class="col-lg-3 col-md-3 col-12">
-                            <label><b>Nombre</b></label>
-                            <input type="text" name="name" class="form-control-original" />
-                        </div>
-                        <div class="offset-lg-6 offset-md-6 col-lg-3 col-md-3 col-sm-3 col-12">
-                            <label class="d-block">‎      ‏‏‎</label>
-                            <button class=" btn btn-info btn-block float-right">Buscar</button>
-                        </div>
-                    </div>
-                *@
+                
                 <div id="divRoleTable">
                     @{ await Html.RenderPartialAsync("_roleTablePartial", Model); }
                 </div>

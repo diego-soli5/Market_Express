@@ -3,6 +3,7 @@ using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.QueryFilter.AppUser;
 using Market_Express.Web.Controllers;
 using Market_Express.Web.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -32,11 +33,14 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(AppUserIndexQueryFilter filters)
         {
-            var lstAppUserDTO = GetAppUserDTOList();
+            UserIndexViewModel oViewModel = new();
 
-            return View(lstAppUserDTO);
+            oViewModel.AppUsers = GetAppUserDTOList(filters);
+            oViewModel.QueryFilter = filters;
+
+            return View(oViewModel);
         }
 
         [HttpGet]
@@ -91,11 +95,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #endregion
 
         #region UTILITY METHODS
-        private List<AppUserDTO> GetAppUserDTOList()
+        private List<AppUserDTO> GetAppUserDTOList(AppUserIndexQueryFilter filters)
         {
             List<AppUserDTO> lstAppUserDTO = new();
 
-            _appUserService.GetAll().ToList()?.ForEach(user =>
+            _appUserService.GetAll(filters).ToList()?.ForEach(user =>
             {
                 lstAppUserDTO.Add(_mapper.Map<AppUserDTO>(user));
             });

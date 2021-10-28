@@ -4,7 +4,9 @@ using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
+using Market_Express.Domain.QueryFilter.AppUser;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,9 +24,24 @@ namespace Market_Express.Domain.Services
             _passwordService = passwordService;
         }
 
-        public IEnumerable<AppUser> GetAll()
+        public IEnumerable<AppUser> GetAll(AppUserIndexQueryFilter filters)
         {
-            return _unitOfWork.AppUser.GetAll();
+            var lstAppUser = _unitOfWork.AppUser.GetAll();
+
+            if (filters.Name != null)
+                lstAppUser = lstAppUser.Where(u => u.Name.Trim().ToUpper().Contains(filters.Name.Trim().ToUpper()));
+
+            if (filters.Identification != null)
+                lstAppUser = lstAppUser.Where(u => u.Identification.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()) ||
+                                                   u.IdentificationWithoutHypens.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()));
+
+            if (filters.Type != null)
+                lstAppUser = lstAppUser.Where(u => u.Type == filters.Type);
+
+            if (filters.Status != null)
+                lstAppUser = lstAppUser.Where(u => u.Status == filters.Status);
+
+            return lstAppUser;
         }
 
         public async Task<BusisnessResult> Create(AppUser appUser, List<Guid> roles, Guid currentUserId)
@@ -33,7 +50,7 @@ namespace Market_Express.Domain.Services
             Client client;
             AppUser oUserToValidate;
 
-            if(string.IsNullOrEmpty(appUser.Name) ||
+            if (string.IsNullOrEmpty(appUser.Name) ||
                string.IsNullOrEmpty(appUser.Identification) ||
                string.IsNullOrEmpty(appUser.Email) ||
                string.IsNullOrEmpty(appUser.Phone))
@@ -43,7 +60,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(appUser.Type == AppUserType.ADMINISTRADOR && roles?.Count <= 0)
+            if (appUser.Type == AppUserType.ADMINISTRADOR && roles?.Count <= 0)
             {
                 oResult.Message = "Se debe seleccionar al menos un rol.";
 
@@ -52,7 +69,7 @@ namespace Market_Express.Domain.Services
 
             oUserToValidate = _unitOfWork.AppUser.GetFirstOrDefault(u => u.Identification.Trim().ToUpper() == appUser.Identification.Trim().ToUpper());
 
-            if(oUserToValidate != null)
+            if (oUserToValidate != null)
             {
                 oResult.Message = "El número de identificación ya está en uso.";
                 oResult.ResultCode = 0;
@@ -80,7 +97,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(appUser.Type == AppUserType.ADMINISTRADOR)
+            if (appUser.Type == AppUserType.ADMINISTRADOR)
             {
                 appUser.AppUserRoles = new List<AppUserRole>();
 
@@ -134,7 +151,7 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if(userToChangeId == currentUserId)
+            if (userToChangeId == currentUserId)
             {
                 oResult.Message = "No puedes desactivar tu cuenta de usuario, inicia sesión con otra cuenta.";
 
@@ -143,7 +160,7 @@ namespace Market_Express.Domain.Services
 
             var oUser = await _unitOfWork.AppUser.GetByIdAsync(userToChangeId);
 
-            if(oUser == null)
+            if (oUser == null)
             {
                 oResult.Message = "El usuario no existe.";
 

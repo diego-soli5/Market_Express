@@ -1,4 +1,4 @@
-﻿namespace Market_Express.Domain.EntityConstants
+﻿namespace Market_Express.Domain.Constants
 {
     public static class SystemConstants
     {

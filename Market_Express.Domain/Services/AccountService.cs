@@ -2,7 +2,6 @@
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
-using Market_Express.Domain.EntityConstants;
 using Market_Express.Domain.Enumerations;
 using System;
 using System.Collections.Generic;

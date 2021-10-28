@@ -1,5 +1,5 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
-using Market_Express.Domain.EntityConstants;
+using Market_Express.Domain.Constants;
 using Market_Express.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
