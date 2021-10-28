@@ -298,6 +298,73 @@ END;
 GO
 
 
+
+---------------------------------------------------------------------------------------------------------------
+-- TRIGGERS ROLE
+---------------------------------------------------------------------------------------------------------------
+CREATE TRIGGER TRG_Role_RegMovement_Insert
+ON [Role]
+FOR INSERT
+AS
+BEGIN
+										  
+	DECLARE curRoles CURSOR FOR SELECT i.Name,
+										  i.Description,
+										  i.CreationDate,
+										  i.AddedBy
+								   FROM inserted i;
+	
+	DECLARE @Name VARCHAR(30);
+	DECLARE @Description VARCHAR(255);
+	DECLARE @CreationDate DATETIME;
+	DECLARE @AddedBy VARCHAR(40);
+
+	OPEN curRole
+	FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Role ' + @Name);
+
+		FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
+	END
+	CLOSE curRoles
+	DEALLOCATE curRoles
+END;
+GO
+
+CREATE TRIGGER TRG_Role_RegMovement_Update
+ON [Role]
+FOR UPDATE
+AS
+BEGIN
+										  
+	DECLARE curRoles CURSOR FOR SELECT i.Name,
+										  i.Description,
+										  i.CreationDate,
+										  i.AddedBy
+								   FROM inserted i;
+	
+	DECLARE @Name VARCHAR(30);
+	DECLARE @Description VARCHAR(255);
+	DECLARE @CreationDate DATETIME;
+	DECLARE @AddedBy VARCHAR(40);
+
+	OPEN curRole
+	FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@AddedBy,@CreationDate,'INSERT','Update Role ' + @Name);
+
+		FETCH NEXT FROM curRoles INTO @Name, @Description, @CreationDate, @AddedBy
+	END
+	CLOSE curRoles
+	DEALLOCATE curRoles
+END;
+GO
+
+
 /*
 
 select bm.Type,
