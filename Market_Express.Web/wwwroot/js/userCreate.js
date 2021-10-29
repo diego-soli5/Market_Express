@@ -1,5 +1,4 @@
-﻿var frm = document.querySelector("#frm");
-var selectType = document.querySelector("select");
+﻿var selectType = document.querySelector("select");
 
 //Añade la mascara inicial al input
 $("#identification").mask("9-9999-9999");
@@ -30,17 +29,4 @@ selectType.addEventListener("change", function (e) {
         $("#divRoles").collapse('show');
     }
 });
-
-frm.addEventListener("submit", async function (e) {
-
-    btnSubmit.disabled = true;
-
-    toastr.info("El botón se habilitará en 3 segundos.");
-
-    await delayAsync(3000);
-
-    btnSubmit.disabled = false;
-
-});
-
 

@@ -68,7 +68,7 @@
             <div class="card-footer">
                 <div class="float-right">
                     <a asp-area="Admin" asp-controller="Slider" asp-action="Index" class="btn btn-secondary">Volver</a>
-                    <button type="submit" class="btn btn-primary" form="frm">Guardar</button>
+                    <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Guardar</button>
                 </div>
             </div>
         </div>
@@ -79,6 +79,7 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
     <script src="~/js/sliderEdit.js"></script>
+    <script src="~/js/formSubmitDelay.js"></script>
 
     @if (ViewData["Message"] != null)
     {
