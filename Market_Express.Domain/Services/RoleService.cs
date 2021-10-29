@@ -22,7 +22,14 @@ namespace Market_Express.Domain.Services
 
         public List<Role> GetAll()
         {
-            return _unitOfWork.Role.GetAll().ToList();
+            return _unitOfWork.Role.GetAll()
+                                   .OrderBy(r => r.Name)
+                                   .ToList();
+        }
+
+        public async Task<List<Role>> GetAllByUserId(Guid id)
+        {
+            return await _unitOfWork.Role.GetAllByUserId(id);
         }
 
         public List<Permission> GetAllPermissions()

@@ -167,6 +167,30 @@ BEGIN
 END;
 GO
 
+
+---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS ROLE
+---------------------------------------------------------------------------------------------------------------
+--Obtiene los roles de un usuario
+CREATE PROCEDURE Sp_Role_GetAllByUserId
+(
+	@userId UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	SELECT r.Id,
+		   r.Name,
+		   r.Description,
+		   r.CreationDate,
+		   r.ModificationDate,
+		   r.AddedBy,
+		   r.ModifiedBy
+	FROM dbo.[Role] r, AppUser_Role ar
+	WHERE r.Id = ar.RoleId
+	AND ar.AppUserId = @userId;
+END;
+GO
+
 ---------------------------------------------------------------------------------------------------------------
 -- TRIGGERS ARTICLE
 ---------------------------------------------------------------------------------------------------------------

@@ -84,6 +84,19 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [Route("/Admin/Users/Edit/{id}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            UserEditViewModel oViewModel = new();
+
+            oViewModel.AppUser = await GetAppUserEditDTO(id);
+            oViewModel.AppUser.Roles = await GetAppUserRoleDTOList(id);
+            oViewModel.AvailableRoles = GetRoleDTOList();
+
+            return View(oViewModel);
+        }
+
         #region API CALLS
         [HttpPost]
         public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)
@@ -95,6 +108,27 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #endregion
 
         #region UTILITY METHODS
+        private async Task<List<RoleDTO>> GetAppUserRoleDTOList(Guid id)
+        {
+            List<RoleDTO> lstRoleDTO = new();
+
+            var lstRoles = await _roleService.GetAllByUserId(id);
+
+            lstRoles.ForEach(r =>
+            {
+                lstRoleDTO.Add(_mapper.Map<RoleDTO>(r));
+            });
+
+            return lstRoleDTO;
+        }
+
+        private async Task<AppUserEditDTO> GetAppUserEditDTO(Guid id)
+        {
+            var oAppUser = await _appUserService.GetById(id, true);
+
+            return _mapper.Map<AppUserEditDTO>(oAppUser);
+        }
+
         private List<AppUserDTO> GetAppUserDTOList(AppUserIndexQueryFilter filters)
         {
             List<AppUserDTO> lstAppUserDTO = new();

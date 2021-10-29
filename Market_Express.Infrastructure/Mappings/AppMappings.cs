@@ -56,6 +56,11 @@ namespace Market_Express.Infrastructure.Mappings
 
             CreateMap<AppUser, AppUserDTO>()
                 .ReverseMap();
+
+            CreateMap<AppUser, AppUserEditDTO>()
+                .ForMember(dest => dest.Client.AutoSync, opt => opt.MapFrom(src => src.Client.AutoSync))
+                .ForMember(dest => dest.Client.ClientCode, opt => opt.MapFrom(src => src.Client.ClientCode))
+                .ReverseMap();
         }
 
         private void CreateAddressMappings()

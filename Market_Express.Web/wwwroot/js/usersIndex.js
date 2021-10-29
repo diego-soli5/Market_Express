@@ -18,6 +18,8 @@
                 method: 'POST'
             }
 
+            btn.disabled = true;
+
             if (await confirmChangeStatus(mode)) {
                 fetch(url, body)
                     .then(response => response.json())
@@ -41,6 +43,8 @@
 
                     }).catch(err => popUp(false, "Hubo un error inesperado."));
             }
+
+            btn.disabled = false;
         });
     });
 }

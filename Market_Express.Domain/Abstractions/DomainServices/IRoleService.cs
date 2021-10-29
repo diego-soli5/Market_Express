@@ -12,6 +12,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         List<Permission> GetAllPermissions();
         Task<Permission> GetPermissionById(Guid id);
         Task<List<string>> GetAllPermissionTypes();
+        Task<List<Role>> GetAllByUserId(Guid id);
         Task<RoleWithPermissions> GetByIdWithPermissions(Guid id);
         Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId);
         Task<BusisnessResult> Edit(Role role, List<Guid> permissions, Guid currentUserId);

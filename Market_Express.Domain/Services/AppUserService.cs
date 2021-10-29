@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Market_Express.CrossCutting.CustomExceptions;
 
 namespace Market_Express.Domain.Services
 {
@@ -41,7 +42,21 @@ namespace Market_Express.Domain.Services
             if (filters.Status != null)
                 lstAppUser = lstAppUser.Where(u => u.Status == filters.Status);
 
+            lstAppUser = lstAppUser.OrderBy(u => u.Name);
+
             return lstAppUser;
+        }
+
+        public async Task<AppUser> GetById(Guid id, bool includeClient = false)
+        {
+            var oAppUser = await _unitOfWork.AppUser.GetByIdAsync(id, includeClient 
+                                                                      ? nameof(AppUser.Client) 
+                                                                      : null);
+
+            if (oAppUser == null)
+                throw new NotFoundException(id, nameof(AppUser));
+
+            return oAppUser;
         }
 
         public async Task<BusisnessResult> Create(AppUser appUser, List<Guid> roles, Guid currentUserId)
@@ -51,9 +66,9 @@ namespace Market_Express.Domain.Services
             AppUser oUserToValidate;
 
             if (string.IsNullOrEmpty(appUser.Name) ||
-               string.IsNullOrEmpty(appUser.Identification) ||
-               string.IsNullOrEmpty(appUser.Email) ||
-               string.IsNullOrEmpty(appUser.Phone))
+                string.IsNullOrEmpty(appUser.Identification) ||
+                string.IsNullOrEmpty(appUser.Email) ||
+                string.IsNullOrEmpty(appUser.Phone))
             {
                 oResult.Message = "No se pueden enviar campos vacíos.";
 
