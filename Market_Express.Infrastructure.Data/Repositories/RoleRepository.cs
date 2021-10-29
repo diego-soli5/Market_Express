@@ -36,7 +36,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                     Name = oRow["Name"].ToString(),
                     Description = oRow["Description"].ToString(),
                     CreationDate = (DateTime)oRow["CreationDate"],
-                    ModificationDate = (DateTime)oRow["ModificationDate"],
+                    ModificationDate = oRow["ModificationDate"] is not DBNull ? (DateTime)oRow["ModificationDate"] : null,
                     AddedBy = oRow["AddedBy"].ToString(),
                     ModifiedBy = oRow["ModifiedBy"].ToString()
                 });

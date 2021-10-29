@@ -14,6 +14,12 @@ namespace Market_Express.Domain.Entities
             TbOrders = new HashSet<Order>();
         }
 
+        public Client(bool autoSync, string clientCode)
+        {
+            AutoSync = autoSync;
+            ClientCode = clientCode;
+        }
+
         public Guid AppUserId { get; set; }
         public string ClientCode { get; set; }
         public bool AutoSync { get; set; }

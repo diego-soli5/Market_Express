@@ -187,7 +187,8 @@ BEGIN
 		   r.ModifiedBy
 	FROM dbo.[Role] r, AppUser_Role ar
 	WHERE r.Id = ar.RoleId
-	AND ar.AppUserId = @userId;
+	AND ar.AppUserId = @userId
+	ORDER BY r.Name;
 END;
 GO
 

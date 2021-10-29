@@ -3,6 +3,7 @@ using Market_Express.Application.DTOs.Account;
 using Market_Express.Application.DTOs.Address;
 using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Application.DTOs.Category;
+using Market_Express.Application.DTOs.Client;
 using Market_Express.Application.DTOs.Permission;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Application.DTOs.Slider;
@@ -34,6 +35,9 @@ namespace Market_Express.Infrastructure.Mappings
 
         private void CreateClientMappings()
         {
+            CreateMap<Client, ClientDTO>()
+                .ReverseMap();
+
             CreateMap<Client, ClienteSyncDTO>()
                 .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.AppUser.Name))
                 .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.AppUser.Identification))
@@ -58,8 +62,6 @@ namespace Market_Express.Infrastructure.Mappings
                 .ReverseMap();
 
             CreateMap<AppUser, AppUserEditDTO>()
-                .ForMember(dest => dest.Client.AutoSync, opt => opt.MapFrom(src => src.Client.AutoSync))
-                .ForMember(dest => dest.Client.ClientCode, opt => opt.MapFrom(src => src.Client.ClientCode))
                 .ReverseMap();
         }
 

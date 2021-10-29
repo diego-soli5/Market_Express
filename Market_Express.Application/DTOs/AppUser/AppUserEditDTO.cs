@@ -1,6 +1,4 @@
-﻿using Market_Express.Application.DTOs.Client;
-using Market_Express.Application.DTOs.Role;
-using Market_Express.Domain.Enumerations;
+﻿using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,7 +10,6 @@ namespace Market_Express.Application.DTOs.AppUser
     {
         public AppUserEditDTO()
         {
-            Client = new();
             Roles = new();
         }
 
@@ -47,7 +44,6 @@ namespace Market_Express.Application.DTOs.AppUser
         [BindProperty(Name = "AppUser.Status")]
         public EntityStatus Status { get; set; }
 
-        public ClientDTO Client { get; set; }
-        public List<RoleDTO> Roles { get; set; }
+        public List<Guid> Roles { get; set; }
     }
 }

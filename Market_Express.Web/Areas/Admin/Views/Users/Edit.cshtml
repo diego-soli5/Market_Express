@@ -1,0 +1,195 @@
+﻿@model Market_Express.Web.ViewModels.Users.UserEditViewModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+
+    string sFchecked = "";
+    string sJchecked = "checked";
+
+    if (Model.AppUser.Identification.Length <= 11)
+    {
+        sFchecked = "checked";
+        sJchecked = "";
+    }
+}
+
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Usuarios</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Users" asp-action="Index">Usuarios</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Editar</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Editar</h4>
+            </div>
+            <div class="card-body">
+                <form asp-Area="Admin" asp-controller="Users" asp-action="Edit" id="frm" method="post" class="row">
+                    <input type="hidden" asp-for="AppUser.Id" />
+                    <input type="hidden" asp-for="AppUser.Name" />
+                    <input type="hidden" asp-for="AppUser.Identification" />
+                    <input type="hidden" asp-for="AppUser.Email" />
+                    <input type="hidden" asp-for="AppUser.Phone" />
+                    <input type="hidden" asp-for="AppUser.Type" />
+                    <input type="hidden" asp-for="Client.ClientCode" />
+
+                    <div class="col-md-6">
+                        <h4>Usuario</h4>
+                        <hr />
+                        <div class="form-group">
+                            <label asp-for="AppUser.Name" class="col-form-label">Nombre</label>
+                            <input type="text"
+                                   asp-for="AppUser.Name"
+                                   disabled
+                                   class="form-control"
+                                   placeholder="Escribe el nombre">
+                            <span asp-validation-for="AppUser.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AppUser.Identification" class="col-form-label">Identificación</label>
+                            <div>
+                                <input type="text"
+                                       asp-for="AppUser.Identification"
+                                       disabled
+                                       class="form-control"
+                                       placeholder="Escribe la identificación"
+                                       id="identification">
+                                <label class="mr-3"><input type="radio" value="F" name="idtype" disabled @sFchecked /> Persona Física</label>
+                                <label><input type="radio" value="J" name="idtype" disabled @sJchecked /> Persona Jurídica</label>
+                            </div>
+                            <span asp-validation-for="AppUser.Identification" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AppUser.Email" class="col-form-label">Correo Electrónico</label>
+                            <input type="text"
+                                   asp-for="AppUser.Email"
+                                   disabled
+                                   class="form-control"
+                                   placeholder="Escribe el correo electrónico">
+                            <span asp-validation-for="AppUser.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AppUser.Phone" class="col-form-label">Teléfono</label>
+                            <input type="number"
+                                   asp-for="AppUser.Phone"
+                                   disabled
+                                   class="form-control"
+                                   placeholder="Escribe el numero de teléfono"
+                                   maxlength="8"
+                                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                            <span asp-validation-for="AppUser.Phone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AppUser.Status" class="col-form-label">Estado</label>
+                            <select asp-for="AppUser.Status"
+                                    class="form-control"
+                                    asp-items="Html.GetEnumSelectList<EntityStatus>()">
+                            </select>
+                            <span asp-validation-for="AppUser.Status" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Client.AutoSync"
+                                   class="col-form-label">
+                                @if (Model.Client.ClientCode == null)
+                                {
+                                    <input type="checkbox" asp-for="Client.AutoSync" disabled>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" asp-for="Client.AutoSync">
+                                } Se Sincroniza Automáticamente
+                            </label>
+                        </div>
+                        @if (Model.Client.ClientCode == null)
+                        {
+                            <p class="font-weight-bold mb-4 mb-md-0">• Este usuario no está registrado como cliente en el sistema POS.</p>
+                        }
+                        @*<div class="form-group">
+                <label asp-for="AppUser.Type" class="col-form-label">Tipo</label>
+                <select asp-for="AppUser.Type"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<AppUserType>()">
+                </select>
+                <span asp-validation-for="AppUser.Type" class="text-danger"></span>
+            </div>*@
+                    </div>
+                    <div class="col-md-6">
+                        <div class="collapse" id="divRoles">
+                            <h4>Roles</h4>
+                            <hr />
+                            @if (Model.AvailableRoles.Count > 0)
+                            {
+                                @foreach (var role in Model.AvailableRoles)
+                                {
+                                    string sChecked = "";
+
+                                    @if (Model.AppUser.Roles.Any(r => r == role.Id))
+                                    {
+                                        sChecked = "checked";
+                                    }
+
+                                    <div class="form-group">
+                                        <label type="button">
+                                            <input type="checkbox"
+                                                   value="@role.Id"
+                                                   name="roles"
+                                                   @sChecked />
+                                            <span>@role.Name</span>
+                                        </label>
+
+                                        <i type="button"
+                                           class="fas fa-info-circle text-primary d-inline"
+                                           data-trigger="focus"
+                                           tabindex="0"
+                                           data-toggle="popover"
+                                           title="Información"
+                                           data-content="@role.Description">
+                                        </i>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/lib/jquery/dist/jquery.maskedinput.js"></script>
+    <script src="~/js/userEdit.js"></script>
+
+    @if (Model?.AppUser?.Type == AppUserType.ADMINISTRADOR)
+    {
+        <script>
+            $("#divRoles").collapse('show');
+        </script>
+    }
+
+    @if (ViewData["MessageResult"] != null)
+    {
+        <script>
+            popUp(false, '@ViewData["MessageResult"].ToString()');
+        </script>
+    }
+}

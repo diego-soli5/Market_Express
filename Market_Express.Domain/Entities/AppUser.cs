@@ -31,6 +31,16 @@ namespace Market_Express.Domain.Entities
             Type = type;
         }
 
+        public AppUser(Guid id, string identification, string email, string phone, EntityStatus status, AppUserType type)
+        {
+            Id = id;
+            Identification = identification;
+            Email = email;
+            Phone = phone;
+            Status = status;
+            Type = type;
+        }
+
         public string Name { get; set; }
         public string Alias { get; set; }
         public string Identification { get; set; }

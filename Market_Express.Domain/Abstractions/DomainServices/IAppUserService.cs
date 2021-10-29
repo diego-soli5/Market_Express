@@ -12,5 +12,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<AppUser> GetById(Guid id, bool includeClient = false);
         Task<BusisnessResult> ChangeStatus(Guid userToChangeId, Guid currentUserId);
         Task<BusisnessResult> Create(AppUser appUser, List<Guid> roles, Guid currentUserId);
+        Task<BusisnessResult> Edit(AppUser appUser, List<Guid> roles, Guid currentUserId);
     }
 }

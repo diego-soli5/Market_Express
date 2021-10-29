@@ -3,6 +3,8 @@ using Market_Express.Domain.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -14,6 +16,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
         public AppUserRoleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
         { }
+
+        public IEnumerable<AppUserRole> GetAllByUserId(Guid id)
+        {
+            return _dbEntity.Where(ar => ar.AppUserId == id);
+        }
 
         public async Task<(int,int)> GetUserCountUsingARole(Guid roleId)
         {

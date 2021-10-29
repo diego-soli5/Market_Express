@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.AppUser;
+using Market_Express.Application.DTOs.Client;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
@@ -90,11 +91,40 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             UserEditViewModel oViewModel = new();
 
-            oViewModel.AppUser = await GetAppUserEditDTO(id);
-            oViewModel.AppUser.Roles = await GetAppUserRoleDTOList(id);
+            var tplUserDTOAndClientDTO = await GetAppUserEditDTO(id);
+            
             oViewModel.AvailableRoles = GetRoleDTOList();
+            oViewModel.Client = tplUserDTOAndClientDTO.Item2;
+            oViewModel.AppUser = tplUserDTOAndClientDTO.Item1;
+            oViewModel.AppUser.Roles = await GetAppUserRoleList(id);
 
             return View(oViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AppUserEditDTO userModel, ClientDTO clientModel)
+        {
+            AppUser oUser = new(userModel.Id, userModel.Identification, userModel.Email, userModel.Phone, userModel.Status, userModel.Type);
+            oUser.Client = new(clientModel.AutoSync, clientModel.ClientCode);
+
+            var oResult = await _appUserService.Edit(oUser, userModel.Roles, CurrentUserId);
+
+            if (!oResult.Success)
+            {
+                UserEditViewModel oViewModel = new();
+
+                oViewModel.AppUser = userModel;
+                oViewModel.Client = clientModel;
+                oViewModel.AvailableRoles = GetRoleDTOList();
+
+                ViewData["MessageResult"] = oResult.Message;
+
+                return View(oViewModel);
+            }
+
+            TempData["UserMessage"] = oResult.Message;
+
+            return RedirectToAction(nameof(Index));
         }
 
         #region API CALLS
@@ -108,25 +138,25 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #endregion
 
         #region UTILITY METHODS
-        private async Task<List<RoleDTO>> GetAppUserRoleDTOList(Guid id)
+        private async Task<List<Guid>> GetAppUserRoleList(Guid id)
         {
-            List<RoleDTO> lstRoleDTO = new();
+            List<Guid> lstRoleGuid = new();
 
             var lstRoles = await _roleService.GetAllByUserId(id);
 
             lstRoles.ForEach(r =>
             {
-                lstRoleDTO.Add(_mapper.Map<RoleDTO>(r));
+                lstRoleGuid.Add(r.Id);
             });
 
-            return lstRoleDTO;
+            return lstRoleGuid;
         }
 
-        private async Task<AppUserEditDTO> GetAppUserEditDTO(Guid id)
+        private async Task<(AppUserEditDTO, ClientDTO)> GetAppUserEditDTO(Guid id)
         {
             var oAppUser = await _appUserService.GetById(id, true);
 
-            return _mapper.Map<AppUserEditDTO>(oAppUser);
+            return (_mapper.Map<AppUserEditDTO>(oAppUser), _mapper.Map<ClientDTO>(oAppUser.Client));
         }
 
         private List<AppUserDTO> GetAppUserDTOList(AppUserIndexQueryFilter filters)

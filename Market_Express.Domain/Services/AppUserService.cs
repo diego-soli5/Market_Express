@@ -49,8 +49,8 @@ namespace Market_Express.Domain.Services
 
         public async Task<AppUser> GetById(Guid id, bool includeClient = false)
         {
-            var oAppUser = await _unitOfWork.AppUser.GetByIdAsync(id, includeClient 
-                                                                      ? nameof(AppUser.Client) 
+            var oAppUser = await _unitOfWork.AppUser.GetByIdAsync(id, includeClient
+                                                                      ? nameof(AppUser.Client)
                                                                       : null);
 
             if (oAppUser == null)
@@ -158,6 +158,86 @@ namespace Market_Express.Domain.Services
             }
 
             oResult.Message = "El usuario se creó correctamente!";
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> Edit(AppUser appUser, List<Guid> roles, Guid currentUserId)
+        {
+            BusisnessResult oResult = new();
+
+            var oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(appUser.Id,nameof(AppUser.Client));
+
+            if (oUserFromDb == null)
+            {
+                oResult.Message = "El usuario no existe.";
+
+                return oResult;
+            }
+
+            if (oUserFromDb.Type == AppUserType.ADMINISTRADOR)
+            {
+                if (roles?.Count <= 0)
+                {
+                    oResult.Message = "Se debe seleccionar al menos un rol.";
+
+                    return oResult;
+                }
+
+                var oUserRolesInDb = _unitOfWork.AppUserRole.GetAllByUserId(appUser.Id);
+
+                _unitOfWork.AppUserRole.Delete(oUserRolesInDb.ToList());
+
+                roles.ForEach(id =>
+                {
+                    _unitOfWork.AppUserRole.Create(new AppUserRole
+                    {
+                        AppUserId = oUserFromDb.Id,
+                        RoleId = id
+                    });
+                });
+            }
+
+            if (appUser.Status != oUserFromDb.Status)
+            {
+                if (appUser.Status == EntityStatus.DESACTIVADO && appUser.Id == currentUserId)
+                {
+                    oResult.Message = "No puedes desactivar tu cuenta de usuario, inicia sesión con otra cuenta.";
+
+                    return oResult;
+                }
+
+                oUserFromDb.Status = appUser.Status;
+            }
+
+            if (appUser.Client.ClientCode != null)
+            {
+                oUserFromDb.Client.AutoSync = appUser.Client.AutoSync;
+
+                _unitOfWork.Client.Update(oUserFromDb.Client);
+            }
+
+            oUserFromDb.ModifiedBy = currentUserId.ToString();
+            oUserFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
+
+            _unitOfWork.AppUser.Update(oUserFromDb);
+
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                oResult.Success = await _unitOfWork.Save();
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
+
+            oResult.Message = "El usuario se modificó correctamente!";
 
             return oResult;
         }
