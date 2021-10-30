@@ -25,6 +25,20 @@ namespace Market_Express.Domain.Services
             _mailService = mailService;
         }
 
+        public async Task<bool> HasValidPassword(Guid id)
+        {
+            var oUser = await _unitOfWork.AppUser.GetByIdAsync(id);
+
+            if (oUser == null)
+                return true;
+
+            if (_passwordService.Check(oUser.Password, oUser.Identification) ||
+                _passwordService.Check(oUser.Password, oUser.IdentificationWithoutHypens))
+                return false;
+
+            return true;
+        }
+
         public async Task<BusisnessResult> TryChangeAlias(Guid userId, string alias)
         {
             BusisnessResult oResult = new();
@@ -114,12 +128,11 @@ namespace Market_Express.Domain.Services
 
             oResult.Message = "Tu contraseña ha cambiado.";
 
-#pragma warning disable CS4014 // El envío del correo se ejecuta en 1 hilo alterno
+            // El envío del correo se ejecuta en 1 hilo alterno
             Task.Run(() =>
             {
                 _mailService.SendMail("Market Express", "Su contraseña ha cambiado.", oUser.Email);
             });
-#pragma warning restore CS4014
 
             return oResult;
         }

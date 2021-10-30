@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Market_Express.Infrastructure.Extensions;
 using Market_Express.Infrastructure.Mappings;
+using Market_Express.Web.Filters;
 
 namespace Market_Express.Web
 {
@@ -19,7 +20,10 @@ namespace Market_Express.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(typeof(CheckPasswordFilter));
+            });
 
             services.AddRepositories();
 
