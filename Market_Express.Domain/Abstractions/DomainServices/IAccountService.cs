@@ -9,7 +9,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     {
         Task<BusisnessResult> TryChangeAlias(Guid userId, string alias);
         Task<bool> HasValidPassword(Guid id);
-        Task<BusisnessResult> TryChangePassword(Guid userId, string currentPass, string newPass, string newPassConf);
+        Task<BusisnessResult> ChangePassword(Guid userId, string currentPass, string newPass, string newPassConf,bool isFirstLogin);
         BusisnessResult TryAuthenticate(ref AppUser usuarioRequest);
         Task<BusisnessResult> CreateAddress(Guid userId, Address address);
         Task<BusisnessResult> EditAddress(Address address);

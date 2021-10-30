@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -24,14 +25,23 @@ namespace Market_Express.Web.Filters
             if (context.HttpContext.User.Identity.IsAuthenticated)
             {
                 Guid userId = new(context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                string requestUrl = context.HttpContext.Request.Path.Value.ToString();
 
                 if (!await _accountService.HasValidPassword(userId))
                 {
-                    Debug.WriteLine("El usuario no tiene contraseña válida xd");
+                    if (requestUrl != "/Account/ChangePassword")
+                    {
+                        context.HttpContext.Response.Redirect("/Account/ChangePassword");
+                    }
+                }
+                else
+                {
+                    if (requestUrl == "/Account/ChangePassword")
+                    {
+                        context.HttpContext.Response.Redirect("/Home/Index");
+                    }
                 }
             }
-
-            //context.HttpContext.Response.Redirect("/Home/Index");
 
             await next();
         }

@@ -64,7 +64,7 @@ namespace Market_Express.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO model, string returnUrl)
         {
-            AppUser oUser = new(model.Email,model.Password);
+            AppUser oUser = new(model.Email, model.Password);
 
             var oResult = _accountService.TryAuthenticate(ref oUser);
 
@@ -174,10 +174,26 @@ namespace Market_Express.Web.Controllers
             return Ok(oResult);
         }
 
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
         {
-            var oResult = await _accountService.TryChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation);
+            var oResult = await _accountService.ChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation, model.IsFirstLogin);
+
+            if (model.IsFirstLogin)
+            {
+                if (oResult.Success)
+                    return RedirectToAction("Index", "Home");
+
+                ViewData["MessageResult"] = oResult.Message;
+
+                return View();
+            }
 
             if (oResult.Success)
                 return Ok(oResult);

@@ -1,0 +1,16 @@
+﻿.box-md {
+    width: 50% !important;
+}
+
+
+@media only screen and (max-width: 991px) {
+    .box-md {
+        width: 75% !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .box-md {
+        width: 100% !important;
+    }
+}

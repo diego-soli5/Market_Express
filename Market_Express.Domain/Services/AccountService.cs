@@ -77,11 +77,11 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<BusisnessResult> TryChangePassword(Guid userId, string currentPass, string newPass, string newPassConf)
+        public async Task<BusisnessResult> ChangePassword(Guid userId, string currentPass, string newPass, string newPassConf, bool isFirstLogin)
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrWhiteSpace(currentPass) || string.IsNullOrWhiteSpace(newPass) || string.IsNullOrWhiteSpace(newPassConf))
+            if ((string.IsNullOrWhiteSpace(currentPass) && !isFirstLogin) || string.IsNullOrWhiteSpace(newPass) || string.IsNullOrWhiteSpace(newPassConf))
             {
                 oResult.Message = "No se pueden enviar campos vacíos.";
 
@@ -97,11 +97,14 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if (!_passwordService.Check(oUser.Password, currentPass))
+            if (!isFirstLogin)
             {
-                oResult.Message = "La contraseña es incorrecta.";
+                if (!_passwordService.Check(oUser.Password, currentPass))
+                {
+                    oResult.Message = "La contraseña es incorrecta.";
 
-                return oResult;
+                    return oResult;
+                }
             }
 
             if (newPass.Trim() != newPassConf.Trim())
@@ -118,9 +121,16 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            string ecnPass = _passwordService.Hash(newPass.Trim());
+            if (newPass.Trim() == oUser.Identification || newPass.Trim() == oUser.IdentificationWithoutHypens)
+            {
+                oResult.Message = "La contraseña no puede ser igual a tu número de identificación.";
 
-            oUser.Password = ecnPass;
+                return oResult;
+            }
+
+            string encPass = _passwordService.Hash(newPass.Trim());
+
+            oUser.Password = encPass;
 
             _unitOfWork.AppUser.Update(oUser);
 
