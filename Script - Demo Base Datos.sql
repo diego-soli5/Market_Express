@@ -17,7 +17,7 @@ GO
 CREATE TABLE [dbo].[Address](
 	[Id] [uniqueidentifier] NOT NULL,
 	[ClientId] [uniqueidentifier] NOT NULL,
-	[Name] [varchar](15) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
 	[Detail] [varchar](255) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -32,7 +32,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[AppUser](
 	[Id] [uniqueidentifier] NOT NULL,
-	[Name] [varchar](40) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
 	[Alias] [varchar](10) NULL,
 	[Identification] [varchar](12) NOT NULL,
 	[Email] [varchar](40) NOT NULL,
@@ -174,7 +174,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Category](
 	[Id] [uniqueidentifier] NOT NULL,
-	[Name] [varchar](20) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
 	[Description] [varchar](255) NULL,
 	[Status] [varchar](11) NOT NULL,
 	[Image] [varchar](50) NULL,
@@ -235,7 +235,7 @@ GO
 CREATE TABLE [dbo].[Permission](
 	[Id] [uniqueidentifier] NOT NULL,
 	[PermissionCode] [varchar](20) NOT NULL,
-	[Name] [varchar](30) NOT NULL,
+	[Name] [varchar](50) NOT NULL,
 	[Description] [varchar](255) NULL,
 	[Type] [varchar](10) NOT NULL,
 PRIMARY KEY CLUSTERED 

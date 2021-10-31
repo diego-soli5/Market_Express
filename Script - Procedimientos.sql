@@ -101,7 +101,7 @@ BEGIN
 			AND ar.AppUserId = au.Id
 			AND au.Status = 'DESACTIVADO') DisabledUsers;
 END;
-
+GO
 
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS PERMISSION
@@ -272,7 +272,7 @@ BEGIN
 										  i.AddedBy
 								   FROM inserted i;
 	
-	DECLARE @Name VARCHAR(20);
+	DECLARE @Name VARCHAR(50);
 	DECLARE @Description VARCHAR(255);
 	DECLARE @CreationDate DATETIME;
 	DECLARE @AddedBy VARCHAR(40);
@@ -303,7 +303,7 @@ BEGIN
 										  i.ModifiedBy
 								   FROM inserted i;
 	
-	DECLARE @Name VARCHAR(20);
+	DECLARE @Name VARCHAR(50);
 	DECLARE @Description VARCHAR(255);
 	DECLARE @ModificationDate DATETIME;
 	DECLARE @ModifiedBy VARCHAR(40);
@@ -339,7 +339,7 @@ BEGIN
 										  i.AddedBy
 								   FROM inserted i;
 	
-	DECLARE @Name VARCHAR(30);
+	DECLARE @Name VARCHAR(50);
 	DECLARE @Description VARCHAR(255);
 	DECLARE @CreationDate DATETIME;
 	DECLARE @AddedBy VARCHAR(40);
@@ -370,7 +370,7 @@ BEGIN
 										  i.ModifiedBy
 								   FROM inserted i;
 	
-	DECLARE @Name VARCHAR(30);
+	DECLARE @Name VARCHAR(50);
 	DECLARE @Description VARCHAR(255);
 	DECLARE @ModificationDate DATETIME;
 	DECLARE @ModifiedBy VARCHAR(40);
@@ -400,7 +400,7 @@ BEGIN
 										  d.ModifiedBy
 								   FROM deleted d;
 	
-	DECLARE @Name VARCHAR(30);
+	DECLARE @Name VARCHAR(50);
 	DECLARE @Description VARCHAR(255);
 	DECLARE @ModificationDate DATETIME = GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'UTC';
 	DECLARE @ModifiedBy VARCHAR(40);

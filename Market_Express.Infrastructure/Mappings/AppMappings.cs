@@ -63,6 +63,9 @@ namespace Market_Express.Infrastructure.Mappings
 
             CreateMap<AppUser, AppUserEditDTO>()
                 .ReverseMap();
+
+            CreateMap<AppUser, AppUserDetailsDTO>()
+                .ReverseMap();
         }
 
         private void CreateAddressMappings()

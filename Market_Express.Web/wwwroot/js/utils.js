@@ -15,3 +15,9 @@ function showLoading() {
 function hideLoading() {
     $(".lds-dual-ring").remove();
 }
+
+function createQueryStringParams(formData) {
+    return [...formData.entries()]
+        .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+        .join('&');
+}

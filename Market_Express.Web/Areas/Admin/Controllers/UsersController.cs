@@ -4,6 +4,7 @@ using Market_Express.Application.DTOs.Client;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.AppUser;
 using Market_Express.Web.Controllers;
 using Market_Express.Web.ViewModels.Users;
@@ -34,6 +35,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult Index(AppUserIndexQueryFilter filters)
         {
             UserIndexViewModel oViewModel = new();
@@ -92,11 +94,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             UserEditViewModel oViewModel = new();
 
             var tplUserDTOAndClientDTO = await GetAppUserEditDTO(id);
-            
+
             oViewModel.AvailableRoles = GetRoleDTOList();
             oViewModel.Client = tplUserDTOAndClientDTO.Item2;
             oViewModel.AppUser = tplUserDTOAndClientDTO.Item1;
-            oViewModel.AppUser.Roles = await GetAppUserRoleList(id);
+            oViewModel.AppUser.Roles = await GetAppUserRoleIdList(id);
 
             return View(oViewModel);
         }
@@ -127,6 +129,21 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [Route("/Admin/Users/Details/{id}")]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var oAppUser = await GetAppUserDetailsDTO(id);
+
+            return View(oAppUser);
+        }
+
+        [HttpGet]
+        public IActionResult GetUserTable(AppUserIndexQueryFilter filters)
+        {
+            return PartialView("_appUserTablePartial", GetAppUserDTOList(filters));
+        }
+
         #region API CALLS
         [HttpPost]
         public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)
@@ -138,7 +155,35 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #endregion
 
         #region UTILITY METHODS
-        private async Task<List<Guid>> GetAppUserRoleList(Guid id)
+        private async Task<AppUserDetailsDTO> GetAppUserDetailsDTO(Guid id)
+        {
+            var oAppUser = await _appUserService.GetById(id, true);
+
+            var oAppUserDetailsDTO = _mapper.Map<AppUserDetailsDTO>(oAppUser);
+
+            oAppUserDetailsDTO.IsInPOS = oAppUser.Client.ClientCode != null;
+
+            if (oAppUserDetailsDTO.Type == AppUserType.ADMINISTRADOR)
+                oAppUserDetailsDTO.Roles = await GetAppUserRoleList(id);
+
+            return oAppUserDetailsDTO;
+        }
+
+        private async Task<List<RoleDTO>> GetAppUserRoleList(Guid id)
+        {
+            List<RoleDTO> lstRoleDTO = new();
+
+            var lstRoles = await _roleService.GetAllByUserId(id);
+
+            lstRoles.ForEach(r =>
+            {
+                lstRoleDTO.Add(_mapper.Map<RoleDTO>(r));
+            });
+
+            return lstRoleDTO;
+        }
+
+        private async Task<List<Guid>> GetAppUserRoleIdList(Guid id)
         {
             List<Guid> lstRoleGuid = new();
 

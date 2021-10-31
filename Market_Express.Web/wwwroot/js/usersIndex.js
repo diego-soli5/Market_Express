@@ -1,16 +1,46 @@
-﻿function bindEnableOrDisableButtonEvts() {
+﻿var frmTable = document.querySelector("#frmTable");
+
+frmTable.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const params = createQueryStringParams(new FormData(frmTable));
+
+    const url = `/Admin/Users/GetUserTable?${params}`;
+
+    try {
+
+        showLoading();
+
+        const fetchResponse = await fetch(url, { method: 'GET' });
+        const text = await fetchResponse.text();
+   
+        document.querySelector("#divUsersTable").innerHTML = text;
+
+        bindEnableOrDisableButtonEvts();
+
+        hideLoading();
+        
+    } catch (e) {
+        console.error(e)
+        popUp(false, "Ocurrio un error inesperado al refrescar la tabla..");
+    }
+
+    hideLoading();
+});
+
+function bindEnableOrDisableButtonEvts() {
     var lstBtn = document.querySelectorAll("button[data-id]");
 
     lstBtn.forEach(btn => {
         btn.addEventListener("click", async function (e) {
-          
+
             let id = btn.getAttribute("data-id");
             let mode = btn.getAttribute("data-mode");
             let tdStatus = btn.parentElement
-                              .parentElement
-                              .parentElement
-                              .parentElement
-                              .querySelector('td[data-field="Status"]')
+                .parentElement
+                .parentElement
+                .parentElement
+                .querySelector('td[data-field="Status"]')
 
             let url = `/Admin/Users/ChangeStatus?id=${id}`;
 
@@ -86,6 +116,5 @@ async function confirmChangeStatus(mode) {
 
     return ok;
 }
-
 
 bindEnableOrDisableButtonEvts();
