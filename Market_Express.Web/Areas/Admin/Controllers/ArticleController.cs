@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.QueryFilter.Article;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -12,13 +10,15 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     [Authorize(Roles = "ART_MAN_GEN")]
     public class ArticleController : Controller
     {
-        public ArticleController()
-        {
+        private readonly IArticleService _articleService;
 
+        public ArticleController(IArticleService articleService)
+        {
+            _articleService = articleService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(ArticleIndexQueryFilter filters)
         {
             return View();
         }

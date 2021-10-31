@@ -45,6 +45,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IRoleService), typeof(RoleService));
 
             services.AddScoped(typeof(IAppUserService), typeof(AppUserService));
+
+            services.AddScoped(typeof(IArticleService), typeof(ArticleService));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)
@@ -89,6 +91,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<EmailServicesOptions>(configuration.GetSection("Options:EmailServicesOptions"));
             
             services.Configure<AzureBlobStorageOptions>(configuration.GetSection("Options:AzureBlobStorageOptions"));
+            
+            services.Configure<PaginationOptions>(configuration.GetSection("Options:PaginationOptions"));
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
