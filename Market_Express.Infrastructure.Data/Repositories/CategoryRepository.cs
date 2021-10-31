@@ -1,8 +1,11 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -14,6 +17,12 @@ namespace Market_Express.Infrastructure.Data.Repositories
         public CategoryRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context,configuration)
         { }
+
+        public IEnumerable<Category> GetAllActive()
+        {
+            return _dbEntity.Where(cat => cat.Status == EntityStatus.ACTIVADO)
+                            .AsEnumerable();
+        }
 
         public async Task<(int,int)> GetArticleDetails(Guid categoryId)
         {

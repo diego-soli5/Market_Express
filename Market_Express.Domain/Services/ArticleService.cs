@@ -5,6 +5,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.Article;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,8 +36,6 @@ namespace Market_Express.Domain.Services
             else
                 lstArticles = _unitOfWork.Article.GetAll();
 
-            var algo = lstArticles.ToList();
-
             if (filters.Description != null)
                 lstArticles = lstArticles.Where(article => article.Description.Trim().ToUpper().Contains(filters.Description.Trim().ToUpper()));
 
@@ -44,7 +43,12 @@ namespace Market_Express.Domain.Services
                 lstArticles = lstArticles.Where(article => article.BarCode.Trim().ToUpper().Contains(filters.BarCode.Trim().ToUpper()));
 
             if (filters.CategoryId != null)
-                lstArticles = lstArticles.Where(article => article.CategoryId == filters.CategoryId);
+            {
+                if (filters.CategoryId == Guid.Empty)
+                    lstArticles = lstArticles.Where(article => article.CategoryId == null);
+                else
+                    lstArticles = lstArticles.Where(article => article.CategoryId == filters.CategoryId);
+            }
 
             if (filters.CategoryIdIsNull)
                 lstArticles = lstArticles.Where(article => article.CategoryId is null);

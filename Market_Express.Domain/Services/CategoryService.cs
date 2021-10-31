@@ -30,6 +30,11 @@ namespace Market_Express.Domain.Services
             return _unitOfWork.Category.GetAll();
         }
 
+        public IEnumerable<Category> GetAllAvailable()
+        {
+            return _unitOfWork.Category.GetAllActive();
+        }
+
         public async Task<Category> GetById(Guid categoryId)
         {
             var oCategory = await _unitOfWork.Category.GetByIdAsync(categoryId);

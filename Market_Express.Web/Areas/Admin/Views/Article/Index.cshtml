@@ -72,9 +72,11 @@
                             <div class="form-group">
                                 <label class="font-weight-bold">Categoría</label>
                                 <select asp-for="QueryFilter.CategoryId"
+                                        asp-items="@(new SelectList(Model.AvailableCategories,"Id", "Name"))"
                                         name="@nameof(Model.QueryFilter.CategoryId)"
                                         class="form-control-original-small">
                                     <option>TODOS</option>
+                                    <option value="00000000-0000-0000-0000-000000000000">SIN CATEGORÍA</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -85,16 +87,6 @@
                                         class="form-control-original-small">
                                     <option>TODOS</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="font-weight-bold d-block">
-                                    Mostrar Articulos Sin Categoría
-                                </label>
-                                <input type="checkbox"
-                                       asp-for="QueryFilter.CategoryIdIsNull"
-                                       name="@nameof(Model.QueryFilter.CategoryIdIsNull)" />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -132,7 +124,6 @@
 
 
 @section Scripts{
-
     <script src="~/js/article.index.js"></script>
 }
 
