@@ -7,5 +7,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
     public interface ICartRepository : IGenericRepository<Cart>
     {
         Task<int> GetArticlesCount(Guid userId);
+        Task<int> GetOpenCountByArticleId(Guid articleId);
     }
 }

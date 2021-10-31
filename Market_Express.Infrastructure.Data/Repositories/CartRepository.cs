@@ -11,6 +11,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class CartRepository : GenericRepository<Cart>, ICartRepository
     {
         private const string _Sp_Cart_GetArticlesCount = "Sp_Cart_GetArticlesCount";
+        private const string _Sp_Cart_GetOpenCountByArticleId = "Sp_Cart_GetOpenCountByArticleId";
 
         public CartRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -18,7 +19,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
         public async Task<int> GetArticlesCount(Guid userId)
         {
-            int iCount = 0;
+            int iCount;
 
             var arrParams = new[]
             {
@@ -27,11 +28,28 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             var dtResult = await ExecuteQuery(_Sp_Cart_GetArticlesCount, arrParams);
 
-            foreach (DataRow oRow in dtResult.Rows)
-            {
-                iCount = int.Parse(oRow[0].ToString());
-            }
+            var drResult = dtResult.Rows[0];
 
+            iCount = int.Parse(drResult[0].ToString());
+
+            return iCount;
+        }
+
+        public async Task<int> GetOpenCountByArticleId(Guid articleId)
+        {
+            int iCount;
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@articleId",articleId)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Cart_GetOpenCountByArticleId, arrParams);
+
+            var drResult = dtResult.Rows[0];
+
+            iCount = int.Parse(drResult[0].ToString());
+            
             return iCount;
         }
     }

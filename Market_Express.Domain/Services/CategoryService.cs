@@ -174,7 +174,7 @@ namespace Market_Express.Domain.Services
                 {
                     if (oCategory.Articles.Any(art => art.Status == EntityStatus.ACTIVADO))
                     {
-                        oResult.Message = "La categoría no se puede desactivar, antes debe desactivar los articulos relacionados.";
+                        oResult.Message = "La categoría no se puede desactivar, para desactivarla debe desactivar los articulos relacionados.";
 
                         return oResult;
                     }

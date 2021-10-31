@@ -60,6 +60,22 @@ BEGIN
 END;
 GO
 
+--Obtiene la cantidad de carritos que tienen "X" articulo en el
+CREATE PROCEDURE Sp_Cart_GetOpenCountByArticleId
+(
+	@articleId UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	SELECT COUNT(1)
+	FROM Cart c, Cart_Detail cd
+	WHERE c.Id = cd.CartId
+	AND c.Status = 'ABIERTO'
+	AND cd.ArticleId = @articleId;
+END;
+GO
+
+
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS ADDRESS
 ---------------------------------------------------------------------------------------------------------------
@@ -102,6 +118,7 @@ BEGIN
 			AND au.Status = 'DESACTIVADO') DisabledUsers;
 END;
 GO
+
 
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS PERMISSION

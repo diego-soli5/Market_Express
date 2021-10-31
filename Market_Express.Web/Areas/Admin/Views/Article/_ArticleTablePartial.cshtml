@@ -1,8 +1,8 @@
 ﻿@model Market_Express.Web.ViewModels.Article.ArticleIndexViewModel
 
 <table class="table table-hover table-sm table-responsive-lg">
-    <thead>
-        <tr class="font-weight-bold">
+    <thead class="">
+        <tr class="small text-uppercase font-weight-bold">
             <td>Descripción</td>
             <td>Código Barras</td>
             <td>Precio</td>
@@ -19,7 +19,7 @@
                 <tr>
                     <td><p class="text-capitalize-first">@article.Description</p></td>
                     <td><p class="">@article.BarCode</p></td>
-                    <td><p class="">@article.Price</p></td>
+                    <td><p class="">₡@article.Price</p></td>
                     @if (article.Category.Name != null)
                     {
                         <td><p class="text-capitalize-first">@article.Category.Name</p></td>
