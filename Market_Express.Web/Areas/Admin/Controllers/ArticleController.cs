@@ -40,10 +40,24 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return View(oViewModel);
         }
 
+        [HttpGet]
+        public IActionResult GetArticleTable(ArticleIndexQueryFilter filters)
+        {
+            ArticleIndexViewModel oViewModel = new();
+
+            var paginationResult = GetMetaAndPagedArticleDTOList(filters);
+
+            oViewModel.Articles = paginationResult.Item1;
+            oViewModel.Metadata = paginationResult.Item2;
+            oViewModel.QueryFilter = filters;
+
+            return PartialView("_ArticleTablePartial", oViewModel);
+        }
+
         #region UTILITY METHODS
         private (List<ArticleDTO>, Metadata) GetMetaAndPagedArticleDTOList(ArticleIndexQueryFilter filters)
         {
-            var pagedArticles = _articleService.GetAll(filters);
+            var pagedArticles = _articleService.GetAll(filters, true);
             var oMeta = Metadata.Create(pagedArticles);
 
             return (pagedArticles.Select(article => _mapper.Map<ArticleDTO>(article))

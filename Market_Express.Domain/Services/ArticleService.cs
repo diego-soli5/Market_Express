@@ -5,6 +5,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.Article;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -22,12 +23,19 @@ namespace Market_Express.Domain.Services
             _paginationOptions = paginationOptions.Value;
         }
 
-        public PagedList<Article> GetAll(ArticleIndexQueryFilter filters)
+        public PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false)
         {
+            IEnumerable<Article> lstArticles;
+
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
 
-            var lstArticles = _unitOfWork.Article.GetAll();
+            if(includeCategory)
+                lstArticles = _unitOfWork.Article.GetAll(nameof(Article.Category));
+            else
+                lstArticles = _unitOfWork.Article.GetAll();
+
+            var algo = lstArticles.ToList();
 
             if (filters.Description != null)
                 lstArticles = lstArticles.Where(article => article.Description.Trim().ToUpper().Contains(filters.Description.Trim().ToUpper()));

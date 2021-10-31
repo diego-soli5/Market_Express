@@ -20,7 +20,14 @@
                     <td><p class="text-capitalize-first">@article.Description</p></td>
                     <td><p class="">@article.BarCode</p></td>
                     <td><p class="">@article.Price</p></td>
-                    <td><p class="text-capitalize-first">@article.Category.Name</p></td>
+                    @if (article.Category.Name != null)
+                    {
+                        <td><p class="text-capitalize-first">@article.Category.Name</p></td>
+                    }
+                    else
+                    {
+                        <td><p class="text-danger">Sin Categoría</p></td>
+                    }
                     <td data-field="Status"><p class="text-capitalize-first">@article.Status.ToString()</p></td>
                     <td class="text-center">
                         <div class="row no-gutters">

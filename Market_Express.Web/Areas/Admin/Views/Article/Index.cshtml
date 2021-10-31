@@ -1,4 +1,4 @@
-﻿@model Market_Express.Web.ViewModels.Article.ArticleIndexViewModel 
+﻿@model Market_Express.Web.ViewModels.Article.ArticleIndexViewModel
 @{
     ViewData["Title"] = "Artículos";
 }
@@ -89,13 +89,19 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="font-weight-bold">Mostrar Articulos Sin Categoría</label>
-                                <input type="text"
+                                <label class="font-weight-bold d-block">
+                                    Mostrar Articulos Sin Categoría
+                                </label>
+                                <input type="checkbox"
                                        asp-for="QueryFilter.CategoryIdIsNull"
-                                       name="@nameof(Model.QueryFilter.CategoryIdIsNull)"  />
+                                       name="@nameof(Model.QueryFilter.CategoryIdIsNull)" />
                             </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="font-weight-bold">Mostrar Articulos Sin Imagen</label>
+                                <label class="font-weight-bold d-block">
+                                    Mostrar Articulos Sin Imagen
+                                </label>
                                 <input type="checkbox"
                                        asp-for="QueryFilter.ImgIsNull"
                                        name="@nameof(Model.QueryFilter.ImgIsNull)" />
@@ -110,7 +116,7 @@
                 </div>
 
                 <div id="divArticlesTable">
-                    @{ await Html.RenderPartialAsync("_AppUserTablePartial", Model); }
+                    @{ await Html.RenderPartialAsync("_ArticleTablePartial", Model); }
                 </div>
 
             </div>
@@ -127,6 +133,6 @@
 
 @section Scripts{
 
-    <script src="~/js/articleIndex.js"></script>
+    <script src="~/js/article.index.js"></script>
 }
 

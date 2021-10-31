@@ -6,6 +6,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
 {
     public interface IArticleService
     {
-        PagedList<Article> GetAll(ArticleIndexQueryFilter filters);
+        PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false);
     }
 }
