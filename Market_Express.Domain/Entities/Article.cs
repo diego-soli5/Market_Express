@@ -14,6 +14,27 @@ namespace Market_Express.Domain.Entities
             OrderDetails = new HashSet<OrderDetail>();
         }
 
+        public Article(Guid? categoryId, string description, string barCode, decimal price)
+        {
+            CategoryId = categoryId;
+            Description = description;
+            BarCode = barCode;
+            Price = price;
+        }
+
+        public Article(Guid id, Guid? categoryId, string description, string barCode, decimal price, bool autoSync, bool autoSyncDescription, EntityStatus status, string addedBy)
+        {
+            Id = id;
+            CategoryId = categoryId;
+            Description = description;
+            BarCode = barCode;
+            Price = price;
+            AutoSync = autoSync;
+            AutoSyncDescription = autoSyncDescription;
+            Status = status;
+            AddedBy = addedBy;
+        }
+
         public Guid? CategoryId { get; set; }
         public string Description { get; set; }
         public string BarCode { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.Enumerations;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace Market_Express.Application.DTOs.Article
@@ -11,6 +12,7 @@ namespace Market_Express.Application.DTOs.Article
         public string BarCode { get; set; }
         public decimal Price { get; set; }
         public string Image { get; set; }
+        public IFormFile NewImage { get; set; }
         public bool AutoSync { get; set; }
         public bool AutoSyncDescription { get; set; }
         public EntityStatus Status { get; set; }

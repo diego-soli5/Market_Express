@@ -2,6 +2,7 @@
 using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
@@ -19,12 +20,15 @@ namespace Market_Express.Domain.Services
     public class ArticleService : BaseService, IArticleService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAzureBlobStorageService _blobService;
         private readonly PaginationOptions _paginationOptions;
 
         public ArticleService(IUnitOfWork unitOfWork,
+                              IAzureBlobStorageService blobService,
                               IOptions<PaginationOptions> paginationOptions)
         {
             _unitOfWork = unitOfWork;
+            _blobService = blobService;
             _paginationOptions = paginationOptions.Value;
         }
 
@@ -78,9 +82,152 @@ namespace Market_Express.Domain.Services
             return oArticle;
         }
 
+        public async Task<BusisnessResult> Create(Article article, IFormFile image, Guid currentUserId)
+        {
+            BusisnessResult oResult = new();
+
+            if (string.IsNullOrEmpty(article.Description) ||
+                string.IsNullOrEmpty(article.BarCode) ||
+                article.CategoryId == null)
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(article => article.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
+
+            if (oArticleToValidate != null)
+            {
+                oResult.Message = "El código de barras ya existe.";
+
+                return oResult;
+            }
+
+            var oCategoryToValidate = _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
+
+            if (oCategoryToValidate == null)
+            {
+                oResult.Message = "La categoría no existe.";
+
+                return oResult;
+            }
+
+            if (image?.Length > 0)
+            {
+                if (!IsValidImage(image))
+                {
+                    oResult.Message = "El formato de imagen es invalido.";
+
+                    oResult.ResultCode = 0;
+
+                    return oResult;
+                }
+
+                article.Image = await _blobService.CreateBlobAsync(image);
+            }
+
+            article.AutoSync = false;
+            article.AutoSyncDescription = false;
+            article.Status = EntityStatus.ACTIVADO;
+            article.CreationDate = DateTimeUtility.NowCostaRica;
+            article.AddedBy = currentUserId.ToString();
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "El artículo se creó correctamente!";
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> Edit(Article article, IFormFile image, Guid currentUserId)
         {
             BusisnessResult oResult = new();
+
+            if (string.IsNullOrEmpty(article.Description) ||
+                string.IsNullOrEmpty(article.BarCode) ||
+                article.CategoryId == null)
+            {
+                oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(article => article.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
+
+            if (oArticleToValidate != null)
+            {
+                oResult.Message = "El código de barras ya existe.";
+
+                return oResult;
+            }
+
+            var oCategoryToValidate = _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
+
+            if (oCategoryToValidate == null)
+            {
+                oResult.Message = "La categoría no existe.";
+
+                return oResult;
+            }
+
+            var oArticleFromDb = await _unitOfWork.Article.GetByIdAsync(article.Id);
+
+            if (oArticleFromDb == null)
+            {
+                oResult.Message = "El artículo no existe.";
+
+                return oResult;
+            }
+
+            int iCartCount = await _unitOfWork.Cart.GetOpenCountByArticleId(article.Id);
+
+            if (iCartCount > 0)
+            {
+                oResult.Message = $"El artículo no se puede desactivar porque está agregado en {iCartCount} carritos.";
+
+                return oResult;
+            }
+
+            if (image?.Length > 0)
+            {
+                if (!IsValidImage(image))
+                {
+                    oResult.Message = "El formato de imagen es invalido.";
+
+                    oResult.ResultCode = 0;
+
+                    return oResult;
+                }
+
+                await _blobService.DeleteBlobAsync(oArticleFromDb.Image ?? "");
+
+                oArticleFromDb.Image = await _blobService.CreateBlobAsync(image);
+            }
+
+            oArticleFromDb.Description = article.Description;
+            oArticleFromDb.BarCode = article.BarCode;
+            oArticleFromDb.Price = article.Price;
+            oArticleFromDb.Status = article.Status;
+            oArticleFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
+            oArticleFromDb.ModifiedBy = currentUserId.ToString();
+
+            if (oArticleFromDb.AddedBy == "SYSTEM")
+            {
+                oArticleFromDb.AutoSync = article.AutoSync;
+                oArticleFromDb.AutoSyncDescription = article.AutoSyncDescription;
+            }
+
+            oResult.Success = await _unitOfWork.Save();
+
+            if (oArticleFromDb.AutoSync && !oArticleFromDb.AutoSyncDescription && oArticleFromDb.AddedBy == "SYSTEM")
+                oResult.Message = "El artículo se modificó correctamente! Sin embargo los cambios se pueden perder (exceptuando la descripción) porque la sincronización automática está activada para el artículo.";
+
+            else if (oArticleFromDb.AutoSync && oArticleFromDb.AddedBy == "SYSTEM")
+                oResult.Message = "El artículo se modificó correctamente! Sin embargo los cambios se pueden perder porque la sincronización automática está activada para el artículo.";
+
+            else
+                oResult.Message = "El artículo se modificó correctamente!";
 
             return oResult;
         }
