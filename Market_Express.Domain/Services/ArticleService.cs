@@ -1,4 +1,5 @@
-﻿using Market_Express.CrossCutting.Options;
+﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
@@ -6,6 +7,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Article;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class ArticleService : IArticleService
+    public class ArticleService : BaseService, IArticleService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaginationOptions _paginationOptions;
@@ -33,7 +35,7 @@ namespace Market_Express.Domain.Services
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
 
-            if(includeCategory)
+            if (includeCategory)
                 lstArticles = _unitOfWork.Article.GetAll(nameof(Article.Category));
             else
                 lstArticles = _unitOfWork.Article.GetAll();
@@ -66,6 +68,23 @@ namespace Market_Express.Domain.Services
             return pagedArticles;
         }
 
+        public async Task<Article> GetById(Guid id)
+        {
+            var oArticle = await _unitOfWork.Article.GetByIdAsync(id);
+
+            if (oArticle == null)
+                throw new NotFoundException(id, nameof(Article));
+
+            return oArticle;
+        }
+
+        public async Task<BusisnessResult> Edit(Article article, IFormFile image, Guid currentUserId)
+        {
+            BusisnessResult oResult = new();
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> ChangeStatus(Guid articleId, Guid currentUserId)
         {
             BusisnessResult oResult = new();
@@ -81,9 +100,9 @@ namespace Market_Express.Domain.Services
 
             int iCartCount = await _unitOfWork.Cart.GetOpenCountByArticleId(articleId);
 
-            if(iCartCount > 0)
+            if (iCartCount > 0)
             {
-                oResult.Message = $"El artículo no se puede desactivar porque está agregado en el carrito de {iCartCount} clientes.";
+                oResult.Message = $"El artículo no se puede desactivar porque está agregado en {iCartCount} carritos.";
 
                 return oResult;
             }
@@ -112,5 +131,5 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
-    }    
+    }
 }

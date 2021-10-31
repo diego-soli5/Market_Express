@@ -54,7 +54,6 @@
                             </div>
                             <div class="col-xl-4">
                                 <button data-id="@article.Id"
-                                        data-mode="@(article.Status == EntityStatus.ACTIVADO ? "D" : "E")"
                                         class="btn btn-sm @(article.Status == EntityStatus.ACTIVADO ? "btn-success" : "btn-danger") mt-xl-0 mt-1"
                                         title="@(article.Status == EntityStatus.ACTIVADO ? "Desactivar" : "Activar")">
                                     <i class="fas fa-power-off"></i>

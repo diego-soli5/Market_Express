@@ -44,6 +44,7 @@ async function getPaginatedPage(pgnum) {
         document.querySelector("#divArticlesTable").innerHTML = text;
 
         bindPaginationEvts();
+        bindEnableOrDisableButtonEvts();
 
         hideLoading();
 
@@ -65,4 +66,58 @@ frm.addEventListener("submit", async function (e) {
     await getPaginatedPage("1");
 });
 
+
+function bindEnableOrDisableButtonEvts() {
+    var lstBtn = document.querySelectorAll("button[data-id]");
+
+    lstBtn.forEach(btn => {
+        btn.addEventListener("click", async function (e) {
+
+            let id = btn.getAttribute("data-id");
+            let tdStatus = btn.parentElement
+                .parentElement
+                .parentElement
+                .parentElement
+                .querySelector('td[data-field="Status"]');
+
+            let url = `/Admin/Article/ChangeStatus?id=${id}`;
+
+            btn.disabled = true;
+
+            try {
+                showLoading();
+
+                const fetchResponse = await fetch(url, { method: 'POST' });
+                const json = await fetchResponse.json();
+
+                if (json.success) {
+                    toastr.success(json.message);
+
+                    if (json.resultCode == 0) {
+                        btn.classList.replace("btn-success", "btn-danger");
+                        btn.setAttribute("title", "Activar");
+                        tdStatus.innerHTML = '<p class="text-capitalize-first">Desactivado</p>';
+                    } else if (json.resultCode == 1) {
+                        btn.classList.replace("btn-danger", "btn-success");
+                        btn.setAttribute("title", "Desactivar");
+                        tdStatus.innerHTML = '<p class="text-capitalize-first">Activado</p>';
+                    }
+                } else {
+                    popUp(false, json.message);
+                }
+
+            } catch (e) {
+                popUp(false, "Ocurrio un error inesperado..");
+            }
+
+            hideLoading();
+
+            await delayAsync(3000);
+
+            btn.disabled = false;
+        });
+    });
+}
+
+bindEnableOrDisableButtonEvts();
 bindPaginationEvts();
