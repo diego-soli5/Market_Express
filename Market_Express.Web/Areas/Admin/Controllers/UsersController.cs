@@ -141,7 +141,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetUserTable(AppUserIndexQueryFilter filters)
         {
-            return PartialView("_appUserTablePartial", GetAppUserDTOList(filters));
+            return PartialView("_AppUserTablePartial", GetAppUserDTOList(filters));
         }
 
         #region API CALLS

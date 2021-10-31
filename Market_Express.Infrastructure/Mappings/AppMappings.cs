@@ -2,6 +2,7 @@
 using Market_Express.Application.DTOs.Account;
 using Market_Express.Application.DTOs.Address;
 using Market_Express.Application.DTOs.AppUser;
+using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Client;
 using Market_Express.Application.DTOs.Permission;
@@ -30,6 +31,13 @@ namespace Market_Express.Infrastructure.Mappings
         private void CreateArticleMappings()
         {
             CreateMap<Article, ArticuloSyncDTO>()
+                .ReverseMap();
+
+            CreateMap<Article, ArticleDTO>()
+                .ForPath(dest => dest.Category.Id, opt => opt.MapFrom(src => src.Category.Id))
+                .ForPath(dest => dest.Category.Name, opt => opt.MapFrom(src => src.Category.Name))
+                .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.Category.Description))
+                .ForPath(dest => dest.Category.Status, opt => opt.MapFrom(src => src.Category.Status))
                 .ReverseMap();
         }
 

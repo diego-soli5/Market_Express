@@ -1,9 +1,4 @@
 ﻿using Market_Express.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Market_Express.Domain.CustomEntities.Pagination
 {
@@ -17,7 +12,21 @@ namespace Market_Express.Domain.CustomEntities.Pagination
         public bool HasPreviousPage { get; set; }
         public int? NextPageNumber { get; set; }
         public int? PreviousPageNumber { get; set; }
-        public string NextPageUrl { get; set; }
-        public string PreviousPageUrl { get; set; }
+
+        public static Metadata Create<TEntity>(PagedList<TEntity> pagedList)
+                where TEntity : BaseEntity
+        {
+            return new Metadata
+            {
+                TotalCount = pagedList.TotalCount,
+                PageSize = pagedList.PageSize,
+                CurrentPage = pagedList.CurrentPage,
+                TotalPages = pagedList.TotalPages,
+                HasNextPage = pagedList.HasNextPage,
+                HasPreviousPage = pagedList.HasPreviousPage,
+                NextPageNumber = pagedList.NextPageNumber,
+                PreviousPageNumber = pagedList.PreviousPageNumber
+            };
+        }
     }
 }

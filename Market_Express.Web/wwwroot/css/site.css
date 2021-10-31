@@ -1,4 +1,9 @@
-﻿span.text-danger {
+﻿button.activePage {
+    background-color: #007bff !important;
+    color: #fff !important;
+}
+
+span.text-danger {
     font-size: 13px;
 }
 

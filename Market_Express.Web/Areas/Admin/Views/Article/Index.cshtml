@@ -1,4 +1,4 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.Article.ArticleIndexViewModel 
 @{
     ViewData["Title"] = "Artículos";
 }
@@ -50,10 +50,67 @@
             </div>
             <div class="card-body">
 
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay articulos disponibles.</p>
-                    </div>
+                <div class="mb-3">
+                    <form asp-area="Admin" asp-controller="Article" asp-action="Index" method="post" class="row" id="frmTable">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Descripción</label>
+                                <input type="text"
+                                       asp-for="QueryFilter.Description"
+                                       name="@nameof(Model.QueryFilter.Description)"
+                                       class="form-control-original-small" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Código Barras</label>
+                                <input type="text"
+                                       asp-for="QueryFilter.BarCode"
+                                       name="@nameof(Model.QueryFilter.BarCode)" class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Categoría</label>
+                                <select asp-for="QueryFilter.CategoryId"
+                                        name="@nameof(Model.QueryFilter.CategoryId)"
+                                        class="form-control-original-small">
+                                    <option>TODOS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Estado</label>
+                                <select asp-items="Html.GetEnumSelectList<EntityStatus>()"
+                                        asp-for="QueryFilter.Status"
+                                        name="@nameof(Model.QueryFilter.Status)"
+                                        class="form-control-original-small">
+                                    <option>TODOS</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Mostrar Articulos Sin Categoría</label>
+                                <input type="text"
+                                       asp-for="QueryFilter.CategoryIdIsNull"
+                                       name="@nameof(Model.QueryFilter.CategoryIdIsNull)"  />
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Mostrar Articulos Sin Imagen</label>
+                                <input type="checkbox"
+                                       asp-for="QueryFilter.ImgIsNull"
+                                       name="@nameof(Model.QueryFilter.ImgIsNull)" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="float-right" style=" width: 120px;">
+                                <button class="btn btn-primary btn-block">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="divArticlesTable">
+                    @{ await Html.RenderPartialAsync("_AppUserTablePartial", Model); }
                 </div>
 
             </div>
