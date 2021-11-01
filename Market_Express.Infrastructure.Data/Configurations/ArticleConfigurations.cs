@@ -12,8 +12,8 @@ namespace Market_Express.Infrastructure.Data.Configurations
         {
             builder.ToTable("Article");
 
-            builder.HasIndex(e => e.BarCode, "UQ__Article__8A2ACA9BA865F7D6")
-                .IsUnique();
+            /*builder.HasIndex(e => e.BarCode, "UQ__Article__8A2ACA9BA865F7D6")
+                .IsUnique();*/
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 
@@ -36,7 +36,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .IsUnicode(false);
 
             builder.Property(e => e.Image)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(false);
 
             builder.Property(e => e.ModifiedBy)

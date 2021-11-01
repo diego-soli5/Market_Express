@@ -8,7 +8,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.ToTable("TB_Order");
+            builder.ToTable("Order");
 
             builder.Property(e => e.Id).HasDefaultValueSql("(newsequentialid())");
 

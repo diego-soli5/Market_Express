@@ -39,6 +39,12 @@ namespace Market_Express.Infrastructure.Mappings
                 .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.Category.Description))
                 .ForPath(dest => dest.Category.Status, opt => opt.MapFrom(src => src.Category.Status))
                 .ReverseMap();
+
+            CreateMap<Article, ArticleEditDTO>()
+                .ReverseMap();
+
+            CreateMap<Article, ArticleCreateDTO>()
+                .ReverseMap();
         }
 
         private void CreateClientMappings()

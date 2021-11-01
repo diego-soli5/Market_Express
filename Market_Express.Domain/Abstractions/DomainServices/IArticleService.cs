@@ -13,6 +13,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<Article> GetById(Guid id);
         Task<BusisnessResult> Create(Article article, IFormFile image, Guid currentUserId);
         Task<BusisnessResult> Edit(Article article, IFormFile image, Guid currentUserId);
-        Task<BusisnessResult> ChangeStatus(Guid articleId, Guid currentUserId);
+        Task<BusisnessResult> ChangeStatus(Guid articleId, bool enableCategory, Guid currentUserId);
     }
 }

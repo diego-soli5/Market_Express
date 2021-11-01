@@ -161,12 +161,12 @@ namespace Market_Express.Application.Services
                             {
                                 _articuloValidations.Article = oArticlePOS;
 
-                                if (!_articuloValidations.ExistsBarCode())
-                                    oArticleDb.BarCode = oArticlePOS.BarCode.Trim();
+                                //if (!_articuloValidations.ExistsBarCode())
 
                                 if (oArticleDb.AutoSyncDescription)
                                     oArticleDb.Description = oArticlePOS.Description.Trim();
 
+                                oArticleDb.BarCode = oArticlePOS.BarCode.Trim();
                                 oArticleDb.Price = oArticlePOS.Price;
                                 oArticleDb.ModifiedBy = SystemConstants.SYSTEM;
                                 oArticleDb.ModificationDate = DateTimeUtility.NowCostaRica;
@@ -189,16 +189,18 @@ namespace Market_Express.Application.Services
                     {
                         _articuloValidations.Article = oArticlePOS;
 
-                        if (!_articuloValidations.ExistsBarCode())
-                        {
-                            oArticlePOS.AutoSync = true;
-                            oArticlePOS.AutoSyncDescription = true;
-                            oArticlePOS.CreationDate = DateTimeUtility.NowCostaRica;
-                            oArticlePOS.Status = EntityStatus.ACTIVADO;
-                            oArticlePOS.AddedBy = SystemConstants.SYSTEM;
+                        //if (!_articuloValidations.ExistsBarCode())
+                        //{
 
-                            lstArticlesToAdd.Add(oArticlePOS);
-                        }
+                        oArticlePOS.AutoSync = true;
+                        oArticlePOS.AutoSyncDescription = true;
+                        oArticlePOS.CreationDate = DateTimeUtility.NowCostaRica;
+                        oArticlePOS.Status = EntityStatus.ACTIVADO;
+                        oArticlePOS.AddedBy = SystemConstants.SYSTEM;
+
+                        lstArticlesToAdd.Add(oArticlePOS);
+
+                        //}
                     }
                 }
             }

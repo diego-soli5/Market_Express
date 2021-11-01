@@ -1,0 +1,110 @@
+﻿@model Market_Express.Web.ViewModels.Article.ArticleCreateViewModel
+@{
+    ViewData["Title"] = "Crear Artículo";
+}
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Artículos</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Article" asp-action="Index">Artículos</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Crear</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Crear</h4>
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" asp-Area="Admin" asp-controller="Article" asp-action="Create" id="frm" method="post" class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label asp-for="Article.Description" class="col-form-label">Descripción</label>
+                            <textarea asp-for="Article.Description" class="form-control" placeholder="Escribe la descripción del artículo" style="resize: none;"></textarea>
+                            <span asp-validation-for="Article.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Article.BarCode" class="col-form-label">Código de Barras</label>
+                            <input type="text" asp-for="Article.BarCode" class="form-control" placeholder="Ingresa el codigo del artículo">
+                            <span asp-validation-for="Article.BarCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Article.Price" class="col-form-label">Precio</label>
+                            <input type="text" onkeypress="return valideKey(event);" asp-for="Article.Price" class="form-control" placeholder="Escribe el precio del artículo">
+                            <span asp-validation-for="Article.Price" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Article.CategoryId" class="col-form-label">Categoría</label>
+                            @if (Model.AvailableCategories?.Count > 0)
+                            {
+                                <select asp-for="Article.CategoryId"
+                                        asp-items="@(new SelectList(Model.AvailableCategories,"Id", "Name"))"
+                                        class="form-control">
+                                </select>
+                                <span asp-validation-for="Article.CategoryId" class="text-danger"></span>
+                            }
+                            else
+                            {
+                                <p class="text-danger">No hay categorías disponibles.</p>
+                                <a asp-area="Admin"
+                                   asp-controller="Category"
+                                   asp-action="Create">Crear Categoría</a>
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Article.NewImage" class="col-form-label">Imagen</label>
+                            <input type="file" asp-for="Article.NewImage" class="form-control-file" id="Image" />
+                            <span asp-validation-for="Article.NewImage" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <figure>
+                                <img id="newImagePreview" class="img-fluid img-thumbnail" />
+                                <figcaption>Imagen Cargada</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="Admin" asp-controller="Article" asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <button type="submit" class="btn btn-primary" form="frm" id="btnSubmit">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-name bg padding-y">
+    <div class="container">
+        <h6>Nota</h6>
+        <p class="text-justify">
+            • No es recomendable crear artículos desde Market Express, ya que esto podría generar artículos con códigos de barra duplicados debido a las sincronizaciones automáticas realizadas con el sistema POS.
+        </p>
+    </div><!-- container // -->
+</section>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/article.create.js"></script>
+    <script src="~/js/formSubmitDelay.js"></script>
+
+    @if (ViewData["MessageResult"] != null)
+    {
+        <script>
+            popUp(false, '@ViewData["MessageResult"].ToString()');
+        </script>
+    }
+}

@@ -95,7 +95,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(article => article.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
+            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(art => art.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
 
             if (oArticleToValidate != null)
             {
@@ -104,7 +104,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            var oCategoryToValidate = _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
+            var oCategoryToValidate = await _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
 
             if (oCategoryToValidate == null)
             {
@@ -133,6 +133,8 @@ namespace Market_Express.Domain.Services
             article.CreationDate = DateTimeUtility.NowCostaRica;
             article.AddedBy = currentUserId.ToString();
 
+            _unitOfWork.Article.Create(article);
+
             oResult.Success = await _unitOfWork.Save();
 
             oResult.Message = "El artículo se creó correctamente!";
@@ -153,16 +155,19 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(article => article.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
+            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(art => art.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
 
             if (oArticleToValidate != null)
             {
-                oResult.Message = "El código de barras ya existe.";
+                if (oArticleToValidate.Id != article.Id)
+                {
+                    oResult.Message = "El código de barras ya existe.";
 
-                return oResult;
+                    return oResult;
+                }
             }
 
-            var oCategoryToValidate = _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
+            var oCategoryToValidate = await _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
 
             if (oCategoryToValidate == null)
             {
@@ -205,6 +210,7 @@ namespace Market_Express.Domain.Services
                 oArticleFromDb.Image = await _blobService.CreateBlobAsync(image);
             }
 
+            oArticleFromDb.CategoryId = article.CategoryId;
             oArticleFromDb.Description = article.Description;
             oArticleFromDb.BarCode = article.BarCode;
             oArticleFromDb.Price = article.Price;
@@ -221,10 +227,10 @@ namespace Market_Express.Domain.Services
             oResult.Success = await _unitOfWork.Save();
 
             if (oArticleFromDb.AutoSync && !oArticleFromDb.AutoSyncDescription && oArticleFromDb.AddedBy == "SYSTEM")
-                oResult.Message = "El artículo se modificó correctamente! Sin embargo los cambios se pueden perder (exceptuando la descripción) porque la sincronización automática está activada para el artículo.";
+                oResult.Message = "El artículo se modificó correctamente! Sin embargo los cambios se pueden perder (exceptuando la descripción) porque la sincronización automática está activada para este artículo.";
 
             else if (oArticleFromDb.AutoSync && oArticleFromDb.AddedBy == "SYSTEM")
-                oResult.Message = "El artículo se modificó correctamente! Sin embargo los cambios se pueden perder porque la sincronización automática está activada para el artículo.";
+                oResult.Message = "El artículo se modificó correctamente! Sin embargo los cambios se pueden perder porque la sincronización automática está activada para este artículo.";
 
             else
                 oResult.Message = "El artículo se modificó correctamente!";
@@ -232,11 +238,11 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<BusisnessResult> ChangeStatus(Guid articleId, Guid currentUserId)
+        public async Task<BusisnessResult> ChangeStatus(Guid articleId, bool enableCategory, Guid currentUserId)
         {
             BusisnessResult oResult = new();
 
-            var oArticle = await _unitOfWork.Article.GetByIdAsync(articleId);
+            var oArticle = await _unitOfWork.Article.GetByIdAsync(articleId, nameof(Article.Category));
 
             if (oArticle == null)
             {
@@ -264,15 +270,43 @@ namespace Market_Express.Domain.Services
             }
             else
             {
-                oArticle.Status = EntityStatus.ACTIVADO;
+                if (oArticle.Category.Status == EntityStatus.ACTIVADO)
+                {
+                    oArticle.Status = EntityStatus.ACTIVADO;
 
-                oResult.ResultCode = 1;
+                    oResult.ResultCode = 1;
 
-                oResult.Message = "El artículo se ha activado.";
+                    oResult.Message = "El artículo se ha activado.";
+                }
+                else
+                {
+                    if (enableCategory)
+                    {
+                        oArticle.Status = EntityStatus.ACTIVADO;
+
+                        oArticle.Category.Status = EntityStatus.ACTIVADO;
+
+                        oResult.ResultCode = 1;
+
+                        oResult.Message = "El artículo y la categoría se se han activado.";
+
+                        _unitOfWork.Category.Update(oArticle.Category);
+                    }
+                    else
+                    {
+                        oResult.Message = "No se pudo activar el artículo porque la categoría está desactivada.";
+
+                        oResult.ResultCode = 2;
+
+                        return oResult;
+                    }
+                }
             }
 
             oArticle.ModificationDate = DateTimeUtility.NowCostaRica;
             oArticle.ModifiedBy = currentUserId.ToString();
+
+            _unitOfWork.Article.Update(oArticle);
 
             oResult.Success = await _unitOfWork.Save();
 

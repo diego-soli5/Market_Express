@@ -74,11 +74,10 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 oViewModel.AvailableCategories = GetAvailableCategories();
 
                 if (oResult.ResultCode == 0)
-                {
-                    ModelState.AddModelError("NewImage", oResult.Message);
-                }
 
-                ViewData["ResultMessage"] = oResult.Message;
+                    ModelState.AddModelError("NewImage", oResult.Message);
+                else
+                    ViewData["MessageResult"] = oResult.Message;
 
                 return View(oViewModel);
             }
@@ -114,12 +113,10 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                 oViewModel.Article = model;
                 oViewModel.AvailableCategories = GetAvailableCategories();
 
-                if(oResult.ResultCode == 0)
-                {
+                if (oResult.ResultCode == 0)
                     ModelState.AddModelError("NewImage", oResult.Message);
-                }
-
-                ViewData["ResultMessage"] = oResult.Message;
+                else
+                    ViewData["MessageResult"] = oResult.Message;
 
                 return View(oViewModel);
             }
@@ -164,9 +161,9 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         #region API CALLS
         [HttpPost]
-        public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id)
+        public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id, [FromQuery(Name = "enableCategory")] bool enableCategory)
         {
-            var oResult = await _articleService.ChangeStatus(id, CurrentUserId);
+            var oResult = await _articleService.ChangeStatus(id, enableCategory, CurrentUserId);
 
             return Ok(oResult);
         }
