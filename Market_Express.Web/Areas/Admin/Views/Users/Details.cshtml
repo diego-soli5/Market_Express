@@ -75,10 +75,6 @@
                         </div>
                     }
                 </div>
-                @if (!Model.IsInPOS)
-                {
-                    <p class="font-weight-bold mb-4 mb-md-0">• Este usuario no está registrado como cliente en el sistema POS.</p>
-                }
             </div>
             <div class="card-footer">
                 <div class="float-right">
@@ -87,12 +83,23 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </section>
+
+@if (!Model.IsInPOS)
+{
+    <section class="section-name bg padding-y">
+        <div class="container">
+            <h6>Nota</h6>
+            <p class="text-justify">• Este usuario no está registrado como cliente en el sistema POS.</p>
+
+        </div><!-- container // -->
+    </section>
+}
 
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-    
+
 }

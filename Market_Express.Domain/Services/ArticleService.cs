@@ -270,36 +270,47 @@ namespace Market_Express.Domain.Services
             }
             else
             {
-                if (oArticle.Category.Status == EntityStatus.ACTIVADO)
+                if(oArticle.Category != null)
+                {
+                    if (oArticle.Category.Status == EntityStatus.ACTIVADO)
+                    {
+                        oArticle.Status = EntityStatus.ACTIVADO;
+
+                        oResult.ResultCode = 1;
+
+                        oResult.Message = "El artículo se ha activado.";
+                    }
+                    else
+                    {
+                        if (enableCategory)
+                        {
+                            oArticle.Status = EntityStatus.ACTIVADO;
+
+                            oArticle.Category.Status = EntityStatus.ACTIVADO;
+
+                            oResult.ResultCode = 1;
+
+                            oResult.Message = "El artículo y la categoría se se han activado.";
+
+                            _unitOfWork.Category.Update(oArticle.Category);
+                        }
+                        else
+                        {
+                            oResult.Message = "No se puedo activar el artículo porque la categoría está desactivada.";
+
+                            oResult.ResultCode = 2;
+
+                            return oResult;
+                        }
+                    }
+                }
+                else
                 {
                     oArticle.Status = EntityStatus.ACTIVADO;
 
                     oResult.ResultCode = 1;
 
-                    oResult.Message = "El artículo se ha activado.";
-                }
-                else
-                {
-                    if (enableCategory)
-                    {
-                        oArticle.Status = EntityStatus.ACTIVADO;
-
-                        oArticle.Category.Status = EntityStatus.ACTIVADO;
-
-                        oResult.ResultCode = 1;
-
-                        oResult.Message = "El artículo y la categoría se se han activado.";
-
-                        _unitOfWork.Category.Update(oArticle.Category);
-                    }
-                    else
-                    {
-                        oResult.Message = "No se pudo activar el artículo porque la categoría está desactivada.";
-
-                        oResult.ResultCode = 2;
-
-                        return oResult;
-                    }
+                    oResult.Message = "El artículo se ha activado pero no se mostrará en resultados hasta que se le asigne una categoría.";
                 }
             }
 

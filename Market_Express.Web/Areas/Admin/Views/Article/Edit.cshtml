@@ -35,44 +35,54 @@
 
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label asp-for="Article.Description" class="col-form-label">Descripción</label>
+                            <label asp-for="Article.Description" class="col-form-label font-weight-bold">Descripción</label>
                             <textarea asp-for="Article.Description" class="form-control" placeholder="Escribe la descripción del artículo" style="resize: none;"></textarea>
                             <span asp-validation-for="Article.Description" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Article.BarCode" class="col-form-label">Código de Barras</label>
+                            <label asp-for="Article.BarCode" class="col-form-label font-weight-bold">Código de Barras</label>
                             <input type="text" asp-for="Article.BarCode" class="form-control" placeholder="Ingresa el codigo del artículo">
                             <span asp-validation-for="Article.BarCode" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Article.Price" class="col-form-label">Precio</label>
+                            <label asp-for="Article.Price" class="col-form-label font-weight-bold">Precio</label>
                             <input type="text" onkeypress="return valideKey(event);" asp-for="Article.Price" class="form-control" placeholder="Escribe el precio del artículo">
                             <span asp-validation-for="Article.Price" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Article.CategoryId" class="col-form-label">Categoría</label>
-                            <select asp-for="Article.CategoryId"
-                                    asp-items="@(new SelectList(Model.AvailableCategories,"Id", "Name"))"
-                                    class="form-control">
-                            </select>
-                            <span asp-validation-for="Article.CategoryId" class="text-danger"></span>
+                            <label asp-for="Article.CategoryId" class="col-form-label font-weight-bold">Categoría</label>
+                            @if (Model.AvailableCategories?.Count > 0)
+                            {
+                                <select asp-for="Article.CategoryId"
+                                        asp-items="@(new SelectList(Model.AvailableCategories,"Id", "Name"))"
+                                        class="form-control">
+                                </select>
+                                <span asp-validation-for="Article.CategoryId" class="text-danger"></span>
+                            }
+                            else
+                            {
+                                <p class="text-danger">No hay categorías disponibles, crea o activa una categoría.</p>
+                                <a asp-area="Admin"
+                                   asp-controller="Category"
+                                   asp-action="Create">Crear Categoría</a>
+                            }
                         </div>
                         <div class="form-group">
-                            <label asp-for="Article.NewImage" class="col-form-label">Imagen</label>
+                            <label asp-for="Article.NewImage" class="col-form-label font-weight-bold">Imagen</label>
                             <input type="file" asp-for="Article.NewImage" class="form-control-file" id="NewImage" />
                             <span asp-validation-for="Article.NewImage" class="text-danger"></span>
                         </div>
                         @if (Model.Article.AddedBy == "SYSTEM")
                         {
                             <div class="form-group">
-                                <label asp-for="Article.AutoSync" class="col-form-label">
+                                <label asp-for="Article.AutoSync" class="col-form-label font-weight-bold">
                                     <input type="checkbox" asp-for="Article.AutoSync" />
                                     Se Sincroniza Automáticamente
                                 </label>
                                 <span asp-validation-for="Article.AutoSync" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Article.AutoSyncDescription" class="col-form-label">
+                                <label asp-for="Article.AutoSyncDescription" class="col-form-label font-weight-bold">
                                     <input type="checkbox" asp-for="Article.AutoSyncDescription" />
                                     Sincroniza Descripción Automáticamente
                                 </label>
@@ -80,7 +90,7 @@
                             </div>
                         }
                         <div class="form-group">
-                            <label asp-for="Article.Status" class="col-form-label">Estado</label>
+                            <label asp-for="Article.Status" class="col-form-label font-weight-bold">Estado</label>
                             <select asp-for="Article.Status"
                                     asp-items="@Html.GetEnumSelectList<EntityStatus>()"
                                     class="form-control">
@@ -92,7 +102,7 @@
                         <div class="form-group">
                             <figure>
                                 <img src="@src" id="ImagePreview" class="img-fluid img-thumbnail" />
-                                <figcaption>Imagen Actual</figcaption>
+                                <figcaption class="font-weight-bold">Imagen Actual</figcaption>
                             </figure>
                         </div>
                     </div>

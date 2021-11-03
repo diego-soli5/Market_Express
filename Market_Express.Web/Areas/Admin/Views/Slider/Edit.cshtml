@@ -31,13 +31,13 @@
 
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label asp-for="Name" class="col-form-label">Nombre</label>
+                            <label asp-for="Name" class="col-form-label font-weight-bold">Nombre</label>
                             <input type="text" asp-for="Name" class="form-control" placeholder="Escribe el nombre del slider">
                             <span asp-validation-for="Name" class="text-danger"></span>
 
                         </div>
                         <div class="form-group">
-                            <label asp-for="NewImage" class="col-form-label">Imagen</label>
+                            <label asp-for="NewImage" class="col-form-label font-weight-bold">Imagen</label>
                             <i type="button"
                                class="fas fa-info-circle text-primary"
                                data-trigger="focus"
@@ -50,7 +50,7 @@
                             <span asp-validation-for="NewImage" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Status" class="col-form-label">Estado</label>
+                            <label asp-for="Status" class="col-form-label font-weight-bold">Estado</label>
                             <select asp-for="Status" asp-items="Html.GetEnumSelectList<EntityStatus>()" class="form-control"></select>
                             <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <figure>
                                 <img id="ImagePreview" src="@Url.Action("GetImage","Resource",new { area = "", n = Model.Image })" class="img-fluid img-thumbnail" />
-                                <figcaption>Imagen Actual</figcaption>
+                                <figcaption class="font-weight-bold">Imagen Actual</figcaption>
                             </figure>
                         </div>
                     </div>
