@@ -72,9 +72,23 @@ namespace Market_Express.Domain.Services
             return pagedArticles;
         }
 
-        public async Task<Article> GetById(Guid id)
+        public IEnumerable<Article> GetAllActive(int? max = null)
         {
-            var oArticle = await _unitOfWork.Article.GetByIdAsync(id);
+            var lstArticle = _unitOfWork.Article.GetAllActiveWithCategoryAsigned();
+
+            if (max.HasValue)
+                lstArticle = lstArticle.Take(max.Value);
+
+            return lstArticle;
+        }
+
+        public async Task<Article> GetById(Guid id, bool includeCategory = false)
+        {
+            Article oArticle;
+            if (includeCategory)
+                oArticle = await _unitOfWork.Article.GetByIdAsync(id, nameof(Article.Category));
+            else
+                oArticle = await _unitOfWork.Article.GetByIdAsync(id);
 
             if (oArticle == null)
                 throw new NotFoundException(id, nameof(Article));
@@ -147,10 +161,16 @@ namespace Market_Express.Domain.Services
             BusisnessResult oResult = new();
 
             if (string.IsNullOrEmpty(article.Description) ||
-                string.IsNullOrEmpty(article.BarCode) ||
-                article.CategoryId == null)
+                string.IsNullOrEmpty(article.BarCode))
             {
                 oResult.Message = "No se pueden enviar campos vacíos.";
+
+                return oResult;
+            }
+
+            if(article.CategoryId == null)
+            {
+                oResult.Message = "Se debe seleccionar una categoría.";
 
                 return oResult;
             }
@@ -270,7 +290,7 @@ namespace Market_Express.Domain.Services
             }
             else
             {
-                if(oArticle.Category != null)
+                if (oArticle.Category != null)
                 {
                     if (oArticle.Category.Status == EntityStatus.ACTIVADO)
                     {
@@ -320,6 +340,43 @@ namespace Market_Express.Domain.Services
             _unitOfWork.Article.Update(oArticle);
 
             oResult.Success = await _unitOfWork.Save();
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> SetCategory(Guid articleId,Guid categoryId, Guid currentUserId)
+        {
+            BusisnessResult oResult = new();
+
+            var oArticle = await _unitOfWork.Article.GetByIdAsync(articleId);
+
+            if(oArticle == null)
+            {
+                oResult.Message = "El artículo no existe.";
+                
+                return oResult;
+            }
+
+            var oCategory = await _unitOfWork.Category.GetByIdAsync(categoryId);
+
+            if (oCategory == null)
+            {
+                oResult.Message = "La categoría no existe.";
+
+                return oResult;
+            }
+
+            oArticle.CategoryId = categoryId;
+            oArticle.ModificationDate = DateTimeUtility.NowCostaRica;
+            oArticle.ModifiedBy = currentUserId.ToString();
+
+            _unitOfWork.Article.Update(oArticle);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "La categoría se asignó al artículo.";
+
+            oResult.Data = oCategory.Name;
 
             return oResult;
         }

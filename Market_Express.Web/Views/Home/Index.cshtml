@@ -8,6 +8,20 @@
     @if (Model.Sliders.Count > 0)
     {
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @for (int i = 0; i < Model.Sliders.Count; i++)
+                {
+                    if (i == 0)
+                    {
+
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="active"></li>
+                    }
+                    else
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@i"></li>
+                    }
+                }
+            </ol>
             <div class="carousel-inner">
                 @{
                     int cnt = 0;
@@ -18,7 +32,8 @@
 
                         <div class="carousel-item @itemDinamico">
                             <img src="@Url.Action("GetImage","Resource",new { area = "", n = slider.Image })" class="img-fluid w-100" />
-                            <h4 class="text-dark text-center">@slider.Name</h4>
+                            <div class="carousel-caption d-none d-md-block">
+                            </div>
                         </div>
                     }
                 }
@@ -42,3 +57,57 @@
         </div>
     }
 </header>
+
+
+
+<section class="container mt-5">
+
+    <header class="section-heading">
+        <a href="#" class="btn btn-outline-primary float-right">Ver todas</a>
+        <h3 class="section-title">Algunas de Nuestras Categorías</h3>
+    </header>
+
+    <div class="row">
+        @foreach (var category in Model.Categories)
+        {
+            <div class="col-md-4">
+                <div href="#" class="card card-product-grid">
+                    <a href="#" class="img-wrap">
+                        <img src="@Url.Action("GetImage","Resource",new { area = "", n = category.Image })"
+                             class="img-fluid"
+                             alt="@category.Name" />
+                    </a>
+                    <figcaption class="info-wrap">
+                        <a href="#" class="title font-weight-bold">@category.Name</a>
+                    </figcaption>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="container mt-5">
+    <header class="section-heading">
+        <a href="#" class="btn btn-outline-primary float-right">Ver todas</a>
+        <h3 class="section-title">Productos Populares</h3>
+    </header>
+
+    <div class="row">
+        @foreach (var article in Model.Articles)
+        {
+            <div class="col-md-3">
+                <div href="#" class="card card-product-grid">
+                    <a href="#" class="img-wrap">
+                        <img src="@Url.Action("GetImage","Resource",new { area = "", n = article.Image })"
+                             class="img-fluid" />
+                    </a>
+                    <figcaption class="info-wrap">
+                        <a href="#" class="title">@article.Description</a>
+                        <div class="price mt-1">₡@article.Price</div> <!-- price-wrap.// -->
+                    </figcaption>
+                </div>
+            </div>
+        }
+    </div>
+
+</section>

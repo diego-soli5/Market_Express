@@ -1,0 +1,97 @@
+﻿@model Market_Express.Application.DTOs.Article.ArticleDTO
+@{
+    ViewData["Title"] = "Detalles de Artículo";
+    string src = Model.Image != null
+        ? @Url.Action("GetImage", "Resource", new { area = "", n = Model.Image })
+        : "/img/NotAvailable.png";
+}
+
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Artículos</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Article" asp-action="Index">Artículos</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Detalles</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Detalles</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-xl-4 pr-0">Descripción</dt>
+                            <dd class="col-xl-8 px-xl-0"><p>@Model.Description</p></dd>
+                            <dt class="col-xl-4 pr-0">Código de Barras</dt>
+                            <dd class="col-xl-8 px-xl-0"><p>@Model.BarCode</p></dd>
+                            <dt class="col-xl-4 pr-0">Precio</dt>
+                            <dd class="col-xl-8 px-xl-0"><p>₡@Model.Price</p></dd>
+                            <dt class="col-xl-4 pr-0">Estado</dt>
+                            <dd class="col-xl-8 px-xl-0 text-capitalize-first"><p>@Model.Status.ToString()</p></dd>
+                            <dt class="col-xl-4 pr-0">Categoría</dt>
+                            @if (Model.Category?.Id != null)
+                            {
+                                <dd class="col-xl-8 px-xl-0">
+                                    <a asp-area="Admin"
+                                       asp-controller="Category"
+                                       asp-action="Details"
+                                       asp-route-id="@Model.Category.Id">@Model.Category.Name</a>
+                                </dd>
+                            }
+                            else
+                            {
+                                <dd class="col-xl-8 px-xl-0"><p class="text-danger">Sin Categoría</p></dd>
+                            }
+                            <dt class="col-xl-4 pr-0">Auto Sincronización</dt>
+                            <dd class="col-xl-8 px-xl-0"><p>@((@Model.AutoSync)? "Si" : "No")</p></dd>
+                            <dt class="col-xl-4 pr-0">Auto Sincronización Descripción</dt>
+                            <dd class="col-xl-8 px-xl-0"><p>@((@Model.AutoSyncDescription)? "Si" : "No")</p></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-6">
+                            <figure>
+                                <img src="@src" class="img-fluid img-thumbnail" alt="">
+                                <figcaption class="font-weight-bold">Imagen</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <a asp-area="Admin" asp-controller="Article" asp-action="Index" class="btn btn-secondary">Volver</a>
+                    <a asp-area="Admin" asp-controller="Article" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Model.Category == null && Model.Status == EntityStatus.ACTIVADO)
+{
+    <section class="section-name bg padding-y">
+        <div class="container">
+            <h6>Nota</h6>
+            <p class="text-justify">• El artículo no se mostrará en la página de inicio ni en el resultado de búsquedas porque no tiene una categoría asignada.</p>
+        </div><!-- container // -->
+    </section>
+}
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+
+}

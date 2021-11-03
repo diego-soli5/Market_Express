@@ -59,6 +59,13 @@
                                 </select>
                                 <span asp-validation-for="Article.CategoryId" class="text-danger"></span>
                             }
+                            else if (Model.Article.CategoryId != null)
+                            {
+                                <select asp-for="Article.CategoryId" class="form-control">
+                                    <option value="@Model.Article.Category.Id">@Model.Article.Category.Name</option>
+                                </select>
+                                <span asp-validation-for="Article.CategoryId" class="text-danger"></span>
+                            }
                             else
                             {
                                 <p class="text-danger">No hay categorías disponibles, crea o activa una categoría.</p>

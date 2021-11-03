@@ -1,4 +1,6 @@
-﻿using Market_Express.Application.DTOs.Slider;
+﻿using Market_Express.Application.DTOs.Article;
+using Market_Express.Application.DTOs.Category;
+using Market_Express.Application.DTOs.Slider;
 using System.Collections.Generic;
 
 namespace Market_Express.Web.ViewModels.Home
@@ -8,8 +10,12 @@ namespace Market_Express.Web.ViewModels.Home
         public HomeViewModel()
         {
             Sliders = new();
+            Categories = new();
+            Articles = new();
         }
 
         public List<SliderDTO> Sliders { get; set; }
+        public List<CategoryDTO> Categories { get; set; }
+        public List<ArticleDTO> Articles { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.Enumerations;
+﻿using Market_Express.Application.DTOs.Category;
+using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -47,5 +48,7 @@ namespace Market_Express.Application.DTOs.Article
 
         [BindProperty(Name = "Article.AddedBy")]
         public string AddedBy { get; set; }
+
+        public CategoryDTO Category { get; set; }
     }
 }

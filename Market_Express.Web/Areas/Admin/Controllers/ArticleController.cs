@@ -93,7 +93,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             ArticleEditViewModel oViewModel = new();
 
-            oViewModel.Article = _mapper.Map<ArticleEditDTO>(await _articleService.GetById(id));
+            oViewModel.Article = _mapper.Map<ArticleEditDTO>(await _articleService.GetById(id, true));
             oViewModel.AvailableCategories = GetAvailableCategories();
 
             return View(oViewModel);
@@ -127,6 +127,15 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Route("/Admin/Article/Details/{id}")]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var oArticle = await _articleService.GetById(id, true);
+
+            return View(_mapper.Map<ArticleDTO>(oArticle));
+        }
+
+        [HttpGet]
         public IActionResult GetArticleTable(ArticleIndexQueryFilter filters)
         {
             ArticleIndexViewModel oViewModel = new();
@@ -135,6 +144,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             oViewModel.Articles = paginationResult.Item1;
             oViewModel.Metadata = paginationResult.Item2;
+            oViewModel.AvailableCategories = GetAvailableCategories();
             oViewModel.QueryFilter = filters;
 
             return PartialView("_ArticleTablePartial", oViewModel);
@@ -160,6 +170,14 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #endregion
 
         #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> SetCategory(Guid articleId, Guid categoryId)
+        {
+            var oResult = await _articleService.SetCategory(articleId, categoryId, CurrentUserId);
+
+            return Ok(oResult);
+        }
+
         [HttpPost]
         public async Task<IActionResult> ChangeStatus([FromQuery(Name = "id")] Guid id, [FromQuery(Name = "enableCategory")] bool enableCategory)
         {
