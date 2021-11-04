@@ -40,7 +40,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                     Id = (Guid)oRow["Id"],
                     Name = oRow["Name"].ToString(),
                     Description = oRow["Description"].ToString(),
-                    Status = (EntityStatus)oRow["Status"],
+                    Status = (EntityStatus)Enum.Parse(typeof(EntityStatus), oRow["Status"].ToString()),
                     Image = oRow["Image"].ToString(),
                     CreationDate = (DateTime)oRow["CreationDate"],
                     ModificationDate = oRow["ModificationDate"] is not DBNull ? (DateTime)oRow["ModificationDate"] : null,

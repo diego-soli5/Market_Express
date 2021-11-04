@@ -36,15 +36,13 @@ namespace Market_Express.Web.Controllers
         {
             if (filters != null)
             {
-                bool hasFilters = filters.GetType()
-                                         .GetProperties()
-                                         .Any(p => p.GetValue(filters) != null);
-                if (hasFilters)
+                if (HasFilters(filters))
                 {
                     HomeSearchViewModel oViewModelSearch = new();
 
                     oViewModelSearch.Categories = await GetCategorySearchDTOList();
                     oViewModelSearch.Filters = filters;
+                    oViewModelSearch.Articles = GetArticleDTOListForSearch(filters);
 
                     if (oViewModelSearch.Filters.Category == null)
                     {
@@ -69,7 +67,16 @@ namespace Market_Express.Web.Controllers
             return View(oViewModel);
         }
 
+
+
         #region UTILITY METHODS
+        private List<ArticleDTO> GetArticleDTOListForSearch(HomeSearchQueryFilter filters)
+        {
+            return _articleService.GetAllForSearch(filters)
+                                  .Select(article => _mapper.Map<ArticleDTO>(article))
+                                  .ToList();
+        }
+
         private async Task<List<CategorySearchDTO>> GetCategorySearchDTOList()
         {
             return (await _categoryService.GetAllAvailableForSearch())
@@ -96,6 +103,13 @@ namespace Market_Express.Web.Controllers
             return _articleService.GetAllActive(20)
                                   .Select(article => _mapper.Map<ArticleDTO>(article))
                                   .ToList();
+        }
+
+        private bool HasFilters(HomeSearchQueryFilter filters)
+        {
+            return filters.GetType()
+                          .GetProperties()
+                          .Any(p => p.GetValue(filters) != null);
         }
         #endregion
 

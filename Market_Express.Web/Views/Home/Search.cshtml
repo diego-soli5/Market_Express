@@ -24,163 +24,166 @@
             <aside class="col-md-3">
 
                 <div class="card">
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Artículo</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_1" style="">
-                            <div class="card-body">
-                                <form class="pb-3">
+                    <form asp-area="" asp-controller="Home" asp-action="Index" method="get">
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Artículo</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_1" style="">
+                                <div class="card-body">
                                     <div class="input-group">
-                                        <input asp-for="Filters.Q"
+                                        <input asp-for="Filters.Query"
+                                               name="query"
                                                type="text"
                                                class="form-control-original"
                                                placeholder="Buscar">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
 
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Categorías </h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_2" style="">
-                            <div class="card-body">
-                                @foreach (var category in Model.Categories)
-                                {
-                                    string sChecked = "";
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Categorías</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_2" style="">
+                                <div class="card-body">
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        string sChecked = "";
 
-                                    <label class="custom-control custom-checkbox">
-                                        @if (Model?.Filters?.Category != null)
-                                        {
-                                            @foreach (Guid id in Model.Filters.Category)
+                                        <label class="custom-control custom-checkbox">
+                                            @if (Model?.Filters?.Category != null)
                                             {
-                                                if (category.Id == id)
+                                                @foreach (Guid id in Model.Filters.Category)
                                                 {
-                                                    sChecked = "checked";
-                                                    break;
+                                                    if (category.Id == id)
+                                                    {
+                                                        sChecked = "checked";
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                        }
 
-                                        <input name="category"
-                                               type="checkbox"
-                                               value="@category.Id"
-                                               class="custom-control-input"
-                                               @sChecked />
+                                            <input name="category"
+                                                   type="checkbox"
+                                                   value="@category.Id"
+                                                   class="custom-control-input"
+                                                   @sChecked />
 
-                                        <span class="custom-control-label">
-                                            @category.Name
-                                            <b class="badge badge-pill badge-light float-right">120</b>
-                                        </span>
+                                            <span class="custom-control-label">
+                                                @category.Name
+                                                <b class="badge badge-pill badge-light float-right">@category.ArticlesCount</b>
+                                            </span>
+                                        </label>
+                                    }
+                                </div> <!-- card-body.// -->
+                            </div>
+                        </article> <!-- filter-group .// -->
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Rango de Precios</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_3" style="">
+                                <div class="card-body">
+                                    <input type="range" class="custom-range" min="0" max="100" name="">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Min</label>
+                                            <input asp-for="Filters.MinPrice"
+                                                   name="minPrice"
+                                                   class="form-control"
+                                                   placeholder="₡0"
+                                                   type="number" />
+                                        </div>
+                                        <div class="form-group text-right col-md-6">
+                                            <label>Max</label>
+                                            <input asp-for="Filters.MaxPrice"
+                                                   name="maxPrice"
+                                                   class="form-control"
+                                                   placeholder="₡100000.00"
+                                                   type="number" />
+                                        </div>
+                                    </div> <!-- form-row.// -->
+                                    <button type="submit" class="btn btn-block btn-primary">Aplicar Filtros</button>
+                                </div><!-- card-body.// -->
+                            </div>
+                        </article> <!-- filter-group .// -->
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Sizes </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_4" style="">
+                                <div class="card-body">
+                                    <label class="checkbox-btn">
+                                        <input type="checkbox">
+                                        <span class="btn btn-light"> XS </span>
                                     </label>
-                                }
-                            </div> <!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Rango de Precios</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_3" style="">
-                            <div class="card-body">
-                                <input type="range" class="custom-range" min="0" max="100" name="">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Min</label>
-                                        <input asp-for="Filters.PriceMin"
-                                               class="form-control"
-                                               placeholder="₡0"
-                                               type="number" />
-                                    </div>
-                                    <div class="form-group text-right col-md-6">
-                                        <label>Max</label>
-                                        <input asp-for="Filters.PriceMax"
-                                               class="form-control"
-                                               placeholder="₡100000.00"
-                                               type="number" />
-                                    </div>
-                                </div> <!-- form-row.// -->
-                                <button class="btn btn-block btn-primary">Aplicar Filtros</button>
-                            </div><!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Sizes </h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_4" style="">
-                            <div class="card-body">
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light"> XS </span>
-                                </label>
 
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light"> SM </span>
-                                </label>
+                                    <label class="checkbox-btn">
+                                        <input type="checkbox">
+                                        <span class="btn btn-light"> SM </span>
+                                    </label>
 
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light"> LG </span>
-                                </label>
+                                    <label class="checkbox-btn">
+                                        <input type="checkbox">
+                                        <span class="btn btn-light"> LG </span>
+                                    </label>
 
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light"> XXL </span>
-                                </label>
-                            </div><!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false" class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">More filter </h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse in" id="collapse_5" style="">
-                            <div class="card-body">
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">Any condition</div>
-                                </label>
+                                    <label class="checkbox-btn">
+                                        <input type="checkbox">
+                                        <span class="btn btn-light"> XXL </span>
+                                    </label>
+                                </div><!-- card-body.// -->
+                            </div>
+                        </article> <!-- filter-group .// -->
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">More filter </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse in" id="collapse_5" style="">
+                                <div class="card-body">
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" checked="" class="custom-control-input">
+                                        <div class="custom-control-label">Any condition</div>
+                                    </label>
 
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" class="custom-control-input">
-                                    <div class="custom-control-label">Brand new </div>
-                                </label>
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" class="custom-control-input">
+                                        <div class="custom-control-label">Brand new </div>
+                                    </label>
 
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" class="custom-control-input">
-                                    <div class="custom-control-label">Used items</div>
-                                </label>
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" class="custom-control-input">
+                                        <div class="custom-control-label">Used items</div>
+                                    </label>
 
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" class="custom-control-input">
-                                    <div class="custom-control-label">Very old</div>
-                                </label>
-                            </div><!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" name="myfilter_radio" class="custom-control-input">
+                                        <div class="custom-control-label">Very old</div>
+                                    </label>
+                                </div><!-- card-body.// -->
+                            </div>
+                        </article> <!-- filter-group .// -->
+                    </form>
                 </div> <!-- card.// -->
 
             </aside> <!-- col.// -->
@@ -188,7 +191,7 @@
 
                 <header class="border-bottom mb-4 pb-3">
                     <div class="form-inline">
-                        <span class="mr-md-auto">32 Items found </span>
+                        <span class="mr-md-auto">@Model.Articles.Count Artículos encontrados</span>
                         <select class="mr-2 form-control">
                             <option>Latest items</option>
                             <option>Trending</option>
@@ -205,156 +208,156 @@
                         </div>
                     </div>
                 </header><!-- sect-heading -->
+                
+        <div class="row">
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <span class="badge badge-danger"> NEW </span>
+                        <img src="images/items/1.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Great item name goes here</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                                <del class="price-old">$1980</del>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <span class="badge badge-danger"> NEW </span>
-                                <img src="images/items/1.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Great item name goes here</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                        <del class="price-old">$1980</del>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/2.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/2.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/3.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/3.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/4.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/4.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/5.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/5.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/6.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/6.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/7.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/7.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="images/items/1.jpg">
+                        <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="#" class="title">Product name goes here just for demo item</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">$1280</span>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
+        </div> <!-- row end.// -->
 
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <img src="images/items/1.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div> <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Product name goes here just for demo item</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                    </div> <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart </a>
-                            </figcaption>
-                        </figure>
-                    </div> <!-- col.// -->
-                </div> <!-- row end.// -->
-
-
+                
                 <nav class="mt-4" aria-label="Page navigation sample">
                     <ul class="pagination">
                         <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>

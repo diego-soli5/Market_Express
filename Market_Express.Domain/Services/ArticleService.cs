@@ -8,6 +8,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Article;
+using Market_Express.Domain.QueryFilter.Home;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -70,6 +71,37 @@ namespace Market_Express.Domain.Services
             var pagedArticles = PagedList<Article>.Create(lstArticles, filters.PageNumber.Value, filters.PageSize.Value);
 
             return pagedArticles;
+        }
+
+        public IEnumerable<Article> GetAllForSearch(HomeSearchQueryFilter filters)
+        {
+            var lstArticles = _unitOfWork.Article.GetAll(nameof(Article.Category));
+
+
+            lstArticles = lstArticles.Where(article => article.Status == EntityStatus.ACTIVADO &&
+                                                       article.CategoryId != null &&
+                                                       article.Category.Status == EntityStatus.ACTIVADO);
+
+            if (filters.Category != null)
+                if (filters.Category.Count > 0)
+                    filters.Category.ForEach(catId =>
+                    {
+                        lstArticles = lstArticles.Where(article => article.CategoryId == catId);
+                    });
+
+            if (filters.Query != null)
+                lstArticles = lstArticles.Where(article => article.Description.Trim()
+                                                                              .ToUpper()
+                                                                              .Contains(filters.Query.Trim()
+                                                                                                 .ToUpper()));
+
+            if (filters.MaxPrice != null)
+                lstArticles = lstArticles.Where(article => article.Price <= filters.MaxPrice);
+
+            if (filters.MinPrice != null)
+                lstArticles = lstArticles.Where(article => article.Price >= filters.MinPrice);
+
+            return lstArticles;
         }
 
         public IEnumerable<Article> GetAllActive(int? max = null)
@@ -168,7 +200,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(article.CategoryId == null)
+            if (article.CategoryId == null)
             {
                 oResult.Message = "Se debe seleccionar una categoría.";
 
@@ -344,16 +376,16 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<BusisnessResult> SetCategory(Guid articleId,Guid categoryId, Guid currentUserId)
+        public async Task<BusisnessResult> SetCategory(Guid articleId, Guid categoryId, Guid currentUserId)
         {
             BusisnessResult oResult = new();
 
             var oArticle = await _unitOfWork.Article.GetByIdAsync(articleId);
 
-            if(oArticle == null)
+            if (oArticle == null)
             {
                 oResult.Message = "El artículo no existe.";
-                
+
                 return oResult;
             }
 

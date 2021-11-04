@@ -2,6 +2,37 @@ USE MARKET_EXPRESS
 GO
 
 ---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS ARTICLE
+---------------------------------------------------------------------------------------------------------------
+-- Obtiene los articulos para la vista de busqueda de articulos para agregar al carrito
+CREATE PROCEDURE Sp_Article_GetAllArticlesForSearch
+(
+	@description VARCHAR(255) = null,
+	@maxPrice decimal(19,2) = null,
+	@minPrice decimal(19,2) = null,
+	@category varchar(MAX) = null
+)
+AS
+BEGIN
+	SELECT a.Id,
+		   a.CategoryId,
+		   a.Description,
+		   a.BarCode,
+		   a.Price,
+		   a.Image
+	FROM Article a
+	INNER JOIN  Category c
+	ON c.Id = a.CategoryId
+	WHERE a.Status = 'ACTIVADO'
+	AND c.Status = 'ACTIVADO'
+	AND (@description IS NULL OR a.Description LIKE '%'+@description +'%')
+	AND (@maxPrice IS NULL OR a.Price <= @maxPrice)
+	AND (@minPrice IS NULL OR a.Price >= @minPrice)
+	AND (@category IS NULL OR a.CategoryId IN ((SELECT VALUE FROM STRING_SPLIT(@category,','))));
+END;
+GO
+
+---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS APPUSER
 ---------------------------------------------------------------------------------------------------------------
 -- Obtiene los permisos del usuario segun los roles asignados
@@ -10,7 +41,7 @@ CREATE PROCEDURE Sp_AppUser_GetPermissions
 	@Id UNIQUEIDENTIFIER
 )
 AS
-	BEGIN
+BEGIN
 	SELECT DISTINCT 
 		   p.Id,
 		   p.PermissionCode,
@@ -203,7 +234,8 @@ BEGIN
 			WHERE a.Status = 'ACTIVADO' 
 			AND a.CategoryId = c.Id) AS ArticlesCount
 	FROM Category c
-	WHERE c.Status = 'ACTIVADO';
+	WHERE c.Status = 'ACTIVADO'
+	ORDER BY ArticlesCount DESC;
 
 END;
 GO
