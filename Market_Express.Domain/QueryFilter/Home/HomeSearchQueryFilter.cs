@@ -17,5 +17,8 @@ namespace Market_Express.Domain.QueryFilter.Home
 
         [BindProperty(Name = "MinPrice")]
         public int? MinPrice { get; set; }
+
+        [BindProperty(Name = "IsSearchView")]
+        public bool? IsSearchView { get; set; }
     }
 }

@@ -73,33 +73,9 @@ namespace Market_Express.Domain.Services
             return pagedArticles;
         }
 
-        public IEnumerable<Article> GetAllForSearch(HomeSearchQueryFilter filters)
+        public async Task<List<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
         {
-            var lstArticles = _unitOfWork.Article.GetAll(nameof(Article.Category));
-
-
-            lstArticles = lstArticles.Where(article => article.Status == EntityStatus.ACTIVADO &&
-                                                       article.CategoryId != null &&
-                                                       article.Category.Status == EntityStatus.ACTIVADO);
-
-            if (filters.Category != null)
-                if (filters.Category.Count > 0)
-                    filters.Category.ForEach(catId =>
-                    {
-                        lstArticles = lstArticles.Where(article => article.CategoryId == catId);
-                    });
-
-            if (filters.Query != null)
-                lstArticles = lstArticles.Where(article => article.Description.Trim()
-                                                                              .ToUpper()
-                                                                              .Contains(filters.Query.Trim()
-                                                                                                 .ToUpper()));
-
-            if (filters.MaxPrice != null)
-                lstArticles = lstArticles.Where(article => article.Price <= filters.MaxPrice);
-
-            if (filters.MinPrice != null)
-                lstArticles = lstArticles.Where(article => article.Price >= filters.MinPrice);
+            var lstArticles = await  _unitOfWork.Article.GetAllForSearch(filters);
 
             return lstArticles;
         }

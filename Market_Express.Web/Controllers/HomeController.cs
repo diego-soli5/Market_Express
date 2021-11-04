@@ -42,17 +42,25 @@ namespace Market_Express.Web.Controllers
 
                     oViewModelSearch.Categories = await GetCategorySearchDTOList();
                     oViewModelSearch.Filters = filters;
-                    oViewModelSearch.Articles = GetArticleDTOListForSearch(filters);
 
-                    if (oViewModelSearch.Filters.Category == null)
+                    if (filters.IsSearchView.HasValue)
                     {
-                        oViewModelSearch.Filters.Category = new();
-
-                        oViewModelSearch.Categories.ForEach(cat =>
+                        if (!filters.IsSearchView.Value)
                         {
-                            oViewModelSearch.Filters.Category.Add(cat.Id);
-                        });
+                            if (oViewModelSearch.Filters.Category == null)
+                            {
+                                oViewModelSearch.Filters.Category = new();
+
+                                oViewModelSearch.Categories.ForEach(cat =>
+                                {
+                                    oViewModelSearch.Filters.Category.Add(cat.Id);
+                                });
+                            }
+                        }
                     }
+
+                    oViewModelSearch.Articles = await GetArticleDTOListForSearch(filters);
+                    
 
                     return View("Search", oViewModelSearch);
                 }
@@ -70,11 +78,11 @@ namespace Market_Express.Web.Controllers
 
 
         #region UTILITY METHODS
-        private List<ArticleDTO> GetArticleDTOListForSearch(HomeSearchQueryFilter filters)
+        private async Task<List<ArticleDTO>> GetArticleDTOListForSearch(HomeSearchQueryFilter filters)
         {
-            return _articleService.GetAllForSearch(filters)
-                                  .Select(article => _mapper.Map<ArticleDTO>(article))
-                                  .ToList();
+            return (await _articleService.GetAllForSearch(filters))
+                                         .Select(article => _mapper.Map<ArticleDTO>(article))
+                                         .ToList();
         }
 
         private async Task<List<CategorySearchDTO>> GetCategorySearchDTOList()

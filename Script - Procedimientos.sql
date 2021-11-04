@@ -5,7 +5,7 @@ GO
 -- PROCEDIMIENTOS ARTICLE
 ---------------------------------------------------------------------------------------------------------------
 -- Obtiene los articulos para la vista de busqueda de articulos para agregar al carrito
-CREATE PROCEDURE Sp_Article_GetAllArticlesForSearch
+CREATE PROCEDURE Sp_Article_GetAllForSearch
 (
 	@description VARCHAR(255) = null,
 	@maxPrice decimal(19,2) = null,
@@ -28,7 +28,7 @@ BEGIN
 	AND (@description IS NULL OR a.Description LIKE '%'+@description +'%')
 	AND (@maxPrice IS NULL OR a.Price <= @maxPrice)
 	AND (@minPrice IS NULL OR a.Price >= @minPrice)
-	AND (@category IS NULL OR a.CategoryId IN ((SELECT VALUE FROM STRING_SPLIT(@category,','))));
+	AND (CONVERT(VARCHAR(100),a.CategoryId) IN ((SELECT VALUE FROM STRING_SPLIT(@category,','))));
 END;
 GO
 
