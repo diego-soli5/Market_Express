@@ -3,11 +3,13 @@ using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.QueryFilter.Home;
 using Market_Express.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Market_Express.Web.Controllers
 {
@@ -29,8 +31,35 @@ namespace Market_Express.Web.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(HomeSearchQueryFilter filters)
         {
+            if (filters != null)
+            {
+                bool hasFilters = filters.GetType()
+                                         .GetProperties()
+                                         .Any(p => p.GetValue(filters) != null);
+                if (hasFilters)
+                {
+                    HomeSearchViewModel oViewModelSearch = new();
+
+                    oViewModelSearch.Categories = await GetCategorySearchDTOList();
+                    oViewModelSearch.Filters = filters;
+
+                    if (oViewModelSearch.Filters.Category == null)
+                    {
+                        oViewModelSearch.Filters.Category = new();
+
+                        oViewModelSearch.Categories.ForEach(cat =>
+                        {
+                            oViewModelSearch.Filters.Category.Add(cat.Id);
+                        });
+                    }
+
+                    return View("Search", oViewModelSearch);
+                }
+            }
+
             HomeViewModel oViewModel = new();
 
             oViewModel.Sliders = GetSliderDTOList();
@@ -41,6 +70,13 @@ namespace Market_Express.Web.Controllers
         }
 
         #region UTILITY METHODS
+        private async Task<List<CategorySearchDTO>> GetCategorySearchDTOList()
+        {
+            return (await _categoryService.GetAllAvailableForSearch())
+                                          .Select(cat => _mapper.Map<CategorySearchDTO>(cat))
+                                          .ToList();
+        }
+
         private List<CategoryDTO> GetCategoryDTOList()
         {
             return _categoryService.GetAllAvailable()

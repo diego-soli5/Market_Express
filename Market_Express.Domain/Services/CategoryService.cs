@@ -3,6 +3,7 @@ using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.CustomEntities.Category;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,11 @@ namespace Market_Express.Domain.Services
         public IEnumerable<Category> GetAllAvailable()
         {
             return _unitOfWork.Category.GetAllActive();
+        }
+
+        public async Task<List<CategoryForSearch>> GetAllAvailableForSearch()
+        {
+            return await _unitOfWork.Category.GetAllAvailableForSearch();
         }
 
         public async Task<Category> GetById(Guid categoryId)

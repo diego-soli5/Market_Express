@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.Entities;
+﻿using Market_Express.Domain.CustomEntities.Category;
+using Market_Express.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface ICategoryService
     {
         IEnumerable<Category> GetAll();
+        Task<List<CategoryForSearch>> GetAllAvailableForSearch();
         IEnumerable<Category> GetAllAvailable();
         Task<Category> GetById(Guid categoryId);
         Task<(int, int)> GetArticleDetails(Guid categoryId);

@@ -10,6 +10,7 @@ using Market_Express.Application.DTOs.Role;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Application.DTOs.System;
 using Market_Express.Domain.CustomEntities;
+using Market_Express.Domain.CustomEntities.Category;
 using Market_Express.Domain.Entities;
 
 namespace Market_Express.Infrastructure.Mappings
@@ -114,6 +115,9 @@ namespace Market_Express.Infrastructure.Mappings
 
             CreateMap<Category, CategoryUpdateDTO>()
                 .ReverseMap();
+
+            CreateMap<CategoryForSearch, CategorySearchDTO>()
+               .ReverseMap();
         }
 
         private void CreateRoleMappings()

@@ -3,12 +3,11 @@
     ViewData["Title"] = "Inicio";
 }
 
-
 <header class="w-100">
     @if (Model.Sliders.Count > 0)
     {
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
+            @*<ol class="carousel-indicators">
                 @for (int i = 0; i < Model.Sliders.Count; i++)
                 {
                     if (i == 0)
@@ -21,7 +20,7 @@
                         <li data-target="#carouselExampleIndicators" data-slide-to="@i"></li>
                     }
                 }
-            </ol>
+            </ol>*@
             <div class="carousel-inner">
                 @{
                     int cnt = 0;
@@ -64,23 +63,27 @@
 
     <header class="section-heading">
         <a href="#" class="btn btn-outline-primary float-right">Ver todas</a>
-        <h3 class="section-title">Algunas de Nuestras Categorías</h3>
+        <h3 class="section-title">Categorías Populares</h3>
     </header>
 
-    <div class="row">
+    <div class="row align-items-strech">
         @foreach (var category in Model.Categories)
         {
+            string src = category.Image != null
+            ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })
+            : "/img/NotAvailable.png";
+
             <div class="col-md-4">
-                <div href="#" class="card card-product-grid">
-                    <a href="#" class="img-wrap">
-                        <img src="@Url.Action("GetImage","Resource",new { area = "", n = category.Image })"
+                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-category="@category.Id" class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="@src"
                              class="img-fluid"
                              alt="@category.Name" />
-                    </a>
+                    </div>
                     <figcaption class="info-wrap">
-                        <a href="#" class="title font-weight-bold">@category.Name</a>
+                        <span class="title font-weight-bold">@category.Name</span>
                     </figcaption>
-                </div>
+                </a>
             </div>
         }
     </div>
@@ -88,17 +91,20 @@
 
 <section class="container mt-5">
     <header class="section-heading">
-        <a href="#" class="btn btn-outline-primary float-right">Ver todas</a>
         <h3 class="section-title">Productos Populares</h3>
     </header>
 
-    <div class="row">
+    <div class="row align-items-strech">
         @foreach (var article in Model.Articles)
         {
-            <div class="col-md-3">
+            string src = article.Image != null
+            ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })
+            : "/img/productTest.jpg";
+
+            <div class="col-md-3 d-flex">
                 <div href="#" class="card card-product-grid">
                     <a href="#" class="img-wrap">
-                        <img src="@Url.Action("GetImage","Resource",new { area = "", n = article.Image })"
+                        <img src="@src"
                              class="img-fluid" />
                     </a>
                     <figcaption class="info-wrap">
@@ -111,3 +117,8 @@
     </div>
 
 </section>
+
+<a asp-area=""
+   asp-controller="Home"
+   asp-action="Index"
+   asp-route-otro="Si">Ver buscador ASP</a>

@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.Entities;
+﻿using Market_Express.Domain.CustomEntities.Category;
+using Market_Express.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,5 +10,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
     {
         Task<(int, int)> GetArticleDetails(Guid categoryId);
         IEnumerable<Category> GetAllActive();
+        Task<List<CategoryForSearch>> GetAllAvailableForSearch();
     }
 }

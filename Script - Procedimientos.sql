@@ -155,7 +155,7 @@ GO
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS CATEGORY
 ---------------------------------------------------------------------------------------------------------------
---Obtiene las direcciones del cliente por Id de usuario
+--Obtiene cantidad de articulos asignados a la categoria por Id
 CREATE PROCEDURE Sp_Category_GetArticleDetails
 (
 	@CategoryId UNIQUEIDENTIFIER
@@ -184,6 +184,29 @@ BEGIN
 END;
 GO
 
+
+--Obtiene todas las categorias activas y la cantidad de articulos asignados
+CREATE PROCEDURE Sp_Category_GetAllAvailableForSearch
+AS
+BEGIN
+	SELECT c.Id,
+	       c.Name,
+		   c.Description,
+		   c.Status,
+		   c.image,
+		   c.CreationDate,
+		   c.ModificationDate,
+		   c.AddedBy,
+		   c.ModifiedBy,
+		   (SELECT COUNT(1) 
+		    FROM Article a 
+			WHERE a.Status = 'ACTIVADO' 
+			AND a.CategoryId = c.Id) AS ArticlesCount
+	FROM Category c
+	WHERE c.Status = 'ACTIVADO';
+
+END;
+GO
 
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS ROLE
