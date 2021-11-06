@@ -94,12 +94,17 @@
                                     }
 
                                     <div class="form-group">
-                                        <label type="button">
+
+                                        <label type="button"
+                                               class="custom-control custom-checkbox d-inline">
                                             <input type="checkbox"
+                                                   class="custom-control-input"
                                                    value="@role.Id"
                                                    name="roles"
                                                    @sChecked />
-                                            <span>@role.Name</span>
+                                            <span class="custom-control-label">
+                                                @role.Name
+                                            </span>
                                         </label>
 
                                         <i type="button"

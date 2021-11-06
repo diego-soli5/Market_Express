@@ -51,6 +51,15 @@
                             </textarea>
                             <span asp-validation-for="Role.Description" data-valmsg-for="description" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="Role.Status" class="col-form-label font-weight-bold">Estado</label>
+                            <select asp-for="Role.Status"
+                                    asp-items="@Html.GetEnumSelectList<EntityStatus>()"
+                                    name="status"
+                                    class="form-control">
+                            </select>
+                            <span asp-validation-for="Role.Status" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <h4>Permisos</h4>
@@ -74,14 +83,17 @@
                                             sChecked = "";
                                         }
 
-                                        <div>
-                                            <label type="button">
+                                        <div class="form-group">
+                                            <label type="button"
+                                                   class="custom-control custom-checkbox d-inline">
                                                 <input type="checkbox"
+                                                       class="custom-control-input"
                                                        value="@permission.Id"
                                                        name="permissions"
-                                                       id=""
                                                        @sChecked />
-                                                @permission.Name
+                                                <span class="custom-control-label">
+                                                    @permission.Name
+                                                </span>
                                             </label>
 
                                             <i type="button"

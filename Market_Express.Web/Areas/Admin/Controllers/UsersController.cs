@@ -220,7 +220,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             List<RoleDTO> lstRoleDTO = new();
 
-            var lstRole = _roleService.GetAll();
+            var lstRole = _roleService.GetAll(true);
 
             lstRole.ForEach(role =>
             {

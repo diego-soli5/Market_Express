@@ -82,16 +82,24 @@
                         @if (Model.Article.AddedBy == "SYSTEM")
                         {
                             <div class="form-group">
-                                <label asp-for="Article.AutoSync" class="col-form-label font-weight-bold">
-                                    <input type="checkbox" asp-for="Article.AutoSync" />
-                                    Se Sincroniza Automáticamente
+                                <label asp-for="Article.AutoSync" class="custom-control custom-checkbox font-weight-bold">
+                                    <input asp-for="Article.AutoSync"
+                                           type="checkbox"
+                                           class="custom-control-input" />
+                                    <span class="custom-control-label">
+                                        Se Sincroniza Automáticamente
+                                    </span>
                                 </label>
                                 <span asp-validation-for="Article.AutoSync" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Article.AutoSyncDescription" class="col-form-label font-weight-bold">
-                                    <input type="checkbox" asp-for="Article.AutoSyncDescription" />
-                                    Sincroniza Descripción Automáticamente
+                                <label asp-for="Article.AutoSyncDescription" class="custom-control custom-checkbox font-weight-bold">
+                                    <input asp-for="Article.AutoSyncDescription"
+                                           type="checkbox"
+                                           class="custom-control-input" />
+                                    <span class="custom-control-label">
+                                        Sincroniza Descripción Automáticamente
+                                    </span>
                                 </label>
                                 <span asp-validation-for="Article.AutoSyncDescription" class="text-danger"></span>
                             </div>

@@ -253,6 +253,7 @@ CREATE TABLE [dbo].[Role](
 	[Id] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](30) NOT NULL,
 	[Description] [varchar](255) NULL,
+	[Status] [varchar](11) NOT NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[ModificationDate] [datetime] NULL,
 	[AddedBy] [varchar](40) NOT NULL,
@@ -416,6 +417,10 @@ GO
 ALTER TABLE [dbo].[Slider]  WITH CHECK ADD  CONSTRAINT [CHK_Slider_Status] CHECK  (([Status]='ACTIVADO' OR [Status]='DESACTIVADO'))
 GO
 ALTER TABLE [dbo].[Slider] CHECK CONSTRAINT [CHK_Slider_Status]
+GO
+ALTER TABLE [dbo].[Role]  WITH CHECK ADD  CONSTRAINT [CHK_Role_Status] CHECK  (([Status]='ACTIVADO' OR [Status]='DESACTIVADO'))
+GO
+ALTER TABLE [dbo].[Role] CHECK CONSTRAINT [CHK_Role_Status]
 GO
 ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [CHK_Order_Status] CHECK  (([Status]='PENDIENTE' OR [Status]='TERMINADO' OR [Status]='CANCELADO'))
 GO

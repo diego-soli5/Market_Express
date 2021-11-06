@@ -93,12 +93,15 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="font-weight-bold d-block">
-                                    Sólo Artículos Sin Imagen
+                                <label class="custom-control custom-checkbox font-weight-bold d-block">
+                                    <input type="checkbox"
+                                           asp-for="QueryFilter.ImgIsNull"
+                                           name="@nameof(Model.QueryFilter.ImgIsNull)"
+                                           class="custom-control-input" />
+                                    <span class="custom-control-label">
+                                        Sólo Artículos Sin Imagen
+                                    </span>
                                 </label>
-                                <input type="checkbox"
-                                       asp-for="QueryFilter.ImgIsNull"
-                                       name="@nameof(Model.QueryFilter.ImgIsNull)" />
                             </div>
                         </div>
                         <div class="col-12">

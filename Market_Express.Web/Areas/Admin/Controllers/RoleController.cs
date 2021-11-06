@@ -92,7 +92,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(RoleDTO model, List<Guid> permissions)
         {
-            Role oRole = new(model.Id, model.Name, model.Description);
+            Role oRole = new(model.Id, model.Name, model.Description, model.Status);
 
             var oResult = await _roleService.Edit(oRole, permissions, CurrentUserId);
 
@@ -147,16 +147,16 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete([FromQuery(Name = "Id")] Guid id)
+        public async Task<IActionResult> ChangeStatus([FromQuery(Name = "Id")] Guid id)
         {
-            var oResult = await _roleService.Delete(id, CurrentUserId);
-            
+            var oResult = await _roleService.ChangeStatus(id, CurrentUserId);
+
             return Ok(oResult);
         }
         #endregion
 
         #region UTILITY METHODS
-        private async Task<(RoleDTO,List<PermissionDTO>)> GetRoleDTOWithPermissionDTOListByRoleId(Guid id)
+        private async Task<(RoleDTO, List<PermissionDTO>)> GetRoleDTOWithPermissionDTOListByRoleId(Guid id)
         {
             List<PermissionDTO> lstPermissionDTO = new();
 

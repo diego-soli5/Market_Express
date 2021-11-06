@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market_Express.Domain.Enumerations;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -19,15 +20,17 @@ namespace Market_Express.Domain.Entities
             Description = description;
         }
 
-        public Role(Guid id, string name, string description)
+        public Role(Guid id, string name, string description, EntityStatus status)
         {
             Id = id;
             Name = name;
             Description = description;
+            Status = status;
         }
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public EntityStatus Status { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? ModificationDate { get; set; }
         public string AddedBy { get; set; }

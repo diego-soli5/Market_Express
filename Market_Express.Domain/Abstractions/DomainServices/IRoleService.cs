@@ -8,7 +8,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
 {
     public interface IRoleService
     {
-        List<Role> GetAll();
+        List<Role> GetAll(bool onlyActive = false);
         List<Permission> GetAllPermissions();
         Task<Permission> GetPermissionById(Guid id);
         Task<List<string>> GetAllPermissionTypes();
@@ -16,7 +16,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<RoleWithPermissions> GetByIdWithPermissions(Guid id);
         Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId);
         Task<BusisnessResult> Edit(Role role, List<Guid> permissions, Guid currentUserId);
-        Task<BusisnessResult> Delete(Guid roleId, Guid currentUserId);
+        Task<BusisnessResult> ChangeStatus(Guid roleId, Guid currentUserId);
         Task<(int, int)> GetUsersCountUsingARoleByRoleId(Guid id);
     }
 }

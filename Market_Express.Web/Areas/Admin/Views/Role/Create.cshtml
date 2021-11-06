@@ -74,14 +74,18 @@
                                             sChecked = "";
                                         }
 
-                                        <div>
-                                            <label type="button">
+                                        <div class="form-group">
+
+                                            <label type="button"
+                                                   class="custom-control custom-checkbox d-inline">
                                                 <input type="checkbox"
+                                                       class="custom-control-input"
                                                        value="@permission.Id"
                                                        name="permissions"
-                                                       id=""
                                                        @sChecked />
-                                                @permission.Name
+                                                <span class="custom-control-label">
+                                                    @permission.Name
+                                                </span>
                                             </label>
 
                                             <i type="button"

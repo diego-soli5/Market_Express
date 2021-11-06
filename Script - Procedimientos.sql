@@ -483,6 +483,7 @@ BEGIN
 END;
 GO
 
+/*
 CREATE TRIGGER TRG_Role_RegMovement_Delete
 ON [Role]
 FOR DELETE
@@ -511,7 +512,7 @@ BEGIN
 	CLOSE curRoles
 	DEALLOCATE curRoles
 END;
-GO
+GO*/
 
 
 /*

@@ -4,6 +4,7 @@ using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,18 @@ namespace Market_Express.Domain.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<Role> GetAll()
+        public List<Role> GetAll(bool onlyActive = false)
         {
-            return _unitOfWork.Role.GetAll()
+            var lstRoles = _unitOfWork.Role.GetAll()
                                    .OrderBy(r => r.Name)
-                                   .ToList();
+                                   .AsEnumerable();
+
+            if (onlyActive)
+            {
+                lstRoles = lstRoles.Where(role => role.Status == EntityStatus.ACTIVADO);
+            }
+
+            return lstRoles.ToList();
         }
 
         public async Task<List<Role>> GetAllByUserId(Guid id)
@@ -68,6 +76,7 @@ namespace Market_Express.Domain.Services
                 Id = oRole.Id,
                 Name = oRole.Name,
                 Description = oRole.Description,
+                Status = oRole.Status,
                 AddedBy = oRole.AddedBy,
                 CreationDate = oRole.CreationDate,
                 ModificationDate = oRole.ModificationDate,
@@ -126,6 +135,7 @@ namespace Market_Express.Domain.Services
 
             role.AddedBy = currentUserId.ToString();
             role.CreationDate = DateTimeUtility.NowCostaRica;
+            role.Status = EntityStatus.ACTIVADO;
 
             _unitOfWork.Role.Create(role);
 
@@ -176,8 +186,30 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
+            if(oRoleFromDb.Status == EntityStatus.ACTIVADO && role.Status == EntityStatus.DESACTIVADO)
+            {
+                var oAppUserRoleToValidate = _unitOfWork.AppUserRole.GetFirstOrDefault(userRole => userRole.RoleId == oRoleFromDb.Id);
+
+                if (oAppUserRoleToValidate != null)
+                {
+                    oResult.Message = "El rol no se puede desactivar porque está en uso.";
+
+                    return oResult;
+                }
+
+                var lstRoles = _unitOfWork.Role.GetAll();
+
+                if (lstRoles?.Count() <= 1 && oRoleFromDb.Status == EntityStatus.ACTIVADO)
+                {
+                    oResult.Message = "El rol no se puede desactivar porque es el único existente.";
+
+                    return oResult;
+                }
+            }
+
             oRoleFromDb.Name = role.Name;
             oRoleFromDb.Description = role.Description;
+            oRoleFromDb.Status = role.Status;
             oRoleFromDb.ModifiedBy = currentUserId.ToString();
             oRoleFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
 
@@ -221,43 +253,58 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<BusisnessResult> Delete(Guid roleId, Guid currentUserId)
+        public async Task<BusisnessResult> ChangeStatus(Guid roleId, Guid currentUserId)
         {
             BusisnessResult oResult = new();
 
-            var oRole = await _unitOfWork.Role.GetByIdAsync(roleId,nameof(Role.RolePermissions));
+            var oRoleFromDb = await _unitOfWork.Role.GetByIdAsync(roleId);
 
-            if(oRole == null)
+            if(oRoleFromDb == null)
             {
                 oResult.Message = "El rol no existe.";
 
                 return oResult;
             }
 
-            var oAppUserRoleToValidate = _unitOfWork.AppUserRole.GetFirstOrDefault(userRole => userRole.RoleId == oRole.Id);
+            var oAppUserRoleToValidate = _unitOfWork.AppUserRole.GetFirstOrDefault(userRole => userRole.RoleId == oRoleFromDb.Id);
 
-            if(oAppUserRoleToValidate != null)
+            if(oAppUserRoleToValidate != null && oRoleFromDb.Status == EntityStatus.ACTIVADO)
             {
-                oResult.Message = "El rol no se puede eliminar porque está en uso.";
+                oResult.Message = "El rol no se puede desactivar porque está en uso.";
 
                 return oResult;
             }
 
             var lstRoles = _unitOfWork.Role.GetAll();
 
-            if(lstRoles?.Count() <= 1)
+            if(lstRoles?.Count() <= 1 && oRoleFromDb.Status == EntityStatus.ACTIVADO)
             {
-                oResult.Message = "El rol no se puede eliminar porque es el único existente.";
+                oResult.Message = "El rol no se puede desactivar porque es el único existente.";
 
                 return oResult;
             }
 
-            oRole.ModifiedBy = currentUserId.ToString();
-            oRole.ModificationDate = DateTimeUtility.NowCostaRica;
+            oRoleFromDb.ModifiedBy = currentUserId.ToString();
+            oRoleFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
 
-            _unitOfWork.RolePermission.Delete(oRole.RolePermissions.ToList());
+            if(oRoleFromDb.Status == EntityStatus.DESACTIVADO)
+            {
+                oRoleFromDb.Status = EntityStatus.ACTIVADO;
 
-            _unitOfWork.Role.Delete(oRole);
+                oResult.Message = "El rol se activó correctamente!";
+
+                oResult.ResultCode = 1; //CSS set success
+            }
+            else
+            {
+                oRoleFromDb.Status = EntityStatus.DESACTIVADO;
+
+                oResult.Message = "El rol se desactivó correctamente!";
+
+                oResult.ResultCode = 0; //CSS set danger
+            }
+
+            _unitOfWork.Role.Update(oRoleFromDb);
 
             try
             {
@@ -273,8 +320,6 @@ namespace Market_Express.Domain.Services
 
                 throw ex;
             }
-
-            oResult.Message = "El rol se eliminó correctamente!";
 
             return oResult;
         }
