@@ -153,10 +153,10 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         #region UTILITY METHODS
         private (List<ArticleDTO>, Metadata) GetMetaAndPagedArticleDTOList(ArticleIndexQueryFilter filters)
         {
-            var pagedArticles = _articleService.GetAll(filters, true);
-            var oMeta = Metadata.Create(pagedArticles);
+            var lstPagedArticles = _articleService.GetAll(filters, true);
+            var oMeta = Metadata.Create(lstPagedArticles);
 
-            return (pagedArticles.Select(article => _mapper.Map<ArticleDTO>(article))
+            return (lstPagedArticles.Select(article => _mapper.Map<ArticleDTO>(article))
                                  .ToList()
                     , oMeta);
         }

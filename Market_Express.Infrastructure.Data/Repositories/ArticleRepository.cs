@@ -31,15 +31,12 @@ namespace Market_Express.Infrastructure.Data.Repositories
         {
             List<Article> lstArticles = new();
 
-            int totalPages = 0;
-            int totalCount = 0;
-
-            SqlParameter pTotalPages = new("@totalPages", totalPages)
+            SqlParameter pTotalPages = new("@totalPages", 0)
             {
                 Direction = ParameterDirection.Output
             };
 
-            SqlParameter pTotalCount = new("@totalCount", totalCount)
+            SqlParameter pTotalCount = new("@totalCount", 0)
             {
                 Direction = ParameterDirection.Output
             };
@@ -50,7 +47,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 new SqlParameter("@maxPrice",filters.MaxPrice),
                 new SqlParameter("@minPrice",filters.MinPrice),
                 new SqlParameter("@category",filters.Category is not null ? string.Join(',', filters.Category) : ""),
-                new SqlParameter("@pageNumber",filters.PageNumber),
+                new SqlParameter("@pageNumber",filters.PageNumber-1),
                 new SqlParameter("@pageSize",filters.PageSize),
                 pTotalPages,
                 pTotalCount
@@ -71,7 +68,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 });
             }
 
-            return new SQLServerPagedList<Article>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, totalPages, totalCount);
+            return new SQLServerPagedList<Article>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
         }
     }
 }

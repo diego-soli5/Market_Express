@@ -3,6 +3,7 @@ using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.QueryFilter.Home;
 using Market_Express.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
@@ -59,8 +60,10 @@ namespace Market_Express.Web.Controllers
                         }
                     }
 
-                    oViewModelSearch.Articles = await GetArticleDTOListForSearch(filters);
-                    
+                    var tplPaginatedArticles = await GetArticleDTOListAndMetaForSearch(filters);
+
+                    oViewModelSearch.Articles = tplPaginatedArticles.Item1;
+                    oViewModelSearch.Metadata = tplPaginatedArticles.Item2;
 
                     return View("Search", oViewModelSearch);
                 }
@@ -75,14 +78,16 @@ namespace Market_Express.Web.Controllers
             return View(oViewModel);
         }
 
-
-
         #region UTILITY METHODS
-        private async Task<List<ArticleDTO>> GetArticleDTOListForSearch(HomeSearchQueryFilter filters)
+        private async Task<(List<ArticleDTO>, Metadata)> GetArticleDTOListAndMetaForSearch(HomeSearchQueryFilter filters)
         {
-            return (await _articleService.GetAllForSearch(filters))
-                                         .Select(article => _mapper.Map<ArticleDTO>(article))
-                                         .ToList();
+            var lstPagedArticles = await _articleService.GetAllForSearch(filters);
+
+            var oMeta = Metadata.Create(lstPagedArticles);
+
+            return (lstPagedArticles.Select(article => _mapper.Map<ArticleDTO>(article))
+                                 .ToList()
+                    , oMeta);
         }
 
         private async Task<List<CategorySearchDTO>> GetCategorySearchDTOList()
