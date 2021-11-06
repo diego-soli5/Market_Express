@@ -89,7 +89,7 @@ namespace Market_Express.Domain.Services
 
         public async Task<List<Article>> GetMostPopular(int? take = null)
         {
-            take = take is null ? _articleOptions.DefaultTakeForMostPopular : take;
+            //take = take is null ? _articleOptions.DefaultTakeForMostPopular : take;
 
             return await _unitOfWork.Article.GetMostPopular(take);
         }

@@ -236,6 +236,32 @@ GO
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS CATEGORY
 ---------------------------------------------------------------------------------------------------------------
+CREATE PROCEDURE Sp_Category_GetMostPopular
+(
+	@take int = null
+)
+AS
+BEGIN
+	SELECT c.Id,
+		   c.Name,
+		   c.Description,
+		   c.Image,
+		   (SELECT COUNT(1) 
+			FROM (SELECT a.CategoryId
+				  FROM Article a,
+					   Order_Detail od
+				  WHERE a.Id = od.ArticleId
+				  AND a.CategoryId = c.Id) AS CategorieIdsByArticleFromOrderDetail) repeated
+	FROM Category c
+	WHERE c.Status = 'ACTIVADO'
+	ORDER BY repeated DESC
+	OFFSET 0 ROWS 
+	FETCH NEXT COALESCE(@take,(SELECT COUNT(1)
+							   FROM Category c
+							   WHERE c.Status = 'ACTIVADO')) ROWS ONLY; 
+END;
+
+
 --Obtiene cantidad de articulos asignados a la categoria por Id
 CREATE PROCEDURE Sp_Category_GetArticleDetails
 (

@@ -2,12 +2,13 @@
 using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Slider;
+using Market_Express.CrossCutting.Options;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.QueryFilter.Home;
 using Market_Express.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,16 +21,22 @@ namespace Market_Express.Web.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IArticleService _articleService;
         private readonly IMapper _mapper;
+        private readonly CategoryOptions _categoryOptions;
+        private readonly ArticleOptions _articleOptions;
 
         public HomeController(IHomeService homeService,
                               ICategoryService categoryService,
                               IArticleService articleService,
-                              IMapper mapper)
+                              IMapper mapper,
+                              IOptions<CategoryOptions> categoryOptions,
+                              IOptions<ArticleOptions> articleOptions)
         {
             _homeService = homeService;
             _categoryService = categoryService;
             _articleService = articleService;
             _mapper = mapper;
+            _categoryOptions = categoryOptions.Value;
+            _articleOptions = articleOptions.Value;
         }
 
         [HttpGet]
@@ -72,7 +79,7 @@ namespace Market_Express.Web.Controllers
             HomeViewModel oViewModel = new();
 
             oViewModel.PopularArticles = await GetMostPopularArticleDTOList();
-            oViewModel.Categories = GetCategoryDTOList();
+            oViewModel.Categories = await GetMostPopularCategoryDTOList();
             oViewModel.Sliders = GetSliderDTOList();
 
             return View(oViewModel);
@@ -97,11 +104,11 @@ namespace Market_Express.Web.Controllers
                                           .ToList();
         }
 
-        private List<CategoryDTO> GetCategoryDTOList()
+        private async Task<List<CategoryDTO>> GetMostPopularCategoryDTOList()
         {
-            return _categoryService.GetAllActive()
-                                   .Select(cat => _mapper.Map<CategoryDTO>(cat))
-                                   .ToList();
+            return (await _categoryService.GetMostPopular(_categoryOptions.DefaultTakeForMostPopular))
+                                          .Select(cat => _mapper.Map<CategoryDTO>(cat))
+                                          .ToList();
         }
 
         private List<SliderDTO> GetSliderDTOList()
@@ -113,7 +120,7 @@ namespace Market_Express.Web.Controllers
 
         private async Task<List<ArticleDTO>> GetMostPopularArticleDTOList()
         {
-            return (await _articleService.GetMostPopular())
+            return (await _articleService.GetMostPopular(_articleOptions.DefaultTakeForMostPopular))
                                          .Select(article => _mapper.Map<ArticleDTO>(article))
                                          .ToList();
         }

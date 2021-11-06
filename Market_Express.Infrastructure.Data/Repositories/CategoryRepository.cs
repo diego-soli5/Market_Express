@@ -16,6 +16,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         private const string _Sp_Category_GetArticleDetails = "Sp_Category_GetArticleDetails";
         private const string _Sp_Category_GetAllAvailableForSearch = "Sp_Category_GetAllAvailableForSearch";
+        private const string _Sp_Category_GetMostPopular = "Sp_Category_GetMostPopular";
 
         public CategoryRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -53,9 +54,24 @@ namespace Market_Express.Infrastructure.Data.Repositories
             return lstCategoryForSearch;
         }
 
-        public async Task<List<Article>> GetMostPopular(int? take = null)
+        public async Task<List<Category>> GetMostPopular(int? take = null)
         {
-            return null;
+            List<Category> lstCategory = new();
+
+            var dtResult = await ExecuteQuery(_Sp_Category_GetMostPopular);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstCategory.Add(new CategoryForSearch
+                {
+                    Id = (Guid)oRow["Id"],
+                    Name = oRow["Name"].ToString(),
+                    Description = oRow["Description"].ToString(),
+                    Image = oRow["Image"].ToString()
+                });
+            }
+
+            return lstCategory;
         }
 
         public async Task<(int, int)> GetArticleDetails(Guid categoryId)

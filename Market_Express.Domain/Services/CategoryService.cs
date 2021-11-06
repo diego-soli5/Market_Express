@@ -1,4 +1,5 @@
 ﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
@@ -7,6 +8,7 @@ using Market_Express.Domain.CustomEntities.Category;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,15 @@ namespace Market_Express.Domain.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAzureBlobStorageService _storageService;
+        private readonly CategoryOptions _categoryOptions;
 
         public CategoryService(IUnitOfWork unitOfWork,
-                               IAzureBlobStorageService storageService)
+                               IAzureBlobStorageService storageService,
+                               IOptions<CategoryOptions> categoryOptions)
         {
             _unitOfWork = unitOfWork;
             _storageService = storageService;
+            _categoryOptions = categoryOptions.Value;
         }
 
         public IEnumerable<Category> GetAll()
@@ -58,7 +63,9 @@ namespace Market_Express.Domain.Services
 
         public async Task<List<Category>> GetMostPopular(int? take = null)
         {
-            return null;
+            //take = take is null ? _categoryOptions.DefaultTakeForMostPopular : take;
+
+            return await _unitOfWork.Category.GetMostPopular(take);
         }
 
         public async Task<BusisnessResult> Create(Category category, IFormFile image, Guid userId)
