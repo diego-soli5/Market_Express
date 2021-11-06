@@ -93,6 +93,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<AzureBlobStorageOptions>(configuration.GetSection("Options:AzureBlobStorageOptions"));
             
             services.Configure<PaginationOptions>(configuration.GetSection("Options:PaginationOptions"));
+
+            services.Configure<ArticleOptions>(configuration.GetSection("Options:ArticleOptions"));
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)

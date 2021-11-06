@@ -11,7 +11,8 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     {
         IEnumerable<Category> GetAll();
         Task<List<CategoryForSearch>> GetAllAvailableForSearch();
-        IEnumerable<Category> GetAllAvailable();
+        IEnumerable<Category> GetAllActive();
+        Task<List<Category>> GetMostPopular(int? take = null);
         Task<Category> GetById(Guid categoryId);
         Task<(int, int)> GetArticleDetails(Guid categoryId);
         Task<BusisnessResult> Create(Category category, IFormFile image, Guid userId);

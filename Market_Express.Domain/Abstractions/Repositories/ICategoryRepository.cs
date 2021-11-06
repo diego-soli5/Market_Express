@@ -11,5 +11,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
         Task<(int, int)> GetArticleDetails(Guid categoryId);
         IEnumerable<Category> GetAllActive();
         Task<List<CategoryForSearch>> GetAllAvailableForSearch();
+        Task<List<Article>> GetMostPopular(int? take = null);
     }
 }

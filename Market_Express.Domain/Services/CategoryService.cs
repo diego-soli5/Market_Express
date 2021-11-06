@@ -31,7 +31,7 @@ namespace Market_Express.Domain.Services
             return _unitOfWork.Category.GetAll();
         }
 
-        public IEnumerable<Category> GetAllAvailable()
+        public IEnumerable<Category> GetAllActive()
         {
             return _unitOfWork.Category.GetAllActive();
         }
@@ -54,6 +54,11 @@ namespace Market_Express.Domain.Services
         public async Task<(int, int)> GetArticleDetails(Guid categoryId)
         {
             return await _unitOfWork.Category.GetArticleDetails(categoryId);
+        }
+
+        public async Task<List<Category>> GetMostPopular(int? take = null)
+        {
+            return null;
         }
 
         public async Task<BusisnessResult> Create(Category category, IFormFile image, Guid userId)

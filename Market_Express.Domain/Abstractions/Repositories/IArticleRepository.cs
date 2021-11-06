@@ -10,5 +10,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
     {
         IEnumerable<Article> GetAllActiveWithCategoryAsigned();
         Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters);
+        Task<List<Article>> GetMostPopular(int? take = null);
     }
 }

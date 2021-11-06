@@ -53,6 +53,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
             return lstCategoryForSearch;
         }
 
+        public async Task<List<Article>> GetMostPopular(int? take = null)
+        {
+            return null;
+        }
+
         public async Task<(int, int)> GetArticleDetails(Guid categoryId)
         {
             var arrParams = new[]

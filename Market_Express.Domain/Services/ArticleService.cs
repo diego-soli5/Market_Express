@@ -23,14 +23,17 @@ namespace Market_Express.Domain.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAzureBlobStorageService _blobService;
         private readonly PaginationOptions _paginationOptions;
+        private readonly ArticleOptions _articleOptions;
 
         public ArticleService(IUnitOfWork unitOfWork,
                               IAzureBlobStorageService blobService,
-                              IOptions<PaginationOptions> paginationOptions)
+                              IOptions<PaginationOptions> paginationOptions,
+                              IOptions<ArticleOptions> articleOptions)
         {
             _unitOfWork = unitOfWork;
             _blobService = blobService;
             _paginationOptions = paginationOptions.Value;
+            _articleOptions = articleOptions.Value;
         }
 
         public PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false)
@@ -82,6 +85,13 @@ namespace Market_Express.Domain.Services
             var lstArticles = await  _unitOfWork.Article.GetAllForSearch(filters);
 
             return lstArticles;
+        }
+
+        public async Task<List<Article>> GetMostPopular(int? take = null)
+        {
+            take = take is null ? _articleOptions.DefaultTakeForMostPopular : take;
+
+            return await _unitOfWork.Article.GetMostPopular(take);
         }
 
         public IEnumerable<Article> GetAllActive(int? max = null)

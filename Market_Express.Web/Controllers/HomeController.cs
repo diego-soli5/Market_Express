@@ -71,9 +71,9 @@ namespace Market_Express.Web.Controllers
 
             HomeViewModel oViewModel = new();
 
-            oViewModel.Sliders = GetSliderDTOList();
+            oViewModel.PopularArticles = await GetMostPopularArticleDTOList();
             oViewModel.Categories = GetCategoryDTOList();
-            oViewModel.Articles = GetArticleDTOList();
+            oViewModel.Sliders = GetSliderDTOList();
 
             return View(oViewModel);
         }
@@ -99,7 +99,7 @@ namespace Market_Express.Web.Controllers
 
         private List<CategoryDTO> GetCategoryDTOList()
         {
-            return _categoryService.GetAllAvailable()
+            return _categoryService.GetAllActive()
                                    .Select(cat => _mapper.Map<CategoryDTO>(cat))
                                    .ToList();
         }
@@ -111,11 +111,11 @@ namespace Market_Express.Web.Controllers
                                .ToList();
         }
 
-        private List<ArticleDTO> GetArticleDTOList()
+        private async Task<List<ArticleDTO>> GetMostPopularArticleDTOList()
         {
-            return _articleService.GetAllActive(20)
-                                  .Select(article => _mapper.Map<ArticleDTO>(article))
-                                  .ToList();
+            return (await _articleService.GetMostPopular())
+                                         .Select(article => _mapper.Map<ArticleDTO>(article))
+                                         .ToList();
         }
 
         private bool HasFilters(HomeSearchQueryFilter filters)

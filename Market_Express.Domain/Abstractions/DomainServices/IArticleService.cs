@@ -14,6 +14,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false);
         Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters);
         IEnumerable<Article> GetAllActive(int? max = null);
+        Task<List<Article>> GetMostPopular(int? take = null);
         Task<Article> GetById(Guid id, bool includeCategory = false);
         Task<BusisnessResult> Create(Article article, IFormFile image, Guid currentUserId);
         Task<BusisnessResult> Edit(Article article, IFormFile image, Guid currentUserId);

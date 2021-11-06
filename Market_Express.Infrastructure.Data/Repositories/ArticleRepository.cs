@@ -16,6 +16,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class ArticleRepository : GenericRepository<Article>, IArticleRepository
     {
         private const string _Sp_Article_GetAllForSearch = "Sp_Article_GetAllForSearch";
+        private const string _Sp_Article_GetMostPopular = "Sp_Article_GetMostPopular";
 
         public ArticleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -69,6 +70,33 @@ namespace Market_Express.Infrastructure.Data.Repositories
             }
 
             return new SQLServerPagedList<Article>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
+        }
+
+        public async Task<List<Article>> GetMostPopular(int? take = null)
+        {
+            List<Article> lstArticles = new();
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@take",take),
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Article_GetMostPopular, arrParams);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstArticles.Add(new Article
+                {
+                    Id = (Guid)oRow["Id"],
+                    CategoryId = (Guid)oRow["CategoryId"],
+                    Description = oRow["Description"].ToString(),
+                    BarCode = oRow["BarCode"].ToString(),
+                    Price = Convert.ToDecimal(oRow["Price"].ToString()),
+                    Image = oRow["Image"] is DBNull ? null : oRow["Image"].ToString()
+                });
+            }
+
+            return lstArticles;
         }
     }
 }

@@ -95,7 +95,7 @@
     </header>
 
     <div class="row align-items-strech">
-        @foreach (var article in Model.Articles)
+        @foreach (var article in Model.PopularArticles)
         {
             string src = article.Image != null
             ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })

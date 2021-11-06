@@ -4,10 +4,38 @@ GO
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS ARTICLE
 ---------------------------------------------------------------------------------------------------------------
+
+-- Obtiene los articulos ordenados por popularidad con la opcion de obtener "x" cantidad únicamente
+CREATE PROCEDURE Sp_Article_GetMostPopular
+(
+	@take int = null -- Si este valor viene null entonces retorna todos los productos activos con categoría
+)
+AS
+BEGIN
+	SELECT a.Id,
+		   a.CategoryId,
+		   a.Description,
+		   a.BarCode,
+		   a.Price,
+		   a.Image,
+		   (SELECT COUNT(1)
+		    FROM Order_Detail od
+		    WHERE od.ArticleId = a.Id) repeated
+	FROM Article a, Category c
+	WHERE a.CategoryId = c.Id
+	AND c.Status = 'ACTIVADO'
+	AND a.Status = 'ACTIVADO'
+	ORDER BY repeated DESC
+	OFFSET 0 ROWS 
+	FETCH NEXT COALESCE(@take,(SELECT COUNT(1)
+							   FROM Article a
+							   WHERE a.Status = 'ACTIVADO'
+							   AND a.CategoryId IS NOT NULL)) ROWS ONLY; 
+END;
+GO
+
 -- Obtiene los articulos para la vista de busqueda de articulos para agregar al carrito
-
-
-ALTER PROCEDURE Sp_Article_GetAllForSearch
+CREATE PROCEDURE Sp_Article_GetAllForSearch
 (
 	@description VARCHAR(255) = null,
 	@maxPrice decimal(19,2) = null,

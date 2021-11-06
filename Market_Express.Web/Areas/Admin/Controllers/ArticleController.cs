@@ -163,7 +163,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         private List<CategoryDTO> GetAvailableCategories()
         {
-            return _categoryService.GetAllAvailable()
+            return _categoryService.GetAllActive()
                                    .Select(cat => _mapper.Map<CategoryDTO>(cat))
                                    .ToList();
         }
