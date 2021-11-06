@@ -12,7 +12,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface IArticleService
     {
         PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false);
-        Task<List<Article>> GetAllForSearch(HomeSearchQueryFilter filters);
+        Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters);
         IEnumerable<Article> GetAllActive(int? max = null);
         Task<Article> GetById(Guid id, bool includeCategory = false);
         Task<BusisnessResult> Create(Article article, IFormFile image, Guid currentUserId);

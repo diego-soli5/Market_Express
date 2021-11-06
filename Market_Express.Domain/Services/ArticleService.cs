@@ -73,8 +73,11 @@ namespace Market_Express.Domain.Services
             return pagedArticles;
         }
 
-        public async Task<List<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
+        public async Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
         {
+            filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
+            filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
+
             var lstArticles = await  _unitOfWork.Article.GetAllForSearch(filters);
 
             return lstArticles;

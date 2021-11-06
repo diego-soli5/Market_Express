@@ -88,23 +88,21 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             var oResult = await _categoryService.Edit(oCategory, model.NewImage, CurrentUserId);
 
-            if (oResult.Success)
+            if (!oResult.Success)
             {
-                TempData["CategoryMessage"] = oResult.Message;
+                if (oResult.ResultCode == 1)
+                    ViewData["MessageResult"] = oResult.Message;
+                else if (oResult.ResultCode == 2)
+                    ModelState.AddModelError("Image", oResult.Message);
+                else
+                    ViewData["MessageResult"] = oResult.Message;
 
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
 
-            if (oResult.ResultCode == 1)
-            {
-                ViewData["MessageResult"] = oResult.Message;
-            }
-            else if (oResult.ResultCode == 2)
-            {
-                ModelState.AddModelError("Image", oResult.Message);
-            }
+            TempData["CategoryMessage"] = oResult.Message;
 
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -121,8 +119,6 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             return View(oViewModel);
         }
-
-
 
         #region API CALLS
         [HttpPost]

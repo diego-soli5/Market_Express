@@ -125,7 +125,7 @@ namespace Market_Express.Domain.Services
                 }
             }
 
-            var oCategoryFromDb = await _unitOfWork.Category.GetByIdAsync(category.Id);
+            var oCategoryFromDb = await _unitOfWork.Category.GetByIdAsync(category.Id,nameof(Category.Articles));
 
             if (oCategoryFromDb == null)
             {
@@ -134,6 +134,19 @@ namespace Market_Express.Domain.Services
                 oResult.ResultCode = 1;
 
                 return oResult;
+            }
+
+            if(category.Status == EntityStatus.DESACTIVADO && oCategoryFromDb.Status == EntityStatus.ACTIVADO)
+            {
+                if (oCategoryFromDb.Articles?.Count > 0)
+                {
+                    if (oCategoryFromDb.Articles.Any(art => art.Status == EntityStatus.ACTIVADO))
+                    {
+                        oResult.Message = "La categoría no se puede desactivar, para desactivarla debe desactivar los articulos relacionados.";
+
+                        return oResult;
+                    }
+                }
             }
 
             if (image != null)

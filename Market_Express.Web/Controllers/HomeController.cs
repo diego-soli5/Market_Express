@@ -43,9 +43,9 @@ namespace Market_Express.Web.Controllers
                     oViewModelSearch.Categories = await GetCategorySearchDTOList();
                     oViewModelSearch.Filters = filters;
 
-                    if (filters.IsSearchView.HasValue)
+                    if (filters.FromSearchView.HasValue)
                     {
-                        if (!filters.IsSearchView.Value)
+                        if (!filters.FromSearchView.Value)
                         {
                             if (oViewModelSearch.Filters.Category == null)
                             {

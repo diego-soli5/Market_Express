@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Market_Express.Domain.QueryFilter.Home
 {
-    public class HomeSearchQueryFilter
+    public class HomeSearchQueryFilter : PaginationQueryFilter
     {
         [BindProperty(Name = "Query")]
         public string Query { get; set; }
@@ -18,7 +18,7 @@ namespace Market_Express.Domain.QueryFilter.Home
         [BindProperty(Name = "MinPrice")]
         public int? MinPrice { get; set; }
 
-        [BindProperty(Name = "IsSearchView")]
-        public bool? IsSearchView { get; set; }
+        [BindProperty(Name = "FromSearchView")]
+        public bool? FromSearchView { get; set; }
     }
 }

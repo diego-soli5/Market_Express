@@ -5,21 +5,40 @@ GO
 -- PROCEDIMIENTOS ARTICLE
 ---------------------------------------------------------------------------------------------------------------
 -- Obtiene los articulos para la vista de busqueda de articulos para agregar al carrito
-CREATE PROCEDURE Sp_Article_GetAllForSearch
+
+
+ALTER PROCEDURE Sp_Article_GetAllForSearch
 (
 	@description VARCHAR(255) = null,
 	@maxPrice decimal(19,2) = null,
 	@minPrice decimal(19,2) = null,
-	@category varchar(MAX) = null
+	@category varchar(MAX) = null,
+	@pageNumber int = null,
+	@pageSize int= null,
+	@totalPages int = null OUTPUT,
+	@totalCount int = null OUTPUT
+
 )
 AS
 BEGIN
+	DECLARE @skip int = @pageNumber*@pageSize;
+	SET @totalCount = (SELECT COUNT(1) 
+								   FROM Article a INNER JOIN  Category c
+								   ON c.Id = a.CategoryId WHERE a.Status = 'ACTIVADO'
+								   AND c.Status = 'ACTIVADO' 
+								   AND (@description IS NULL OR a.Description LIKE '%'+@description +'%') 
+								   AND (@maxPrice IS NULL OR a.Price <= @maxPrice) 
+								   AND (@minPrice IS NULL OR a.Price >= @minPrice) 
+								   AND (CONVERT(VARCHAR(100),a.CategoryId) IN ((SELECT VALUE FROM STRING_SPLIT(@category,',')))));
+	
+	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
+	
 	SELECT a.Id,
-		   a.CategoryId,
-		   a.Description,
-		   a.BarCode,
-		   a.Price,
-		   a.Image
+			a.CategoryId,
+			a.Description,
+			a.BarCode,
+			a.Price,
+			a.Image
 	FROM Article a
 	INNER JOIN  Category c
 	ON c.Id = a.CategoryId
@@ -28,7 +47,10 @@ BEGIN
 	AND (@description IS NULL OR a.Description LIKE '%'+@description +'%')
 	AND (@maxPrice IS NULL OR a.Price <= @maxPrice)
 	AND (@minPrice IS NULL OR a.Price >= @minPrice)
-	AND (CONVERT(VARCHAR(100),a.CategoryId) IN ((SELECT VALUE FROM STRING_SPLIT(@category,','))));
+	AND (CONVERT(VARCHAR(100),a.CategoryId) IN ((SELECT VALUE FROM STRING_SPLIT(@category,','))))
+	ORDER BY a.Description
+	OFFSET @skip ROWS 
+	FETCH NEXT @pageSize ROWS ONLY; 
 END;
 GO
 

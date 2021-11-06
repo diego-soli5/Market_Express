@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Home;
@@ -26,16 +27,33 @@ namespace Market_Express.Infrastructure.Data.Repositories
                             .AsEnumerable();
         }
 
-        public async Task<List<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
+        public async Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
         {
             List<Article> lstArticles = new();
+
+            int totalPages = 0;
+            int totalCount = 0;
+
+            SqlParameter pTotalPages = new("@totalPages", totalPages)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            SqlParameter pTotalCount = new("@totalCount", totalCount)
+            {
+                Direction = ParameterDirection.Output
+            };
 
             var arrParams = new[]
             {
                 new SqlParameter("@description",filters.Query),
                 new SqlParameter("@maxPrice",filters.MaxPrice),
                 new SqlParameter("@minPrice",filters.MinPrice),
-                new SqlParameter("@category",filters.Category is not null ? string.Join(',', filters.Category) : "")
+                new SqlParameter("@category",filters.Category is not null ? string.Join(',', filters.Category) : ""),
+                new SqlParameter("@pageNumber",filters.PageNumber),
+                new SqlParameter("@pageSize",filters.PageSize),
+                pTotalPages,
+                pTotalCount
             };
 
             var dtResult = await ExecuteQuery(_Sp_Article_GetAllForSearch, arrParams);
@@ -53,7 +71,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 });
             }
 
-            return lstArticles;
+            return new SQLServerPagedList<Article>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, totalPages, totalCount);
         }
     }
 }

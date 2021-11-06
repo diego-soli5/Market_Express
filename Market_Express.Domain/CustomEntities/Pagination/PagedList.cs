@@ -29,9 +29,9 @@ namespace Market_Express.Domain.CustomEntities.Pagination
         public static PagedList<TEntity> Create(IEnumerable<TEntity> entities, int pageNumber, int pageSize)
         {
             var count = entities.Count();
-            var items = entities.Skip((pageNumber - 1) * pageSize).Take(pageSize).AsEnumerable();
+            var entitiesPaginated = entities.Skip((pageNumber - 1) * pageSize).Take(pageSize).AsEnumerable();
 
-            return new PagedList<TEntity>(items, count, pageNumber, pageSize);
+            return new PagedList<TEntity>(entitiesPaginated, count, pageNumber, pageSize);
         }
     }
 }
