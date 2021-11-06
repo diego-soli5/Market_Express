@@ -106,7 +106,7 @@ namespace Market_Express.Web.Controllers
 
         private async Task<List<CategoryDTO>> GetMostPopularCategoryDTOList()
         {
-            return (await _categoryService.GetMostPopular(_categoryOptions.DefaultTakeForMostPopular))
+            return (await _categoryService.GetMostPopular(_categoryOptions.DefaultTakeForMostPopular)) //3
                                           .Select(cat => _mapper.Map<CategoryDTO>(cat))
                                           .ToList();
         }
@@ -120,7 +120,7 @@ namespace Market_Express.Web.Controllers
 
         private async Task<List<ArticleDTO>> GetMostPopularArticleDTOList()
         {
-            return (await _articleService.GetMostPopular(_articleOptions.DefaultTakeForMostPopular))
+            return (await _articleService.GetMostPopular(_articleOptions.DefaultTakeForMostPopular)) //20
                                          .Select(article => _mapper.Map<ArticleDTO>(article))
                                          .ToList();
         }

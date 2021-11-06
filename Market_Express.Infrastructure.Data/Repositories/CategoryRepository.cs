@@ -58,7 +58,12 @@ namespace Market_Express.Infrastructure.Data.Repositories
         {
             List<Category> lstCategory = new();
 
-            var dtResult = await ExecuteQuery(_Sp_Category_GetMostPopular);
+            var arrParams = new[]
+            {
+                new SqlParameter("@take",take)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Category_GetMostPopular,arrParams);
 
             foreach (DataRow oRow in dtResult.Rows)
             {

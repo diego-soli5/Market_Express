@@ -260,7 +260,7 @@ BEGIN
 							   FROM Category c
 							   WHERE c.Status = 'ACTIVADO')) ROWS ONLY; 
 END;
-
+GO
 
 --Obtiene cantidad de articulos asignados a la categoria por Id
 CREATE PROCEDURE Sp_Category_GetArticleDetails

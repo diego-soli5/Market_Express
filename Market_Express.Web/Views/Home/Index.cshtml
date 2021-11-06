@@ -8,19 +8,19 @@
     {
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             @*<ol class="carousel-indicators">
-                @for (int i = 0; i < Model.Sliders.Count; i++)
-                {
-                    if (i == 0)
+                    @for (int i = 0; i < Model.Sliders.Count; i++)
                     {
+                        if (i == 0)
+                        {
 
-                        <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="active"></li>
+                        }
+                        else
+                        {
+                            <li data-target="#carouselExampleIndicators" data-slide-to="@i"></li>
+                        }
                     }
-                    else
-                    {
-                        <li data-target="#carouselExampleIndicators" data-slide-to="@i"></li>
-                    }
-                }
-            </ol>*@
+                </ol>*@
             <div class="carousel-inner">
                 @{
                     int cnt = 0;
@@ -58,7 +58,7 @@
 </header>
 
 
-
+<!--Popular Categories-->
 <section class="container mt-5">
 
     <header class="section-heading">
@@ -89,9 +89,10 @@
     </div>
 </section>
 
+<!--Popular Articles-->
 <section class="container mt-5">
     <header class="section-heading">
-        <h3 class="section-title">Productos Populares</h3>
+        <h3 class="section-title">Artículos Populares</h3>
     </header>
 
     <div class="row align-items-strech">
@@ -101,8 +102,8 @@
             ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })
             : "/img/productTest.jpg";
 
-            <div class="col-md-3 d-flex">
-                <div href="#" class="card card-product-grid">
+            <div class="col-md-3 mb-5">
+                <div href="#" class="card card-product-grid h-100">
                     <a href="#" class="img-wrap">
                         <img src="@src"
                              class="img-fluid" />
