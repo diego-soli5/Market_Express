@@ -93,6 +93,8 @@ async function eventMinus(e) {
 
     const url = `/Client/Cart/UpdateDetail?plus=false&articleId=${articleId}`;
 
+    this.disabled = true;
+
     try {
 
         showLoading();
@@ -110,6 +112,10 @@ async function eventMinus(e) {
             popUp(false, "Ocurrio un error inesperado..");
         }
     }
+
+    await delayAsync(500);
+
+    this.disabled = false;
 }
 
 function updateDetailElementsForMinus(json, btn, articleId) {
@@ -123,7 +129,7 @@ function updateDetailElementsForMinus(json, btn, articleId) {
     if (json.resultCode == 0) {
         div.innerHTML = htmlAddToCart(articleId);
         div.querySelector("#btnAdd").addEventListener("click", eventAdd);
-    } else {
+    } else if (json.resultCode == 1) {
         div.innerHTML = htmlPlusMinus(json.data, articleId);
         div.querySelector("#btnPlus").addEventListener("click", eventPlus);
         div.querySelector("#btnMinus").addEventListener("click", eventMinus);
@@ -140,6 +146,8 @@ async function eventPlus(e) {
     let json;
 
     const url = `/Client/Cart/UpdateDetail?plus=true&articleId=${articleId}`;
+
+    this.disabled = true;
 
     try {
 
@@ -159,6 +167,10 @@ async function eventPlus(e) {
             popUp(false, "Ocurrio un error inesperado..");
         }
     }
+
+    await delayAsync(500);
+
+    this.disabled = false;
 }
 
 function updateDetailElementsForPlus(json, btn, articleId) {
