@@ -77,6 +77,8 @@ function updateDetailElementsForAdd(json, btn, articleId) {
     div.innerHTML = htmlPlusMinus(json.data, articleId);
     div.querySelector("#btnPlus").addEventListener("click", eventPlus);
     div.querySelector("#btnMinus").addEventListener("click", eventMinus);
+
+    updateCartCount();
 }
 //------------------------------------------------FIN ADD------------------------------------------------------------------
 
@@ -126,6 +128,8 @@ function updateDetailElementsForMinus(json, btn, articleId) {
         div.querySelector("#btnPlus").addEventListener("click", eventPlus);
         div.querySelector("#btnMinus").addEventListener("click", eventMinus);
     }
+
+    updateCartCount();
 }
 //-------------------------------------------------FIN MINUS-----------------------------------------------------------------
 
@@ -169,6 +173,8 @@ function updateDetailElementsForPlus(json, btn, articleId) {
 
     div.querySelector("#btnPlus").addEventListener("click", eventPlus);
     div.querySelector("#btnMinus").addEventListener("click", eventMinus);
+
+    updateCartCount();
 }
 //----------------------------------------------FIN PLUS--------------------------------------------------------------------
 

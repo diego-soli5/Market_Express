@@ -31,13 +31,7 @@ namespace Market_Express.Web.Areas.Client.Controllers
             if (!IsAuthenticated)
                 return Unauthorized();
 
-            var oResult = new
-            {
-                Success = true,
-                Message = "Prueba",
-                ResultCode = 0,
-                Data = 1
-            };
+            var oResult = await _cartService.AddDetail(articleId, CurrentUserId);
 
             return Ok(oResult);
         }

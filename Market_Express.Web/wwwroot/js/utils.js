@@ -21,3 +21,9 @@ function createQueryStringParams(formData) {
         .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
         .join('&');
 }
+
+function updateCartCount() {
+    fetch('/Client/Cart/GetCartArticlesCount', { method: 'GET' })
+        .then(response => response.text())
+        .then(text => $("#cartArticlesCount").html(text));
+}
