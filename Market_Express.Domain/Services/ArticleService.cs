@@ -4,6 +4,7 @@ using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
@@ -76,13 +77,13 @@ namespace Market_Express.Domain.Services
             return pagedArticles;
         }
 
-        public async Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
+        public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId)
         {
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultClientArticleSearchPageSize;
             filters.PageSize = filters.PageSize > 24 ? 24 : filters.PageSize;
 
-            var lstArticles = await  _unitOfWork.Article.GetAllForSearch(filters);
+            var lstArticles = await _unitOfWork.Article.GetAllForSearch(filters,userId);
 
             return lstArticles;
         }

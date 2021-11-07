@@ -9,6 +9,7 @@ using Market_Express.Domain.QueryFilter.Home;
 using Market_Express.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -79,7 +80,7 @@ namespace Market_Express.Web.Controllers
             HomeViewModel oViewModel = new();
 
             oViewModel.PopularArticles = await GetMostPopularArticleDTOList();
-            oViewModel.Categories = await GetMostPopularCategoryDTOList();
+            oViewModel.PopularCategories = await GetMostPopularCategoryDTOList();
             oViewModel.Sliders = GetSliderDTOList();
 
             return View(oViewModel);
@@ -99,14 +100,21 @@ namespace Market_Express.Web.Controllers
         }
 
         #region UTILITY METHODS
-        private async Task<(List<ArticleDTO>, Metadata)> GetArticleDTOListAndMetaForSearch(HomeSearchQueryFilter filters)
+        private async Task<(List<ArticleToAddInCartDTO>, Metadata)> GetArticleDTOListAndMetaForSearch(HomeSearchQueryFilter filters)
         {
-            var lstPagedArticles = await _articleService.GetAllForSearch(filters);
+            Guid? userId = null;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                userId = CurrentUserId;
+            }
+
+            var lstPagedArticles = await _articleService.GetAllForSearch(filters, userId);
 
             var oMeta = Metadata.Create(lstPagedArticles);
 
-            return (lstPagedArticles.Select(article => _mapper.Map<ArticleDTO>(article))
-                                 .ToList()
+            return (lstPagedArticles.Select(article => _mapper.Map<ArticleToAddInCartDTO>(article))
+                                    .ToList()
                     , oMeta);
         }
 

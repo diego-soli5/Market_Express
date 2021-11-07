@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
@@ -28,9 +29,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
                             .AsEnumerable();
         }
 
-        public async Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters)
+        public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId)
         {
-            List<Article> lstArticles = new();
+            List<ArticleToAddInCart> lstArticles = new();
 
             SqlParameter pTotalPages = new("@totalPages", 0)
             {
@@ -50,6 +51,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 new SqlParameter("@category",filters.Category is not null ? string.Join(',', filters.Category) : ""),
                 new SqlParameter("@pageNumber",filters.PageNumber-1),
                 new SqlParameter("@pageSize",filters.PageSize),
+                new SqlParameter("@userId",userId),
                 pTotalPages,
                 pTotalCount
             };
@@ -58,18 +60,19 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             foreach (DataRow oRow in dtResult.Rows)
             {
-                lstArticles.Add(new Article
+                lstArticles.Add(new ArticleToAddInCart
                 {
                     Id = (Guid)oRow["Id"],
                     CategoryId = (Guid)oRow["CategoryId"],
                     Description = oRow["Description"].ToString(),
                     BarCode = oRow["BarCode"].ToString(),
                     Price = Convert.ToDecimal(oRow["Price"].ToString()),
-                    Image = oRow["Image"] is DBNull ? null : oRow["Image"].ToString()
+                    Image = oRow["Image"] is DBNull ? null : oRow["Image"].ToString(),
+                    CountInCart = Convert.ToInt32(oRow["CountInCart"])
                 });
             }
 
-            return new SQLServerPagedList<Article>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
+            return new SQLServerPagedList<ArticleToAddInCart>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
         }
 
         public async Task<List<Article>> GetMostPopular(int? take = null)

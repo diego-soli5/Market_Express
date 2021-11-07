@@ -67,7 +67,7 @@
     </header>
 
     <div class="row align-items-strech">
-        @foreach (var category in Model.Categories)
+        @foreach (var category in Model.PopularCategories)
         {
             string src = category.Image != null
             ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })

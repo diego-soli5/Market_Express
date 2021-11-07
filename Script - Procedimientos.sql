@@ -8,7 +8,7 @@ GO
 -- Obtiene los articulos ordenados por popularidad con la opcion de obtener "x" cantidad únicamente
 CREATE PROCEDURE Sp_Article_GetMostPopular
 (
-	@take int = null -- Si este valor viene null entonces retorna todos los productos activos con categoría
+	@take INT = null -- Si este valor viene null entonces retorna todos los productos activos con categoría
 )
 AS
 BEGIN
@@ -20,12 +20,12 @@ BEGIN
 		   a.Image,
 		   (SELECT COUNT(1)
 		    FROM Order_Detail od
-		    WHERE od.ArticleId = a.Id) repeated
+		    WHERE od.ArticleId = a.Id) repeatedCount
 	FROM Article a, Category c
 	WHERE a.CategoryId = c.Id
 	AND c.Status = 'ACTIVADO'
 	AND a.Status = 'ACTIVADO'
-	ORDER BY repeated DESC
+	ORDER BY repeatedCount DESC
 	OFFSET 0 ROWS 
 	FETCH NEXT COALESCE(@take,(SELECT COUNT(1)
 							   FROM Article a
@@ -44,14 +44,23 @@ CREATE PROCEDURE Sp_Article_GetAllForSearch
 	@pageNumber int = null,
 	@pageSize int= null,
 	@totalPages int = null OUTPUT,
-	@totalCount int = null OUTPUT
-
+	@totalCount int = null OUTPUT,
+	@userId UNIQUEIDENTIFIER = null
 )
 AS
 BEGIN
 	DECLARE @skip int = @pageNumber*@pageSize;
+	DECLARE @cartId UNIQUEIDENTIFIER = (SELECT TOP 1 c.Id 
+										FROM Cart c 
+										WHERE c.ClientId = (SELECT TOP 1 cl.Id 
+															FROM Client cl 
+															WHERE cl.AppUserId = @userId)
+									    AND c.Status = 'ABIERTO'
+										ORDER BY c.OpeningDate DESC);
+
 	SET @totalCount = (SELECT COUNT(1) 
-					   FROM Article a INNER JOIN  Category c
+					   FROM Article a 
+					   INNER JOIN  Category c
 					   ON c.Id = a.CategoryId WHERE a.Status = 'ACTIVADO'
 					   AND c.Status = 'ACTIVADO' 
 					   AND (@description IS NULL OR a.Description LIKE '%'+@description +'%') 
@@ -66,7 +75,10 @@ BEGIN
 			a.Description,
 			a.BarCode,
 			a.Price,
-			a.Image
+			a.Image,
+			(SELECT COALESCE(SUM(cd.Quantity),0)
+			 FROM Cart_Detail cd 
+			 WHERE cd.CartId = @cartId) CountInCart
 	FROM Article a
 	INNER JOIN  Category c
 	ON c.Id = a.CategoryId

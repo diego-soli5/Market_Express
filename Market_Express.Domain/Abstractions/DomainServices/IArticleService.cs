@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.CustomEntities.Pagination;
+﻿using Market_Express.Domain.CustomEntities.Article;
+using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.Article;
 using Market_Express.Domain.QueryFilter.Home;
@@ -12,7 +13,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface IArticleService
     {
         PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false);
-        Task<SQLServerPagedList<Article>> GetAllForSearch(HomeSearchQueryFilter filters);
+        Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId);
         IEnumerable<Article> GetAllActive(int? max = null);
         Task<List<Article>> GetMostPopular(int? take = null);
         Task<Article> GetById(Guid id, bool includeCategory = false);

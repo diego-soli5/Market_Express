@@ -10,6 +10,7 @@ using Market_Express.Application.DTOs.Role;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Application.DTOs.System;
 using Market_Express.Domain.CustomEntities;
+using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Domain.CustomEntities.Category;
 using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
@@ -51,6 +52,9 @@ namespace Market_Express.Infrastructure.Mappings
 
             CreateMap<Article, ArticleCreateDTO>()
                 .ReverseMap();
+
+            CreateMap<ArticleToAddInCart, ArticleToAddInCartDTO>()
+               .ReverseMap();
         }
 
         private void CreateClientMappings()

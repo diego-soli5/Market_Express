@@ -10,12 +10,12 @@ namespace Market_Express.Web.ViewModels.Home
         public HomeViewModel()
         {
             Sliders = new();
-            Categories = new();
+            PopularCategories = new();
             PopularArticles = new();
         }
 
         public List<SliderDTO> Sliders { get; set; }
-        public List<CategoryDTO> Categories { get; set; }
+        public List<CategoryDTO> PopularCategories { get; set; }
         public List<ArticleDTO> PopularArticles { get; set; }
     }
 }

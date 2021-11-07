@@ -17,7 +17,7 @@ namespace Market_Express.Web.ViewModels.Home
 
         public HomeSearchQueryFilter Filters { get; set; }
         public List<CategorySearchDTO> Categories { get; set; }
-        public List<ArticleDTO> Articles { get; set; }
+        public List<ArticleToAddInCartDTO> Articles { get; set; }
         public Metadata Metadata { get; set; }
     }
 }

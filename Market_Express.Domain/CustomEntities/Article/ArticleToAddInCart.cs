@@ -1,6 +1,6 @@
 ﻿namespace Market_Express.Domain.CustomEntities.Article
 {
-    public class ArticleForAuthenticatedUser : Entities.Article
+    public class ArticleToAddInCart : Entities.Article
     {
         public int CountInCart { get; set; }
 
