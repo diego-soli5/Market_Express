@@ -25,12 +25,16 @@ namespace Market_Express.Web.Areas.Client.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AddDetail(Guid articleId)
         {
+            if (!IsAuthenticated)
+                return Unauthorized();
+
             var oResult = new
             {
                 Success = true,
-                Message = "",
+                Message = "Prueba",
                 ResultCode = 0,
                 Data = 1
             };
@@ -39,8 +43,12 @@ namespace Market_Express.Web.Areas.Client.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateDetail(bool plus, Guid articleId)
         {
+            if (!IsAuthenticated)
+                return Unauthorized();
+
             if (plus)
             {
                 var oResult = new

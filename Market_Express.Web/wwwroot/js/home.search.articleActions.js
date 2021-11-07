@@ -41,32 +41,37 @@ const htmlAddToCart = (id) => {
 //------------------------------------------------INICIA ADD------------------------------------------------------------------
 async function eventAdd(e) {
     let articleId = this.getAttribute("data-article-id");
+    let fetchResponse;
+    let json;
 
     const url = `/Client/Cart/AddDetail?articleId=${articleId}`;
-    try {
 
+    try {
         showLoading();
 
-        const fetchResponse = await fetch(url, { method: 'POST' });
-        const json = await fetchResponse.json();
-
-        if (!json.success) {
-            popUp(false, "No se pudo hacer la accion");
-            hideLoading();
-            return;
-        }
-
+        fetchResponse = await fetch(url, { method: 'POST' });
+        json = await fetchResponse.json();
         updateDetailElementsForAdd(json, this, articleId);
 
         hideLoading();
     } catch (e) {
-        console.error(e);
         hideLoading();
-        popUp(false, "Ocurrio un error inesperado..");
+
+        if (fetchResponse.status === 401) {
+            popUp(false, "Debe iniciar sesion");
+        } else {
+            console.error(e);
+            popUp(false, "Ocurrio un error inesperado..");
+        }
     }
 }
 
 function updateDetailElementsForAdd(json, btn, articleId) {
+    if (!json.success) {
+        popUp(false, json.message);
+        return;
+    }
+
     let div = btn.parentElement;
 
     div.innerHTML = htmlPlusMinus(json.data, articleId);
@@ -81,6 +86,8 @@ function updateDetailElementsForAdd(json, btn, articleId) {
 //------------------------------------------------INICIA MINUS------------------------------------------------------------------
 async function eventMinus(e) {
     let articleId = this.getAttribute("data-article-id");
+    let fetchResponse;
+    let json;
 
     const url = `/Client/Cart/UpdateDetail?plus=false&articleId=${articleId}`;
 
@@ -88,26 +95,27 @@ async function eventMinus(e) {
 
         showLoading();
 
-        const fetchResponse = await fetch(url, { method: 'POST' });
-        const json = await fetchResponse.json();
-
-        if (!json.success) {
-            popUp(false, "No se pudo hacer la accion");
-            hideLoading();
-            return;
-        }
-
+        fetchResponse = await fetch(url, { method: 'POST' });
+        json = await fetchResponse.json();
         updateDetailElementsForMinus(json, this, articleId);
 
         hideLoading();
     } catch (e) {
-        console.error(e);
-        hideLoading();
-        popUp(false, "Ocurrio un error inesperado..");
+        if (fetchResponse.status === 401) {
+            popUp(false, "Debe iniciar sesion");
+        } else {
+            console.error(e);
+            popUp(false, "Ocurrio un error inesperado..");
+        }
     }
 }
 
 function updateDetailElementsForMinus(json, btn, articleId) {
+    if (!json.success) {
+        popUp(false, json.message);
+        return;
+    }
+
     let div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
 
     if (json.resultCode == 0) {
@@ -124,6 +132,8 @@ function updateDetailElementsForMinus(json, btn, articleId) {
 //-------------------------------------------------INICIA PLUS-----------------------------------------------------------------
 async function eventPlus(e) {
     let articleId = this.getAttribute("data-article-id");
+    let fetchResponse;
+    let json;
 
     const url = `/Client/Cart/UpdateDetail?plus=true&articleId=${articleId}`;
 
@@ -131,26 +141,28 @@ async function eventPlus(e) {
 
         showLoading();
 
-        const fetchResponse = await fetch(url, { method: 'POST' });
-        const json = await fetchResponse.json();
-
-        if (!json.success) {
-            popUp(false, "No se pudo hacer la accion");
-            hideLoading();
-            return;
-        }
+        fetchResponse = await fetch(url, { method: 'POST' });
+        json = await fetchResponse.json();
 
         updateDetailElementsForPlus(json, this, articleId);
 
         hideLoading();
     } catch (e) {
-        console.error(e);
-        hideLoading();
-        popUp(false, "Ocurrio un error inesperado..");
+        if (fetchResponse.status === 401) {
+            popUp(false, "Debe iniciar sesion");
+        } else {
+            console.error(e);
+            popUp(false, "Ocurrio un error inesperado..");
+        }
     }
 }
 
 function updateDetailElementsForPlus(json, btn, articleId) {
+    if (!json.success) {
+        popUp(false, json.message);
+        return;
+    }
+
     let div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
 
     div.innerHTML = htmlPlusMinus(json.data, articleId);
