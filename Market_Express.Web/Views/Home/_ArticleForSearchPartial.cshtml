@@ -1,0 +1,61 @@
+﻿@model Market_Express.Application.DTOs.Article.ArticleToAddInCartDTO
+@{
+    string src = Model.Image != null
+    ? @Url.Action("GetImage", "Resource", new { area = "", n = Model.Image })
+    : "/img/NotAvailable.png";
+}
+<div class="col-md-4">
+    <figure class="card card-product-grid">
+        <div class="img-wrap">
+            <img src="@src">
+            <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Ver</a>
+        </div>
+        <figcaption class="info-wrap border-top">
+            <div class="fix-height">
+                <a href="#" class="title">@Model.Description</a>
+                <div class="price-wrap mt-2">
+                    <span class="price">₡@Model.Price</span>
+                </div>
+            </div>
+            <div id="divArticleButtons">
+                @if (!Model.IsInCart)
+                {
+                    <button data-article-id="@Model.Id" class="btn btn-block btn-primary" id="btnAdd">Añadir al carrito</button>
+                }
+                else
+                {
+                    <div align="center">
+                        <div class="form-group col-md flex-grow-0">
+                            <div class="input-group input-spinner">
+
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-light font-weight-bold"
+                                            type="button"
+                                            data-article-id="@Model.Id"
+                                            id="btnPlus">
+                                        <i class="fas fa-plus text-primary"></i>
+                                    </button>
+                                </div>
+
+                                <input type="text"
+                                       class="form-control-original font-weight-bold text-center"
+                                       value="@Model.CountInCart"
+                                       readonly style="background: #fff !important; ">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-light font-weight-bold"
+                                            type="button"
+                                            data-article-id="@Model.Id"
+                                            id="btnMinus">
+                                        <i class="fas fa-minus text-primary"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </figcaption>
+
+    </figure>
+</div>

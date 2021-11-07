@@ -50,14 +50,19 @@ CREATE PROCEDURE Sp_Article_GetAllForSearch
 AS
 BEGIN
 	DECLARE @skip int = @pageNumber*@pageSize;
-	DECLARE @cartId UNIQUEIDENTIFIER = (SELECT TOP 1 c.Id 
-										FROM Cart c 
-										WHERE c.ClientId = (SELECT TOP 1 cl.Id 
-															FROM Client cl 
-															WHERE cl.AppUserId = @userId)
-									    AND c.Status = 'ABIERTO'
-										ORDER BY c.OpeningDate DESC);
+	DECLARE @cartId UNIQUEIDENTIFIER;
 
+	IF @userId IS NOT NULL
+	BEGIN
+	SET @cartId = (SELECT TOP 1 c.Id 
+				   FROM Cart c 
+				   WHERE c.ClientId = (SELECT TOP 1 cl.Id 
+									   FROM Client cl 
+									   WHERE cl.AppUserId = @userId)
+				   AND c.Status = 'ABIERTO'
+				   ORDER BY c.OpeningDate DESC);
+	END;
+	
 	SET @totalCount = (SELECT COUNT(1) 
 					   FROM Article a 
 					   INNER JOIN  Category c
@@ -78,7 +83,8 @@ BEGIN
 			a.Image,
 			(SELECT COALESCE(SUM(cd.Quantity),0)
 			 FROM Cart_Detail cd 
-			 WHERE cd.CartId = @cartId) CountInCart
+			 WHERE cd.CartId = @cartId
+			 AND cd.ArticleId = a.Id) CountInCart
 	FROM Article a
 	INNER JOIN  Category c
 	ON c.Id = a.CategoryId

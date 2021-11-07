@@ -461,7 +461,7 @@ input[type="number"],
     [contenteditable].form-control[disabled],
     [contenteditable].form-control[readonly] {
         box-shadow: none;
-        border-bottom: 1px dotted #ddd;
+        /*border-bottom: 1px dotted #ddd;*/
     }
 
         textarea[disabled]::-webkit-input-placeholder, textarea.form-control[disabled]::-webkit-input-placeholder, input.form-control[disabled]::-webkit-input-placeholder, input[type="text"][disabled]::-webkit-input-placeholder, input[type="password"][disabled]::-webkit-input-placeholder, input[type="email"][disabled]::-webkit-input-placeholder, input[type="number"][disabled]::-webkit-input-placeholder, [type="text"].form-control[disabled]::-webkit-input-placeholder, [type="password"].form-control[disabled]::-webkit-input-placeholder, [type="email"].form-control[disabled]::-webkit-input-placeholder, [type="tel"].form-control[disabled]::-webkit-input-placeholder, [contenteditable].form-control[disabled]::-webkit-input-placeholder {

@@ -77,6 +77,7 @@ async function getPaginatedPage(pgnum) {
 
         bindPaginationEvts();
         bindSelectPageSizeEvt();
+        bindArticleCartButtons();
 
         hideLoading();
 

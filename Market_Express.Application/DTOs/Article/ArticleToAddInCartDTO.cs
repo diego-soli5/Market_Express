@@ -10,5 +10,7 @@ namespace Market_Express.Application.DTOs.Article
         public decimal Price { get; set; }
         public string Image { get; set; }
         public int CountInCart { get; set; }
+
+        public bool IsInCart => CountInCart > 0;
     }
 }

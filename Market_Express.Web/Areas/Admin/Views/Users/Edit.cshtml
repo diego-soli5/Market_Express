@@ -51,7 +51,7 @@
                             <label asp-for="AppUser.Name" class="col-form-label font-weight-bold">Nombre</label>
                             <input type="text"
                                    asp-for="AppUser.Name"
-                                   disabled
+                                   readonly
                                    class="form-control"
                                    placeholder="Escribe el nombre">
                             <span asp-validation-for="AppUser.Name" class="text-danger"></span>
@@ -61,7 +61,7 @@
                             <div>
                                 <input type="text"
                                        asp-for="AppUser.Identification"
-                                       disabled
+                                       readonly
                                        class="form-control"
                                        placeholder="Escribe la identificación"
                                        id="identification">
@@ -74,7 +74,7 @@
                             <label asp-for="AppUser.Email" class="col-form-label font-weight-bold">Correo Electrónico</label>
                             <input type="text"
                                    asp-for="AppUser.Email"
-                                   disabled
+                                   readonly
                                    class="form-control"
                                    placeholder="Escribe el correo electrónico">
                             <span asp-validation-for="AppUser.Email" class="text-danger"></span>
@@ -83,7 +83,7 @@
                             <label asp-for="AppUser.Phone" class="col-form-label font-weight-bold">Teléfono</label>
                             <input type="number"
                                    asp-for="AppUser.Phone"
-                                   disabled
+                                   readonly
                                    class="form-control"
                                    placeholder="Escribe el numero de teléfono"
                                    maxlength="8"
@@ -103,7 +103,7 @@
                             {
                                 <label asp-for="Client.AutoSync"
                                        class="col-form-label">
-                                    <input type="checkbox" asp-for="Client.AutoSync" disabled>
+                                    <input type="checkbox" asp-for="Client.AutoSync" readonly>
                                     Se Sincroniza Automáticamente
 
                                 </label>

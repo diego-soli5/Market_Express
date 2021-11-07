@@ -1,0 +1,180 @@
+﻿const htmlPlusMinus = (data, id) => {
+    return ` <div align="center">
+                    <div class="form-group col-md flex-grow-0">
+                        <div class="input-group input-spinner">
+
+                            <div class="input-group-prepend">
+                                <button class="btn btn-light font-weight-bold"
+                                    type="button"
+                                    data-article-id="${id}"
+                                    id="btnPlus">
+                                    <i class="fas fa-plus text-primary"></i>
+                                </button>
+                            </div>
+
+                            <input type="text"
+                                   class="form-control-original font-weight-bold text-center"
+                                   value="${data}"
+                                   readonly style="background: #fff !important; ">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-light font-weight-bold"
+                                        type="button"
+                                        data-article-id="${id}"
+                                        id="btnMinus">
+                                        <i class="fas fa-minus text-primary"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`;
+}
+
+const htmlAddToCart = (id) => {
+    return `<button data-article-id="${id}"
+                    class="btn btn-block btn-primary"
+                    id="btnAdd">Añadir al carrito
+            </button>`;
+}
+
+//------------------------------------------------INICIA ADD------------------------------------------------------------------
+async function eventAdd(e) {
+    let articleId = this.getAttribute("data-article-id");
+
+    const url = `/Client/Cart/AddDetail?articleId=${articleId}`;
+    try {
+
+        showLoading();
+
+        const fetchResponse = await fetch(url, { method: 'POST' });
+        const json = await fetchResponse.json();
+
+        if (!json.success) {
+            popUp(false, "No se pudo hacer la accion");
+            hideLoading();
+            return;
+        }
+
+        updateDetailElementsForAdd(json, this, articleId);
+
+        hideLoading();
+    } catch (e) {
+        console.error(e);
+        hideLoading();
+        popUp(false, "Ocurrio un error inesperado..");
+    }
+}
+
+function updateDetailElementsForAdd(json, btn, articleId) {
+    let div = btn.parentElement;
+
+    div.innerHTML = htmlPlusMinus(json.data, articleId);
+    div.querySelector("#btnPlus").addEventListener("click", eventPlus);
+    div.querySelector("#btnMinus").addEventListener("click", eventMinus);
+}
+//------------------------------------------------FIN ADD------------------------------------------------------------------
+
+
+
+
+//------------------------------------------------INICIA MINUS------------------------------------------------------------------
+async function eventMinus(e) {
+    let articleId = this.getAttribute("data-article-id");
+
+    const url = `/Client/Cart/UpdateDetail?plus=false&articleId=${articleId}`;
+
+    try {
+
+        showLoading();
+
+        const fetchResponse = await fetch(url, { method: 'POST' });
+        const json = await fetchResponse.json();
+
+        if (!json.success) {
+            popUp(false, "No se pudo hacer la accion");
+            hideLoading();
+            return;
+        }
+
+        updateDetailElementsForMinus(json, this, articleId);
+
+        hideLoading();
+    } catch (e) {
+        console.error(e);
+        hideLoading();
+        popUp(false, "Ocurrio un error inesperado..");
+    }
+}
+
+function updateDetailElementsForMinus(json, btn, articleId) {
+    let div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+    if (json.resultCode == 0) {
+        div.innerHTML = htmlAddToCart(articleId);
+        div.querySelector("#btnAdd").addEventListener("click", eventAdd);
+    } else {
+        div.innerHTML = htmlPlusMinus(json.data, articleId);
+        div.querySelector("#btnPlus").addEventListener("click", eventPlus);
+        div.querySelector("#btnMinus").addEventListener("click", eventMinus);
+    }
+}
+//-------------------------------------------------FIN MINUS-----------------------------------------------------------------
+
+//-------------------------------------------------INICIA PLUS-----------------------------------------------------------------
+async function eventPlus(e) {
+    let articleId = this.getAttribute("data-article-id");
+
+    const url = `/Client/Cart/UpdateDetail?plus=true&articleId=${articleId}`;
+
+    try {
+
+        showLoading();
+
+        const fetchResponse = await fetch(url, { method: 'POST' });
+        const json = await fetchResponse.json();
+
+        if (!json.success) {
+            popUp(false, "No se pudo hacer la accion");
+            hideLoading();
+            return;
+        }
+
+        updateDetailElementsForPlus(json, this, articleId);
+
+        hideLoading();
+    } catch (e) {
+        console.error(e);
+        hideLoading();
+        popUp(false, "Ocurrio un error inesperado..");
+    }
+}
+
+function updateDetailElementsForPlus(json, btn, articleId) {
+    let div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+    div.innerHTML = htmlPlusMinus(json.data, articleId);
+
+    div.querySelector("#btnPlus").addEventListener("click", eventPlus);
+    div.querySelector("#btnMinus").addEventListener("click", eventMinus);
+}
+//----------------------------------------------FIN PLUS--------------------------------------------------------------------
+
+
+function bindArticleCartButtons() {
+
+    document.querySelectorAll("#btnPlus").forEach(btn => {
+        btn.addEventListener("click", eventPlus);
+    });
+
+    document.querySelectorAll("#btnMinus").forEach(btn => {
+        btn.addEventListener("click", eventMinus);
+    });
+
+    document.querySelectorAll("#btnAdd").forEach(btn => {
+        btn.addEventListener("click", eventAdd);
+    });
+}
+
+
+bindArticleCartButtons();

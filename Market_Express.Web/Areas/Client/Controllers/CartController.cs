@@ -2,6 +2,7 @@
 using Market_Express.Web.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Client.Controllers
@@ -21,6 +22,50 @@ namespace Market_Express.Web.Areas.Client.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDetail(Guid articleId)
+        {
+            var oResult = new
+            {
+                Success = true,
+                Message = "",
+                ResultCode = 0,
+                Data = 1
+            };
+
+            return Ok(oResult);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateDetail(bool plus, Guid articleId)
+        {
+            if (plus)
+            {
+                var oResult = new
+                {
+                    Success = true,
+                    Message = "",
+                    ResultCode = 0,
+                    Data = 2
+                };
+                return Ok(oResult);
+            }
+            else
+            {
+                var oResult = new
+                {
+                    Success = true,
+                    Message = "",
+                    ResultCode = 0,
+                    Data = 0
+                };
+                return Ok(oResult);
+            }
+
+
+            return Ok();
         }
 
         [HttpGet]

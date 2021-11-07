@@ -2,10 +2,10 @@
 <header class="border-bottom mb-4 pb-3">
     <div class="form-inline">
         <span class="mr-md-auto">@Model.Metadata.TotalCount Artículos encontrados</span>
-        <select asp-for="Filters.PageSize" name="pageSize" class="form-control ml-auto" style="width: 165px;" form="frmFilters" id="pageSizeSL">
-            <option value="6">6 articulos por página</option>
-            <option value="12">12 articulos por página</option>
-            <option value="24">24 articulos por página</option>
+        <select asp-for="Filters.PageSize" name="pageSize" class="form-control ml-auto" style="width: 110px;" form="frmFilters" id="pageSizeSL">
+            <option value="6">6 por página</option>
+            <option value="12">12 por página</option>
+            <option value="24">24 por página</option>
         </select>
     </div>
 </header><!-- sect-heading -->
@@ -16,27 +16,7 @@
         {
             @foreach (var article in Model.Articles)
             {
-                string src = article.Image != null
-                ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })
-                : "/img/NotAvailable.png";
-
-                <div class="col-md-4">
-                    <figure class="card card-product-grid">
-                        <div class="img-wrap">
-                            <img src="@src">
-                            <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                        </div>
-                        <figcaption class="info-wrap">
-                            <div class="fix-height">
-                                <a href="#" class="title">@article.Description</a>
-                                <div class="price-wrap mt-2">
-                                    <span class="price">₡@article.Price</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-block btn-primary">Añadir al carrito</button>
-                        </figcaption>
-                    </figure>
-                </div>
+                { await Html.RenderPartialAsync("_ArticleForSearchPartial", article); }
             }
         }
         else
