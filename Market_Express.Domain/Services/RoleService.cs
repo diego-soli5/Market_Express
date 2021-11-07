@@ -3,6 +3,7 @@ using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.CustomEntities;
+using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using System;

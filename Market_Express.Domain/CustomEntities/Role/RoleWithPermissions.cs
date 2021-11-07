@@ -3,7 +3,7 @@ using Market_Express.Domain.Enumerations;
 using System;
 using System.Collections.Generic;
 
-namespace Market_Express.Domain.CustomEntities
+namespace Market_Express.Domain.CustomEntities.Role
 {
     public class RoleWithPermissions
     {

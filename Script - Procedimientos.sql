@@ -51,13 +51,13 @@ AS
 BEGIN
 	DECLARE @skip int = @pageNumber*@pageSize;
 	SET @totalCount = (SELECT COUNT(1) 
-								   FROM Article a INNER JOIN  Category c
-								   ON c.Id = a.CategoryId WHERE a.Status = 'ACTIVADO'
-								   AND c.Status = 'ACTIVADO' 
-								   AND (@description IS NULL OR a.Description LIKE '%'+@description +'%') 
-								   AND (@maxPrice IS NULL OR a.Price <= @maxPrice) 
-								   AND (@minPrice IS NULL OR a.Price >= @minPrice) 
-								   AND (CONVERT(VARCHAR(100),a.CategoryId) IN ((SELECT VALUE FROM STRING_SPLIT(@category,',')))));
+					   FROM Article a INNER JOIN  Category c
+					   ON c.Id = a.CategoryId WHERE a.Status = 'ACTIVADO'
+					   AND c.Status = 'ACTIVADO' 
+					   AND (@description IS NULL OR a.Description LIKE '%'+@description +'%') 
+					   AND (@maxPrice IS NULL OR a.Price <= @maxPrice) 
+					   AND (@minPrice IS NULL OR a.Price >= @minPrice) 
+					   AND (CONVERT(VARCHAR(100),a.CategoryId) IN ((SELECT VALUE FROM STRING_SPLIT(@category,',')))));
 	
 	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
 	

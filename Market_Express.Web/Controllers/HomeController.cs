@@ -85,6 +85,19 @@ namespace Market_Express.Web.Controllers
             return View(oViewModel);
         }
 
+        public async Task<IActionResult> Search(HomeSearchQueryFilter filters)
+        {
+            HomeSearchViewModel oViewModel = new();
+
+            var tplPaginatedArticles = await GetArticleDTOListAndMetaForSearch(filters);
+
+            oViewModel.Articles = tplPaginatedArticles.Item1;
+            oViewModel.Metadata = tplPaginatedArticles.Item2;
+            oViewModel.Filters = filters;
+
+            return PartialView("_ArticlesSearchResultPartial", oViewModel);
+        }
+
         #region UTILITY METHODS
         private async Task<(List<ArticleDTO>, Metadata)> GetArticleDTOListAndMetaForSearch(HomeSearchQueryFilter filters)
         {

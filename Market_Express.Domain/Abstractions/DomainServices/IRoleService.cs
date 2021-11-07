@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.CustomEntities;
+using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
 using System;
 using System.Collections.Generic;

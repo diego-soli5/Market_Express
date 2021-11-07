@@ -154,61 +154,8 @@
             </aside> <!-- col.// -->
 
             <main class="col-lg-9">
-
-                <header class="border-bottom mb-4 pb-3">
-                    <div class="form-inline">
-                        <span class="mr-md-auto">@Model.Metadata.TotalCount Artículos encontrados</span>
-                        <select asp-for="Filters.PageSize" name="pageSize" class="form-control ml-auto" style="width: 165px;" form="frmFilters">
-                            <option value="6">6 articulos por página</option>
-                            <option value="12">12 articulos por página</option>
-                            <option value="24">24 articulos por página</option>
-                        </select>
-                    </div>
-                </header><!-- sect-heading -->
-
-                <div class="">
-                    <div class="row">
-                        @if (Model?.Articles?.Count > 0)
-                        {
-                            @foreach (var article in Model.Articles)
-                            {
-                                string src = article.Image != null
-                                ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })
-                                : "/img/NotAvailable.png";
-
-                                <div class="col-md-4">
-                                    <figure class="card card-product-grid">
-                                        <div class="img-wrap">
-                                            <img src="@src">
-                                            <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                                        </div>
-                                        <figcaption class="info-wrap">
-                                            <div class="fix-height">
-                                                <a href="#" class="title">@article.Description</a>
-                                                <div class="price-wrap mt-2">
-                                                    <span class="price">₡@article.Price</span>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-block btn-primary">Añadir al carrito </button>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            }
-                        }
-                        else
-                        {
-                            <div class="col-12">
-                                <p class="text-center text-danger">Intenta con otros filtros</p>
-                            </div>
-                        }
-                    </div>
-
-                    @if (Model?.Articles?.Count > 0)
-                    {
-                        <div>
-                            @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
-                        </div>
-                    }
+                <div id="divSearchResult">
+                    @{ await Html.RenderPartialAsync("_ArticlesSearchResultPartial", Model); }
                 </div>
             </main>
         </div>
@@ -217,9 +164,24 @@
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
+@{
+    string sParams = "";
 
+    Model?.Filters?.Category?.ForEach(cat =>
+    {
+        sParams += $"category={cat.ToString()}&";
+    });
+
+    sParams += $"query={Model?.Filters?.Query}&";
+    sParams += $"maxPrice={Model?.Filters?.MaxPrice}&";
+    sParams += $"minPrice={Model?.Filters?.MinPrice}&";
+    sParams += $"fromSearchView=true";
+}
 
 @section Scripts{
     <script src="~/js/home.search.js"></script>
-   
+    <script src="~/js/home.search.pagination.js"></script>
+    <script>
+        params = '@Html.Raw(sParams)';
+    </script>
 }
