@@ -1,74 +1,101 @@
-﻿<main class="col-md-9">
+﻿@model Market_Express.Web.ViewModels.Cart.CartIndexViewModel
+<main class="col-md-9">
     <div class="card">
         <table class="table table-borderless table-shopping-cart table-responsive">
             <thead class="text-muted">
                 <tr class="small text-uppercase">
-                    <th class="">Artículo</th>
-                    <th class="text-center">Cantidad</th>
-                    <th class="">Precio</th>
+                    <th class="w-50">Artículo</th>
+                    <th class="w-25 text-center">Cantidad</th>
+                    <th class="w-25 text-center">Precio</th>
                     <th class="text-right"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <figure class="itemside">
-                            <div class="aside"><img src="~/img/abarrotes.jpg" class="img-sm"></div>
-                            <figcaption class="info">
-                                <a href="#" class="title text-dark">Salsa Lizano 800ml</a>
-                                <p class="text-muted small">Categoría: Granos y Abarrotes</p>
-                            </figcaption>
-                        </figure>
-                    </td>
-                    <td>
-                        <div align="center">
-                            <div class="form-group col-md flex-grow-0">
-                                <div class="input-group input-spinner">
 
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-light font-weight-bold"
-                                                type="button"
-                                                data-article-id=""
-                                                id="btnPlus">
-                                            <i class="fas fa-plus text-primary"></i>
-                                        </button>
-                                    </div>
+                @if (Model?.Articles?.Count > 0)
+                {
+                    @foreach (var article in Model.Articles)
+                    {
+                        string src = article.Image != null
+                                     ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })
+                                     : "/img/NotAvailable.png";
+                        <tr>
+                            <td>
+                                <figure class="itemside">
+                                    <div class="aside"><img src="@src" class="img-sm"></div>
+                                    <figcaption class="info">
+                                        <a href="#" class="title text-dark">@article.Description</a>
+                                        <p class="text-muted small">Categoría: @article.CategoryName</p>
+                                    </figcaption>
+                                </figure>
+                            </td>
+                            <td>
+                                <div align="center">
+                                    <div class="form-group col-md flex-grow-0">
+                                        <div class="input-group input-spinner">
 
-                                    <input type="text"
-                                           class="form-control-original font-weight-bold text-center"
-                                           value="1"
-                                           readonly style="background: #fff !important; ">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-light font-weight-bold"
+                                                        type="button"
+                                                        data-article-id="@article.Id"
+                                                        id="btnPlus">
+                                                    <i class="fas fa-plus text-primary"></i>
+                                                </button>
+                                            </div>
 
-                                    <div class="input-group-append">
-                                        <button class="btn btn-light font-weight-bold"
-                                                type="button"
-                                                data-article-id=""
-                                                id="btnMinus">
-                                            <i class="fas fa-minus text-primary"></i>
-                                        </button>
+                                            <input type="text"
+                                                   class="form-control-original font-weight-bold text-center"
+                                                   value="@((int)article.Quantity)"
+                                                   readonly style="background: #fff !important; ">
+
+                                            <div class="input-group-append">
+                                                <button class="btn btn-light font-weight-bold"
+                                                        type="button"
+                                                        data-article-id="@article.Id"
+                                                        id="btnMinus">
+                                                    <i class="fas fa-minus text-primary"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="price-wrap">
-                            <var class="price">₡1156.00</var>
-                            <small class="text-muted"> ₡315.20 c/u </small>
-                        </div>
-                    </td>
-                    <td class="text-right">
-                        <a href="#" class="btn btn-light">Remover</a>
-                    </td>
-                </tr>
+                            </td>
+                            <td class="text-center">
+                                <div class="price-wrap">
+                                    <var class="price">₡@((int)article.Total)</var>
+                                    <small class="text-muted"> ₡@((int)article.Price) c/u </small>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <a href="#" class="btn btn-light">Remover</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            <p class="text-danger">Aún no has agregado artículos al carrito.</p>
+                        </td>
+                    </tr>
+                }
+
             </tbody>
         </table>
 
         <div class="card-body border-top">
-            <a href="#" class="btn btn-primary float-md-right">
+            <a href="#" class="btn btn-primary float-md-right" disabled>
                 Procesar <i class="fa fa-chevron-right"></i>
             </a>
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continuar Comprando </a>
+            <a asp-area=""
+               asp-controller="Home"
+               asp-action="Index"
+               asp-route-fromSearchView="false"
+               class="btn btn-light">
+                <i class="fa fa-chevron-left"></i>
+                Continuar Comprando
+            </a>
         </div>
     </div> <!-- card.// -->
 
@@ -84,15 +111,15 @@
         <div class="card-body">
             <dl class="dlist-align">
                 <dt>Precio Total:</dt>
-                <dd class="text-right">₡568</dd>
+                <dd class="text-right">₡@((int)Model.Cart.SubTotal)</dd>
             </dl>
             <dl class="dlist-align">
                 <dt>Descuento:</dt>
-                <dd class="text-right">₡0</dd>
+                <dd class="text-right">₡@((int)Model.Cart.Discount)</dd>
             </dl>
             <dl class="dlist-align">
                 <dt>Total:</dt>
-                <dd class="text-right  h5"><strong>₡1,650</strong></dd>
+                <dd class="text-right  h5"><strong>₡@((int)Model.Cart.Total)</strong></dd>
             </dl>
             <hr>
             <p class="text-center mb-3">

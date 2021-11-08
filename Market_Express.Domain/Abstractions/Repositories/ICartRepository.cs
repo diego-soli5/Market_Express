@@ -8,5 +8,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
     {
         Task<int> GetArticlesCount(Guid userId);
         Task<int> GetOpenCountByArticleId(Guid articleId);
+        Task<Cart> GetCurrentByUserId(Guid userId);
     }
 }

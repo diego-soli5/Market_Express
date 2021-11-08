@@ -1,9 +1,13 @@
 ﻿using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.CustomEntities.Article;
+using Market_Express.Domain.CustomEntities.Cart;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
@@ -20,6 +24,28 @@ namespace Market_Express.Domain.Services
         public async Task<int> GetArticlesCount(Guid userId)
         {
             return await _unitOfWork.Cart.GetArticlesCount(userId);
+        }
+
+        public async Task<(CartBillingDetails, List<ArticleForCartDetails>)> GetCartDetails(Guid userId)
+        {
+            Cart oCart = await _unitOfWork.Cart.GetCurrentByUserId(userId);
+
+            if (oCart == null)
+                oCart = new();
+
+            var lstArticles = await _unitOfWork.Article.GetAllForCartDetails(userId);
+
+            CartBillingDetails oCartBillingDetails = new()
+            {
+                Id = oCart.Id,
+                ClientId = oCart.ClientId,
+                OpeningDate = oCart.OpeningDate,
+                Status = oCart.Status,
+                Discount = 0,
+                SubTotal = lstArticles.Select(a => a.Price * a.Quantity).Sum()
+            };
+
+            return (oCartBillingDetails, lstArticles);
         }
 
         public async Task<BusisnessResult> AddDetail(Guid articleId, Guid userId)
@@ -146,7 +172,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(oArticleFromDb.Status == EntityStatus.DESACTIVADO)
+            if (oArticleFromDb.Status == EntityStatus.DESACTIVADO)
             {
                 oResult.Message = "El artículo está desactivado.";
 

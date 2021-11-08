@@ -18,6 +18,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         private const string _Sp_Article_GetAllForSearch = "Sp_Article_GetAllForSearch";
         private const string _Sp_Article_GetMostPopular = "Sp_Article_GetMostPopular";
+        private const string _Sp_Article_GetAllForCartDetails = "Sp_Article_GetAllForCartDetails";
 
         public ArticleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -96,6 +97,37 @@ namespace Market_Express.Infrastructure.Data.Repositories
                     BarCode = oRow["BarCode"].ToString(),
                     Price = Convert.ToDecimal(oRow["Price"].ToString()),
                     Image = oRow["Image"] is DBNull ? null : oRow["Image"].ToString()
+                });
+            }
+
+            return lstArticles;
+        }
+
+        public async Task<List<ArticleForCartDetails>> GetAllForCartDetails(Guid userId)
+        {
+            List<ArticleForCartDetails> lstArticles = new();
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@userId",userId)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Article_GetAllForCartDetails, arrParams);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstArticles.Add(new ArticleForCartDetails
+                {
+                    Id = (Guid)oRow["Id"],
+                    Description = oRow["Description"].ToString(),
+                    BarCode = oRow["BarCode"].ToString(),
+                    Price = Convert.ToDecimal(oRow["Price"].ToString()),
+                    Image = oRow["Image"] is DBNull ? null : oRow["Image"].ToString(),
+                    Category = new Category
+                    {
+                        Name = oRow["CategoryName"].ToString()
+                    },
+                    Quantity = Convert.ToDecimal(oRow["Quantity"].ToString())
                 });
             }
 

@@ -13,5 +13,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
         IEnumerable<Article> GetAllActiveWithCategoryAsigned();
         Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId);
         Task<List<Article>> GetMostPopular(int? take = null);
+        Task<List<ArticleForCartDetails>> GetAllForCartDetails(Guid userId);
     }
 }

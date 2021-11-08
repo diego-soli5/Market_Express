@@ -4,6 +4,32 @@ GO
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS ARTICLE
 ---------------------------------------------------------------------------------------------------------------
+--Obtiene info de articulos para mostrar en la vista de detalles de articulos
+CREATE PROCEDURE Sp_Article_GetAllForCartDetails
+(
+	@userId UNIQUEIDENTIFIER = null
+)
+AS
+BEGIN
+	SELECT a.Id,
+		   a.Description,
+		   a.BarCode,
+		   a.Price,
+		   a.Image,
+		   ct.Name AS CategoryName,
+		   cd.Quantity
+	FROM Cart_Detail cd
+	INNER JOIN Article a
+	ON a.Id = cd.ArticleId
+	INNER JOIN Category ct
+	ON a.CategoryId = ct.Id
+	WHERE cd.CartId = (SELECT TOP 1 c.Id
+					   FROM Cart c
+					   INNER JOIN Client cl
+					   ON c.ClientId = cl.Id
+					   WHERE c.Status = 'ABIERTO'
+					   AND cl.AppUserId = @userId);
+END;
 
 -- Obtiene los articulos ordenados por popularidad con la opcion de obtener "x" cantidad únicamente
 CREATE PROCEDURE Sp_Article_GetMostPopular

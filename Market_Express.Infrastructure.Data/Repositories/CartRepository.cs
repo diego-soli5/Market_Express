@@ -1,9 +1,12 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -51,6 +54,13 @@ namespace Market_Express.Infrastructure.Data.Repositories
             iCount = int.Parse(drResult[0].ToString());
             
             return iCount;
+        }
+
+        public async Task<Cart> GetCurrentByUserId(Guid userId)
+        {
+            return await _dbEntity.Where(c => c.Client.AppUserId == userId &&
+                                              c.Status == CartStatus.ABIERTO)
+                                  .FirstOrDefaultAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Market_Express.Web.ViewModels.Cart.CartIndexViewModel
+@{
     ViewData["Title"] = "Carrito";
 }
 
@@ -19,7 +20,7 @@
 <section class="section-content padding-y">
     <div class="container">
         <div class="row" id="divCartDetails">
-            @{ await Html.RenderPartialAsync("_CartDetailsPartial"); }
+            @{ await Html.RenderPartialAsync("_CartDetailsPartial", Model); }
         </div>
     </div> <!-- container .//  -->
 </section>
