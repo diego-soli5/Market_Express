@@ -1,6 +1,8 @@
 ﻿using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Market_Express.Infrastructure.Data.Configurations
 {
@@ -14,10 +16,15 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
-            builder.Property(e => e.Status)
+           /* builder.Property(e => e.Status)
                 .IsRequired()
                 .HasMaxLength(9)
-                .IsUnicode(false);
+                .IsUnicode(false);*/
+
+            builder.Property(e => e.Status)
+                .IsRequired()
+                .HasConversion(e => e.ToString(),
+                                    e => (OrderStatus)Enum.Parse(typeof(OrderStatus), e));
 
             builder.Property(e => e.Total).HasColumnType("decimal(19, 2)");
 

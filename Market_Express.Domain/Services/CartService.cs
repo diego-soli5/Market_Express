@@ -155,7 +155,7 @@ namespace Market_Express.Domain.Services
             return oResult;
         }
 
-        public async Task<BusisnessResult> UpdateDetail(bool plus, Guid articleId, Guid userId)
+        public async Task<BusisnessResult> UpdateDetail(bool increaseQuantity, Guid articleId, Guid userId)
         {
             BusisnessResult oResult = new();
             Cart oNewCart = null;
@@ -208,7 +208,7 @@ namespace Market_Express.Domain.Services
 
             if (bMustUseNewCart)
             {
-                if (plus)
+                if (increaseQuantity)
                 {
                     oNewCartDetail = new(Guid.NewGuid(), oNewCart.Id, articleId, 1);
 
@@ -227,7 +227,7 @@ namespace Market_Express.Domain.Services
 
                 if (oCartDetailFromDb != null)
                 {
-                    if (plus)
+                    if (increaseQuantity)
                     {
                         oCartDetailFromDb.Quantity += 1;
 
@@ -260,7 +260,7 @@ namespace Market_Express.Domain.Services
                 }
                 else
                 {
-                    if (plus)
+                    if (increaseQuantity)
                     {
                         oNewCartDetail = new(Guid.NewGuid(), oCartFromDb.Id, articleId, 1);
 
@@ -271,6 +271,86 @@ namespace Market_Express.Domain.Services
                         oResult.Message = "El detalle se agregó al carrito.";
                     }
                 }
+            }
+
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                oResult.Success = await _unitOfWork.Save();
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
+
+            return oResult;
+        }
+
+        public async Task<BusisnessResult> DeleteDetail(Guid articleId, Guid userId)
+        {
+            BusisnessResult oResult = new();
+
+            var oArticleFromDb = await _unitOfWork.Article.GetByIdAsync(articleId);
+
+            if (oArticleFromDb == null)
+            {
+                oResult.Message = "El artículo no existe.";
+
+                return oResult;
+            }
+
+            if (oArticleFromDb.Status == EntityStatus.DESACTIVADO)
+            {
+                oResult.Message = "El artículo está desactivado.";
+
+                return oResult;
+            }
+
+            var oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(userId);
+
+            if (oUserFromDb == null)
+            {
+                oResult.Message = "El usuario no existe.";
+
+                return oResult;
+            }
+
+            Client oClient = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
+
+            if (oClient == null)
+            {
+                oResult.Message = "El cliente no existe.";
+
+                return oResult;
+            }
+
+            Cart oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClient.Id && cart.Status == CartStatus.ABIERTO);
+
+            if (oCartFromDb == null)
+            {
+                oResult.Message = "El detalle no existe.";
+
+                return oResult;
+            }
+
+            CartDetail oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
+        
+            if(oCartDetailFromDb != null)
+            {
+                _unitOfWork.CartDetail.Delete(oCartDetailFromDb);
+
+                oResult.Message = "Se eliminó el detalle del carrito.";
+            }
+            else
+            {
+                oResult.Message = "El detalle no existe.";
+
+                return oResult;
             }
 
             try

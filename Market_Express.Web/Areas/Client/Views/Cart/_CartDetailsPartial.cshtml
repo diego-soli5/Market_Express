@@ -67,7 +67,11 @@
                                 </div>
                             </td>
                             <td class="text-right">
-                                <a href="#" class="btn btn-light">Remover</a>
+                                <button data-article-id="@article.Id"
+                                        class="btn btn-light"
+                                        id="btnDelete">
+                                    Remover
+                                </button>
                             </td>
                         </tr>
                     }
@@ -85,9 +89,18 @@
         </table>
 
         <div class="card-body border-top">
-            <a href="#" class="btn btn-primary float-md-right" disabled>
-                Procesar <i class="fa fa-chevron-right"></i>
-            </a>
+            @if (Model?.Articles?.Count > 0)
+            {
+                <a href="#" class="btn btn-primary float-md-right">
+                    Procesar <i class="fa fa-chevron-right"></i>
+                </a>
+            }
+            else
+            {
+                <button class="btn btn-primary float-md-right" disabled>
+                    Procesar <i class="fa fa-chevron-right"></i>
+                </button>
+            }
             <a asp-area=""
                asp-controller="Home"
                asp-action="Index"

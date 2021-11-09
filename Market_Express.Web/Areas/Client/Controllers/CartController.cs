@@ -2,7 +2,6 @@
 using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Cart;
 using Market_Express.Domain.Abstractions.DomainServices;
-using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Web.Controllers;
 using Market_Express.Web.ViewModels.Cart;
 using Microsoft.AspNetCore.Authorization;
@@ -32,14 +31,18 @@ namespace Market_Express.Web.Areas.Client.Controllers
         {
             CartIndexViewModel oViewModel = new();
 
-            var tplCartDetails = await _cartService.GetCartDetails(CurrentUserId);
-
-            oViewModel.Cart = _mapper.Map<CartBillingDetailsDTO>(tplCartDetails.Item1);
-            oViewModel.Articles = tplCartDetails.Item2.Select(a => _mapper.Map<ArticleForCartDetailsDTO>(a)).ToList();
+            await CreateCartIndexViewModel(oViewModel);
 
             return View(oViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GenerateOrder()
+        {
+            return View();
+        }
+
+        #region API CALLS
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> AddDetail(Guid articleId)
@@ -54,14 +57,38 @@ namespace Market_Express.Web.Areas.Client.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> UpdateDetail(bool plus, Guid articleId)
+        public async Task<IActionResult> UpdateDetail(bool plus, Guid articleId, bool fromCartView)
         {
             if (!IsAuthenticated)
                 return Unauthorized();
 
             var oResult = await _cartService.UpdateDetail(plus, articleId, CurrentUserId);
 
-            return Ok(oResult);
+            if (!fromCartView)
+                return Ok(oResult);
+
+            if (oResult.Success)
+                return await PartialCartIndexResult();
+            else
+                return Ok(oResult);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> DeleteDetail(Guid articleId, bool fromCartView)
+        {
+            if (!IsAuthenticated)
+                return Unauthorized();
+
+            var oResult = await _cartService.DeleteDetail(articleId, CurrentUserId);
+
+            if (!fromCartView)
+                return Ok(oResult);
+
+            if (oResult.Success)
+                return await PartialCartIndexResult();
+            else
+                return Ok(oResult);
         }
 
         [HttpGet]
@@ -75,5 +102,25 @@ namespace Market_Express.Web.Areas.Client.Controllers
 
             return Content(iCount.ToString());
         }
+        #endregion
+
+        #region UTILITY METHODS
+        private async Task<IActionResult> PartialCartIndexResult()
+        {
+            CartIndexViewModel oViewModel = new();
+
+            await CreateCartIndexViewModel(oViewModel);
+
+            return PartialView("_CartDetailsPartial", oViewModel);
+        }
+
+        private async Task CreateCartIndexViewModel(CartIndexViewModel oViewModel)
+        {
+            var tplCartDetails = await _cartService.GetCartDetails(CurrentUserId);
+
+            oViewModel.Cart = _mapper.Map<CartBillingDetailsDTO>(tplCartDetails.Item1);
+            oViewModel.Articles = tplCartDetails.Item2.Select(a => _mapper.Map<ArticleForCartDetailsDTO>(a)).ToList();
+        }
+        #endregion
     }
 }

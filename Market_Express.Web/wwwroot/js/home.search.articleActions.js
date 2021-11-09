@@ -91,7 +91,7 @@ async function eventMinus(e) {
     let fetchResponse;
     let json;
 
-    const url = `/Client/Cart/UpdateDetail?plus=false&articleId=${articleId}`;
+    const url = `/Client/Cart/UpdateDetail?plus=false&fromCartView=false&articleId=${articleId}`;
 
     this.disabled = true;
 
@@ -145,7 +145,7 @@ async function eventPlus(e) {
     let fetchResponse;
     let json;
 
-    const url = `/Client/Cart/UpdateDetail?plus=true&articleId=${articleId}`;
+    const url = `/Client/Cart/UpdateDetail?plus=true&fromCartView=false&articleId=${articleId}`;
 
     this.disabled = true;
 

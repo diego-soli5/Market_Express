@@ -52,7 +52,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
             var drResult = dtResult.Rows[0];
 
             iCount = int.Parse(drResult[0].ToString());
-            
+
             return iCount;
         }
 
@@ -60,6 +60,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         {
             return await _dbEntity.Where(c => c.Client.AppUserId == userId &&
                                               c.Status == CartStatus.ABIERTO)
+                                  .OrderBy(c => c.OpeningDate)
                                   .FirstOrDefaultAsync();
         }
     }

@@ -9,8 +9,9 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface ICartService
     {
         Task<int> GetArticlesCount(Guid userId);
-        Task<BusisnessResult> UpdateDetail(bool plus, Guid articleId, Guid userId);
         Task<BusisnessResult> AddDetail(Guid articleId, Guid userId);
+        Task<BusisnessResult> UpdateDetail(bool plus, Guid articleId, Guid userId);
+        Task<BusisnessResult> DeleteDetail(Guid articleId, Guid userId);
         Task<(CartBillingDetails, List<ArticleForCartDetails>)> GetCartDetails(Guid userId);
     }
 }
