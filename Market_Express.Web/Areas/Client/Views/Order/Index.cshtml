@@ -17,53 +17,138 @@
     </div>
 </section>
 <!-- ========================= SECTION INTRO END// ========================= -->
-
+<!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
     <div class="container">
 
-        @if (TempData["OrderMessage"] != null)
-        {
-            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
-                <p class="mb-0">
-                    @TempData["OrderMessage"].ToString()
-                </p>
-            </div>
-        }
+        <div class="row">
+            <main class="col-md-12">
 
-        <div class="card">
-            <div class="card-header bg-primary">
-                <div>
-                    <h4 class="text-white d-inline">Gestionar</h4>
-                    <i type="button"
-                       class="fas fa-info-circle text-white d-inline"
-                       data-trigger="focus"
-                       tabindex="0"
-                       data-toggle="popover"
-                       title="Información"
-                       data-content="Pulsa sobre cualquier artículo para obtener más detalles.">
-                    </i>
-                </div>
-                <div class="h4"></div>
-            </div>
-            <div class="card-body">
+                <article class="card mb-3">
+                    <div class="card-body">
 
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay pedidos disponibles.</p>
-                    </div>
-                </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <figure class="item-feature">
+                                    <span class="text-primary"><i class="fa fa-2x fa-truck"></i></span>
+                                    <figcaption class="pt-3">
+                                        <h5 class="title">Entrega rápida</h5>
+                                        <p class="text-justify">Tus pedidos serán entregados en menos de 24 horas sin ningún costo adicional (Sujeto a cobertura y disponibilidad).</p>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-md-4">
+                                <figure class="item-feature">
+                                    <span class="text-primary"><i class="fa fa-2x fa-shopping-basket"></i></span>
+                                    <figcaption class="pt-3">
+                                        <h5 class="title">Pago contra entrega</h5>
+                                        <p class="text-justify">
+                                            Realiza tu pago en efectivo al recibir tus productos o por medio de una transferencia SINPE al 87389387.
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-md-4">
+                                <figure class="item-feature">
+                                    <span class="text-primary"><i class="fa fa-2x fa-check-double"></i></span>
+                                    <figcaption class="pt-3">
+                                        <h5 class="title">Calidad al mejor precio</h5>
+                                        <p class="text-justify">
+                                            Garantizamos la calidad de nuestros productos a precio competitivos.
+                                        </p>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 d-flex mb-3 mb-md-0">
+                                <div class="align-self-center mx-auto" align="center">
+                                    <button class="btn btn-danger btn-lg">Cancelar más reciente</button>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <article class="card-group">
+                                    <figure class="card bg">
+                                        <div class="p-3">
+                                            <h5 class="card-title">38</h5>
+                                            <span>Pendientes</span>
+                                        </div>
+                                    </figure>
+                                    <figure class="card bg">
+                                        <div class="p-3">
+                                            <h5 class="card-title">5</h5>
+                                            <span>Terminados</span>
+                                        </div>
+                                    </figure>
+                                    <figure class="card bg">
+                                        <div class="p-3">
+                                            <h5 class="card-title">12</h5>
+                                            <span>Cancelados</span>
+                                        </div>
+                                    </figure>
+                                </article>
+                            </div>
+                        </div>
 
-            </div>
-            <div class="card-footer">
-                <div class="float-right">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
-                </div>
-            </div>
+
+                    </div> <!-- card-body .// -->
+                </article> <!-- card.// -->
+
+                <article class="card  mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Pedidos Recientes</h5>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <figure class="itemside  mb-3">
+                                    <div class="aside"><img src="~/img/abarrotes.jpg" class="border img-sm"></div>
+                                    <figcaption class="info">
+                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
+                                        <p>Número de Pedido: 4</p>
+                                        <span class="text-warning">Pendiente</span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                            <div class="col-md-4">
+                                <figure class="itemside  mb-3">
+                                    <div class="aside"><img src="~/img/abarrotes.jpg" class="border img-sm"></div>
+                                    <figcaption class="info">
+                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
+                                        <p>Número de Pedido: 2</p>
+                                        <span class="text-success">Terminado</span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                            <div class="col-md-4">
+                                <figure class="itemside mb-3">
+                                    <div class="aside"><img src="~/img/abarrotes.jpg" class="border img-sm"></div>
+                                    <figcaption class="info">
+                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
+                                        <p>Número de Pedido: 1</p>
+                                        <span class="text-danger">Cancelado</span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+
+                        <a href="#" class="btn btn-outline-primary">Ver Todos</a>
+                    </div> <!-- card-body .// -->
+                </article> <!-- card.// -->
+
+            </main> <!-- col.// -->
         </div>
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<section class="section-name bg padding-y">
+    <div class="container">
+        <h6>Cancelación de Pedidos</h6>
+        <p>
+            No puedes cancelar pedidos que tengan más de 5 minutos de haber sido realizados.
+        </p>
     </div>
 </section>
 

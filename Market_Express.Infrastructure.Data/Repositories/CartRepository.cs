@@ -68,7 +68,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             var dtResult = await ExecuteQuery(_Sp_Cart_GetCurrentByUserId, arrParams);
 
-            if (dtResult?.Rows[0] != null)
+            if (dtResult?.Rows?.Count > 0)
             {
                 var drResult = dtResult.Rows[0];
 
@@ -76,7 +76,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 oCart.Id = (Guid)drResult["Id"];
                 oCart.ClientId = (Guid)drResult["ClientId"];
                 oCart.OpeningDate = Convert.ToDateTime(drResult["OpeningDate"]);
-                oCart.Status = (CartStatus)Enum.Parse(typeof(CartStatus), drResult["Status"].ToString()),
+                oCart.Status = (CartStatus)Enum.Parse(typeof(CartStatus), drResult["Status"].ToString());
             }
 
             return oCart;

@@ -309,6 +309,7 @@ CREATE TABLE [dbo].[Order](
 	[ClientId] [uniqueidentifier] NOT NULL,
 	[CreationDate] [datetime] NOT NULL,
 	[Total] [decimal](19, 2) NOT NULL,
+	[OrderNumber] [int] IDENTITY(1,1) NOT NULL,
 	[Status] [varchar](9) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (

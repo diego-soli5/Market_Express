@@ -16,10 +16,14 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
-           /* builder.Property(e => e.Status)
-                .IsRequired()
-                .HasMaxLength(9)
-                .IsUnicode(false);*/
+            builder.Property(e => e.OrderNumber)
+                    .ValueGeneratedOnAdd()
+                    .IsRequired();
+
+            /* builder.Property(e => e.Status)
+                 .IsRequired()
+                 .HasMaxLength(9)
+                 .IsUnicode(false);*/
 
             builder.Property(e => e.Status)
                 .IsRequired()
