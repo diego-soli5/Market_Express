@@ -91,7 +91,10 @@
         <div class="card-body border-top">
             @if (Model?.Articles?.Count > 0)
             {
-                <a href="#" class="btn btn-primary float-md-right">
+                <a asp-area="Client"
+                   asp-controller="Cart"
+                   asp-action="GenerateOrder"
+                   class="btn btn-primary float-md-right">
                     Procesar <i class="fa fa-chevron-right"></i>
                 </a>
             }

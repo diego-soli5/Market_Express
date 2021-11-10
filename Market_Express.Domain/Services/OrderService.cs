@@ -62,7 +62,7 @@ namespace Market_Express.Domain.Services
 
             lstOrderDetail = new();
 
-            foreach (var cartDetail in lstCartDetailsFromDb)
+            foreach (var cartDetail in lstCartDetailsFromDb.ToList())
             {
                 var oArticleAux = await _unitOfWork.Article.GetByIdAsync(cartDetail.ArticleId);
 
@@ -81,12 +81,12 @@ namespace Market_Express.Domain.Services
             }
 
             oOrder.Total = dcTotal;
+            oOrder.OrderDetails = lstOrderDetail;
 
             oCart.Status = CartStatus.CERRADO;
 
-            _unitOfWork.Cart.Update(oCart);
             _unitOfWork.Order.Create(oOrder);
-            _unitOfWork.OrderDetail.Create(lstOrderDetail);
+            _unitOfWork.Cart.Update(oCart);
 
             try
             {
@@ -104,6 +104,8 @@ namespace Market_Express.Domain.Services
             }
 
             oResult.Message = "El pedido se generó correctamente!";
+
+            oResult.Data = oOrder.Id;
 
             return oResult;
         }

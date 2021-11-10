@@ -161,35 +161,24 @@ CREATE PROCEDURE Sp_Cart_GetArticlesCount
 )
 AS
 BEGIN
-	DECLARE @vCount		INT = 0;
-	DECLARE @vCartId	UNIQUEIDENTIFIER;
-
-	SET @vCartId = (SELECT TOP 1 ca.Id 
-					FROM Cart ca
-					INNER JOIN Client cl
-					ON ca.ClientId = cl.Id
-					WHERE cl.AppUserId = @UserId);
-
-	IF @vCartId IS NOT NULL 
+	DECLARE @count INT = 0;
+	DECLARE @cartId UNIQUEIDENTIFIER = (SELECT TOP 1 c.Id
+										FROM Cart c
+										INNER JOIN Client cl
+										ON cl.Id = c.ClientId
+										WHERE cl.AppUserId = @UserId
+										AND (SELECT MAX(OpeningDate) 
+											 FROM Cart 
+											 WHERE ClientId = cl.Id) = c.OpeningDate);
+	
+	IF (SELECT Status FROM Cart WHERE Id = @cartId) = 'ABIERTO'
 	BEGIN
-		----
-		IF (SELECT Status FROM Cart WHERE Id = @vCartId) = 'ABIERTO'
-		BEGIN
-			SET @vCount = (SELECT COUNT(1) FROM Cart_Detail WHERE CartId = @vCartId);
-		END
-		----
-		/*
-		IF (SELECT Status FROM Cart WHERE Id = @vCartId) = 'ABIERTO'
-		BEGIN
-			IF (SELECT COUNT(1) FROM Cart_Detail WHERE CartId = @vCartId) > 0
-			BEGIN
-				SET @vCount = (SELECT SUM(Quantity) FROM Cart_Detail WHERE CartId = @vCartId);
-			END
-		END
-		*/
-	END 
-
-	SELECT @vCount;
+		SET @count = (SELECT COUNT(1) 
+					  FROM Cart_Detail cd 
+					  WHERE cd.CartId = @cartId);
+	END
+	 
+	SELECT @count;
 END;
 GO
 

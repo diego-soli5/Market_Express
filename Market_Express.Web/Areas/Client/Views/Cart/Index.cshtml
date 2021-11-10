@@ -1,6 +1,7 @@
 ﻿@model Market_Express.Web.ViewModels.Cart.CartIndexViewModel
 @{
     ViewData["Title"] = "Carrito";
+
 }
 
 <!-- ========================= SECTION PAGETOP ========================= -->
@@ -19,6 +20,20 @@
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
     <div class="container">
+
+        @if (TempData["OrderGenerationResult"] != null)
+        {
+            <div class="alert alert-dismissible fade show alert-danger mb-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading"><i class="fas fa-times"></i> Hubo un problema..</h4>
+                <p class="mb-0">
+                    @TempData["OrderGenerationResult"].ToString()
+                </p>
+            </div>
+        }
+
         <div class="row" id="divCartDetails">
             @{ await Html.RenderPartialAsync("_CartDetailsPartial", Model); }
         </div>
@@ -35,6 +50,6 @@
     </div><!-- container // -->
 </section>
 
-@section Scripts{ 
+@section Scripts{
     <script src="~/js/cart.index.js"></script>
 }

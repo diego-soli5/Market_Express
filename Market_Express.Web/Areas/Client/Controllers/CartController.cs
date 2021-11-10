@@ -17,12 +17,15 @@ namespace Market_Express.Web.Areas.Client.Controllers
     public class CartController : BaseController
     {
         private readonly ICartService _cartService;
+        private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
 
         public CartController(ICartService cartService,
+                              IOrderService orderService,
                               IMapper mapper)
         {
             _cartService = cartService;
+            _orderService = orderService;
             _mapper = mapper;
         }
 
@@ -39,7 +42,14 @@ namespace Market_Express.Web.Areas.Client.Controllers
         [HttpGet]
         public async Task<IActionResult> GenerateOrder()
         {
-            return View();
+            var oResult = await _orderService.Generate(CurrentUserId);
+
+            TempData["OrderGenerationResult"] = oResult.Message;
+
+            if (!oResult.Success)
+                return RedirectToAction(nameof(Index));
+
+            return Redirect($"/Client/Order/Details/{oResult.Data}");
         }
 
         #region API CALLS
