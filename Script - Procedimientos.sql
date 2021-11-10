@@ -154,6 +154,26 @@ GO
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS CART
 ---------------------------------------------------------------------------------------------------------------
+--Obtiene el carrito actual del usuario
+CREATE PROCEDURE Sp_Cart_GetCurrentByUserId
+(
+	@UserId UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+	SELECT c.Id,
+		   c.ClientId,
+		   c.OpeningDate,
+		   c.Status
+	FROM Cart c
+	INNER JOIN Client cl
+	ON c.ClientId = cl.Id
+	AND cl.AppUserId = @userId
+	WHERE (SELECT MAX(OpeningDate) FROM Cart WHERE ClientId = cl.Id) = c.OpeningDate
+	AND c.Status = 'ABIERTO';
+END;
+GO
+
 --Obtiene la cantidad de articulos en el carrito
 CREATE PROCEDURE Sp_Cart_GetArticlesCount
 (

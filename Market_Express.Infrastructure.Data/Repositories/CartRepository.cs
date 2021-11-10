@@ -15,6 +15,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         private const string _Sp_Cart_GetArticlesCount = "Sp_Cart_GetArticlesCount";
         private const string _Sp_Cart_GetOpenCountByArticleId = "Sp_Cart_GetOpenCountByArticleId";
+        private const string _Sp_Cart_GetCurrentByUserId = "Sp_Cart_GetCurrentByUserId";
 
         public CartRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -58,10 +59,27 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
         public async Task<Cart> GetCurrentByUserId(Guid userId)
         {
-            return await _dbEntity.Where(c => c.Client.AppUserId == userId &&
-                                              c.Status == CartStatus.ABIERTO)
-                                  .OrderBy(c => c.OpeningDate)
-                                  .FirstOrDefaultAsync();
+            Cart oCart = null;
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@userId",userId)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Cart_GetCurrentByUserId, arrParams);
+
+            if (dtResult?.Rows[0] != null)
+            {
+                var drResult = dtResult.Rows[0];
+
+                oCart = new();
+                oCart.Id = (Guid)drResult["Id"];
+                oCart.ClientId = (Guid)drResult["ClientId"];
+                oCart.OpeningDate = Convert.ToDateTime(drResult["OpeningDate"]);
+                oCart.Status = (CartStatus)Enum.Parse(typeof(CartStatus), drResult["Status"].ToString()),
+            }
+
+            return oCart;
         }
     }
 }
