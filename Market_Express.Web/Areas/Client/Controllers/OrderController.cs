@@ -53,6 +53,20 @@ namespace Market_Express.Web.Areas.Client.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult GetMyOrdersTable(MyOrdersQueryFilter filters)
+        {
+            MyOrdersViewModel oViewModel = new();
+
+            var tplOrders = GetOrderDTOList(filters);
+
+            oViewModel.Orders = tplOrders.Item1;
+            oViewModel.Metadata = tplOrders.Item2;
+            oViewModel.Filters = filters;
+
+            return PartialView("_MyOrdersTablePartial", oViewModel);
+        }
+
         #region UTILITY METHODS
         private async Task<List<RecentOrderDTO>> GetRecentOrderDTOList()
         {

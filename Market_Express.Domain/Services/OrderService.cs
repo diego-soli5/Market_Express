@@ -38,13 +38,15 @@ namespace Market_Express.Domain.Services
             var lstOrders = _unitOfWork.Order.GetAllByUserId(userId);
 
             if (filters.StartDate != null)
-                lstOrders = lstOrders.Where(o => o.CreationDate >= filters.StartDate);
+                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
 
             if (filters.EndDate != null)
-                lstOrders = lstOrders.Where(o => o.CreationDate <= filters.StartDate);
+                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) <= DateTimeUtility.Truncate(filters.EndDate.Value));
 
             if (filters.Status != null)
                 lstOrders = lstOrders.Where(o => o.Status == filters.Status);
+
+            lstOrders = lstOrders.OrderByDescending(o => o.CreationDate).AsEnumerable();
 
             var pagedOrders = PagedList<Order>.Create(lstOrders, filters.PageNumber.Value, filters.PageSize.Value);
 
