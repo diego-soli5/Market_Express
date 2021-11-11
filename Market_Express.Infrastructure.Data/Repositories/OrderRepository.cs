@@ -1,13 +1,73 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
+using Market_Express.Domain.CustomEntities.Order;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
 {
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
+        private const string _Sp_Order_GetStatsByUserId = "Sp_Order_GetStatsByUserId";
+        private const string _Sp_Order_GetRecentOrdersByUserId = "Sp_Order_GetRecentOrdersByUserId";
+
         public OrderRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
         { }
+
+        public async Task<OrderStats> GetStatsByUserId(Guid userId)
+        {
+            OrderStats oOrderStats = new();
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@userId",userId)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Order_GetStatsByUserId, arrParams);
+
+            if (dtResult?.Rows?.Count > 0)
+            {
+                var drResult = dtResult.Rows[0];
+
+                oOrderStats.Pending = int.Parse(drResult[0].ToString());
+                oOrderStats.Finished = int.Parse(drResult[1].ToString());
+                oOrderStats.Canceled = int.Parse(drResult[2].ToString());
+            }
+
+            return oOrderStats;
+        }
+
+        public async Task<List<RecentOrder>> GetRecentOrdersByUserId(Guid userId, int? take = null)
+        {
+            List<RecentOrder> lstRecentOrders = new();
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@userId",userId),
+                new SqlParameter("@take",take)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Order_GetRecentOrdersByUserId, arrParams);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstRecentOrders.Add(new RecentOrder
+                {
+                    Id = (Guid)oRow["Id"],
+                    CreationDate = (DateTime)oRow["CreationDate"],
+                    OrderNumber = int.Parse(oRow["OrderNumber"].ToString()),
+                    Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), oRow["Status"].ToString()),
+                    MostRequestedArticleImage = oRow["MostRequestedArticleImage"].ToString()
+                });
+            }
+
+            return lstRecentOrders;
+        }
     }
 }

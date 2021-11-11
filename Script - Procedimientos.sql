@@ -142,7 +142,11 @@ BEGIN
 		   p.Name,
 		   p.Description,
 		   p.Type
-	FROM AppUser u, AppUser_Role ur, Role r, Role_Permission rp, Permission p
+	FROM AppUser u,
+		 AppUser_Role ur,
+		 Role r,
+		 Role_Permission rp,
+		 Permission p
 	WHERE ur.AppUserId = @Id
 	AND ur.RoleId = r.Id
 	AND ur.RoleId = rp.RoleId
@@ -374,6 +378,60 @@ BEGIN
 	WHERE c.Status = 'ACTIVADO'
 	ORDER BY ArticlesCount DESC;
 
+END;
+GO
+
+---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS ORDER
+---------------------------------------------------------------------------------------------------------------
+--Obtiene estadisticas de pedidos por id de usuario
+CREATE PROCEDURE Sp_Order_GetStatsByUserId
+(
+	@userId UNIQUEIDENTIFIER = NULL
+)
+AS
+BEGIN
+	SELECT (SELECT COUNT(1) FROM [Order] o WHERE o.ClientId = c.Id AND o.Status = 'PENDIENTE') pending,
+		   (SELECT COUNT(1) FROM [Order] o WHERE o.ClientId = c.Id AND o.Status = 'TERMINADO') finished,
+	       (SELECT COUNT(1) FROM [Order] o WHERE o.ClientId = c.Id AND o.Status = 'CANCELADO') canceled
+	FROM Client c
+	INNER JOIN AppUser ap
+	ON c.AppUserId = ap.Id
+	WHERE ap.Id = @userId;
+END;
+GO
+
+--Obtiene ordenes recientes por id de usuario
+CREATE PROCEDURE Sp_Order_GetRecentOrdersByUserId
+(
+	@userId UNIQUEIDENTIFIER = NULL,
+	@take INT = NULL
+)
+AS
+BEGIN
+	SELECT o.Id,
+	   o.CreationDate,
+	   o.OrderNumber,
+	   o.Status,
+	   (SELECT a.Image
+	    FROM Article a
+		WHERE a.Id = (SELECT TOP 1 ArticleId
+					  FROM Order_Detail
+					  WHERE OrderId = o.Id
+					  ORDER BY Quantity DESC)) MostRequestedArticleImage
+	FROM [Order] o
+	INNER JOIN Client cl
+	ON cl.Id = o.ClientId
+	INNER JOIN AppUser ap
+	ON ap.Id = cl.AppUserId
+	WHERE ap.Id = @userId
+	ORDER BY o.CreationDate DESC
+	OFFSET 0 ROWS
+	FETCH NEXT COALESCE(@take,(SELECT COUNT(1)
+							   FROM [Order] o
+							   INNER JOIN Client cl
+							   ON o.ClientId = cl.Id
+							   WHERE cl.AppUserId = @userId)) ROWS ONLY;
 END;
 GO
 
