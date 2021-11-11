@@ -1,0 +1,63 @@
+﻿@model Market_Express.Web.ViewModels.Order.MyOrdersViewModel
+
+<table class="table table-sm table-hover table-resposive">
+    <thead>
+        <tr class="small text-uppercase font-weight-bold">
+            <th>Número de Pedido</th>
+            <th>Fecha de Pedido</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th class="text-center">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Orders?.Count > 0)
+        {
+            foreach (var order in Model.Orders)
+            {
+                string textClass = "text-primary";
+
+                if (order.Status == OrderStatus.PENDIENTE)
+                {
+                    textClass = "text-warning";
+                }
+                else if (order.Status == OrderStatus.CANCELADO)
+                {
+                    textClass = "text-danger";
+                }
+
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td>@order.CreationDate.ToShortDateString()</td>
+                    <td>₡@order.Total</td>
+                    <td class="text-capitalize-first @textClass">@order.Status.ToString()</td>
+                    <td class="text-center">
+                        <a asp-area="Client"
+                           asp-controller="Order"
+                           asp-action="Details"
+                           asp-route-id="@order.Id"
+                           class="btn btn-success btn-sm text-white"
+                           title="Detalles">
+                            <i class="fas fa-list-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    <p class="text-center text-danger">No hay registro de pedidos.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model?.Orders?.Count > 0)
+{
+    <div>
+        @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
+    </div>
+}

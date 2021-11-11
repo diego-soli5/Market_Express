@@ -1,4 +1,4 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.Order.MyOrdersViewModel
 @{
     ViewData["Title"] = "Mis Pedidos";
 }
@@ -80,19 +80,19 @@
                                             <article class="card-group">
                                                 <figure class="card bg">
                                                     <div class="p-3">
-                                                        <h5 class="card-title">38</h5>
+                                                        <h5 class="card-title">@Model.OrderStats.Pending</h5>
                                                         <span>Pendientes</span>
                                                     </div>
                                                 </figure>
                                                 <figure class="card bg">
                                                     <div class="p-3">
-                                                        <h5 class="card-title">5</h5>
+                                                        <h5 class="card-title">@Model.OrderStats.Finished</h5>
                                                         <span>Terminados</span>
                                                     </div>
                                                 </figure>
                                                 <figure class="card bg">
                                                     <div class="p-3">
-                                                        <h5 class="card-title">12</h5>
+                                                        <h5 class="card-title">@Model.OrderStats.Canceled</h5>
                                                         <span>Cancelados</span>
                                                     </div>
                                                 </figure>
@@ -104,38 +104,53 @@
                                     <h5 class="card-title mb-4">Pedidos Recientes</h5>
 
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <figure class="itemside  mb-3">
-                                                <div class="aside"><img src="~/img/abarrotes.jpg" class="border img-sm"></div>
-                                                <figcaption class="info">
-                                                    <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-                                                    <p>Número de Pedido: 4</p>
-                                                    <span class="text-warning">Pendiente</span>
-                                                </figcaption>
-                                            </figure>
-                                        </div> <!-- col.// -->
-                                        <div class="col-md-4">
-                                            <figure class="itemside  mb-3">
-                                                <div class="aside"><img src="~/img/abarrotes.jpg" class="border img-sm"></div>
-                                                <figcaption class="info">
-                                                    <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-                                                    <p>Número de Pedido: 2</p>
-                                                    <span class="text-success">Terminado</span>
-                                                </figcaption>
-                                            </figure>
-                                        </div> <!-- col.// -->
-                                        <div class="col-md-4">
-                                            <figure class="itemside mb-3">
-                                                <div class="aside"><img src="~/img/abarrotes.jpg" class="border img-sm"></div>
-                                                <figcaption class="info">
-                                                    <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-                                                    <p>Número de Pedido: 1</p>
-                                                    <span class="text-danger">Cancelado</span>
-                                                </figcaption>
-                                            </figure>
-                                        </div> <!-- col.// -->
-                                    </div> <!-- row.// -->
-                                </div> <!-- card-body .// -->
+                                        @if (Model.RecentOrders.Count > 0)
+                                        {
+                                            @foreach (var order in Model.RecentOrders)
+                                            {
+                                                string textClass = "text-primary";
+
+                                                if (order.Status == OrderStatus.PENDIENTE)
+                                                {
+                                                    textClass = "text-warning";
+                                                }
+                                                else if (order.Status == OrderStatus.CANCELADO)
+                                                {
+                                                    textClass = "text-danger";
+                                                }
+
+                                                string src = order.MostRequestedArticleImage != null
+                                                                            ? @Url.Action("GetImage", "Resource", new { area = "", n = order.MostRequestedArticleImage })
+                                                                            : "/img/NotAvailable.png";
+
+                                                <div class="col-md-4">
+                                                    <figure class="itemside  mb-3">
+                                                        <a asp-area="Client"
+                                                           asp-controller="Order"
+                                                           asp-action="Details"
+                                                           asp-route-id="@order.Id"
+                                                           class="aside">
+                                                            <img src="@src" class="border img-sm">
+                                                        </a>
+                                                        <figcaption class="info">
+                                                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> @order.CreationDate.ToShortDateString()</time>
+                                                            <p>Número de Pedido: @order.OrderNumber</p>
+                                                            <span class="@textClass text-capitalize-first">@order.Status.ToString()</span>
+                                                        </figcaption>
+                                                    </figure>
+                                                </div>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-12">
+                                                <p class="text-danger">No hay pedidos recientes.</p>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
@@ -143,11 +158,13 @@
                                     <h4>Todos los Pedidos</h4>
                                     <hr />
                                     <div>
-                                        <form asp-area="Admin" asp-controller="Article" asp-action="Index" method="post" class="row" id="frmTable">
+                                        <form asp-area="Client" asp-controller="Order" asp-action="Index" method="get" class="row" id="frmTable">
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label class="font-weight-bold">Fecha Inicial</label>
                                                     <input type="date"
+                                                           asp-for="Filters.StartDate"
+                                                           name="@(nameof(Model.Filters.StartDate))"
                                                            class="form-control-original-small" />
                                                 </div>
                                             </div>
@@ -155,7 +172,8 @@
                                                 <div class="form-group">
                                                     <label class="font-weight-bold">Fecha Final</label>
                                                     <input type="date"
-                                                           name=""
+                                                           asp-for="Filters.EndDate"
+                                                           name="@(nameof(Model.Filters.EndDate))"
                                                            class="form-control-original-small" />
                                                 </div>
                                             </div>
@@ -164,7 +182,7 @@
                                                 <div class="form-group">
                                                     <label class="font-weight-bold">Estado</label>
                                                     <select asp-items="Html.GetEnumSelectList<OrderStatus>()"
-                                                            name=""
+                                                            name="@(nameof(Model.Filters.Status))"
                                                             class="form-control-original-small">
                                                         <option>TODOS</option>
                                                     </select>
@@ -173,40 +191,13 @@
 
                                             <div class="col-md-3 d-flex">
                                                 <div class="align-self-center mx-auto mb-3 mb-md-0" style=" width: 120px;">
-                                                    <button class="btn btn-primary btn-block">Filtrar</button>
+                                                    <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                     <div id="divTableAllOrders">
-                                        <table class="table table-sm table-hover table-resposive">
-                                            <thead>
-                                                <tr class="small text-uppercase font-weight-bold">
-                                                    <th>Número de Pedido</th>
-                                                    <th>Fecha de Pedido</th>
-                                                    <th>Total</th>
-                                                    <th>Estado</th>
-                                                    <th class="text-center">Opciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>24/02/21</td>
-                                                    <td>₡500</td>
-                                                    <td>Pendiente</td>
-                                                    <td class="text-center">
-                                                        <a asp-area="Client"
-                                                           asp-controller="Order"
-                                                           asp-action="Details"
-                                                           asp-route-id="1111"
-                                                           class="btn btn-success btn-sm text-white"
-                                                           title="Detalles"><i class="fas fa-list-alt"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        @{ await Html.RenderPartialAsync("_MyOrdersTablePartial", Model); }
                                     </div>
                                 </div>
                             </div>
@@ -235,36 +226,3 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-@*
-    <!-- ========================= SECTION CONTENT ========================= -->
-    <section class="section-content padding-y">
-        <div class="container">
-
-            <div class="row">
-                <main class="col-md-12">
-
-                    <article class="card mb-3">
-                    </article> <!-- card.// -->
-
-                    <article class="card  mb-3">
-                    </article> <!-- card.// -->
-
-                </main> <!-- col.// -->
-            </div>
-
-        </div> <!-- container .//  -->
-    </section>
-    <!-- ========================= SECTION CONTENT END// ========================= -->
-*@
