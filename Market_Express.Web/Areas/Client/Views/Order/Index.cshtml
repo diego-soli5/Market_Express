@@ -73,82 +73,19 @@
                                     <div class="row">
                                         <div class="col-md-4 d-flex mb-3 mb-md-0">
                                             <div class="align-self-center mx-auto" align="center">
-                                                <button class="btn btn-danger btn-lg">Cancelar más reciente</button>
+                                                <button class="btn btn-danger btn-lg" id="btnCancelRecent">Cancelar más reciente</button>
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <article class="card-group">
-                                                <figure class="card bg">
-                                                    <div class="p-3">
-                                                        <h5 class="card-title">@Model.OrderStats.Pending</h5>
-                                                        <span>Pendientes</span>
-                                                    </div>
-                                                </figure>
-                                                <figure class="card bg">
-                                                    <div class="p-3">
-                                                        <h5 class="card-title">@Model.OrderStats.Finished</h5>
-                                                        <span>Terminados</span>
-                                                    </div>
-                                                </figure>
-                                                <figure class="card bg">
-                                                    <div class="p-3">
-                                                        <h5 class="card-title">@Model.OrderStats.Canceled</h5>
-                                                        <span>Cancelados</span>
-                                                    </div>
-                                                </figure>
-                                            </article>
+                                        <div class="col-md-8" id="divOrderStats">
+                                            @{ await Html.RenderPartialAsync("_MyOrdersStatsPartial",Model.OrderStats); }
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title mb-4">Pedidos Recientes</h5>
 
-                                    <div class="row">
-                                        @if (Model.RecentOrders.Count > 0)
-                                        {
-                                            @foreach (var order in Model.RecentOrders)
-                                            {
-                                                string textClass = "text-primary";
-
-                                                if (order.Status == OrderStatus.PENDIENTE)
-                                                {
-                                                    textClass = "text-warning";
-                                                }
-                                                else if (order.Status == OrderStatus.CANCELADO)
-                                                {
-                                                    textClass = "text-danger";
-                                                }
-
-                                                string src = order.MostRequestedArticleImage != null
-                                                                            ? @Url.Action("GetImage", "Resource", new { area = "", n = order.MostRequestedArticleImage })
-                                                                            : "/img/NotAvailable.png";
-
-                                                <div class="col-md-4">
-                                                    <figure class="itemside  mb-3">
-                                                        <a asp-area="Client"
-                                                           asp-controller="Order"
-                                                           asp-action="Details"
-                                                           asp-route-id="@order.Id"
-                                                           class="aside">
-                                                            <img src="@src" class="border img-sm">
-                                                        </a>
-                                                        <figcaption class="info">
-                                                            <time class="text-muted"><i class="fa fa-calendar-alt"></i> @order.CreationDate.ToShortDateString()</time>
-                                                            <p>N° de Pedido: @order.OrderNumber</p>
-                                                            <span class="@textClass text-capitalize-first">@order.Status.ToString()</span>
-                                                        </figcaption>
-                                                    </figure>
-                                                </div>
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            <div class="col-md-12">
-                                                <p class="text-danger">No hay pedidos recientes.</p>
-                                            </div>
-                                        }
-
+                                    <div class="row" id="divMostRecentOrders">
+                                        @{ await Html.RenderPartialAsync("_MyOrdersRecentPartial", Model.RecentOrders); }
                                     </div>
                                 </div>
                             </div>

@@ -14,5 +14,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         PagedList<Order> GetAllByUserId(Guid userId, MyOrdersQueryFilter filters);
         Task<List<RecentOrder>> GetRecentOrdersByUserId(Guid userId);
         Task<OrderStats> GetOrderStatsByUserId(Guid userId);
+        Task<BusisnessResult> CancelMostRecent(Guid userId);
     }
 }

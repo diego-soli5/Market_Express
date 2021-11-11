@@ -63,6 +63,62 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.Order.GetStatsByUserId(userId);
         }
 
+        public async Task<BusisnessResult> CancelMostRecent(Guid userId)
+        {
+            BusisnessResult oResult = new();
+
+            var oClientFromDb = await _unitOfWork.Client.GetByUserIdAsync(userId);
+
+            if(oClientFromDb == null)
+            {
+                oResult.Message = "El cliente no existe.";
+
+                return oResult;
+            }
+
+            var oMostRecentOrder = _unitOfWork.Order.GetAllByUserId(userId)
+                                                    .OrderByDescending(o => o.CreationDate)
+                                                    .FirstOrDefault();
+
+            if(oMostRecentOrder == null)
+            {
+                oResult.Message = "No hay pedidos recientes.";
+
+                return oResult;
+            }
+
+            if(oMostRecentOrder.Status == OrderStatus.CANCELADO)
+            {
+                oResult.Message = $"El pedido ${oMostRecentOrder.OrderNumber} ya está cancelado.";
+
+                return oResult;
+            }
+
+            if (oMostRecentOrder.Status == OrderStatus.TERMINADO)
+            {
+                oResult.Message = $"El pedido ${oMostRecentOrder.OrderNumber} no se puede cancelar porque ya ha sido terminado.";
+
+                return oResult;
+            }
+
+            if (oMostRecentOrder.CreationDate.AddMinutes(5) > DateTimeUtility.NowCostaRica)
+            {
+                oResult.Message = "Sólo se pueden cancelar pedidos que tengan menos de 5 minutos de haber sido realizadas.";
+
+                return oResult;
+            }
+
+            oMostRecentOrder.Status = OrderStatus.CANCELADO;
+
+            oResult.Message = $"El pedido ${oMostRecentOrder.OrderNumber} ha sido cancelado.";
+
+            _unitOfWork.Order.Update(oMostRecentOrder);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> Generate(Guid userId)
         {
             BusisnessResult oResult = new();

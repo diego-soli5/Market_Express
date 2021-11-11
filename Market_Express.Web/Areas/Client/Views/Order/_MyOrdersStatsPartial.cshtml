@@ -1,0 +1,22 @@
+﻿@model Market_Express.Application.DTOs.Order.OrderStatsDTO
+
+<article class="card-group">
+    <figure class="card bg">
+        <div class="p-3">
+            <h5 class="card-title">@Model.Pending</h5>
+            <span>Pendientes</span>
+        </div>
+    </figure>
+    <figure class="card bg">
+        <div class="p-3">
+            <h5 class="card-title">@Model.Finished</h5>
+            <span>Terminados</span>
+        </div>
+    </figure>
+    <figure class="card bg">
+        <div class="p-3">
+            <h5 class="card-title">@Model.Canceled</h5>
+            <span>Cancelados</span>
+        </div>
+    </figure>
+</article>

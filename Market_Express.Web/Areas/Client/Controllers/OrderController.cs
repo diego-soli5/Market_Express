@@ -36,9 +36,9 @@ namespace Market_Express.Web.Areas.Client.Controllers
 
             oViewModel.OrderStats = await GetOrderStatsDTO();
             oViewModel.RecentOrders = await GetRecentOrderDTOList();
-           
+
             var tplOrders = GetOrderDTOList(filters);
-            
+
             oViewModel.Orders = tplOrders.Item1;
             oViewModel.Metadata = tplOrders.Item2;
             oViewModel.Filters = filters;
@@ -66,6 +66,28 @@ namespace Market_Express.Web.Areas.Client.Controllers
 
             return PartialView("_MyOrdersTablePartial", oViewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRecentOrders()
+        {
+            return PartialView("_MyOrdersRecentPartial", await GetRecentOrderDTOList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetStats()
+        {
+            return PartialView("_MyOrdersStatsPartial", await GetOrderStatsDTO());
+        }
+
+        #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> CancelRecent()
+        {
+            var oResult = await _orderService.CancelMostRecent(CurrentUserId);
+
+            return Ok(oResult);
+        }
+        #endregion
 
         #region UTILITY METHODS
         private async Task<List<RecentOrderDTO>> GetRecentOrderDTOList()
