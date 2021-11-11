@@ -1,6 +1,7 @@
 ﻿using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
@@ -18,7 +19,8 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.OrderNumber)
                     .ValueGeneratedOnAdd()
-                    .IsRequired();
+                    .IsRequired()
+                    .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             /* builder.Property(e => e.Status)
                  .IsRequired()

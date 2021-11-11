@@ -89,19 +89,19 @@ namespace Market_Express.Domain.Services
 
             if(oMostRecentOrder.Status == OrderStatus.CANCELADO)
             {
-                oResult.Message = $"El pedido ${oMostRecentOrder.OrderNumber} ya está cancelado.";
+                oResult.Message = $"El pedido {oMostRecentOrder.OrderNumber} ya está cancelado.";
 
                 return oResult;
             }
 
             if (oMostRecentOrder.Status == OrderStatus.TERMINADO)
             {
-                oResult.Message = $"El pedido ${oMostRecentOrder.OrderNumber} no se puede cancelar porque ya ha sido terminado.";
+                oResult.Message = $"El pedido {oMostRecentOrder.OrderNumber} no se puede cancelar porque ya ha sido terminado.";
 
                 return oResult;
             }
 
-            if (oMostRecentOrder.CreationDate.AddMinutes(5) > DateTimeUtility.NowCostaRica)
+            if (oMostRecentOrder.CreationDate.AddMinutes(5) < DateTimeUtility.NowCostaRica)
             {
                 oResult.Message = "Sólo se pueden cancelar pedidos que tengan menos de 5 minutos de haber sido realizadas.";
 
@@ -110,7 +110,7 @@ namespace Market_Express.Domain.Services
 
             oMostRecentOrder.Status = OrderStatus.CANCELADO;
 
-            oResult.Message = $"El pedido ${oMostRecentOrder.OrderNumber} ha sido cancelado.";
+            oResult.Message = $"El pedido {oMostRecentOrder.OrderNumber} ha sido cancelado.";
 
             _unitOfWork.Order.Update(oMostRecentOrder);
 
