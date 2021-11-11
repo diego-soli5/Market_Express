@@ -69,7 +69,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                     CreationDate = (DateTime)oRow["CreationDate"],
                     OrderNumber = int.Parse(oRow["OrderNumber"].ToString()),
                     Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), oRow["Status"].ToString()),
-                    MostRequestedArticleImage = oRow["MostRequestedArticleImage"].ToString()
+                    MostRequestedArticleImage = oRow["MostRequestedArticleImage"] is DBNull ? null : oRow["MostRequestedArticleImage"].ToString()
                 });
             }
 
