@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -14,11 +15,16 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
         private const string _Sp_Order_GetStatsByUserId = "Sp_Order_GetStatsByUserId";
-        private const string _Sp_Order_GetRecentOrdersByUserId = "Sp_Order_GetRecentOrdersByUserId";
+        private const string _Sp_Order_GetMostRecentByUserId = "Sp_Order_GetMostRecentByUserId";
 
         public OrderRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
         { }
+
+        public IEnumerable<Order> GetAllByUserId(Guid userId)
+        {
+            return _dbEntity.Where(o => o.Client.AppUserId == userId).AsEnumerable();
+        }
 
         public async Task<OrderStats> GetStatsByUserId(Guid userId)
         {
@@ -43,7 +49,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
             return oOrderStats;
         }
 
-        public async Task<List<RecentOrder>> GetRecentOrdersByUserId(Guid userId, int? take = null)
+        public async Task<List<RecentOrder>> GetMostRecentByUserId(Guid userId, int? take = null)
         {
             List<RecentOrder> lstRecentOrders = new();
 
@@ -53,7 +59,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 new SqlParameter("@take",take)
             };
 
-            var dtResult = await ExecuteQuery(_Sp_Order_GetRecentOrdersByUserId, arrParams);
+            var dtResult = await ExecuteQuery(_Sp_Order_GetMostRecentByUserId, arrParams);
 
             foreach (DataRow oRow in dtResult.Rows)
             {

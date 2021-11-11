@@ -402,7 +402,7 @@ END;
 GO
 
 --Obtiene ordenes recientes por id de usuario
-CREATE PROCEDURE Sp_Order_GetRecentOrdersByUserId
+CREATE PROCEDURE Sp_Order_GetMostRecentByUserId
 (
 	@userId UNIQUEIDENTIFIER = NULL,
 	@take INT = NULL

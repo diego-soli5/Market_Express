@@ -9,6 +9,7 @@ namespace Market_Express.Domain.Abstractions.Repositories
     public interface IOrderRepository : IGenericRepository<Order>
     {
         Task<OrderStats> GetStatsByUserId(Guid userId);
-        Task<List<RecentOrder>> GetRecentOrdersByUserId(Guid userId, int? take = null);
+        Task<List<RecentOrder>> GetMostRecentByUserId(Guid userId, int? take = null);
+        IEnumerable<Order> GetAllByUserId(Guid userId);
     }
 }

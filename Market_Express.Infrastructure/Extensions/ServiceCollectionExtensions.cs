@@ -99,6 +99,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<ArticleOptions>(configuration.GetSection("Options:ArticleOptions"));
 
             services.Configure<CategoryOptions>(configuration.GetSection("Options:CategoryOptions"));
+
+            services.Configure<OrderOptions>(configuration.GetSection("Options:OrderOptions"));
         }
 
         public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
