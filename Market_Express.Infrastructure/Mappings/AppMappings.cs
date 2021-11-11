@@ -6,6 +6,7 @@ using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Cart;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Client;
+using Market_Express.Application.DTOs.Order;
 using Market_Express.Application.DTOs.Permission;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Application.DTOs.Slider;
@@ -14,8 +15,10 @@ using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Domain.CustomEntities.Cart;
 using Market_Express.Domain.CustomEntities.Category;
+using Market_Express.Domain.CustomEntities.Order;
 using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
+using System;
 
 namespace Market_Express.Infrastructure.Mappings
 {
@@ -32,6 +35,19 @@ namespace Market_Express.Infrastructure.Mappings
             CreateRoleMappings();
             CreatePermissionMappings();
             CreateCartMappings();
+            CreateOrderMappings();
+        }
+
+        private void CreateOrderMappings()
+        {
+            CreateMap<OrderStats, OrderStatsDTO>()
+                .ReverseMap();
+
+            CreateMap<RecentOrder, RecentOrderDTO>()
+                .ReverseMap();
+
+            CreateMap<Order, OrderDTO>()
+                .ReverseMap();
         }
 
         private void CreateCartMappings()
