@@ -49,7 +49,14 @@ namespace Market_Express.Web.Areas.Client.Controllers
         [Route("/Client/Order/Details/{id}")]
         public async Task<IActionResult> Details(Guid id)
         {
-            return View();
+            OrderClientDetailViewModel oViewModel = new();
+
+            oViewModel.Order = _mapper.Map<OrderDTO>(await _orderService.GetById(id));
+            oViewModel.Details = (await _orderService.GetOrderArticleDetailsById(id))
+                                                     .Select(o => _mapper.Map<OrderArticleDetailDTO>(o))
+                                                     .ToList();
+            
+            return View(oViewModel);
         }
 
         [HttpGet]

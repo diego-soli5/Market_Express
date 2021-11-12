@@ -1,4 +1,5 @@
-﻿using Market_Express.CrossCutting.Options;
+﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
@@ -61,6 +62,21 @@ namespace Market_Express.Domain.Services
         public async Task<OrderStats> GetOrderStatsByUserId(Guid userId)
         {
             return await _unitOfWork.Order.GetStatsByUserId(userId);
+        }
+
+        public async Task<Order> GetById(Guid id)
+        {
+            var oOrder = await _unitOfWork.Order.GetByIdAsync(id);
+
+            if (oOrder == null)
+                throw new NotFoundException(id,nameof(Order));
+
+            return oOrder;
+        }
+
+        public async Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid id)
+        {
+            return await _unitOfWork.Order.GetOrderArticleDetailsById(id);
         }
 
         public async Task<BusisnessResult> CancelMostRecent(Guid userId)
@@ -157,7 +173,8 @@ namespace Market_Express.Domain.Services
                 Id = new Guid(),
                 ClientId = oCart.ClientId,
                 CreationDate = DateTimeUtility.NowCostaRica,
-                Status = OrderStatus.PENDIENTE
+                Status = OrderStatus.PENDIENTE,
+                ShippingAddress = "Dirección temporal de prueba"
             };
 
             lstOrderDetail = new();

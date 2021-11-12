@@ -11,5 +11,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
         Task<OrderStats> GetStatsByUserId(Guid userId);
         Task<List<RecentOrder>> GetMostRecentByUserId(Guid userId, int? take = null);
         IEnumerable<Order> GetAllByUserId(Guid userId);
+        Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid orderId);
     }
 }

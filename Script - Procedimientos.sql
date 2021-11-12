@@ -384,6 +384,25 @@ GO
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS ORDER
 ---------------------------------------------------------------------------------------------------------------
+--Obtiene los detalles (articulos) por id de pedido
+CREATE PROCEDURE Sp_Order_GetDetailsById
+(
+	@orderId UNIQUEIDENTIFIER = NULL
+)
+AS
+BEGIN
+	SELECT a.Id,
+		   a.Description,
+		   a.BarCode,
+		   od.Quantity,
+		   a.Price
+	FROM Order_Detail od
+	INNER JOIN Article a
+	ON od.ArticleId = a.Id
+	WHERE od.OrderId = @orderId;
+END;
+GO
+
 --Obtiene estadisticas de pedidos por id de usuario
 CREATE PROCEDURE Sp_Order_GetStatsByUserId
 (

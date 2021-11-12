@@ -48,6 +48,9 @@ namespace Market_Express.Infrastructure.Mappings
 
             CreateMap<Order, OrderDTO>()
                 .ReverseMap();
+
+            CreateMap<OrderArticleDetail, OrderArticleDetailDTO>()
+                .ReverseMap();
         }
 
         private void CreateCartMappings()

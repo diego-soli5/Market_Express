@@ -16,6 +16,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         private const string _Sp_Order_GetStatsByUserId = "Sp_Order_GetStatsByUserId";
         private const string _Sp_Order_GetMostRecentByUserId = "Sp_Order_GetMostRecentByUserId";
+        private const string _Sp_Order_GetDetailsById = "Sp_Order_GetDetailsById";
 
         public OrderRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -74,6 +75,32 @@ namespace Market_Express.Infrastructure.Data.Repositories
             }
 
             return lstRecentOrders;
+        }
+
+        public async Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid orderId)
+        {
+            List<OrderArticleDetail> lstOrderDetails = new();
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@orderId",orderId),
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Order_GetDetailsById, arrParams);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstOrderDetails.Add(new OrderArticleDetail
+                {
+                    Id = (Guid)oRow["Id"],
+                    Description = oRow["Description"].ToString(),
+                    BarCode = oRow["BarCode"].ToString(),
+                    Quantity = (decimal)oRow["Quantity"],
+                    Price = (decimal)oRow["Price"]
+                });
+            }
+
+            return lstOrderDetails;
         }
     }
 }
