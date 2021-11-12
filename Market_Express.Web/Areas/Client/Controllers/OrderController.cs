@@ -33,7 +33,6 @@ namespace Market_Express.Web.Areas.Client.Controllers
         {
             MyOrdersViewModel oViewModel = new();
 
-
             oViewModel.OrderStats = await GetOrderStatsDTO();
             oViewModel.RecentOrders = await GetRecentOrderDTOList();
 

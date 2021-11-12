@@ -69,7 +69,7 @@ namespace Market_Express.Domain.Services
 
             var oClientFromDb = await _unitOfWork.Client.GetByUserIdAsync(userId);
 
-            if(oClientFromDb == null)
+            if (oClientFromDb == null)
             {
                 oResult.Message = "El cliente no existe.";
 
@@ -80,14 +80,14 @@ namespace Market_Express.Domain.Services
                                                     .OrderByDescending(o => o.CreationDate)
                                                     .FirstOrDefault();
 
-            if(oMostRecentOrder == null)
+            if (oMostRecentOrder == null)
             {
                 oResult.Message = "No hay pedidos recientes.";
 
                 return oResult;
             }
 
-            if(oMostRecentOrder.Status == OrderStatus.CANCELADO)
+            if (oMostRecentOrder.Status == OrderStatus.CANCELADO)
             {
                 oResult.Message = $"El pedido {oMostRecentOrder.OrderNumber} ya está cancelado.";
 
@@ -184,6 +184,14 @@ namespace Market_Express.Domain.Services
             oOrder.OrderDetails = lstOrderDetail;
 
             oCart.Status = CartStatus.CERRADO;
+
+            _unitOfWork.Cart.Create(new Cart
+            {
+                Id = new Guid(),
+                OpeningDate = DateTimeUtility.NowCostaRica,
+                ClientId = oCart.ClientId,
+                Status = CartStatus.ABIERTO
+            });
 
             _unitOfWork.Order.Create(oOrder);
             _unitOfWork.Cart.Update(oCart);

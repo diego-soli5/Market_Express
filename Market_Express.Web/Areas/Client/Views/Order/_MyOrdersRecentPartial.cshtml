@@ -31,7 +31,7 @@
                 <figcaption class="info">
                     <time class="text-muted"><i class="fa fa-calendar-alt"></i> @order.CreationDate.ToShortDateString()</time>
                     <p>N° de Pedido: @order.OrderNumber</p>
-                    <span class="@textClass text-capitalize-first">@order.Status.ToString()</span>
+                    <p class="@textClass">@order.Status.ToString().Capitalize()</p>
                 </figcaption>
             </figure>
         </div>
@@ -41,6 +41,6 @@
 else
 {
     <div class="col-md-12">
-        <p class="text-danger">No hay pedidos recientes.</p>
+        <p class="text-danger text-center">No hay pedidos recientes.</p>
     </div>
 }

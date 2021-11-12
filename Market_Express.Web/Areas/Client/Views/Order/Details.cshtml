@@ -37,106 +37,70 @@
         }
 
         <div class="row">
-            <main class="col-md-9">
+            <main class="col-md-12">
 
                 <article class="card mb-3">
                     <div class="card-body">
-
-                        <figure class="icontext">
-                            <div class="icon">
-                                <img class="rounded-circle img-sm border" src="images/avatars/avatar3.jpg">
-                            </div>
-                            <div class="text">
-                                <strong> Mr. Jackson Someone </strong> <br>
-                                myloginname@gmail.com <br>
-                                <a href="#">Edit</a>
-                            </div>
-                        </figure>
+                        <h4>Detalles</h4>
                         <hr>
-                        <p>
-                            <i class="fa fa-map-marker text-muted"></i> &nbsp; My address:
-                            <br>
-                            Tashkent city, Street name, Building 123, House 321 &nbsp
-                            <a href="#" class="btn-link"> Edit</a>
-                        </p>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <dl class="row">
+                                    <dt class="col-xl-4 pr-0">Número de Pedido</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>100</p></dd>
+                                    <dt class="col-xl-4 pr-0">Fecha</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>11/10/2021</p></dd>
+                                    <dt class="col-xl-4 pr-0">Estado</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>Pendiente</p></dd>
+                                    <dt class="col-xl-4 pr-0">Dirección de Envío</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>Santa Elena abajoasd asdopmaspd sapda spod sapod sda</p></dd>
+                                </dl>
+                            </div>
 
-
-
-                        <article class="card-group">
-                            <figure class="card bg">
-                                <div class="p-3">
-                                    <h5 class="card-title">38</h5>
-                                    <span>Orders</span>
+                            <div class="col-md-4 d-flex mb-3 mb-md-0">
+                                <div class="align-self-center mx-auto" align="center">
+                                    <button class="btn btn-primary btn-lg" id="btnCancelRecent">Generar Carrito Basado En Este Pedido</button>
                                 </div>
-                            </figure>
-                            <figure class="card bg">
-                                <div class="p-3">
-                                    <h5 class="card-title">5</h5>
-                                    <span>Wishlists</span>
-                                </div>
-                            </figure>
-                            <figure class="card bg">
-                                <div class="p-3">
-                                    <h5 class="card-title">12</h5>
-                                    <span>Awaiting delivery</span>
-                                </div>
-                            </figure>
-                            <figure class="card bg">
-                                <div class="p-3">
-                                    <h5 class="card-title">50</h5>
-                                    <span>Delivered items</span>
-                                </div>
-                            </figure>
-                        </article>
-
-
+                            </div>
+                        </div>
                     </div> <!-- card-body .// -->
                 </article> <!-- card.// -->
 
                 <article class="card  mb-3">
                     <div class="card-body">
-                        <h5 class="card-title mb-4">Recent orders </h5>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <figure class="itemside  mb-3">
-                                    <div class="aside"><img src="images/items/1.jpg" class="border img-sm"></div>
-                                    <figcaption class="info">
-                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-                                        <p>Great item name goes here </p>
-                                        <span class="text-warning">Pending</span>
-                                    </figcaption>
-                                </figure>
-                            </div> <!-- col.// -->
-                            <div class="col-md-6">
-                                <figure class="itemside  mb-3">
-                                    <div class="aside"><img src="images/items/2.jpg" class="border img-sm"></div>
-                                    <figcaption class="info">
-                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-                                        <p>Machine for kitchen to blend </p>
-                                        <span class="text-success">Departured</span>
-                                    </figcaption>
-                                </figure>
-                            </div> <!-- col.// -->
-                            <div class="col-md-6">
-                                <figure class="itemside mb-3">
-                                    <div class="aside"><img src="images/items/3.jpg" class="border img-sm"></div>
-                                    <figcaption class="info">
-                                        <time class="text-muted"><i class="fa fa-calendar-alt"></i> 12.09.2019</time>
-                                        <p>Ladies bag original leather </p>
-                                        <span class="text-success">Shipped  </span>
-                                    </figcaption>
-                                </figure>
-                            </div> <!-- col.// -->
-                        </div> <!-- row.// -->
-
-                        <a href="#" class="btn btn-outline-primary"> See all orders  </a>
-                    </div> <!-- card-body .// -->
-                </article> <!-- card.// -->
-
-            </main> <!-- col.// -->
+                        <h4 class="card-title mb-4">Artículos</h4>
+                        <hr />
+                        <table class="table table-sm table-shopping-cart table-responsive">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th class="w-50">Artículo</th>
+                                    <th class="w-25 text-center">Cantidad</th>
+                                    <th class="w-25 text-center">Precio Unitario</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><p>Salsa de Tomate 800ml</p></td>
+                                    <td class="text-center">2</td>
+                                    <td class="text-center">₡850</td>
+                                    <td class="text-right">₡1700</td>
+                                </tr>
+                                <tr>
+                                    <td><p>Arroz Liborio 1.8kg</p></td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center">₡1050</td>
+                                    <td class="text-right">₡1050</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="font-weight-bold"><span class="float-right">₡2750</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> 
+                </article> 
+            </main>
         </div>
-
-    </div> <!-- container .//  -->
+    </div> 
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->

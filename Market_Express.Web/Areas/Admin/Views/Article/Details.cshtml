@@ -39,7 +39,7 @@
                             <dt class="col-xl-4 pr-0">Precio</dt>
                             <dd class="col-xl-8 px-xl-0"><p>₡@Model.Price</p></dd>
                             <dt class="col-xl-4 pr-0">Estado</dt>
-                            <dd class="col-xl-8 px-xl-0 text-capitalize-first"><p>@Model.Status.ToString()</p></dd>
+                            <dd class="col-xl-8 px-xl-0"><p>@Model.Status.ToString().Capitalize()</p></dd>
                             <dt class="col-xl-4 pr-0">Categoría</dt>
                             @if (Model.Category?.Id != null)
                             {
