@@ -310,6 +310,7 @@ CREATE TABLE [dbo].[Order](
 	[CreationDate] [datetime] NOT NULL,
 	[Total] [decimal](19, 2) NOT NULL,
 	[OrderNumber] [int] IDENTITY(1,1) NOT NULL,
+	[ShippingAddress] [varchar](255) NOT NULL,
 	[Status] [varchar](9) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (

@@ -17,6 +17,10 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.CreationDate).HasColumnType("datetime");
 
+            builder.Property(e => e.ShippingAddress)
+                    .HasMaxLength(255)
+                    .IsRequired();
+
             builder.Property(e => e.OrderNumber)
                     .ValueGeneratedOnAdd()
                     .IsRequired()
