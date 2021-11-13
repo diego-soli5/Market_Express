@@ -20,7 +20,7 @@
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
     <div class="container">
-
+        
         @if (TempData["OrderGenerationResult"] != null)
         {
             <div class="alert alert-dismissible fade show alert-danger mb-3" role="alert">
@@ -30,6 +30,19 @@
                 <h4 class="alert-heading"><i class="fas fa-times"></i> Hubo un problema..</h4>
                 <p class="mb-0">
                     @TempData["OrderGenerationResult"].ToString()
+                </p>
+            </div>
+        }
+
+        @if (TempData["CartGenerationResult"] != null)
+        {
+            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
+                <p class="mb-0">
+                    @TempData["CartGenerationResult"].ToString()
                 </p>
             </div>
         }

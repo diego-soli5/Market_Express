@@ -54,6 +54,17 @@ namespace Market_Express.Web.Areas.Client.Controllers
 
         #region API CALLS
         [HttpPost]
+        public async Task<IActionResult> GenerateCart(Guid orderId)
+        {
+            var oResult = await _cartService.GenerateCartByOrderId(orderId, CurrentUserId);
+
+            if(oResult.Success)
+                TempData["CartGenerationResult"] = oResult.Message;
+
+            return Ok(oResult);
+        }
+
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> AddDetail(Guid articleId)
         {

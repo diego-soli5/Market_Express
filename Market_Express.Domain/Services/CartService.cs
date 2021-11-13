@@ -26,6 +26,120 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.Cart.GetArticlesCount(userId);
         }
 
+        public async Task<BusisnessResult> GenerateCartByOrderId(Guid orderId, Guid userId)
+        {
+            BusisnessResult oResult = new();
+            List<CartDetail> lstCartDetail = new();
+            Cart oNewCart = null;
+
+            bool bMustUseNewCart = false;
+            int iSkipedArticles = 0;
+
+            var oClient = await _unitOfWork.Client.GetByUserIdAsync(userId);
+
+            if (oClient == null)
+            {
+                oResult.Message = "El cliente no existe";
+
+                return oResult;
+            }
+
+            var oOrderFromDb = await _unitOfWork.Order.GetByIdAsync(orderId);
+
+            if (oOrderFromDb == null)
+            {
+                oResult.Message = "El pedido no existe.";
+
+                return oResult;
+            }
+
+            var lstOrderDetails = _unitOfWork.OrderDetail.GetAllByOrderId(oOrderFromDb.Id);
+
+            var oCartFromDb = await _unitOfWork.Cart.GetCurrentByUserId(userId);
+
+            if (oCartFromDb == null)
+            {
+                oNewCart = new()
+                {
+                    Id = new Guid(),
+                    ClientId = oClient.Id,
+                    OpeningDate = DateTimeUtility.NowCostaRica,
+                    Status = CartStatus.ABIERTO
+                };
+
+                bMustUseNewCart = true;
+            }
+            
+            var lstCartDetailsFromDb = _unitOfWork.CartDetail.GetAllByCartId(oCartFromDb.Id);
+
+            if (lstCartDetailsFromDb?.Count() > 0)
+            {
+                oResult.Message = "No se puede generar porque ya hay artículos agregados al carrito.";
+
+                return oResult;
+            }
+
+            foreach (var oOrderDetail in lstOrderDetails.ToList())
+            {
+                var articleToCheck = await _unitOfWork.Article.GetByIdAsync(oOrderDetail.ArticleId);
+
+                if (articleToCheck != null)
+                {
+                    if (articleToCheck?.Status == EntityStatus.DESACTIVADO)
+                    {
+                        iSkipedArticles++;
+
+                        continue;
+                    }
+
+                    lstCartDetail.Add(new CartDetail
+                    {
+                        Id = new Guid(),
+                        ArticleId = oOrderDetail.ArticleId,
+                        Quantity = oOrderDetail.Quantity,
+                        CartId = bMustUseNewCart ? oNewCart.Id : oCartFromDb.Id
+                    });
+                }
+                else
+                {
+                    iSkipedArticles++;
+                }
+            }
+
+            if(bMustUseNewCart)
+            {
+                oNewCart.CartDetails = lstCartDetail;
+
+                _unitOfWork.Cart.Create(oNewCart);
+            }
+            else
+            {
+                _unitOfWork.CartDetail.Create(lstCartDetail);
+            }
+
+            if (iSkipedArticles > 0)
+                oResult.Message = $"Se generó el carrito correctamente pero se omitieron {iSkipedArticles} artículos porque han sido desactivados.";
+            else
+                oResult.Message = "Se generó el carrito correctamente!";
+
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                oResult.Success = await _unitOfWork.Save();
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
+
+            return oResult;
+        }
+
         public async Task<(CartBillingDetails, List<ArticleForCartDetails>)> GetCartDetails(Guid userId)
         {
             Cart oCart = await _unitOfWork.Cart.GetCurrentByUserId(userId);
@@ -339,8 +453,8 @@ namespace Market_Express.Domain.Services
             }
 
             CartDetail oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
-        
-            if(oCartDetailFromDb != null)
+
+            if (oCartDetailFromDb != null)
             {
                 _unitOfWork.CartDetail.Delete(oCartDetailFromDb);
 

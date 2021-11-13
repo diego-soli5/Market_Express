@@ -13,5 +13,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<BusisnessResult> UpdateDetail(bool plus, Guid articleId, Guid userId);
         Task<BusisnessResult> DeleteDetail(Guid articleId, Guid userId);
         Task<(CartBillingDetails, List<ArticleForCartDetails>)> GetCartDetails(Guid userId);
+        Task<BusisnessResult> GenerateCartByOrderId(Guid orderId, Guid userId);
     }
 }

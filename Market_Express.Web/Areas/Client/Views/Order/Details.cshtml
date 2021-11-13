@@ -71,7 +71,7 @@
                             <div class="col-md-4 d-flex mt-2 mb-md-0">
                                 <div class="align-self-center mx-auto" align="center">
                                     <button class="btn btn-primary btn-lg"
-                                            id="btnCancelRecent"
+                                            id="btnGenerateCart"
                                             data-order-id="@Model.Order.Id">
                                         Generar Carrito Basado En Este Pedido
                                     </button>
@@ -118,3 +118,7 @@
     </div>
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
+@section Scripts{ 
+    <script src="~/js/order.client.details.js"></script>
+}

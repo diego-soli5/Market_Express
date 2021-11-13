@@ -1,6 +1,7 @@
 ﻿@model Market_Express.Web.ViewModels.Account.ProfileViewModel
 @{
     ViewData["Title"] = "Mi Perfil";
+    string sTextDanger = (Model.AppUser.Alias == null) ? "text-danger" : "";
 }
 
 <!-- ========================= SECTION PAGETOP ========================= -->
@@ -16,7 +17,8 @@
     </div>
 </section>
 <!-- ========================= SECTION INTRO END// ========================= -->
-<!-- ========================= SECTION CONTENT ========================= -->
+
+
 <section class="section-content padding-y">
     <div class="container">
         <div class="row">
@@ -31,47 +33,39 @@
                     <div class="card-body">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-acc" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
                                 <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="py-1">
-                                            <h4 class="d-inline">Datos Generales</h4>
-                                            <i type="button" class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="No puedes modificar tus datos, únicamente puedes modificar tu alias y contraseña. Si deseas modificar los demás datos debes solicitarlo al administrador."></i>
-                                        </div>
+                                    <div class="col-md-12">
 
-                                        <hr />
-
-                                        <dl class="row">
-                                            <dt class="col-md-3">Nombre</dt>
-                                            <dd class="col-md-9"><p>@Model.AppUser.Name</p></dd>
-                                            <dt class="col-md-3">Alias</dt>
-                                            <dd class="col-md-9"><p id="usrAlias">@(Model.AppUser.Alias ?? " ")</p></dd>
-                                            <dt class="col-md-3">Cédula</dt>
-                                            <dd class="col-md-9"><p>@Model.AppUser.Identification</p></dd>
-                                            <dt class="col-md-3">Email</dt>
-                                            <dd class="col-md-9"><p>@Model.AppUser.Email</p></dd>
-                                            <dt class="col-md-3">Teléfono</dt>
-                                            <dd class="col-md-9"><p>@Model.AppUser.Phone</p></dd>
-                                            <dt class="col-md-3">Contraseña</dt>
-                                            <dd class="col-md-9"><p>************</p></dd>
-                                        </dl>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="py-1">
-                                            <h4 class="d-inline">Gestión</h4>
-                                        </div>
-
-                                        <hr />
+                                        <figure class="icontext">
+                                            <div class="icon">
+                                                <img class="rounded-circle img-sm border" src="~/img/user.png">
+                                            </div>
+                                            <div class="text">
+                                                <strong>@Model.AppUser.Name</strong>
+                                            </div>
+                                        </figure>
+                                        <hr>
 
                                         <dl class="row">
-                                            <dd class="col-12">
-                                                <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
-                                            </dd>
-                                            <dd class="col-12">
-                                                <a href="#" id="btnChangeAlias" data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a>
-                                            </dd>
+                                            <dt class="col-md-2 pr-0">Alias</dt>
+                                            <dd class="col-md-10 px-xl-0"> <div id="usrAlias"><p class="@sTextDanger">@(Model.AppUser.Alias ?? "Sin Alias")</p></div></dd>
+                                            <dt class="col-md-2 pr-0">Cédula</dt>
+                                            <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Identification</p></dd>
+                                            <dt class="col-md-2 pr-0">Email</dt>
+                                            <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Email</p></dd>
+                                            <dt class="col-md-2 pr-0">Teléfono</dt>
+                                            <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Phone</p></dd>
+                                            <dt class="col-md-2 pr-0">Contraseña</dt>
+                                            <dd class="col-md-10 px-xl-0"><p>************</p></dd>
                                         </dl>
+                                        <hr />
+                                        <a href="#" id="btnChangeAlias" data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a><br />
+                                        <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
                                     </div>
                                 </div>
+
+                                <!-- ========================= SECTION CONTENT END// ========================= -->
 
                             </div>
                             <div class="tab-pane fade" id="v-pills-add" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -89,7 +83,81 @@
     </div>
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+@*
+    <!-- ========================= SECTION CONTENT ========================= -->
+    <section class="section-content padding-y">
+        <div class="container">
+            <div class="row">
+                <aside class="col-md-2 mb-3">
+                    <div class="list-group" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <a class="list-group-item active" id="v-pills-acc-tab" data-toggle="pill" href="#v-pills-acc" role="tab" aria-controls="v-pills-home" aria-selected="true">Cuenta</a>
+                        <a class="list-group-item" id="v-pills-add-tab" data-toggle="pill" href="#v-pills-add" role="tab" aria-controls="v-pills-profile" aria-selected="false">Direcciones</a>
+                    </div>
+                </aside>
+                <main class="col-md-10">
+                    <article class="card mb-3">
+                        <div class="card-body">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="v-pills-acc" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="py-1">
+                                                <h4 class="d-inline">Datos Generales</h4>
+                                                <i type="button" class="fas fa-info-circle text-primary" data-trigger="focus" tabindex="0" data-toggle="popover" title="Información" data-content="No puedes modificar tus datos, únicamente puedes modificar tu alias y contraseña. Si deseas modificar los demás datos debes solicitarlo al administrador."></i>
+                                            </div>
 
+                                            <hr />
+
+                                            <dl class="row">
+                                                <dt class="col-md-3">Nombre</dt>
+                                                <dd class="col-md-9"><p>@Model.AppUser.Name</p></dd>
+                                                <dt class="col-md-3">Alias</dt>
+                                                <dd class="col-md-9"><p id="usrAlias">@(Model.AppUser.Alias ?? " ")</p></dd>
+                                                <dt class="col-md-3">Cédula</dt>
+                                                <dd class="col-md-9"><p>@Model.AppUser.Identification</p></dd>
+                                                <dt class="col-md-3">Email</dt>
+                                                <dd class="col-md-9"><p>@Model.AppUser.Email</p></dd>
+                                                <dt class="col-md-3">Teléfono</dt>
+                                                <dd class="col-md-9"><p>@Model.AppUser.Phone</p></dd>
+                                                <dt class="col-md-3">Contraseña</dt>
+                                                <dd class="col-md-9"><p>************</p></dd>
+                                            </dl>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="py-1">
+                                                <h4 class="d-inline">Gestión</h4>
+                                            </div>
+
+                                            <hr />
+
+                                            <dl class="row">
+                                                <dd class="col-12">
+                                                    <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
+                                                </dd>
+                                                <dd class="col-12">
+                                                    <a href="#" id="btnChangeAlias" data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-add" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                    <div class="row">
+                                        <div class="col-lg-12" id="addressContainer">
+                                            @{ await Html.RenderPartialAsync("_AddressManagementPartial", Model.Addresses); }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+        </div>
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+*@
 
 
 <!--Modificar o Agregar Direccion-->

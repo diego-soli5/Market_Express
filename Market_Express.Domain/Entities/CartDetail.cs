@@ -14,6 +14,11 @@ namespace Market_Express.Domain.Entities
             Quantity = quantity;
         }
 
+        public CartDetail()
+        {
+
+        }
+
         public Guid CartId { get; set; }
         public Guid ArticleId { get; set; }
         public decimal Quantity { get; set; }
