@@ -33,7 +33,7 @@
                     <div class="card-body">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
-                                <div class="card-body">
+                                <div>
                                     <h4>Resumen</h4>
                                     <hr />
                                     <div class="row">
@@ -81,8 +81,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <h5 class="card-title mb-4">Pedidos Recientes</h5>
+                                <hr />
+                                <div>
+                                    <h4 class="card-title mb-4">Pedidos Recientes</h4>
 
                                     <div class="row" id="divMostRecentOrders">
                                         @{ await Html.RenderPartialAsync("_MyOrdersRecentPartial", Model.RecentOrders); }
@@ -91,7 +92,7 @@
                             </div>
 
                             <div class="tab-pane fade" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
-                                <div class="card-body">
+                                <div>
                                     <h4>Todos los Pedidos</h4>
                                     <hr />
                                     <div>

@@ -18,43 +18,36 @@
 <!-- ========================= SECTION INTRO END// ========================= -->
 
 
+
 <section class="section-content padding-y">
     <div class="container">
 
-        @if (TempData["BinnacleMessage"] != null)
-        {
-            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
-                <p class="mb-0">
-                    @TempData["ArticleMessage"].ToString()
-                </p>
-            </div>
-        }
-
-        <div class="card">
-            <div class="card-header bg-primary">
-                <div>
-                    <h4 class="text-white d-inline"></h4>
+        <div class="row">
+            <aside class="col-md-2 mb-3">
+                <div class="list-group" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="list-group-item active" id="v-pills-re-tab" data-toggle="pill" href="#v-pills-re" role="tab" aria-controls="v-pills-re" aria-selected="true">Bitácora</a>
+                    <a class="list-group-item" id="v-pills-od-onl" data-toggle="pill" href="#v-pills-onl" role="tab" aria-controls="v-pills-onl" aria-selected="false">Usuarios en Linea</a>
                 </div>
-                <div class="h4"></div>
-            </div>
-            <div class="card-body">
+            </aside>
+            <main class="col-md-10">
+                <article class="card mb-3">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
+                                <h4>Algo 1</h4>
+                                <hr />
 
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay movimientos registrados en la bitacora.</p>
+                            </div>
+
+                            <div class="tab-pane fade show" id="v-pills-onl" role="tabpanel" aria-labelledby="v-pills-od-onl">
+                                <h4>Algo 2</h4>
+                                <hr />
+
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-            </div>
-            <div class="card-footer">
-                <div class="float-right">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
-                </div>
-            </div>
+                </article>
+            </main>
         </div>
     </div>
 </section>
