@@ -740,6 +740,67 @@ BEGIN
 END;
 GO
 
+---------------------------------------------------------------------------------------------------------------
+-- TRIGGERS SLIDER
+---------------------------------------------------------------------------------------------------------------
+CREATE TRIGGER TRG_Slider_RegMovement_Insert
+ON [Slider]
+FOR INSERT
+AS
+BEGIN
+										  
+	DECLARE curSlider CURSOR FOR SELECT i.Name,
+										  i.CreationDate,
+										  i.AddedBy
+								   FROM inserted i;
+	
+	DECLARE @Name VARCHAR(50);
+	DECLARE @CreationDate DATETIME;
+	DECLARE @AddedBy VARCHAR(40);
+
+	OPEN curSlider
+	FETCH NEXT FROM curSlider INTO @Name, @CreationDate, @AddedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Slider ' + @Name);
+
+		FETCH NEXT FROM curSlider INTO @Name, @CreationDate, @AddedBy
+	END
+	CLOSE curSlider
+	DEALLOCATE curSlider
+END;
+GO
+
+CREATE TRIGGER TRG_Slider_RegMovement_Update
+ON [Slider]
+FOR UPDATE
+AS
+BEGIN
+										  
+	DECLARE curSlider CURSOR FOR SELECT i.Name,
+										  i.ModificationDate,
+										  i.ModifiedBy
+								   FROM inserted i;
+	
+	DECLARE @Name VARCHAR(50);
+	DECLARE @ModificationDate DATETIME;
+	DECLARE @ModifiedBy VARCHAR(40);
+
+	OPEN curSlider
+	FETCH NEXT FROM curSlider INTO @Name, @ModificationDate, @ModifiedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE Slider ' + @Name);
+
+		FETCH NEXT FROM curSlider INTO @Name, @ModificationDate, @ModifiedBy
+	END
+	CLOSE curSlider
+	DEALLOCATE curSlider
+END;
+GO
+
 /*
 CREATE TRIGGER TRG_Role_RegMovement_Delete
 ON [Role]
