@@ -128,9 +128,12 @@
                         </li>
                         @if (User.IsInRole("ADMINISTRADOR"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Pedidos</a>
-                            </li>
+                            @if (User.IsInRole("ORD_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Pedidos</a>
+                                </li>
+                            }
 
                             @if (User.IsInRole("ART_MAN_GEN"))
                             {

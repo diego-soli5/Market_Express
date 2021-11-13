@@ -30,6 +30,7 @@ BEGIN
 					   WHERE c.Status = 'ABIERTO'
 					   AND cl.AppUserId = @userId);
 END;
+GO
 
 -- Obtiene los articulos ordenados por popularidad con la opcion de obtener "x" cantidad únicamente
 CREATE PROCEDURE Sp_Article_GetMostPopular
