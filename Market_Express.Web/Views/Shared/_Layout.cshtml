@@ -154,6 +154,13 @@
                                 </li>
                             }
 
+                            @if (User.IsInRole("SLI_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Slider" asp-action="Index">Sliders</a>
+                                </li>
+                            }
+
                             @if (User.IsInRole("USE_MAN_GEN"))
                             {
                                 <li class="nav-item">
@@ -161,12 +168,6 @@
                                 </li>
                             }
 
-                            @if (User.IsInRole("SLI_MAN_GEN"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Admin" asp-controller="Slider" asp-action="Index">Sliders</a>
-                                </li>
-                            }
 
                             @if (User.IsInRole("ROL_MAN_GEN"))
                             {

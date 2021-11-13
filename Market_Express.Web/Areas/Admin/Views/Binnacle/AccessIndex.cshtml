@@ -34,15 +34,65 @@
                     <div class="card-body">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
-                                <h4>Algo 1</h4>
+                                <h4>Registro de Accesos y Salidas del Sistema</h4>
                                 <hr />
-
+                                <div>
+                                    <form class="row" id="frmTable">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Usuario</label>
+                                                <input type="text" 
+                                                       name="user"
+                                                       class="form-control-original"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Fecha Inicial</label>
+                                                <input type="date"
+                                                       name="startdate"
+                                                       class="form-control-original-small" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">Fecha Final</label>
+                                                <input type="date"
+                                                       name="enddate"
+                                                       class="form-control-original-small" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 d-flex">
+                                            <div class="align-self-center mx-auto mb-3 mb-md-0" style=" width: 120px;">
+                                                <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div>
+                                    <table class="table table-sm table-hover table-resposive">
+                                        <thead>
+                                            <tr class="small text-uppercase font-weight-bold">
+                                                <th>Usuario</th>
+                                                <th>Fecha y Hora Ingreso</th>
+                                                <th>Fecha y Hora de Salida</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="tab-pane fade show" id="v-pills-onl" role="tabpanel" aria-labelledby="v-pills-od-onl">
-                                <h4>Algo 2</h4>
+                                <h4>Usuarios en Linea</h4>
                                 <hr />
-
+                                <p>La funcionalidad se agregará en futuras actualizaciones.</p>
                             </div>
                         </div>
                     </div>
