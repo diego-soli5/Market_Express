@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Market_Express.Domain.Abstractions.DomainServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
@@ -12,14 +11,40 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     [Authorize(Roles = "BIN_USE_GEN")]
     public class BinnacleController : Controller
     {
-        public BinnacleController()
-        {
+        private readonly IBinnacleAccessService _binnacleAccessService;
+        private readonly IMapper _mapper;
 
+        private const string _ACC = "acc";
+        private const string _MOV = "mov";
+
+        public BinnacleController(IBinnacleAccessService binnacleAccessService,
+                                  IMapper mapper)
+        {
+            _binnacleAccessService = binnacleAccessService;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string tab)
         {
-            return View();
+            if(tab != null)
+            {
+                if (tab.ToLower() == _ACC)
+                    return await AccessIndexViewResult();
+                else if (tab.ToLower() == _MOV)
+                    return await MovementIndexViewResult();
+            }
+
+            return Redirect("/");
+        }
+
+        private async Task<IActionResult> AccessIndexViewResult()
+        {
+            return View("AccessIndex");
+        }
+
+        private async Task<IActionResult> MovementIndexViewResult()
+        {
+            return View("MovementIndex");
         }
     }
 }
