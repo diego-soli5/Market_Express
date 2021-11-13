@@ -111,7 +111,9 @@
     <!-- ========================= NAVEGACION // ========================= -->
     @if (User.Identity.IsAuthenticated)
     {
-        <nav class="navbar navbar-main navbar-expand-lg navbar-light border-bottom">
+
+
+        <nav class="navbar navbar-main navbar-expand-lg navbar-light sticky-top bg-white border-bottom">
             <div class="container">
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav"
@@ -124,45 +126,76 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" asp-route-fromSearchView="false">Comprar</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Pedidos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Article" asp-action="Index">Articulos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Categorias</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuarios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Slider" asp-action="Index">Sliders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Role" asp-action="Index">Roles y Permisos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Report" asp-action="Index">Reportes</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" data-toggle="dropdown" href="#">
-                                Bitácoras
-                                <i class="fa fa-caret-down"></i>
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="Admin"
-                                   asp-controller="Binnacle"
-                                   asp-action="Index"
-                                   asp-route-tab="acc">Accesos</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item"
-                                   asp-area="Admin"
-                                   asp-controller="Binnacle"
-                                   asp-action="Index"
-                                   asp-route-tab="mov">Movimientos</a>
-                            </div>
-                        </li>
+                        @if (User.IsInRole("ADMINISTRADOR"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Pedidos</a>
+                            </li>
+
+                            @if (User.IsInRole("ART_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Article" asp-action="Index">Artículos</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("CAT_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Categorías</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("USE_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuarios</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("SLI_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Slider" asp-action="Index">Sliders</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("ROL_MAN_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Role" asp-action="Index">Roles y Permisos</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("REP_USE_GEN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Report" asp-action="Index">Reportes</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("BIN_USE_GEN"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" data-toggle="dropdown" href="#">
+                                        Bitácoras
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="Admin"
+                                           asp-controller="Binnacle"
+                                           asp-action="Index"
+                                           asp-route-tab="acc">Accesos</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="Binnacle"
+                                           asp-action="Index"
+                                           asp-route-tab="mov">Movimientos</a>
+                                    </div>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div> <!-- collapse .// -->
             </div> <!-- container .// -->
