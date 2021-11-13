@@ -23,12 +23,15 @@ namespace Market_Express.Web.Controllers
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
+        private readonly IBinnacleAccessService _binnacleAccessService;
         private readonly IMapper _mapper;
 
         public AccountController(IAccountService accountService,
+                                 IBinnacleAccessService binnacleAccessService,
                                  IMapper mapper)
         {
             _accountService = accountService;
+            _binnacleAccessService = binnacleAccessService;
             _mapper = mapper;
         }
 
@@ -54,6 +57,9 @@ namespace Market_Express.Web.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
+            if (IsAuthenticated)
+                return Redirect("/");
+
             if (returnUrl != null)
                 ViewData["returnUrl"] = returnUrl;
 
@@ -104,6 +110,8 @@ namespace Market_Express.Web.Controllers
                 ExpiresUtc = DateTime.Now.AddHours(12),
             });
 
+            await _binnacleAccessService.RegisterAccess(oUser.Id);
+
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return LocalRedirect(returnUrl);
@@ -115,6 +123,11 @@ namespace Market_Express.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            if (!IsAuthenticated)
+                return Redirect("/");
+
+            await _binnacleAccessService.RegisterExit(CurrentUserId);
+
             await HttpContext.SignOutAsync();
 
             return RedirectToAction(nameof(Login));

@@ -675,6 +675,71 @@ BEGIN
 END;
 GO
 
+---------------------------------------------------------------------------------------------------------------
+-- TRIGGERS APPUSER
+---------------------------------------------------------------------------------------------------------------
+CREATE TRIGGER TRG_AppUser_RegMovement_Insert
+ON [AppUser]
+FOR INSERT
+AS
+BEGIN
+										  
+	DECLARE curAppUser CURSOR FOR SELECT i.Name,
+										  i.Identification,
+										  i.CreationDate,
+										  i.AddedBy
+								   FROM inserted i;
+	
+	DECLARE @Name VARCHAR(50);
+	DECLARE @Identification VARCHAR(255);
+	DECLARE @CreationDate DATETIME;
+	DECLARE @AddedBy VARCHAR(40);
+
+	OPEN curAppUser
+	FETCH NEXT FROM curAppUser INTO @Name, @Identification, @CreationDate, @AddedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT AppUser ' + @Name + ' ' +@Identification);
+
+		FETCH NEXT FROM curAppUser INTO @Name, @Identification, @CreationDate, @AddedBy
+	END
+	CLOSE curAppUser
+	DEALLOCATE curAppUser
+END;
+GO
+
+CREATE TRIGGER TRG_AppUser_RegMovement_Update
+ON [AppUser]
+FOR UPDATE
+AS
+BEGIN
+										  
+	DECLARE curAppUser CURSOR FOR SELECT i.Name,
+										  i.Identification,
+										  i.ModificationDate,
+										  i.ModifiedBy
+								   FROM inserted i;
+	
+	DECLARE @Name VARCHAR(50);
+	DECLARE @Identification VARCHAR(255);
+	DECLARE @ModificationDate DATETIME;
+	DECLARE @ModifiedBy VARCHAR(40);
+
+	OPEN curAppUser
+	FETCH NEXT FROM curAppUser INTO @Name, @Identification, @ModificationDate, @ModifiedBy
+	WHILE @@fetch_status = 0
+	BEGIN
+		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
+		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE AppUser ' + @Name + ' ' +@Identification);
+
+		FETCH NEXT FROM curAppUser INTO @Name, @Identification, @ModificationDate, @ModifiedBy
+	END
+	CLOSE curAppUser
+	DEALLOCATE curAppUser
+END;
+GO
+
 /*
 CREATE TRIGGER TRG_Role_RegMovement_Delete
 ON [Role]
