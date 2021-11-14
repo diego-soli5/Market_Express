@@ -1,56 +1,48 @@
 ﻿@model Market_Express.Web.ViewModels.BinnacleMovement.MovementReportViewModel
 @{
+    ViewData["ReportName"] = "Reporte de Movimientos de Usuarios del Sistema";
     Layout = "_ReportLayout";
 }
 
+@{
+    string sIgnoreSystem = "Si";
+    string sEjec = Model?.Filters?.User != null ? Model.Filters.User.Capitalize() : "Todos los usuarios";
+    dynamic dStartDate = Model?.Filters?.StartDate != null ? Model.Filters.StartDate.Value.ToShortDateString() : "Todas las fechas";
+    dynamic dEndDate = Model?.Filters?.EndDate != null ? Model.Filters.EndDate.Value.ToShortDateString() : "Todas las fechas";
+    string sType = Model?.Filters?.Type != null ? Model.Filters.Type.Value.ToString() : "Todos";
 
-<h3>Reporte de Movimientos de Usuarios del Sistema</h3>
-
-@if (Model?.Filters?.User != null)
-{
-    <p><strong>Ejecutante: </strong> @Model.Filters.User.Capitalize()</p>
-}
-else
-{
-    <p><strong>Ejecutante: </strong> Todos los usuarios</p>
-}
-
-@if (Model?.Filters?.StartDate != null)
-{
-    <p><strong>Rango de Fecha Inicial: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
-}
-else
-{
-    <p><strong>Rango de Fecha Inicial: </strong> Todas las fechas</p>
-}
-
-@if (Model?.Filters?.EndDate != null)
-{
-    <p><strong>Rango de Fecha Final: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
-}
-else
-{
-    <p><strong>Rango de Fecha Final: </strong> Todas las fechas</p>
+    if (Model.Filters.IgnoreSystem)
+    {
+        sIgnoreSystem = "No";
+    }
+    else
+    {
+        @if (Model.Filters.User != null)
+        {
+            if (Model.Filters.User != "SYSTEM")
+            {
+                sIgnoreSystem = "No";
+            }
+        }
+    }
 }
 
-@if (Model?.Filters?.Type != null)
-{
-    <p><strong>Tipo de Movimiento: </strong> @Model.Filters.Type</p>
-}
-else
-{
-    <p><strong>Tipo de Movimiento: </strong> Todos</p>
-}
+
+<p><strong>Ejecutante: </strong> @sEjec</p>
+<p><strong>Incluye Movimientos Hechos por el Sistema: </strong> @sIgnoreSystem</p>
+<p><strong>Rango de Fecha Inicial: </strong> @dStartDate</p>
+<p><strong>Rango de Fecha Final: </strong> @dEndDate</p>
+<p><strong>Tipo de Movimiento: </strong> @sType</p>
 
 <div>
-    <table style="width: 100%; table-layout: fixed;">
-        <thead>
-            <tr style="background: #eee; height: 40px; ">
-                <th scope="col" style="background: #eee; text-align: center;">Ejecutante</th>
-                <th scope="col" style="background: #eee; text-align: center;">Identificación</th>
-                <th scope="col" style="background: #eee; text-align: center;">Fecha</th>
-                <th scope="col" style="background: #eee; text-align: center;">Tipo</th>
-                <th scope="col" style="background: #eee; width: 500px;">Detalle</th>
+    <table class="table table-sm" style="table-layout: fixed;">
+        <thead class="bg-blue text-white">
+            <tr>
+                <th>Ejecutante</th>
+                <th>Identificación</th>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
             </tr>
         </thead>
         <tbody>
@@ -59,11 +51,11 @@ else
                 @foreach (var movement in Model?.BinnacleMovements)
                 {
                     <tr>
-                        <td style="line-height: 2em;">@movement.PerformedBy</td>
-                        <td style="line-height: 2em; text-align: center;">@movement.AppUser.Identification</td>
-                        <td style="line-height: 2em; text-align: center;">@movement.MovementDate</td>
-                        <td style="line-height: 2em; text-align: center;">@movement.Type</td>
-                        <td style="line-height: 2em;">@movement.Detail.Trim()</td>
+                        <td>@movement.PerformedBy</td>
+                        <td>@movement.AppUser.Identification</td>
+                        <td>@movement.MovementDate</td>
+                        <td>@movement.Type</td>
+                        <td>@movement.Detail.Trim()</td>
                     </tr>
                 }
             }
@@ -77,7 +69,6 @@ else
             }
         </tbody>
     </table>
-
 </div>
 
 

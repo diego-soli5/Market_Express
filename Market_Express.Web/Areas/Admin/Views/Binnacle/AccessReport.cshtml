@@ -1,9 +1,8 @@
 ﻿@model Market_Express.Web.ViewModels.BinnacleAccess.AccessReportViewModel
 @{
-    Layout = null;
+    ViewData["ReportName"] = "Reporte de Accesos y Salidas de Usuarios del Sistema";
+    Layout = "_ReportLayout";
 }
-<h1 style="text-align: center;">Market Express</h1>
-<h3>Reporte de Accesos y Salidas del Sistema</h3>
 
 @if (Model?.Filters?.User != null)
 {
@@ -32,13 +31,13 @@ else
     <p><strong>Rango de Fecha Final: </strong> Todas las fechas</p>
 }
 
-<table style="width: 100%;">
-    <thead>
-        <tr style="background: #eee; height: 40px; ">
-            <th style="background: #eee; text-align: center; ">Usuario</th>
-            <th style="background: #eee; text-align: center;">Identificación</th>
-            <th style="background: #eee; text-align: center;">Fecha y Hora Ingreso</th>
-            <th style="background: #eee; text-align: center;">Fecha y Hora de Salida</th>
+<table class="table table-sm">
+    <thead class="bg-blue text-white">
+        <tr>
+            <th class="text-center">Usuario</th>
+            <th class="text-center">Identificación</th>
+            <th class="text-center">Fecha y Hora Ingreso</th>
+            <th class="text-center">Fecha y Hora de Salida</th>
         </tr>
     </thead>
     <tbody>

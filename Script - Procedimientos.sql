@@ -133,7 +133,7 @@ GO
 -- Obtiene todos los registros paginados
 CREATE PROCEDURE Sp_BinnacleMovement_GetAllPaginated 
 (
-	@type VARCHAR = NULL,
+	@type VARCHAR(20) = NULL,
 	@startDate DATE = NULL,
 	@endDate DATE = NULL,
 	@name VARCHAR(50) = NULL,
@@ -186,7 +186,7 @@ GO
 -- Obtiene todos los registros para generar el reporte
 CREATE PROCEDURE Sp_BinnacleMovement_GetAllForReport
 (
-	@type VARCHAR = NULL,
+	@type VARCHAR(20) = NULL,
 	@startDate DATE = NULL,
 	@endDate DATE = NULL,
 	@name VARCHAR(50) = NULL,
@@ -593,7 +593,7 @@ BEGIN
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Articulo ' + @Description + ' | '+@BarCode);
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Articulo ' + @Description + ' '+@BarCode);
 
 		FETCH NEXT FROM curArticles INTO @Description, @BarCode, @CreationDate, @AddedBy
 	END
@@ -624,7 +624,7 @@ BEGIN
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE Articulo ' + @Description + ' | '+@BarCode);
+		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE Articulo ' + @Description + ' '+@BarCode);
 
 		FETCH NEXT FROM curArticles INTO @Description, @BarCode, @ModificationDate, @ModifiedBy
 	END
@@ -790,7 +790,7 @@ BEGIN
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT AppUser ' + @Name + ' ' +@Identification);
+		VALUES(@AddedBy,@CreationDate,'INSERT','INSERT Usuario ' + @Name + ' ' +@Identification);
 
 		FETCH NEXT FROM curAppUser INTO @Name, @Identification, @CreationDate, @AddedBy
 	END
@@ -821,7 +821,7 @@ BEGIN
 	WHILE @@fetch_status = 0
 	BEGIN
 		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE AppUser ' + @Name + ' ' +@Identification);
+		VALUES(@ModifiedBy,@ModificationDate,'UPDATE','UPDATE Usuario ' + @Name + ' ' +@Identification);
 
 		FETCH NEXT FROM curAppUser INTO @Name, @Identification, @ModificationDate, @ModifiedBy
 	END

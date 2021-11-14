@@ -30,77 +30,81 @@
                 </div>
             </aside>
             <main class="col-md-10">
-                <article class="card mb-3">
-                    <div class="card-body">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
-                                <h4>Registro de Accesos y Salidas del Sistema</h4>
-                                <hr />
-                                <div>
-                                    <form class="row" id="frmTable">
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-group">
-                                                <label class="font-weight-bold">Usuario</label>
-                                                <input type="text"
-                                                       asp-for="Filters.User"
-                                                       name="user"
-                                                       class="form-control-original-small"
-                                                       id="usernametextbox" />
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
+                        <article class="card mb-3">
+                            <div class="card-header bg-primary">
+                                <h4 class="text-white">Registro de Accesos y Salidas de Usuarios del Sistema</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <form class="row" id="frmTable">
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Usuario</label>
+                                            <input type="text"
+                                                   asp-for="Filters.User"
+                                                   name="user"
+                                                   class="form-control-original-small"
+                                                   id="usernametextbox" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Fecha Inicial</label>
+                                            <input type="date"
+                                                   asp-for="Filters.StartDate"
+                                                   name="startdate"
+                                                   class="form-control-original-small" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Fecha Final</label>
+                                            <input type="date"
+                                                   asp-for="Filters.EndDate"
+                                                   name="enddate"
+                                                   class="form-control-original-small" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 d-flex">
+                                        <div class="align-self-center mx-auto mb-3 mb-lg-0">
+                                            <div class="btn-group" role="group" aria-label="buttomgroup">
+                                                <button type="submit" class="btn btn-primary" style=" width: 80px;">Filtrar</button>
+                                                <button type="button" class="btn btn-primary" style=" width: 80px;" id="btnGenerateReport">Reporte</button>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-group">
-                                                <label class="font-weight-bold">Fecha Inicial</label>
-                                                <input type="date"
-                                                       asp-for="Filters.StartDate"
-                                                       name="startdate"
-                                                       class="form-control-original-small" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="form-group">
-                                                <label class="font-weight-bold">Fecha Final</label>
-                                                <input type="date"
-                                                       asp-for="Filters.EndDate"
-                                                       name="enddate"
-                                                       class="form-control-original-small" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 d-flex">
-                                            <div class="align-self-center mx-auto mb-3 mb-lg-0">
-                                                <div class="btn-group" role="group" aria-label="buttomgroup">
-                                                    <button type="submit" class="btn btn-primary" style=" width: 80px;">Filtrar</button>
-                                                    <button type="button" class="btn btn-primary" style=" width: 80px;" id="btnGenerateReport">Reporte</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
+
                                 <div id="divBinnacleAccessTable">
                                     @{ await Html.RenderPartialAsync("_BinnacleAccessTablePartial", Model); }
                                 </div>
                             </div>
+                        </article>
+                    </div>
 
-                            <div class="tab-pane fade show" id="v-pills-onl" role="tabpanel" aria-labelledby="v-pills-od-onl">
-                                <h4>Usuarios en Linea</h4>
-                                <hr />
+                    <div class="tab-pane fade show" id="v-pills-onl" role="tabpanel" aria-labelledby="v-pills-od-onl">
+                        <article class="card mb-3">
+                            <div class="card-header bg-primary">
+                                <h4 class="text-white">Usuarios en Linea</h4>
+                            </div>
+                            <div class="card-body">
                                 <p>La funcionalidad se agregará en futuras actualizaciones.</p>
                             </div>
-                        </div>
+                        </article>
                     </div>
-                </article>
+                </div>
             </main>
         </div>
     </div>
 </section>
 
 
-
-
 @section Scripts{
     <script src="~/js/binnacle.access.index.js"></script>
 
-    @{ 
+    @{
         string sParams = "";
         sParams += $"user={Model?.Filters?.User}&";
         sParams += $"startdate={Model?.Filters?.StartDate}&";
