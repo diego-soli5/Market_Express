@@ -47,12 +47,15 @@ namespace Market_Express.Domain.Services
             return lstAppUser;
         }
 
-        public List<string> SearchNames(string query)
+        public List<string> SearchNames(string query, bool onlyAdmin = false)
         {
             var lstAppUser = _unitOfWork.AppUser.GetAll();
 
             if (query != null)
                 lstAppUser = lstAppUser.Where(a => a.Name.ToUpper().Contains(query.ToUpper()));
+
+            if(onlyAdmin)
+                lstAppUser = lstAppUser.Where(a => a.Type == AppUserType.ADMINISTRADOR);
 
             return lstAppUser.OrderBy(a => a.Name)
                              .Select(a => a.Name)

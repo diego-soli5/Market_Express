@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Rotativa.AspNetCore;
+using Market_Express.Domain.QueryFilter.BinnacleMovement;
+using Market_Express.Application.DTOs.BinnacleMovement;
+using Market_Express.Web.ViewModels.BinnacleMovement;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -20,24 +23,44 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     public class BinnacleController : Controller
     {
         private readonly IBinnacleAccessService _binnacleAccessService;
+        private readonly IBinnacleMovementService _binnacleMovementService;
         private readonly IAppUserService _appUserService;
         private readonly IMapper _mapper;
 
-        private const string _ACC = "acc";
-        private const string _MOV = "mov";
-
         public BinnacleController(IBinnacleAccessService binnacleAccessService,
+                                  IBinnacleMovementService binnacleMovementService,
                                   IAppUserService appUserService,
                                   IMapper mapper)
         {
             _binnacleAccessService = binnacleAccessService;
+            _binnacleMovementService = binnacleMovementService;
             _appUserService = appUserService;
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Movement()
+        public async Task<IActionResult> Movement(BinnacleMovementQueryFilter filters)
         {
-            return View();
+            BinnacleMovementIndexViewModel oViewModel = new();
+
+            var tplBinnacleMovementDTO = await GetBinnacleMovementDTOList(filters);
+
+            oViewModel.BinnacleMovements = tplBinnacleMovementDTO.Item1;
+            oViewModel.Metadata = tplBinnacleMovementDTO.Item2;
+            oViewModel.Filters = filters;
+
+            return View(oViewModel);
+        }
+
+        public async Task<IActionResult> MovementReport(BinnacleMovementQueryFilter filters)
+        {
+            MovementReportViewModel oViewModel = new();
+
+            oViewModel.Filters = filters;
+            oViewModel.BinnacleMovements = (await _binnacleMovementService.GetAllForReport(filters))
+                                                                          .Select(b => _mapper.Map<BinnacleMovementDTO>(b))
+                                                                          .ToList();
+
+            return new ViewAsPdf("MovementReport",oViewModel);
         }
 
         [HttpGet]
@@ -92,9 +115,18 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         #region UTILTY METHODS
+        private async Task<(List<BinnacleMovementDTO>, Metadata)> GetBinnacleMovementDTOList(BinnacleMovementQueryFilter filters)
+        {
+            var pagedList = await _binnacleMovementService.GetAllPaginated(filters);
+
+            var meta = Metadata.Create(pagedList);
+
+            return (pagedList.Select(b => _mapper.Map<BinnacleMovementDTO>(b)).ToList(), meta);
+        }
+
         private (List<BinnacleAccessDTO>, Metadata) GetBinnacleAccessDTOList(BinnacleAccessQueryFilter filters)
         {
-            var pagedList = _binnacleAccessService.GetAll(filters);
+            var pagedList = _binnacleAccessService.GetAllPaginated(filters);
 
             var meta = Metadata.Create(pagedList);
 

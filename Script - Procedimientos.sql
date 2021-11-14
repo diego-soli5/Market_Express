@@ -159,7 +159,8 @@ BEGIN
 
 	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
 
-	SELECT bm.Type,
+	SELECT bm.Id,
+		   bm.Type,
 		   bm.Detail,
 		   bm.MovementDate,
 		   CASE
@@ -193,7 +194,8 @@ CREATE PROCEDURE Sp_BinnacleMovement_GetAllForReport
 )
 AS
 BEGIN
-	SELECT bm.Type,
+	SELECT bm.Id,
+		   bm.Type,
 		   bm.Detail,
 		   bm.MovementDate,
 		   CASE
@@ -888,35 +890,4 @@ BEGIN
 	DEALLOCATE curSlider
 END;
 GO
-
-/*
-CREATE TRIGGER TRG_Role_RegMovement_Delete
-ON [Role]
-FOR DELETE
-AS
-BEGIN
-										  
-	DECLARE curRoles CURSOR FOR SELECT d.Name,
-										  d.Description,
-										  d.ModifiedBy
-								   FROM deleted d;
-	
-	DECLARE @Name VARCHAR(50);
-	DECLARE @Description VARCHAR(255);
-	DECLARE @ModificationDate DATETIME = GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'UTC';
-	DECLARE @ModifiedBy VARCHAR(40);
-
-	OPEN curRoles
-	FETCH NEXT FROM curRoles INTO @Name, @Description, @ModifiedBy
-	WHILE @@fetch_status = 0
-	BEGIN
-		INSERT INTO Binnacle_Movement(PerformedBy,MovementDate,Type,Detail)
-		VALUES(@ModifiedBy,@ModificationDate,'DELETE','DELETE Rol ' + @Name);
-
-		FETCH NEXT FROM curRoles INTO @Name, @Description, @ModifiedBy
-	END
-	CLOSE curRoles
-	DEALLOCATE curRoles
-END;
-GO*/
 

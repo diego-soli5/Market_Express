@@ -25,7 +25,7 @@ namespace Market_Express.Domain.Services
             _paginationOptions = paginationOptions.Value;
         }
 
-        public PagedList<BinnacleAccess> GetAll(BinnacleAccessQueryFilter filters)
+        public PagedList<BinnacleAccess> GetAllPaginated(BinnacleAccessQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;

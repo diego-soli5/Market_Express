@@ -4,6 +4,7 @@ using Market_Express.Application.DTOs.Address;
 using Market_Express.Application.DTOs.AppUser;
 using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.BinnacleAccess;
+using Market_Express.Application.DTOs.BinnacleMovement;
 using Market_Express.Application.DTOs.Cart;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Client;
@@ -38,6 +39,13 @@ namespace Market_Express.Infrastructure.Mappings
             CreateCartMappings();
             CreateOrderMappings();
             CreateBinnacleAccessMappings();
+            CreateBinnacleMovementMappings();
+        }
+
+        private void CreateBinnacleMovementMappings()
+        {
+            CreateMap<BinnacleMovement, BinnacleMovementDTO>()
+                .ReverseMap();
         }
 
         private void CreateBinnacleAccessMappings()
