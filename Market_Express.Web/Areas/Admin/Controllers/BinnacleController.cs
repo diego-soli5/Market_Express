@@ -45,8 +45,6 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         {
             BinnacleAccessIndexViewModel oViewModel = new();
 
-            filters.StartDate = DateTimeUtility.NowCostaRica;
-
             var tplBinnacleAccessDTO = GetBinnacleAccessDTOList(filters);
 
             oViewModel.BinnacleAccesses = tplBinnacleAccessDTO.Item1;

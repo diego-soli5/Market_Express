@@ -95,7 +95,18 @@
 </section>
 
 
+
+
 @section Scripts{
     <script src="~/js/binnacle.access.index.js"></script>
+
+    @{ 
+        string sParams = "";
+        sParams += $"user={Model?.Filters?.User}&";
+        sParams += $"startdate={Model?.Filters?.StartDate}&";
+        sParams += $"enddate={Model?.Filters?.EndDate}&";
+
+        <script>params = '@Html.Raw(sParams)'</script>
+    }
 }
 
