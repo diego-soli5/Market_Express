@@ -51,6 +51,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
             services.AddScoped(typeof(IBinnacleAccessService), typeof(BinnacleAccessService));
+
+            services.AddScoped(typeof(IBinnacleMovementService), typeof(BinnacleMovementService));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)
@@ -78,7 +80,7 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddTransient(typeof(IArticleValidations), typeof(ArticleValidations));
         }
 
-        public static void AddAzureClients(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureAzureClients(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAzureClients(builder =>
             {
@@ -86,7 +88,7 @@ namespace Market_Express.Infrastructure.Extensions
             });
         }
 
-        public static void AddOptions(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AuthenticationOptions>(configuration.GetSection("Options:AuthenticationOptions"));
 
@@ -105,7 +107,7 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<OrderOptions>(configuration.GetSection("Options:OrderOptions"));
         }
 
-        public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<MARKET_EXPRESSContext>(options =>
             {
@@ -117,7 +119,7 @@ namespace Market_Express.Infrastructure.Extensions
             });
         }
 
-        public static void AddAppAuthentication(this IServiceCollection services)
+        public static void ConfigureAuthentication(this IServiceCollection services)
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>

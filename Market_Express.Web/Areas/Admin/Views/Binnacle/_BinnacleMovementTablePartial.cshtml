@@ -1,0 +1,43 @@
+﻿@model Market_Express.Web.ViewModels.BinnacleMovement.BinnacleMovementIndexViewModel
+
+<table class="table table-sm table-hover table-responsive w-100 d-block d-md-table">
+    <thead>
+        <tr class="small text-uppercase font-weight-bold">
+            <th>Ejecutante</th>
+            <th>Identificación</th>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Detalle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.BinnacleMovements?.Count > 0)
+        {
+            @foreach (var movement in Model.BinnacleMovements)
+            {
+                <tr>
+                    <td>@movement.PerformedBy</td>
+                    <td>@movement.AppUser.Identification</td>
+                    <td>@movement.MovementDate</td>
+                    <td>@movement.Type</td>
+                    <td>@movement.Detail</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">
+                    <p class="text-center text-danger">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model?.BinnacleMovements?.Count > 0)
+{
+    <div>
+        @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
+    </div>
+}

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Market_Express.Infrastructure.Extensions;
 using Market_Express.Infrastructure.Mappings;
 using Market_Express.Web.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Market_Express.Web
 {
@@ -25,6 +27,11 @@ namespace Market_Express.Web
                 options.Filters.Add(typeof(CheckPasswordFilter));
             });
 
+            services.Configure<MvcViewOptions>(options =>
+            {
+                options.HtmlHelperOptions.CheckBoxHiddenInputRenderMode = CheckBoxHiddenInputRenderMode.None;
+            });
+
             services.AddRepositories();
 
             services.AddApplicationServices();
@@ -35,15 +42,15 @@ namespace Market_Express.Web
 
             services.AddValidations();
 
-            services.AddOptions(Configuration);
+            services.ConfigureOptions(Configuration);
 
-            services.AddAzureClients(Configuration);
+            services.ConfigureAzureClients(Configuration);
 
-            services.AddDbContext(Configuration);
+            services.ConfigureDbContext(Configuration);
 
             services.AddAntiforgery(setup => setup.HeaderName = "X-Anti-Forgery-Token");
 
-            services.AddAppAuthentication();
+            services.ConfigureAuthentication();
 
             services.AddAutoMapper(typeof(AppMappings));
         }

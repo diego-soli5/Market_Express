@@ -154,7 +154,7 @@ BEGIN
 						WHERE (@type IS NULL OR bm.Type = @type)
 						AND (@startDate IS NULL OR CAST(bm.MovementDate AS DATE) >= CAST(@startDate AS DATE))
 						AND (@endDate IS NULL OR CAST(bm.MovementDate AS DATE) <= CAST(@endDate AS DATE))
-						AND (@name IS NULL OR ap.Name = @name)
+						AND (@name IS NULL OR (bm.PerformedBy = @name OR ap.Name = @name))
 						AND ((@ignoreSystem = 1 AND bm.PerformedBy <> 'SYSTEM') OR @ignoreSystem = 0));
 
 	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
@@ -175,7 +175,7 @@ BEGIN
 	WHERE (@type IS NULL OR bm.Type = @type)
 	AND (@startDate IS NULL OR CAST(bm.MovementDate AS DATE) >= CAST(@startDate AS DATE))
 	AND (@endDate IS NULL OR CAST(bm.MovementDate AS DATE) <= CAST(@endDate AS DATE))
-	AND (@name IS NULL OR ap.Name = @name)
+	AND (@name IS NULL OR (bm.PerformedBy = @name OR ap.Name = @name))
 	AND ((@ignoreSystem = 1 AND bm.PerformedBy <> 'SYSTEM') OR @ignoreSystem = 0)
 	ORDER BY bm.MovementDate DESC
 	OFFSET @skip ROWS 
@@ -210,7 +210,7 @@ BEGIN
 	WHERE (@type IS NULL OR bm.Type = @type)
 	AND (@startDate IS NULL OR CAST(bm.MovementDate AS DATE) >= CAST(@startDate AS DATE))
 	AND (@endDate IS NULL OR CAST(bm.MovementDate AS DATE) <= CAST(@endDate AS DATE))
-	AND (@name IS NULL OR ap.Name = @name)
+	AND (@name IS NULL OR (bm.PerformedBy = @name OR ap.Name = @name))
 	AND ((@ignoreSystem = 1 AND bm.PerformedBy <> 'SYSTEM') OR @ignoreSystem = 0)
 	ORDER BY bm.MovementDate DESC 
 END;

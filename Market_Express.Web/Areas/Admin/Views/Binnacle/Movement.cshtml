@@ -1,4 +1,4 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.BinnacleMovement.BinnacleMovementIndexViewModel
 @{
     ViewData["Title"] = "Bitácora de Movimientos";
 }
@@ -6,7 +6,7 @@
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
     <div class="container">
-        <h2 class="title-page font-weight-bold">Bitácora Movimientos</h2>
+        <h2 class="title-page font-weight-bold">Bitácora de Movimientos</h2>
         <nav>
             <ol class="breadcrumb text-white">
                 <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
@@ -18,49 +18,99 @@
 <!-- ========================= SECTION INTRO END// ========================= -->
 
 
+
 <section class="section-content padding-y">
     <div class="container">
-
-        @if (TempData["BinnacleMessage"] != null)
-        {
-            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
-                <p class="mb-0">
-                    @TempData["ArticleMessage"].ToString()
-                </p>
-            </div>
-        }
-
-        <div class="card">
-            <div class="card-header bg-primary">
-                <div>
-                    <h4 class="text-white d-inline"></h4>
-                </div>
-                <div class="h4"></div>
-            </div>
+        <article class="card mb-3">
             <div class="card-body">
+                <h4>Registro de Movimientos en el Sistema</h4>
+                <hr />
+                <div>
+                    <form asp-area="Admin" asp-controller="Binnacle" asp-action="Movement" method="get" class="row" id="frmTable">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Usuario</label>
+                                <input type="text"
+                                       asp-for="Filters.User"
+                                       name="user"
+                                       class="form-control-original-small"
+                                       id="usernametextbox" />
+                            </div>
 
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay movimientos registrados en la bitacora.</p>
-                    </div>
+                            <div class="form-group">
+                                <label class="custom-control custom-checkbox font-weight-bold d-block">
+                                    <input type="checkbox"
+                                           asp-for="Filters.IgnoreSystem"
+                                           name="ignoresystem"
+                                           class="custom-control-input" />
+                                    <span class="custom-control-label">
+                                        Ignorar a SYSTEM
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Fecha Inicial</label>
+                                <input type="date"
+                                       asp-for="Filters.StartDate"
+                                       name="startdate"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Fecha Final</label>
+                                <input type="date"
+                                       asp-for="Filters.EndDate"
+                                       name="enddate"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Tipo</label>
+                                <select class="form-control-original-small"
+                                        asp-for="Filters.Type"
+                                        asp-items="Html.GetEnumSelectList<MovementType>()"
+                                        name="type">
+                                    <option>TODOS</option>
+                                </select>
+                            </div>
+                            <div class="d-flex">
+                                <div class=" mx-auto">
+                                    <div class="btn-group" role="group" aria-label="buttomgroup">
+                                        <button type="submit" class="btn btn-primary" style=" width: 80px;">Filtrar</button>
+                                        <button type="button" class="btn btn-primary" style=" width: 80px;" id="btnGenerateReport">Reporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-            </div>
-            <div class="card-footer">
-                <div class="float-right">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
+                <div id="divMovementTable" class="mt-3">
+                    @{ await Html.RenderPartialAsync("_BinnacleMovementTablePartial", Model); }
                 </div>
             </div>
-        </div>
+        </article>
     </div>
 </section>
 
 
-@section Scripts{
 
+
+@section Scripts{
+    <script src="~/js/binnacle.movement.index.js"></script>
+
+    @{
+        string sParams = "";
+        sParams += $"user={Model?.Filters?.User}&";
+        sParams += $"startdate={Model?.Filters?.StartDate}&";
+        sParams += $"enddate={Model?.Filters?.EndDate}&";
+        sParams += $"type={Model?.Filters?.Type}&";
+        sParams += $"ignoreSystem={Model?.Filters?.IgnoreSystem}&";
+
+        <script>params = '@Html.Raw(sParams)'</script>
+    }
 }
 

@@ -38,6 +38,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Movement(BinnacleMovementQueryFilter filters)
         {
             BinnacleMovementIndexViewModel oViewModel = new();
@@ -92,7 +93,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("/Admin/Binnacle/Access/GetTable")]
-        public IActionResult GetTable(BinnacleAccessQueryFilter filters)
+        public IActionResult GetAccessTable(BinnacleAccessQueryFilter filters)
         {
             BinnacleAccessIndexViewModel oViewModel = new();
 
@@ -103,6 +104,21 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             oViewModel.Filters = filters;
 
             return PartialView("_BinnacleAccessTablePartial", oViewModel);
+        }
+
+        [HttpGet]
+        [Route("/Admin/Binnacle/Movement/GetTable")]
+        public async Task<IActionResult> GetMovementTable(BinnacleMovementQueryFilter filters)
+        {
+            BinnacleMovementIndexViewModel oViewModel = new();
+
+            var tplBinnacleMovementDTO = await GetBinnacleMovementDTOList(filters);
+
+            oViewModel.BinnacleMovements = tplBinnacleMovementDTO.Item1;
+            oViewModel.Metadata = tplBinnacleMovementDTO.Item2;
+            oViewModel.Filters = filters;
+
+            return PartialView("_BinnacleMovementTablePartial", oViewModel);
         }
 
         [HttpGet]

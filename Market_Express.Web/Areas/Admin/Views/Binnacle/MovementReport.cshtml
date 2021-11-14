@@ -1,0 +1,85 @@
+﻿@model Market_Express.Web.ViewModels.BinnacleMovement.MovementReportViewModel
+@{
+    Layout = null;
+}
+
+<h1 style="text-align: center;">Market Express</h1>
+<h3>Reporte de Movimientos de Usuarios del Sistema</h3>
+
+@if (Model?.Filters?.User != null)
+{
+    <p><strong>Ejecutante: </strong> @Model.Filters.User.Capitalize()</p>
+}
+else
+{
+    <p><strong>Ejecutante: </strong> Todos los usuarios</p>
+}
+
+@if (Model?.Filters?.StartDate != null)
+{
+    <p><strong>Rango de Fecha Inicial: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
+}
+else
+{
+    <p><strong>Rango de Fecha Inicial: </strong> Todas las fechas</p>
+}
+
+@if (Model?.Filters?.EndDate != null)
+{
+    <p><strong>Rango de Fecha Final: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
+}
+else
+{
+    <p><strong>Rango de Fecha Final: </strong> Todas las fechas</p>
+}
+
+@if (Model?.Filters?.Type != null)
+{
+    <p><strong>Tipo de Movimiento: </strong> @Model.Filters.Type</p>
+}
+else
+{
+    <p><strong>Tipo de Movimiento: </strong> Todos</p>
+}
+
+<div>
+    <table style="width: 100%; table-layout: fixed;">
+        <thead>
+            <tr style="background: #eee; height: 40px; ">
+                <th scope="col" style="background: #eee; text-align: center;">Ejecutante</th>
+                <th scope="col" style="background: #eee; text-align: center;">Identificación</th>
+                <th scope="col" style="background: #eee; text-align: center;">Fecha</th>
+                <th scope="col" style="background: #eee; text-align: center;">Tipo</th>
+                <th scope="col" style="background: #eee; width: 500px;">Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model?.BinnacleMovements?.Count > 0)
+            {
+                @foreach (var movement in Model?.BinnacleMovements)
+                {
+                    <tr>
+                        <td style="line-height: 2em;">@movement.PerformedBy</td>
+                        <td style="line-height: 2em; text-align: center;">@movement.AppUser.Identification</td>
+                        <td style="line-height: 2em; text-align: center;">@movement.MovementDate</td>
+                        <td style="line-height: 2em; text-align: center;">@movement.Type</td>
+                        <td style="line-height: 2em;">@movement.Detail.Trim()</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">
+                        <p style="text-align:center;">No hay registros.</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+

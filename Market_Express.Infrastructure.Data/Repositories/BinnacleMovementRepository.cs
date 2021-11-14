@@ -36,7 +36,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             var arrParams = new[]
             {
-                new SqlParameter("@type",filters.Type),
+                new SqlParameter("@type",filters.Type.ToString()),
                 new SqlParameter("@startdate",filters.StartDate),
                 new SqlParameter("@enddate",filters.EndDate),
                 new SqlParameter("@name",filters.User),

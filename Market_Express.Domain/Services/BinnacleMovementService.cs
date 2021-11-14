@@ -1,4 +1,5 @@
 ﻿using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class BinnacleMovementService
+    public class BinnacleMovementService : IBinnacleMovementService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaginationOptions _paginationOptions;
