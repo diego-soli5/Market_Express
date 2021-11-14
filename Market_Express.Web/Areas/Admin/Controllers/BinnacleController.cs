@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Rotativa.AspNetCore;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -53,6 +54,16 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             oViewModel.Filters = filters;
 
             return View("AccessIndex", oViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult AccessReport(BinnacleAccessQueryFilter filters)
+        {
+            var lstBinnacleAccessDTO = _binnacleAccessService.GetResultForReport(filters)
+                                                             .Select(b => _mapper.Map<BinnacleAccessDTO>(b))
+                                                             .ToList();
+
+            return new ViewAsPdf("AccessReport", lstBinnacleAccessDTO);
         }
 
         [HttpGet]

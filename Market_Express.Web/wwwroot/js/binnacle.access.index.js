@@ -1,5 +1,6 @@
 ﻿var params = '';
 var frm = document.querySelector("#frmTable");
+var btnReport = document.querySelector("#btnGenerateReport");
 
 function bindPaginationEvts() {
 
@@ -63,6 +64,10 @@ frm.addEventListener("submit", async function (e) {
     params = createQueryStringParams(formData);
 
     await getPaginatedPage("1");
+});
+
+btnReport.addEventListener("click", function (e) {
+    window.open(`/Admin/Binnacle/AccessReport?${params}`, '_blank');
 });
 
 bindPaginationEvts();

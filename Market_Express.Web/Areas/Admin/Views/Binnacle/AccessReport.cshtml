@@ -1,0 +1,54 @@
+﻿@model List<Market_Express.Application.DTOs.BinnacleAccess.BinnacleAccessDTO>
+@{ 
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div>
+    <img src="~/img/logo.png" class="img-fluid d-inline" />
+    <h4 class="d-inline float-right">Reporte de Accesos Al Sistema</h4>
+</div>
+
+<div class="mt-5">
+    <table class="table table-sm table-hover table-resposive">
+        <thead>
+            <tr class="small text-uppercase font-weight-bold">
+                <th>Usuario</th>
+                <th>Identificación</th>
+                <th>Fecha y Hora Ingreso</th>
+                <th>Fecha y Hora de Salida</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model?.Count > 0)
+            {
+                @foreach (var access in Model)
+                {
+                    string sTextClass = access.ExitDate.HasValue
+                        ? ""
+                        : "text-warning";
+
+                    dynamic dExitDate = access.ExitDate.HasValue
+                        ? access.ExitDate
+                        : "No Registrado";
+
+                    <tr>
+                        <td>@access.AppUser.Name.Capitalize()</td>
+                        <td>@access.AppUser.Identification</td>
+                        <td>@access.EntryDate</td>
+                        <td class="@sTextClass">@dExitDate</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">
+                        <p class="text-center text-danger">No hay registros.</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

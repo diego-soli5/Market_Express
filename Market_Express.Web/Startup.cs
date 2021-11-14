@@ -81,6 +81,8 @@ namespace Market_Express.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../WkHTMLToPDF");
         }
     }
 }
