@@ -1,9 +1,36 @@
-﻿@model List<Market_Express.Application.DTOs.BinnacleAccess.BinnacleAccessDTO>
+﻿@model Market_Express.Web.ViewModels.BinnacleAccess.AccessReportViewModel
 @{
     Layout = null;
 }
 <h1 style="text-align: center;">Market Express</h1>
 <h3>Reporte de Accesos y Salidas del Sistema</h3>
+
+@if (Model?.Filters?.User != null)
+{
+    <p><strong>Usuario: </strong> @Model.Filters.User</p>
+}
+else
+{
+    <p><strong>Usuario: </strong> Todos los usuarios</p>
+}
+
+@if (Model?.Filters?.StartDate != null)
+{
+    <p><strong>Rango de Fecha Inicial: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
+}
+else
+{
+    <p><strong>Rango de Fecha Inicial: </strong> Todas las fechas</p>
+}
+
+@if (Model?.Filters?.EndDate != null)
+{
+    <p><strong>Rango de Fecha Final: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
+}
+else
+{
+    <p><strong>Rango de Fecha Final: </strong> Todas las fechas</p>
+}
 
 <table style="width: 100%;">
     <thead>
@@ -15,9 +42,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model?.Count > 0)
+        @if (Model?.BinnaclesAccesses?.Count > 0)
         {
-            @foreach (var access in Model)
+            @foreach (var access in Model?.BinnaclesAccesses)
             {
                 dynamic dExitDate = access.ExitDate.HasValue
                     ? access.ExitDate

@@ -128,6 +128,93 @@ END;
 GO
 
 ---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS BINNACLE_MOVEMENT
+---------------------------------------------------------------------------------------------------------------
+-- Obtiene todos los registros paginados
+CREATE PROCEDURE Sp_BinnacleMovement_GetAllPaginated 
+(
+	@type VARCHAR = NULL,
+	@startDate DATE = NULL,
+	@endDate DATE = NULL,
+	@name VARCHAR(50) = NULL,
+	@ignoreSystem BIT = 0,
+	@pageNumber INT = null,
+	@pageSize INT= null,
+	@totalPages INT = null OUTPUT,
+	@totalCount INT = null OUTPUT
+)
+AS
+BEGIN
+	DECLARE @skip int = @pageNumber*@pageSize;
+
+	SET @totalCount =  (SELECT COUNT(1) totalCount
+						FROM Binnacle_Movement bm
+						LEFT JOIN AppUser ap
+						ON bm.PerformedBy = CONVERT(VARCHAR(100),ap.Id)
+						WHERE (@type IS NULL OR bm.Type = @type)
+						AND (@startDate IS NULL OR CAST(bm.MovementDate AS DATE) >= CAST(@startDate AS DATE))
+						AND (@endDate IS NULL OR CAST(bm.MovementDate AS DATE) <= CAST(@endDate AS DATE))
+						AND (@name IS NULL OR ap.Name = @name)
+						AND ((@ignoreSystem = 1 AND bm.PerformedBy <> 'SYSTEM') OR @ignoreSystem = 0));
+
+	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
+
+	SELECT bm.Type,
+		   bm.Detail,
+		   bm.MovementDate,
+		   CASE
+		   WHEN bm.PerformedBy = 'SYSTEM' THEN bm.PerformedBy
+		   ELSE ap.Name END AS PerformedBY,
+		   CASE
+		   WHEN bm.PerformedBy = 'SYSTEM' THEN 'N/A'
+		   ELSE ap.Identification END AS Identification
+	FROM Binnacle_Movement bm
+	LEFT JOIN AppUser ap
+	ON bm.PerformedBy = CONVERT(VARCHAR(100),ap.Id)
+	WHERE (@type IS NULL OR bm.Type = @type)
+	AND (@startDate IS NULL OR CAST(bm.MovementDate AS DATE) >= CAST(@startDate AS DATE))
+	AND (@endDate IS NULL OR CAST(bm.MovementDate AS DATE) <= CAST(@endDate AS DATE))
+	AND (@name IS NULL OR ap.Name = @name)
+	AND ((@ignoreSystem = 1 AND bm.PerformedBy <> 'SYSTEM') OR @ignoreSystem = 0)
+	ORDER BY bm.MovementDate DESC
+	OFFSET @skip ROWS 
+	FETCH NEXT @pageSize ROWS ONLY; 
+END;
+GO
+
+-- Obtiene todos los registros para generar el reporte
+CREATE PROCEDURE Sp_BinnacleMovement_GetAllForReport
+(
+	@type VARCHAR = NULL,
+	@startDate DATE = NULL,
+	@endDate DATE = NULL,
+	@name VARCHAR(50) = NULL,
+	@ignoreSystem BIT = 0
+)
+AS
+BEGIN
+	SELECT bm.Type,
+		   bm.Detail,
+		   bm.MovementDate,
+		   CASE
+		   WHEN bm.PerformedBy = 'SYSTEM' THEN bm.PerformedBy
+		   ELSE ap.Name END AS PerformedBY,
+		   CASE
+		   WHEN bm.PerformedBy = 'SYSTEM' THEN 'N/A'
+		   ELSE ap.Identification END AS Identification
+	FROM Binnacle_Movement bm
+	LEFT JOIN AppUser ap
+	ON bm.PerformedBy = CONVERT(VARCHAR(100),ap.Id)
+	WHERE (@type IS NULL OR bm.Type = @type)
+	AND (@startDate IS NULL OR CAST(bm.MovementDate AS DATE) >= CAST(@startDate AS DATE))
+	AND (@endDate IS NULL OR CAST(bm.MovementDate AS DATE) <= CAST(@endDate AS DATE))
+	AND (@name IS NULL OR ap.Name = @name)
+	AND ((@ignoreSystem = 1 AND bm.PerformedBy <> 'SYSTEM') OR @ignoreSystem = 0)
+	ORDER BY bm.MovementDate DESC 
+END;
+GO
+
+---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS APPUSER
 ---------------------------------------------------------------------------------------------------------------
 -- Obtiene los permisos del usuario segun los roles asignados
@@ -833,15 +920,3 @@ BEGIN
 END;
 GO*/
 
-
-/*
-
-select bm.Type,
-	   bm.Detail,
-	   bm.MovementDate,
-	   CASE
-	   WHEN bm.PerformedBy = 'SYSTEM' THEN bm.PerformedBy
-	   ELSE (SELECT Name FROM AppUser WHERE Id = CONVERT(UNIQUEIDENTIFIER,bm.PerformedBy)) END AS PerformedBY
-from Binnacle_Movement bm
-
-*/

@@ -37,7 +37,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Movement()
         {
-            return View("MovementIndex");
+            return View();
         }
 
         [HttpGet]
@@ -51,17 +51,20 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             oViewModel.Metadata = tplBinnacleAccessDTO.Item2;
             oViewModel.Filters = filters;
 
-            return View("AccessIndex", oViewModel);
+            return View(oViewModel);
         }
 
         [HttpGet]
         public IActionResult AccessReport(BinnacleAccessQueryFilter filters)
         {
-            var lstBinnacleAccessDTO = _binnacleAccessService.GetResultForReport(filters)
+            AccessReportViewModel oViewModel = new();
+
+            oViewModel.Filters = filters;
+            oViewModel.BinnaclesAccesses = _binnacleAccessService.GetResultForReport(filters)
                                                              .Select(b => _mapper.Map<BinnacleAccessDTO>(b))
                                                              .ToList();
 
-            return new ViewAsPdf("AccessReport", lstBinnacleAccessDTO);
+            return new ViewAsPdf("AccessReport", oViewModel);
         }
 
         [HttpGet]
