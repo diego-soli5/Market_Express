@@ -29,58 +29,101 @@
                 </div>
             </aside>
             <main class="col-md-10">
-                <article class="card mb-3">
-                    <div class="card-body">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-acc" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <figure class="icontext">
-                                            <div class="icon">
-                                                <img class="rounded-circle img-sm border" src="~/img/user.png">
-                                            </div>
-                                            <div class="text">
-                                                <strong>@Model.AppUser.Name</strong>
-                                            </div>
-                                        </figure>
-                                        <hr>
-
-                                        <dl class="row">
-                                            <dt class="col-md-2 pr-0">Alias</dt>
-                                            <dd class="col-md-10 px-xl-0"> <div id="usrAlias"><p class="@sTextDanger">@(Model.AppUser.Alias ?? "Sin Alias")</p></div></dd>
-                                            <dt class="col-md-2 pr-0">Cédula</dt>
-                                            <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Identification</p></dd>
-                                            <dt class="col-md-2 pr-0">Email</dt>
-                                            <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Email</p></dd>
-                                            <dt class="col-md-2 pr-0">Teléfono</dt>
-                                            <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Phone</p></dd>
-                                            <dt class="col-md-2 pr-0">Contraseña</dt>
-                                            <dd class="col-md-10 px-xl-0"><p>************</p></dd>
-                                        </dl>
-                                        <hr />
-                                        <a href="#" id="btnChangeAlias" data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a><br />
-                                        <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-acc" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <article class="card mb-3">
+                            <div class="card-body">
+                                <figure class="icontext">
+                                    <div class="icon">
+                                        <img class="rounded-circle img-sm border" src="~/img/user.png">
                                     </div>
-                                </div>
-
-                                <!-- ========================= SECTION CONTENT END// ========================= -->
-
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-add" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                <div class="row">
-                                    <div class="col-lg-12" id="addressContainer">
-                                        @{ await Html.RenderPartialAsync("_AddressManagementPartial", Model.Addresses); }
+                                    <div class="text">
+                                        <strong>@Model.AppUser.Name</strong>
                                     </div>
-                                </div>
+                                </figure>
+                                <hr>
+
+                                <dl class="row">
+                                    <dt class="col-md-2 pr-0">Alias</dt>
+                                    <dd class="col-md-10 px-xl-0"> <div id="usrAlias"><p class="@sTextDanger">@(Model.AppUser.Alias ?? "Sin Alias")</p></div></dd>
+                                    <dt class="col-md-2 pr-0">Cédula</dt>
+                                    <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Identification</p></dd>
+                                    <dt class="col-md-2 pr-0">Email</dt>
+                                    <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Email</p></dd>
+                                    <dt class="col-md-2 pr-0">Teléfono</dt>
+                                    <dd class="col-md-10 px-xl-0"><p>@Model.AppUser.Phone</p></dd>
+                                    <dt class="col-md-2 pr-0">Contraseña</dt>
+                                    <dd class="col-md-10 px-xl-0"><p>************</p></dd>
+                                </dl>
+                                <hr />
+                                <a href="#" id="btnChangeAlias" data-toggle="modal" data-target="#modalChangeAlias">Cambiar Alias</a><br />
+                                <a href="#" data-toggle="modal" data-target="#modalChangePassword">Cambiar Contraseña</a>
                             </div>
-                        </div>
+                        </article>
                     </div>
-                </article>
+                    <div class="tab-pane fade" id="v-pills-add" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <article class="card mb-3">
+                            <div class="card-header bg-blue">
+                                <h4 class="text-white">Mis Direcciones</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="addressContainer">
+                                    @{ await Html.RenderPartialAsync("_AddressManagementPartial", Model.Addresses); }
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+
+<div class="tab-pane fade show active" id="v-pills-acc" role="tabpanel" aria-labelledby="v-pills-home-tab">
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+
+</div>
+<div class="tab-pane fade" id="v-pills-add" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+    <div class="row">
+        <div class="col-lg-12" id="addressContainer">
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!--Modificar o Agregar Direccion-->
 <div class="modal fade" id="modalAddress" tabindex="-1" aria-labelledby="modalAddressLabel" aria-hidden="true">
