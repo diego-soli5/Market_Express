@@ -47,6 +47,18 @@ namespace Market_Express.Domain.Services
             return lstAppUser;
         }
 
+        public List<string> SearchNames(string query)
+        {
+            var lstAppUser = _unitOfWork.AppUser.GetAll();
+
+            if (query != null)
+                lstAppUser = lstAppUser.Where(a => a.Name.ToUpper().Contains(query.ToUpper()));
+
+            return lstAppUser.OrderBy(a => a.Name)
+                             .Select(a => a.Name)
+                             .ToList();
+        }
+
         public async Task<AppUser> GetById(Guid id, bool includeClient = false)
         {
             var oAppUser = await _unitOfWork.AppUser.GetByIdAsync(id, includeClient

@@ -1,4 +1,4 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.BinnacleAccess.BinnacleAccessIndexViewModel
 @{
     ViewData["Title"] = "Bitácora de Accesos";
 }
@@ -38,54 +38,46 @@
                                 <hr />
                                 <div>
                                     <form class="row" id="frmTable">
-                                        <div class="col-md-3">
+                                        <div class="col-lg-3 col-md-4">
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Usuario</label>
-                                                <input type="text" 
+                                                <input type="text"
+                                                       asp-for="Filters.User"
                                                        name="user"
-                                                       class="form-control-original"/>
+                                                       class="form-control-original"
+                                                       id="usernametextbox" />
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-lg-3 col-md-4">
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Fecha Inicial</label>
                                                 <input type="date"
+                                                       asp-for="Filters.StartDate"
                                                        name="startdate"
                                                        class="form-control-original-small" />
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-lg-3 col-md-4">
                                             <div class="form-group">
                                                 <label class="font-weight-bold">Fecha Final</label>
                                                 <input type="date"
+                                                       asp-for="Filters.EndDate"
                                                        name="enddate"
                                                        class="form-control-original-small" />
                                             </div>
                                         </div>
-                                        <div class="col-md-3 d-flex">
-                                            <div class="align-self-center mx-auto mb-3 mb-md-0" style=" width: 120px;">
-                                                <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                                        <div class="col-lg-3 d-flex">
+                                            <div class="align-self-center mx-auto mb-3 mb-lg-0">
+                                                <div class="btn-group" role="group" aria-label="buttomgroup">
+                                                    <button type="submit" class="btn btn-primary" style=" width: 80px;">Filtrar</button>
+                                                    <button type="button" class="btn btn-primary" style=" width: 80px;">Reporte</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                                <div>
-                                    <table class="table table-sm table-hover table-resposive">
-                                        <thead>
-                                            <tr class="small text-uppercase font-weight-bold">
-                                                <th>Usuario</th>
-                                                <th>Fecha y Hora Ingreso</th>
-                                                <th>Fecha y Hora de Salida</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div id="divBinnacleAccessTable">
+                                    @{ await Html.RenderPartialAsync("_BinnacleAccessTablePartial", Model); }
                                 </div>
                             </div>
 
@@ -104,6 +96,6 @@
 
 
 @section Scripts{
-
+    <script src="~/js/binnacle.access.index.js"></script>
 }
 

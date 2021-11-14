@@ -1,0 +1,49 @@
+﻿@model Market_Express.Web.ViewModels.BinnacleAccess.BinnacleAccessIndexViewModel
+
+<table class="table table-sm table-hover table-resposive">
+    <thead>
+        <tr class="small text-uppercase font-weight-bold">
+            <th>Usuario</th>
+            <th>Identificación</th>
+            <th>Fecha y Hora Ingreso</th>
+            <th>Fecha y Hora de Salida</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.BinnacleAccesses?.Count > 0)
+        {
+            @foreach (var access in Model.BinnacleAccesses)
+            {
+                string sTextClass = access.ExitDate.HasValue
+                    ? ""
+                    : "text-warning";
+
+                dynamic dExitDate = access.ExitDate.HasValue
+                    ? access.ExitDate
+                    : "No Registrado";
+
+                <tr>
+                    <td>@access.AppUser.Name.Capitalize()</td>
+                    <td>@access.AppUser.Identification</td>
+                    <td>@access.EntryDate</td>
+                    <td class="@sTextClass">@dExitDate</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">
+                    <p class="text-center text-danger">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model?.BinnacleAccesses?.Count > 0)
+{
+    <div>
+        @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
+    </div>
+}

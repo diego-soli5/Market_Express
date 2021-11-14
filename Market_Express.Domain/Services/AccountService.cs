@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.Abstractions.DomainServices;
+﻿using Market_Express.CrossCutting.Utility;
+using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
@@ -131,6 +132,9 @@ namespace Market_Express.Domain.Services
             string encPass = _passwordService.Hash(newPass.Trim());
 
             oUser.Password = encPass;
+
+            oUser.ModifiedBy = oUser.Id.ToString();
+            oUser.ModificationDate = DateTimeUtility.NowCostaRica;
 
             _unitOfWork.AppUser.Update(oUser);
 
