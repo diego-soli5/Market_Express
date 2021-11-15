@@ -20,8 +20,8 @@
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
     <div class="container">
-        
-        @if (TempData["OrderGenerationResult"] != null)
+
+        @if (TempData["ErrorOrderGenerationResult"] != null)
         {
             <div class="alert alert-dismissible fade show alert-danger mb-3" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,7 +29,7 @@
                 </button>
                 <h4 class="alert-heading"><i class="fas fa-times"></i> Hubo un problema..</h4>
                 <p class="mb-0">
-                    @TempData["OrderGenerationResult"].ToString()
+                    @TempData["ErrorOrderGenerationResult"].ToString()
                 </p>
             </div>
         }
@@ -63,6 +63,46 @@
     </div><!-- container // -->
 </section>
 
+<div class="modal fade" id="modalAddress" tabindex="-1" aria-labelledby="modalAddressLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lblAddressTitle">Debes indicar una dirección de envío</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-area="Client" asp-controller="Cart" asp-action="GenerateOrderWithNewAddress" id="frmAddress" method="post">
+                    <input type="hidden" name="id" id="id" value="" />
+                    <div class="form-group">
+                        <label for="detail" class="col-form-label">Dirección</label>
+                        <textarea name="address" class="form-control" data-val="true" data-val-required="Este campo es obligatorio" maxlength="255" id="detail" placeholder="Escribe la dirección de envío" style="resize: none;"></textarea>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="address" data-valmsg-replace="true"></span>
+                    </div>
+                </form>
+
+                <p class="text-muted">• La dirección será usada para futuros pedidos.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary" form="frmAddress">Procesar <i class="fa fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts{
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
     <script src="~/js/cart.index.js"></script>
+
+    @if (TempData["MustCreateAddress"] != null)
+    {
+        <script>
+            $("#modalAddress").modal();
+        </script>
+    }
 }

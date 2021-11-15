@@ -22,6 +22,9 @@ namespace Market_Express.Infrastructure.Data.Configurations
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
+            builder.Property(e => e.InUse)
+                .IsRequired();
+
             builder.HasOne(d => d.Client)
                 .WithMany(p => p.Addresses)
                 .HasForeignKey(d => d.ClientId)

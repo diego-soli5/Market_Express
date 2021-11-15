@@ -19,6 +19,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
+        public async Task<Address> GetSelectedForUseByUserId(Guid userId)
+        {
+            return await _dbEntity.FirstOrDefaultAsync(a => a.Client.AppUserId == userId && a.InUse);
+        }
+
         public async Task<IEnumerable<Address>> GetAllByUserId(Guid id)
         {
             List<Address> lstAddress = new();
@@ -35,8 +40,10 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 lstAddress.Add(new Address
                 {
                     Id = (Guid)oRow["Id"],
+                    ClientId = (Guid)oRow["ClientId"],
                     Name = oRow["Name"].ToString(),
-                    Detail = oRow["Detail"].ToString()
+                    Detail = oRow["Detail"].ToString(),
+                    InUse = (bool)oRow["InUse"]
                 });
             }
 

@@ -8,5 +8,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
     public interface IAddressRepository : IGenericRepository<Address>
     {
         Task<IEnumerable<Address>> GetAllByUserId(Guid id);
+        Task<Address> GetSelectedForUseByUserId(Guid userId);
     }
 }

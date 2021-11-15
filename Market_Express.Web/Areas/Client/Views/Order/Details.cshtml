@@ -34,7 +34,7 @@
 <section class="section-content padding-y">
     <div class="container">
 
-        @if (TempData["OrderGenerationResult"] != null)
+        @if (TempData["SuccessOrderGenerationResult"] != null)
         {
             <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -42,7 +42,7 @@
                 </button>
                 <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
                 <p class="mb-0">
-                    @TempData["OrderGenerationResult"].ToString()
+                    @TempData["SuccessOrderGenerationResult"].ToString()
                 </p>
             </div>
         }

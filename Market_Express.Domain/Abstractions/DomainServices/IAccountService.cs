@@ -11,10 +11,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<bool> HasValidPassword(Guid id);
         Task<BusisnessResult> ChangePassword(Guid userId, string currentPass, string newPass, string newPassConf,bool isFirstLogin);
         BusisnessResult TryAuthenticate(ref AppUser usuarioRequest);
-        Task<BusisnessResult> CreateAddress(Guid userId, Address address);
-        Task<BusisnessResult> EditAddress(Address address);
-        Task<Address> GetAddressInfo(Guid addressId);
-        Task<IEnumerable<Address>> GetAddressList(Guid id);
         Task<List<Permission>> GetPermissionList(Guid id);
         Task<AppUser> GetUserInfo(Guid id);
     }

@@ -2,6 +2,7 @@
 using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Cart;
 using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Entities;
 using Market_Express.Web.Controllers;
 using Market_Express.Web.ViewModels.Cart;
 using Microsoft.AspNetCore.Authorization;
@@ -18,14 +19,17 @@ namespace Market_Express.Web.Areas.Client.Controllers
     {
         private readonly ICartService _cartService;
         private readonly IOrderService _orderService;
+        private readonly IAddressService _addressService;
         private readonly IMapper _mapper;
 
         public CartController(ICartService cartService,
                               IOrderService orderService,
+                              IAddressService addressService,
                               IMapper mapper)
         {
             _cartService = cartService;
             _orderService = orderService;
+            _addressService = addressService;
             _mapper = mapper;
         }
 
@@ -39,15 +43,39 @@ namespace Market_Express.Web.Areas.Client.Controllers
             return View(oViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GenerateOrderWithNewAddress(string address)
+        {
+            Address oAddress = new() { Detail = address };
+
+            var oResult = await _addressService.CreateFromCart(oAddress, CurrentUserId);
+
+            if (!oResult.Success)
+            {
+                TempData["ErrorOrderGenerationResult"] = oResult.Message;
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(GenerateOrder));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GenerateOrder()
         {
             var oResult = await _orderService.Generate(CurrentUserId);
 
-            TempData["OrderGenerationResult"] = oResult.Message;
-
             if (!oResult.Success)
+            {
+                if (oResult.ResultCode == 1)
+                    TempData["MustCreateAddress"] = true;
+                else
+                    TempData["ErrorOrderGenerationResult"] = oResult.Message;
+
                 return RedirectToAction(nameof(Index));
+            }
+
+            TempData["SuccessOrderGenerationResult"] = oResult.Message;
 
             return Redirect($"/Client/Order/Details/{oResult.Data}");
         }
@@ -58,7 +86,7 @@ namespace Market_Express.Web.Areas.Client.Controllers
         {
             var oResult = await _cartService.GenerateCartByOrderId(orderId, CurrentUserId);
 
-            if(oResult.Success)
+            if (oResult.Success)
                 TempData["CartGenerationResult"] = oResult.Message;
 
             return Ok(oResult);

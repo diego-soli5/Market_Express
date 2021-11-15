@@ -316,15 +316,17 @@ GO
 -- PROCEDIMIENTOS ADDRESS
 ---------------------------------------------------------------------------------------------------------------
 --Obtiene las direcciones del cliente por Id de usuario
-CREATE PROCEDURE Sp_Address_GetAllByClient
+CREATE alter PROCEDURE Sp_Address_GetAllByClient
 (
 	@UserId UNIQUEIDENTIFIER
 )
 AS
 BEGIN
 	SELECT ad.Id,
+		   ad.ClientId,
 		   ad.Name,
-		   ad.Detail
+		   ad.Detail,
+		   ad.InUse
 	FROM AppUser a, Client c, Address ad
 	WHERE a.Id = @UserId
 	AND c.AppUserId = a.Id

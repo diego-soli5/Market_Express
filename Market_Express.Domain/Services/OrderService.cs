@@ -69,7 +69,7 @@ namespace Market_Express.Domain.Services
             var oOrder = await _unitOfWork.Order.GetByIdAsync(id);
 
             if (oOrder == null)
-                throw new NotFoundException(id,nameof(Order));
+                throw new NotFoundException(id, nameof(Order));
 
             return oOrder;
         }
@@ -168,13 +168,24 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
+            var oAddress = await _unitOfWork.Address.GetSelectedForUseByUserId(userId);
+
+            if (oAddress == null)
+            {
+                oResult.Message = "Se debe de crear una dirección de envío.";
+
+                oResult.ResultCode = 1;
+
+                return oResult;
+            }
+
             oOrder = new()
             {
                 Id = new Guid(),
                 ClientId = oCart.ClientId,
                 CreationDate = DateTimeUtility.NowCostaRica,
                 Status = OrderStatus.PENDIENTE,
-                ShippingAddress = "Dirección temporal de prueba"
+                ShippingAddress = oAddress.Detail
             };
 
             lstOrderDetail = new();

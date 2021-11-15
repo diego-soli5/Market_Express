@@ -1,15 +1,11 @@
-﻿var frmAddress = document.querySelector("#frmAddress");;
-var lblTitle = document.querySelector("#lblAddressTitle");;
-var hdfrmAddressId = document.querySelector("#id");;
+﻿var frmAddress = document.querySelector("#frmAddress");
+var lblTitle = document.querySelector("#lblAddressTitle");
+var hdfrmAddressId = document.querySelector("#id");
 
 //------------------INICIA DIRECCIONES------------------\\
 //Hace el submit segun sea el caso, agregar o editar una direccion
 frmAddress.addEventListener("submit", async function (e) {
     e.preventDefault();
-
-    if (txtName.value.trim() == "" || txtDetail.value.trim() == "") {
-        return;
-    }
 
     let mode = frmAddress.getAttribute("data-mode");
 
@@ -28,6 +24,7 @@ frmAddress.addEventListener("submit", async function (e) {
 
         const fetchResponse = await fetch(url, { body: body, method: 'POST' });
         const json = await fetchResponse.json();
+
         popUp(json.success, json.message);
 
         hideLoading();
@@ -37,23 +34,54 @@ frmAddress.addEventListener("submit", async function (e) {
             txtName.value = "";
             txtDetail.value = "";
 
-            $("#addressContainer").load("/Account/AddressManager", function () {
-                bindPopOver();
+            $("#divAddressTable").load("/Account/GetAddressTable", function () {
                 bindAddressEvts();
             });
         }
     } catch (e) {
+        hideLoading();
         popUp(false, "Ocurrio un error inesperado..");
     }
-
-    hideLoading();
 });
 
 function bindAddressEvts() {
+    lstBtnSetInUse = document.querySelectorAll("#setInUse");
     lstBtnPutAddress = document.querySelectorAll("#putAddress");
     lstBtnPostAddress = document.querySelectorAll("#postAddress");
     txtName = document.querySelector("#name");
     txtDetail = document.querySelector("#detail");
+
+    //Establece el evento de los botones para asignar la direccion a ser usada
+    lstBtnSetInUse.forEach(btn => {
+        btn.addEventListener("click", async function (e) {
+            try {
+                showLoading();
+
+                let addressId = btn.getAttribute("data-id");
+
+                let url = `/Account/SetAddressToUse?addressId=${addressId}`;
+
+                const fetchResponse = await fetch(url, { method: 'POST' });
+                const json = await fetchResponse.json();
+
+                
+
+                if (json.success) {
+                    $("#divAddressTable").load("/Account/GetAddressTable", function () {
+                        bindAddressEvts();
+                    });
+                } else {
+                    popUp(json.success, json.message);
+                }
+
+                hideLoading();
+            } catch (e) {
+                console.error(e);
+                hideLoading();
+                popUp(false, "Ocurrio un error inesperado..");
+            }
+        });
+    });
 
     //Restablece el modal para agregar una nueva direccion
     lstBtnPostAddress.forEach(btn => {
@@ -97,12 +125,6 @@ function bindAddressEvts() {
     });
 }
 //------------------FIN DIRECCIONES------------------\\
-
-function bindPopOver() {
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
-}
 
 
 

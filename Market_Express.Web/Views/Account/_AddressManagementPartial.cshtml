@@ -1,18 +1,11 @@
 ﻿@model List<Market_Express.Application.DTOs.Address.AddressDTO>
 
-    <div class="float-right mb-2">
-        <a href="#"
-           data-toggle="modal"
-           data-target="#modalAddress"
-           id="postAddress">
-            <i class="fas fa-plus"></i> Agregar Dirección
-        </a>
-    </div>
 <table class="table table-sm table-hover table-responsive w-100 d-block d-md-table">
     <thead>
         <tr class="small text-uppercase font-weight-bold">
-            <th style="width: 15%;" >Nombre</th>
-            <th style="width: 75%;" >Detalle</th>
+            <th style="width: 15%;">Nombre</th>
+            <th style="width: 65%;">Detalle</th>
+            <th style="width: 10%;" class="text-center">En Uso</th>
             <th style="width: 10%;" class="text-center">Opciones</th>
         </tr>
     </thead>
@@ -25,12 +18,31 @@
                     <td>@address.Name</td>
                     <td>@address.Detail</td>
                     <td class="text-center">
+                        @if (address.InUse)
+                        {
+                            <button class="btn btn-sm btn-primary"
+                                    data-id="@address.Id"
+                                    style="width:30px !important;">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-light"
+                                    data-id="@address.Id"
+                                    style="width:30px !important;"
+                                    id="setInUse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        }
+                    </td>
+                    <td class="text-center">
                         <input type="hidden" name="hdAddressId" id="hdAddressId" value="@address.Id" />
                         <a href="#" class="btn btn-sm btn-success" title="Modificar" data-toggle="modal" data-target="#modalAddress" id="putAddress"><i class="fas fa-pen"></i></a>
                     </td>
                 </tr>
             }
-            
+
         }
         else
         {
@@ -42,63 +54,14 @@
         }
     </tbody>
 </table>
-
-
-@*
-    @if (Model?.Count > 0)
-    {
-        <div class="row">
-            @foreach (var address in Model)
-            {
-                <div class="col-md-4 mb-3 d-flex justify-content-center">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body h-100">
-                            <h5 class="card-title text-center">@address.Name</h5>
-                            <p class="card-text text-justify">@address.Detail</p>
-                        </div>
-                        <div class="card-footer mt-auto">
-                            <div class="text-center">
-                                <input type="hidden" name="hdAddressId" id="hdAddressId" value="@address.Id" />
-                                <a href="#" class="btn btn-sm btn-success" title="Modificar" data-toggle="modal" data-target="#modalAddress" id="putAddress"><i class="fas fa-pen"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-            @if (Model.Count < 3)
-            {
-                <div class="col-md-4 mb-3 d-flex justify-content-center">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body h-100 d-flex">
-                            <h5 class="card-title m-auto">
-                                <a href="#" class="" data-toggle="modal" data-target="#modalAddress" id="postAddress"><i class="fas fa-plus-square fa-5x"></i></a>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-md-4 mb-3 d-flex justify-content-center">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body h-100 d-flex">
-                        <h5 class="card-title m-auto">
-                            <a href="#" class="" data-toggle="modal" data-target="#modalAddress" id="postAddress"><i class="fas fa-plus-square fa-5x"></i></a>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="d-flex h-100">
-                    <p class="text-danger m-auto">No tienes ninguna dirección<span class="text-dark">, pulsa el botón para crear una!</span></p>
-                </div>
-            </div>
-        </div>
-
-    }
-
-*@
+@if (Model?.Count < 3)
+{
+    <div class="float-right mb-2">
+        <a href="#"
+           data-toggle="modal"
+           data-target="#modalAddress"
+           id="postAddress">
+            <i class="fas fa-plus"></i> Agregar Dirección
+        </a>
+    </div>
+}

@@ -24,14 +24,17 @@ namespace Market_Express.Web.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IBinnacleAccessService _binnacleAccessService;
+        private readonly IAddressService _addressService;
         private readonly IMapper _mapper;
 
         public AccountController(IAccountService accountService,
                                  IBinnacleAccessService binnacleAccessService,
+                                 IAddressService addressService,
                                  IMapper mapper)
         {
             _accountService = accountService;
             _binnacleAccessService = binnacleAccessService;
+            _addressService = addressService;
             _mapper = mapper;
         }
 
@@ -41,7 +44,7 @@ namespace Market_Express.Web.Controllers
             ProfileViewModel oViewModel = new();
 
             var oUser = await _accountService.GetUserInfo(CurrentUserId);
-            var lstAddress = await _accountService.GetAddressList(CurrentUserId);
+            var lstAddress = await _addressService.GetAllByUserId(CurrentUserId);
 
             oViewModel.AppUser = _mapper.Map<AppUserProfileDTO>(oUser);
 
@@ -121,6 +124,12 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             if (!IsAuthenticated)
@@ -134,9 +143,9 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddressManager()
+        public async Task<IActionResult> GetAddressTable()
         {
-            var lstAddress = await _accountService.GetAddressList(CurrentUserId);
+            var lstAddress = await _addressService.GetAllByUserId(CurrentUserId);
 
             List<AddressDTO> lstViewModel = new();
 
@@ -148,19 +157,21 @@ namespace Market_Express.Web.Controllers
             return PartialView("_AddressManagementPartial", lstViewModel);
         }
 
-        [HttpGet]
-        public IActionResult AccessDenied()
+        #region API CALLS
+        [HttpPost]
+        public async Task<IActionResult> SetAddressToUse(Guid addressId)
         {
-            return View();
+            var oResult = await _addressService.SetForUse(addressId, CurrentUserId);
+            
+            return Ok(oResult);
         }
 
-        #region API CALLS
         [HttpPost]
         public async Task<IActionResult> CreateAddress(AddressDTO model)
         {
-            model.Id = null;
+            Address oAddress = new(model.Name, model.Detail);
 
-            var oResult = await _accountService.CreateAddress(CurrentUserId, _mapper.Map<Address>(model));
+            var oResult = await _addressService.Create(oAddress, CurrentUserId);
 
             return Ok(oResult);
         }
@@ -168,7 +179,9 @@ namespace Market_Express.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditAddress(AddressDTO model)
         {
-            var oResult = await _accountService.EditAddress(_mapper.Map<Address>(model));
+            Address oAddress = new(model.Id, model.Name, model.Detail, model.InUse);
+
+            var oResult = await _addressService.Edit(oAddress, CurrentUserId);
 
             return Ok(oResult);
         }
@@ -176,7 +189,7 @@ namespace Market_Express.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAddressInfo([FromQuery(Name = "addressId")] Guid addressId)
         {
-            var oAddress = await _accountService.GetAddressInfo(addressId);
+            var oAddress = await _addressService.GetById(addressId);
 
             var oResult = new
             {

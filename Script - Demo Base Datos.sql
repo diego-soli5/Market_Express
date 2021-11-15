@@ -19,6 +19,7 @@ CREATE TABLE [dbo].[Address](
 	[ClientId] [uniqueidentifier] NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Detail] [varchar](255) NOT NULL,
+	[InUse] [bit] NOT NULL
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
