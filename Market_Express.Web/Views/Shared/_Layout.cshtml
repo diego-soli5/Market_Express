@@ -205,10 +205,21 @@
                                     </div>
                                 </li>
                             }
+
+
+                        }
+                        else if (User.IsInRole("CLIENTE"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Client" asp-controller="Order" asp-action="Index">Mis Pedidos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Profile">Mi Cuenta</a>
+                            </li>
                         }
                     </ul>
-                </div> <!-- collapse .// -->
-            </div> <!-- container .// -->
+                </div> 
+            </div> 
         </nav>
     }
     <!-- ========================= FIN NAVEGACION // ========================= -->

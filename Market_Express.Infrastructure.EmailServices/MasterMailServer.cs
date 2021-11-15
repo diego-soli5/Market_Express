@@ -1,5 +1,6 @@
 ﻿using Market_Express.CrossCutting.Options;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
@@ -32,7 +33,7 @@ namespace Market_Express.Infrastructure.EmailServices
                 InitializeSmtpClient(smtpClient);
 
                 using (var mailMessage = new MailMessage())
-                { 
+                {
                     mailMessage.From = new MailAddress(_options.SenderMail);
 
                     foreach (string mail in receiversMails)
@@ -44,12 +45,19 @@ namespace Market_Express.Infrastructure.EmailServices
                     mailMessage.Body = body;
                     mailMessage.Priority = MailPriority.Normal;
 
-                    smtpClient.Send(mailMessage);
+                    try
+                    {
+                        smtpClient.Send(mailMessage);
+                    }
+                    catch (Exception ex)
+                    {
+                     
+                    }
                 }
             }
         }
 
-        private void InitializeSmtpClient (SmtpClient client)
+        private void InitializeSmtpClient(SmtpClient client)
         {
             client.Credentials = new NetworkCredential(_options.SenderMail, _options.Password);
             client.Host = _options.Host;
