@@ -79,6 +79,9 @@ namespace Market_Express.Web.Controllers
 
             if (!oResult.Success)
             {
+                if (model.FromModal)
+                    return Ok(oResult);
+
                 ViewData["LoginMessage"] = oResult.Message;
 
                 return View();
@@ -114,6 +117,14 @@ namespace Market_Express.Web.Controllers
             });
 
             await _binnacleAccessService.RegisterAccess(oUser.Id);
+
+            if (await _accountService.HasValidPassword(oUser.Id))
+                oResult.ResultCode = 1;
+            else
+                oResult.ResultCode = 0;
+
+            if (model.FromModal)
+                return Ok(oResult);
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -157,12 +168,26 @@ namespace Market_Express.Web.Controllers
             return PartialView("_AddressManagementPartial", lstViewModel);
         }
 
+        [HttpGet]
+        public IActionResult GetUserNavigationButtons()
+        {
+            return PartialView("_NavigationButtonsPartial");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserAccountButtons()
+        {
+            var oUser = await _accountService.GetUserInfo(CurrentUserId);
+
+            return PartialView("_AccountButtonsPartial", oUser.Alias ?? "");
+        }
+
         #region API CALLS
         [HttpPost]
         public async Task<IActionResult> SetAddressToUse(Guid addressId)
         {
             var oResult = await _addressService.SetForUse(addressId, CurrentUserId);
-            
+
             return Ok(oResult);
         }
 

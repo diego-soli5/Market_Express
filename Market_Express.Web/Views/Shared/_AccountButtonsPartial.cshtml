@@ -1,0 +1,10 @@
+﻿@model string 
+@if(User.Identity.IsAuthenticated)
+{
+    <p class="text-muted d-inline">Bienvenido <span id="usrAlias" class="d-inline">@Model</span>!</p>
+    <a asp-area="" asp-controller="Account" asp-action="Logout" class="d-block">Cerrar Sesión</a>
+}
+else
+{
+    <a asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+}

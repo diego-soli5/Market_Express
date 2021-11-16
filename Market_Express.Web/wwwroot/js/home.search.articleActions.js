@@ -58,7 +58,7 @@ async function eventAdd(e) {
         hideLoading();
 
         if (fetchResponse.status === 401) {
-            popUp(false, "Debe iniciar sesion");
+            $("#modalLogin").modal();
         } else {
             console.error(e);
             popUp(false, "Ocurrio un error inesperado..");
