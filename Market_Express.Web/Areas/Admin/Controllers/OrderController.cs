@@ -34,6 +34,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             AdminOrderIndexViewModel oViewModel = new();
 
             oViewModel.OrderStats = await GetOrderStatsDTO();
+            oViewModel.RecentOrders = await GetMostRecentOrderDTOList();
 
             var tplOrderDTOList = GetOrderDTOList(filters);
 
@@ -45,9 +46,11 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         #region UTILITY METHODS
-        private async Task<List<RecentOrderDTO>> GetRecentOrderDTOList()
+        private async Task<List<RecentOrderDTO>> GetMostRecentOrderDTOList()
         {
-            var lstRecentOrders = await _orderService.GetMostRecentPending();
+            return (await _orderService.GetMostRecent())
+                                       .Select(o => _mapper.Map<RecentOrderDTO>(o))
+                                       .ToList();
         }
 
         private async Task<OrderStatsDTO> GetOrderStatsDTO()

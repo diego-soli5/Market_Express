@@ -23,15 +23,15 @@
         <div class="row">
             <aside class="col-md-2 mb-3">
                 <div class="list-group" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="list-group-item active" id="v-pills-re-tab" data-toggle="pill" href="#v-pills-re" role="tab" aria-controls="v-pills-re" aria-selected="true">Resumen</a>
-                    <a class="list-group-item" id="v-pills-od-tab" data-toggle="pill" href="#v-pills-od" role="tab" aria-controls="v-pills-od" aria-selected="false">Todos los Pedidos</a>
+                    <a class="list-group-item @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "" : "active")" id="v-pills-re-tab" data-toggle="pill" href="#v-pills-re" role="tab" aria-controls="v-pills-re" aria-selected="true">Resumen</a>
+                    <a class="list-group-item @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "active" : "")" id="v-pills-od-tab" data-toggle="pill" href="#v-pills-od" role="tab" aria-controls="v-pills-od" aria-selected="false">Todos los Pedidos</a>
                 </div>
             </aside>
             <main class="col-md-10">
                 <article class="card mb-3">
                     <div class="card-body">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
+                            <div class="tab-pane fade @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "" : "show active")" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
                                 <div>
                                     <h4>Resumen</h4>
                                     <hr />
@@ -41,9 +41,6 @@
                                     <hr />
                                     <div class="row">
                                         <div class="col-md-4 d-flex mb-3 mb-md-0">
-                                            <div class="align-self-center mx-auto" align="center">
-                                                <button class="btn btn-danger btn-lg" id="btnCancelRecent">Cancelar más reciente</button>
-                                            </div>
                                         </div>
                                         <div class="col-md-8" id="divOrderStats">
                                             @{ await Html.RenderPartialAsync("_OrderStatsPartial", Model.OrderStats); }
@@ -52,15 +49,15 @@
                                 </div>
                                 <hr />
                                 <div>
-                                    <h4 class="card-title mb-4">Pedidos Pendientes Más Recientes</h4>
+                                    <h4 class="card-title mb-4">Pedidos Pendientes</h4>
 
                                     <div class="row" id="divMostRecentPendingOrders">
-                                        @{ await Html.RenderPartialAsync("_MostRecentPendingOrdersPartial"); }
+                                        @{ await Html.RenderPartialAsync("_MostRecentPendingOrdersPartial", Model.RecentOrders); }
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
+                            <div class="tab-pane fade @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "show active" : "")" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
                                 <div>
                                     <h4>Todos los Pedidos</h4>
                                     <hr />
@@ -89,6 +86,7 @@
                                                 <div class="form-group">
                                                     <label class="font-weight-bold">Estado</label>
                                                     <select asp-items="Html.GetEnumSelectList<OrderStatus>()"
+                                                            asp-for="Filters.Status"
                                                             name="@(nameof(Model.Filters.Status))"
                                                             class="form-control-original-small">
                                                         <option>TODOS</option>
@@ -125,13 +123,6 @@
         </p>
     </div>
 </section>
-
-
-@section Scripts{
-
-    <script src="~/js/myOrders.index.js"></script>
-}
-
 
 
 

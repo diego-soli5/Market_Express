@@ -120,6 +120,7 @@
                                                 <div class="form-group">
                                                     <label class="font-weight-bold">Estado</label>
                                                     <select asp-items="Html.GetEnumSelectList<OrderStatus>()"
+                                                            asp-for="Filters.Status"
                                                             name="@(nameof(Model.Filters.Status))"
                                                             class="form-control-original-small">
                                                         <option>TODOS</option>

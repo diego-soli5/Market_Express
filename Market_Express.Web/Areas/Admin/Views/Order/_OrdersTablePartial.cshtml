@@ -16,11 +16,15 @@
         {
             foreach (var order in Model.Orders)
             {
-                string textClass = "text-primary";
+                string textClass = "";
 
                 if (order.Status == OrderStatus.PENDIENTE)
                 {
                     textClass = "text-warning";
+                }
+                else if (order.Status == OrderStatus.TERMINADO)
+                {
+                    textClass = "text-success";
                 }
 
                 <tr>
