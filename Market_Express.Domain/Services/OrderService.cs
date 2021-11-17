@@ -31,7 +31,33 @@ namespace Market_Express.Domain.Services
             _paginationOptions = paginationOptions.Value;
         }
 
-        public PagedList<Order> GetAllByUserId(Guid userId, MyOrdersQueryFilter filters)
+        public PagedList<Order> GetAllPaginated(AdminOrderQueryFilter filters)
+        {
+            filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
+            filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
+
+            var lstOrders = _unitOfWork.Order.GetAllIncludeAppUser();
+
+            if (filters.StartDate != null)
+                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
+
+            if (filters.EndDate != null)
+                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) <= DateTimeUtility.Truncate(filters.EndDate.Value));
+
+            if (filters.Status != null)
+                lstOrders = lstOrders.Where(o => o.Status == filters.Status);
+
+            if (filters.ClientName != null)
+                lstOrders = lstOrders.Where(o => o.Client.AppUser.Name.Trim().ToUpper().Contains(filters.ClientName.Trim().ToUpper()));
+
+            lstOrders = lstOrders.OrderByDescending(o => o.CreationDate).AsEnumerable();
+
+            var pagedOrders = PagedList<Order>.Create(lstOrders, filters.PageNumber.Value, filters.PageSize.Value);
+
+            return pagedOrders;
+        }
+
+        public PagedList<Order> GetAllPaginatedByUserId(Guid userId, MyOrdersQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
@@ -54,14 +80,24 @@ namespace Market_Express.Domain.Services
             return pagedOrders;
         }
 
-        public async Task<List<RecentOrder>> GetRecentOrdersByUserId(Guid userId)
+        public async Task<List<RecentOrder>> GetMostRecentByUserId(Guid userId)
         {
             return await _unitOfWork.Order.GetMostRecentByUserId(userId, _orderOptions.DefaultTakeForMostRecentByUser);
+        }
+
+        public async Task<List<RecentOrder>> GetMostRecent()
+        {
+            return await _unitOfWork.Order.GetMostRecent(_orderOptions.DefaultTakeForMostRecent, true);
         }
 
         public async Task<OrderStats> GetOrderStatsByUserId(Guid userId)
         {
             return await _unitOfWork.Order.GetStatsByUserId(userId);
+        }
+
+        public async Task<OrderStats> GetOrderStats()
+        {
+            return await _unitOfWork.Order.GetStats();
         }
 
         public async Task<Order> GetById(Guid id)

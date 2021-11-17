@@ -556,6 +556,34 @@ BEGIN
 END;
 GO
 
+--Obtiene los pedidos mas recientes de todos los clientes
+CREATE PROCEDURE Sp_Order_GetMostRecent
+(
+	@take INT = NULL,
+	@onlyPending BIT = NULL
+)
+AS
+BEGIN
+	SELECT o.Id,
+	   o.CreationDate,
+	   o.OrderNumber,
+	   o.Status,
+	   (SELECT a.Image
+	    FROM Article a
+		WHERE a.Id = (SELECT TOP 1 ArticleId
+					  FROM Order_Detail
+					  WHERE OrderId = o.Id
+					  ORDER BY Quantity DESC)) MostRequestedArticleImage
+	FROM [Order] o
+	WHERE (@onlyPending IS NULL OR (o.Status = 'PENDIENTE' AND @onlyPending = 1))
+	ORDER BY o.CreationDate DESC
+	OFFSET 0 ROWS
+	FETCH NEXT COALESCE(@take,(SELECT COUNT(1)
+							   FROM [Order] o
+							   WHERE (@onlyPending IS NULL OR (o.Status = 'PENDIENTE' AND @onlyPending = 1)))) ROWS ONLY;
+END;
+GO
+
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS ROLE
 ---------------------------------------------------------------------------------------------------------------

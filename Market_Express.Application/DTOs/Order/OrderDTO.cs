@@ -1,4 +1,5 @@
-﻿using Market_Express.Domain.Enumerations;
+﻿using Market_Express.Application.DTOs.Client;
+using Market_Express.Domain.Enumerations;
 using System;
 
 namespace Market_Express.Application.DTOs.Order
@@ -12,5 +13,7 @@ namespace Market_Express.Application.DTOs.Order
         public string ShippingAddress { get; set; }
         public int OrderNumber { get; set; }
         public OrderStatus Status { get; set; }
+
+        public ClientDTO Client { get; set; }
     }
 }

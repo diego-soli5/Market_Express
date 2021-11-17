@@ -3,6 +3,7 @@ using Market_Express.Domain.CustomEntities.Order;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_Order_GetStats = "Sp_Order_GetStats";
         private const string _Sp_Order_GetMostRecentByUserId = "Sp_Order_GetMostRecentByUserId";
         private const string _Sp_Order_GetDetailsById = "Sp_Order_GetDetailsById";
+        private const string _Sp_Order_GetMostRecent = "Sp_Order_GetMostRecent";
 
         public OrderRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -96,6 +98,33 @@ namespace Market_Express.Infrastructure.Data.Repositories
             return lstRecentOrders;
         }
 
+        public async Task<List<RecentOrder>> GetMostRecent(int? take = null, bool onlyPending = false)
+        {
+            List<RecentOrder> lstRecentOrders = new();
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@onlyPending",onlyPending),
+                new SqlParameter("@take",take)
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Order_GetMostRecent, arrParams);
+
+            foreach (DataRow oRow in dtResult.Rows)
+            {
+                lstRecentOrders.Add(new RecentOrder
+                {
+                    Id = (Guid)oRow["Id"],
+                    CreationDate = (DateTime)oRow["CreationDate"],
+                    OrderNumber = int.Parse(oRow["OrderNumber"].ToString()),
+                    Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), oRow["Status"].ToString()),
+                    MostRequestedArticleImage = oRow["MostRequestedArticleImage"] is DBNull ? null : oRow["MostRequestedArticleImage"].ToString()
+                });
+            }
+
+            return lstRecentOrders;
+        }
+
         public async Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid orderId)
         {
             List<OrderArticleDetail> lstOrderDetails = new();
@@ -120,6 +149,13 @@ namespace Market_Express.Infrastructure.Data.Repositories
             }
 
             return lstOrderDetails;
+        }
+
+        public IEnumerable<Order> GetAllIncludeAppUser()
+        {
+            return _dbEntity.Include(o => o.Client)
+                            .ThenInclude(c => c.AppUser)
+                            .AsEnumerable();
         }
     }
 }

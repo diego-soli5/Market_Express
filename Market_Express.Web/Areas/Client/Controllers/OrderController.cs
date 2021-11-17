@@ -98,7 +98,7 @@ namespace Market_Express.Web.Areas.Client.Controllers
         #region UTILITY METHODS
         private async Task<List<RecentOrderDTO>> GetRecentOrderDTOList()
         {
-            return (await _orderService.GetRecentOrdersByUserId(CurrentUserId))
+            return (await _orderService.GetMostRecentByUserId(CurrentUserId))
                                        .Select(o => _mapper.Map<RecentOrderDTO>(o))
                                        .ToList();
         }
@@ -107,7 +107,7 @@ namespace Market_Express.Web.Areas.Client.Controllers
         {
             List<OrderDTO> lstOrderDTO = new();
 
-            var pagedOrders = _orderService.GetAllByUserId(CurrentUserId, filters);
+            var pagedOrders = _orderService.GetAllPaginatedByUserId(CurrentUserId, filters);
             var oMeta = Metadata.Create(pagedOrders);
 
             lstOrderDTO.AddRange(pagedOrders.Select(o => _mapper.Map<OrderDTO>(o)).ToList());

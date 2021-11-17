@@ -1,4 +1,9 @@
-﻿using Market_Express.Domain.Abstractions.DomainServices;
+﻿using AutoMapper;
+using Market_Express.Application.DTOs.Order;
+using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.CustomEntities.Pagination;
+using Market_Express.Domain.QueryFilter.Order;
+using Market_Express.Web.ViewModels.Order;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,17 +19,50 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;
+        private readonly IMapper _mapper;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService,
+                               IMapper mapper)
         {
             _orderService = orderService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(AdminOrderQueryFilter filters)
         {
-            
-            return View();
+            AdminOrderIndexViewModel oViewModel = new();
+
+            oViewModel.OrderStats = await GetOrderStatsDTO();
+
+            var tplOrderDTOList = GetOrderDTOList(filters);
+
+            oViewModel.Orders = tplOrderDTOList.Item1;
+            oViewModel.Metadata = tplOrderDTOList.Item2;
+            oViewModel.Filters = filters;
+
+            return View(oViewModel);
         }
+
+        #region UTILITY METHODS
+        private async Task<List<RecentOrderDTO>> GetRecentOrderDTOList()
+        {
+            var lstRecentOrders = await _orderService.GetMostRecentPending();
+        }
+
+        private async Task<OrderStatsDTO> GetOrderStatsDTO()
+        {
+            return _mapper.Map<OrderStatsDTO>(await _orderService.GetOrderStats());
+        }
+
+        private (List<OrderDTO>,Metadata) GetOrderDTOList(AdminOrderQueryFilter filters)
+        {
+            var lstOrders = _orderService.GetAllPaginated(filters);
+
+            var oMeta = Metadata.Create(lstOrders);
+
+            return (lstOrders.Select(o => _mapper.Map<OrderDTO>(o)).ToList(), oMeta);
+        }
+        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.Order.AdminOrderIndexViewModel
 @{
     ViewData["Title"] = "Pedidos";
 }
@@ -20,40 +20,120 @@
 <section class="section-content padding-y">
     <div class="container">
 
-        @if (TempData["OrderMessage"] != null)
-        {
-            <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
-                <p class="mb-0">
-                    @TempData["OrderMessage"].ToString()
-                </p>
-            </div>
-        }
+        <div class="row">
+            <aside class="col-md-2 mb-3">
+                <div class="list-group" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="list-group-item active" id="v-pills-re-tab" data-toggle="pill" href="#v-pills-re" role="tab" aria-controls="v-pills-re" aria-selected="true">Resumen</a>
+                    <a class="list-group-item" id="v-pills-od-tab" data-toggle="pill" href="#v-pills-od" role="tab" aria-controls="v-pills-od" aria-selected="false">Todos los Pedidos</a>
+                </div>
+            </aside>
+            <main class="col-md-10">
+                <article class="card mb-3">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
+                                <div>
+                                    <h4>Resumen</h4>
+                                    <hr />
+                                    <div class="row">
+                                        Aquí va un gráfico
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-4 d-flex mb-3 mb-md-0">
+                                            <div class="align-self-center mx-auto" align="center">
+                                                <button class="btn btn-danger btn-lg" id="btnCancelRecent">Cancelar más reciente</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8" id="divOrderStats">
+                                            @{ await Html.RenderPartialAsync("_OrderStatsPartial", Model.OrderStats); }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div>
+                                    <h4 class="card-title mb-4">Pedidos Pendientes Más Recientes</h4>
 
-        <div class="card">
-            <div class="card-header bg-primary">
-                <h4 class="text-white">Pedidos de Clientes</h4>
-            </div>
-            <div class="card-body">
+                                    <div class="row" id="divMostRecentPendingOrders">
+                                        @{ await Html.RenderPartialAsync("_MostRecentPendingOrdersPartial"); }
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="row align-items-strech">
-                    <div class="col-12">
-                        <p class="text-danger text-center">No hay pedidos pendientes.</p>
+                            <div class="tab-pane fade" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
+                                <div>
+                                    <h4>Todos los Pedidos</h4>
+                                    <hr />
+                                    <div>
+                                        <form asp-area="Client" asp-controller="Order" asp-action="Index" method="get" class="row" id="frmTable">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Fecha Inicial</label>
+                                                    <input type="date"
+                                                           asp-for="Filters.StartDate"
+                                                           name="@(nameof(Model.Filters.StartDate))"
+                                                           class="form-control-original-small" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Fecha Final</label>
+                                                    <input type="date"
+                                                           asp-for="Filters.EndDate"
+                                                           name="@(nameof(Model.Filters.EndDate))"
+                                                           class="form-control-original-small" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Estado</label>
+                                                    <select asp-items="Html.GetEnumSelectList<OrderStatus>()"
+                                                            name="@(nameof(Model.Filters.Status))"
+                                                            class="form-control-original-small">
+                                                        <option>TODOS</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 d-flex">
+                                                <div class="align-self-center mx-auto mb-3 mb-md-0" style=" width: 120px;">
+                                                    <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div id="divTableAllOrders">
+                                        @{ await Html.RenderPartialAsync("_OrdersTablePartial", Model); }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-
-            </div>
-            <div class="card-footer">
-                <div class="float-right">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver</a>
-                </div>
-            </div>
+                </article>
+            </main>
         </div>
     </div>
 </section>
+
+<section class="section-name bg padding-y">
+    <div class="container">
+        <h6>Cancelación de Pedidos</h6>
+        <p>
+            No puedes cancelar pedidos que tengan más de 5 minutos de haber sido realizados.
+        </p>
+    </div>
+</section>
+
+
+@section Scripts{
+
+    <script src="~/js/myOrders.index.js"></script>
+}
+
+
+
 
 
 @section Scripts{
