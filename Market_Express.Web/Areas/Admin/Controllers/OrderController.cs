@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Market_Express.Domain.Abstractions.DomainServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,17 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     [Authorize(Roles = "ORD_MAN_GEN")]
     public class OrderController : Controller
     {
-        public OrderController()
-        {
+        private readonly IOrderService _orderService;
 
+        public OrderController(IOrderService orderService)
+        {
+            _orderService = orderService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
+            
             return View();
         }
     }

@@ -15,6 +15,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
         private const string _Sp_Order_GetStatsByUserId = "Sp_Order_GetStatsByUserId";
+        private const string _Sp_Order_GetStats = "Sp_Order_GetStats";
         private const string _Sp_Order_GetMostRecentByUserId = "Sp_Order_GetMostRecentByUserId";
         private const string _Sp_Order_GetDetailsById = "Sp_Order_GetDetailsById";
 
@@ -25,6 +26,24 @@ namespace Market_Express.Infrastructure.Data.Repositories
         public IEnumerable<Order> GetAllByUserId(Guid userId)
         {
             return _dbEntity.Where(o => o.Client.AppUserId == userId).AsEnumerable();
+        }
+
+        public async Task<OrderStats> GetStats()
+        {
+            OrderStats oOrderStats = new();
+
+            var dtResult = await ExecuteQuery(_Sp_Order_GetStats);
+
+            if (dtResult?.Rows?.Count > 0)
+            {
+                var drResult = dtResult.Rows[0];
+
+                oOrderStats.Pending = int.Parse(drResult[0].ToString());
+                oOrderStats.Finished = int.Parse(drResult[1].ToString());
+                oOrderStats.Canceled = int.Parse(drResult[2].ToString());
+            }
+
+            return oOrderStats;
         }
 
         public async Task<OrderStats> GetStatsByUserId(Guid userId)

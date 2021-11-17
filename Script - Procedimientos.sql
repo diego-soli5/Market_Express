@@ -495,6 +495,16 @@ BEGIN
 END;
 GO
 
+--Obtiene estadisticas de pedidos 
+CREATE PROCEDURE Sp_Order_GetStats
+AS
+BEGIN
+	SELECT (SELECT COUNT(1) FROM [Order] o WHERE o.Status = 'PENDIENTE') pending,
+		   (SELECT COUNT(1) FROM [Order] o WHERE o.Status = 'TERMINADO') finished,
+	       (SELECT COUNT(1) FROM [Order] o WHERE o.Status = 'CANCELADO') canceled;
+END;
+GO
+
 --Obtiene estadisticas de pedidos por id de usuario
 CREATE PROCEDURE Sp_Order_GetStatsByUserId
 (
