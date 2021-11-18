@@ -5,14 +5,16 @@
     <div>
         <h5 class="d-inline">Pedidos Pendientes</h5>
 
-      
+        @if (Model?.Count > 6)
+        {
             <a asp-area="Admin"
                asp-controller="Order"
                asp-action="Index"
                asp-route-status="pendiente"
                asp-route-tab="all"
                class="btn btn-outline-primary d-inline float-right">Ver Todos</a>
-   
+        }
+
     </div>
     <div class="h5"></div>
 </div>

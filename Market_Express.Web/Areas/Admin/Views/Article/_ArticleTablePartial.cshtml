@@ -8,7 +8,7 @@
             <td>Precio</td>
             <td>Categoría</td>
             <td>Estado</td>
-            <td class="text-center" style="width: 10%;">Acciones</td>
+            <td class="text-center" style="width: 10%;">Opciones</td>
         </tr>
     </thead>
     <tbody>
@@ -92,38 +92,5 @@
 
 
 
-<div class="modal fade" id="modalChangeCategory" tabindex="-1" role="dialog" aria-labelledby="modalChangeCategoryTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Seleccionar Categoría</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="frmChangeCategory" asp-area="Admin" asp-controller="Article" asp-action="SetCategory" method="post">
-                    <input type="hidden" name="articleId" id="hdId" />
-                    <div class="form-group">
-                        <span id="modalArticleDescription"></span>
-                        <hr />
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="col-form-label font-weight-bold">Categoría</label>
-                        <select asp-items="@(new SelectList(Model.AvailableCategories,"Id", "Name"))"
-                                name="categoryId"
-                                class="form-control">
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary" form="frmChangeCategory">Guardar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 

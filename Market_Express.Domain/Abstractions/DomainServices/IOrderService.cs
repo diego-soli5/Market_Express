@@ -13,6 +13,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<BusisnessResult> Generate(Guid userId);
         Task<Order> GetById(Guid id, Guid? currentUserId = null, bool includeAppUser = false);
         Task<List<RecentOrder>> GetMostRecent();
+        Task<BusisnessResult> SetFinished(Guid orderId);
         PagedList<Order> GetAllPaginatedByUserId(Guid userId, MyOrdersQueryFilter filters);
         PagedList<Order> GetAllPaginated(AdminOrderQueryFilter filters);
         Task<List<RecentOrder>> GetMostRecentByUserId(Guid userId);

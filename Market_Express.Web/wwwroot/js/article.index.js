@@ -45,7 +45,6 @@ async function getPaginatedPage(pgnum) {
 
         bindPaginationEvts();
         bindEnableOrDisableButtonEvts();
-        bindCategorySelectEvts();
 
         hideLoading();
 

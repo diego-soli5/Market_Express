@@ -42,50 +42,58 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="col-md-8">
-                                    <div class="d-inline">
-                                        <dl class="row">
-                                            <dt class="col-xl-4 pr-0">Fecha</dt>
-                                            <dd class="col-xl-8 px-xl-0"><p>@Model.Order.CreationDate</p></dd>
-                                            <dt class="col-xl-4 pr-0">Estado</dt>
-                                            <dd class="col-xl-8 px-xl-0"><p class="@statusCssClass">@Model.Order.Status.ToString().Capitalize()</p></dd>
-                                            <dt class="col-xl-4 pr-0">Dirección de Envío</dt>
-                                            <dd class="col-xl-8 px-xl-0"><p>@Model.Order.ShippingAddress.Capitalize()</p></dd>
-                                        </dl>
-                                    </div>
-                                    <div class="d-inline mt-2 mb-md-0">
-                                        <div class="align-self-center mx-auto" align="center">
-                                            <button class="btn btn-primary btn-lg"
-                                                    id="btnGenerateCart"
-                                                    data-order-id="@Model.Order.Id">
-                                                Marcar Como Terminado
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <hr />
-                                <div class="col-md-12">
-                                    <dl class="row">
-                                        <dt class="col-xl-4 pr-0">Cliente</dt>
-                                        <dd class="col-xl-8 px-xl-0"><p>@Model.Order.Client.AppUser.Name</p></dd>
-                                        <dt class="col-xl-4 pr-0">Identificación</dt>
-                                        <dd class="col-xl-8 px-xl-0"><p>@Model.Order.Client.AppUser.Identification</p></dd>
-                                        <dt class="col-xl-4 pr-0">Código de Cliente</dt>
-                                        <dd class="col-xl-8 px-xl-0"><p>@(Model.Order.Client.ClientCode ?? "No es cliente del POS")</p></dd>
-                                    </dl>
-                                </div>
+                                <dl class="row">
+                                    <dt class="col-xl-4 pr-0">Fecha</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>@Model.Order.CreationDate</p></dd>
+                                    <dt class="col-xl-4 pr-0">Estado</dt>
+                                    <dd class="col-xl-8 px-xl-0" id="ddStatus"><p class="@statusCssClass">@Model.Order.Status.ToString().Capitalize()</p></dd>
+                                    <dt class="col-xl-4 pr-0">Dirección de Envío</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>@Model.Order.ShippingAddress.Capitalize()</p></dd>
+                                </dl>
                             </div>
-                            
+
+                            <div class="col-md-4 d-flex mt-2 mb-md-0" id="divButton">
+                                @if (Model.Order.Status == OrderStatus.PENDIENTE)
+                                {
+                                    <div class="align-self-center mx-auto" align="center">
+                                        <button class="btn btn-primary btn-lg"
+                                                id="btnSetFinished"
+                                                data-order-id="@Model.Order.Id">
+                                            Marcar Como Terminado
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="col-12"><hr /></div>
+
+                            <div class="col-8">
+                                <dl class="row">
+                                    <dt class="col-xl-4 pr-0">Cliente</dt>
+                                    <dd class="col-xl-8 px-xl-0">
+                                        <a asp-area="Admin"
+                                           asp-controller="Users"
+                                           asp-action="Details"
+                                           asp-route-id="@Model.Order.Client.AppUser.Id">
+                                            @Model.Order.Client.AppUser.Name
+                                        </a>
+                                    </dd>
+                                    <dt class="col-xl-4 pr-0">Identificación</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>@Model.Order.Client.AppUser.Identification</p></dd>
+                                    <dt class="col-xl-4 pr-0">Código de Cliente</dt>
+                                    <dd class="col-xl-8 px-xl-0"><p>@(Model.Order.Client.ClientCode ?? "No es cliente del POS")</p></dd>
+                                </dl>
+                            </div>
 
                         </div>
-                    </div> <!-- card-body .// -->
-                </article> <!-- card.// -->
+                    </div>
+                </article>
 
                 <article class="card  mb-3">
+                    <div class="card-header bg-blue">
+                        <h4 class="card-title text-white">Artículos del Pedido</h4>
+                    </div>
                     <div class="card-body">
-                        <h4 class="card-title mb-4">Artículos</h4>
-                        <hr />
                         <table class="table table-sm table-shopping-cart table-responsive">
                             <thead class="text-muted">
                                 <tr class="small text-uppercase">
@@ -100,7 +108,14 @@
                                 @foreach (var detail in Model.Details)
                                 {
                                     <tr>
-                                        <td>@detail.Description</td>
+                                        <td>
+                                            <a asp-area="Admin"
+                                               asp-controller="Article"
+                                               asp-action="Details"
+                                               asp-route-id="@detail.Id">
+                                                @detail.Description
+                                            </a>
+                                        </td>
                                         <td>@detail.BarCode</td>
                                         <td class="text-center">@((int)detail.Quantity)</td>
                                         <td class="text-center">₡@((int)detail.Price)</td>
@@ -121,5 +136,5 @@
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 @section Scripts{
-    
+    <script src="~/js/order.admin.view.js"></script>
 }

@@ -131,6 +131,44 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.Order.GetOrderArticleDetailsById(id);
         }
 
+        public async Task<BusisnessResult> SetFinished(Guid orderId)
+        {
+            BusisnessResult oResult = new();
+
+            var oOrderFromDb = await _unitOfWork.Order.GetByIdAsync(orderId);
+
+            if(oOrderFromDb == null)
+            {
+                oResult.Message = "El pedido no existe.";
+
+                return oResult;
+            }
+
+            if(oOrderFromDb.Status == OrderStatus.TERMINADO)
+            {
+                oResult.Message = "El pedido ya está marcado como terminado.";
+
+                return oResult;
+            }
+
+            if (oOrderFromDb.Status == OrderStatus.CANCELADO)
+            {
+                oResult.Message = "El pedido no se puede marcar como terminado porque ha sido cancelado.";
+
+                return oResult;
+            }
+
+            oOrderFromDb.Status = OrderStatus.TERMINADO;
+
+            _unitOfWork.Order.Update(oOrderFromDb);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "El pedido se marcó como terminado.";
+
+            return oResult;
+        }
+
         public async Task<BusisnessResult> CancelMostRecent(Guid userId)
         {
             BusisnessResult oResult = new();

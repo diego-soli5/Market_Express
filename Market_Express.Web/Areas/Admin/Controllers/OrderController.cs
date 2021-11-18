@@ -63,6 +63,14 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             return View(oViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SetFinished(Guid orderId)
+        {
+            var oResult = await _orderService.SetFinished(orderId);
+
+            return Ok(oResult);
+        }
+
         public async Task<IActionResult> GetPending()
         {
             return PartialView("_RecentPendingOrdersPartial", await GetRecentPendingOrderDTOList());
