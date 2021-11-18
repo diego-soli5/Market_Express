@@ -11,7 +11,7 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface IOrderService
     {
         Task<BusisnessResult> Generate(Guid userId);
-        Task<Order> GetById(Guid id);
+        Task<Order> GetById(Guid id, Guid? currentUserId = null, bool includeAppUser = false);
         Task<List<RecentOrder>> GetMostRecent();
         PagedList<Order> GetAllPaginatedByUserId(Guid userId, MyOrdersQueryFilter filters);
         PagedList<Order> GetAllPaginated(AdminOrderQueryFilter filters);

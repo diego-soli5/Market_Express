@@ -157,5 +157,12 @@ namespace Market_Express.Infrastructure.Data.Repositories
                             .ThenInclude(c => c.AppUser)
                             .AsEnumerable();
         }
+
+        public async Task<Order> GetByIdIncludeAppUserAsync(Guid id)
+        {
+            return await _dbEntity.Include(o => o.Client)
+                                  .ThenInclude(c => c.AppUser)
+                                  .FirstOrDefaultAsync(o => o.Id == id);
+        }
     }
 }

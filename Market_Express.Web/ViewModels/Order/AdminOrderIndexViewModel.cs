@@ -8,7 +8,7 @@ namespace Market_Express.Web.ViewModels.Order
     public class AdminOrderIndexViewModel
     {
         public List<OrderDTO> Orders { get; set; }
-        public List<RecentOrderDTO> RecentOrders { get; set; }
+        public List<RecentOrderDTO> RecentPendingOrders { get; set; }
         public Metadata Metadata { get; set; }
         public AdminOrderQueryFilter Filters { get; set; }
         public OrderStatsDTO OrderStats { get; set; }

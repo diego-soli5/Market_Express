@@ -19,6 +19,11 @@ namespace Market_Express.Web.Controllers
                 return View("NotFound", new NotFoundViewModel(notFoundException.ResourceId,notFoundException.ResourceType));
             }
 
+            if (exception is UnauthorizedException)
+            {
+                return RedirectToAction("AccessDenied", "Account");
+            }
+
             return View("Error",new ErrorViewModel(Activity.Current?.Id ?? HttpContext.TraceIdentifier));
         }
     }

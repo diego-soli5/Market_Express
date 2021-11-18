@@ -100,12 +100,28 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.Order.GetStats();
         }
 
-        public async Task<Order> GetById(Guid id)
+        public async Task<Order> GetById(Guid id, Guid? currentUserId = null, bool includeAppUser = false)
         {
-            var oOrder = await _unitOfWork.Order.GetByIdAsync(id);
+            Order oOrder;
+
+            if (includeAppUser)
+                oOrder = await _unitOfWork.Order.GetByIdIncludeAppUserAsync(id);
+            else
+                oOrder = await _unitOfWork.Order.GetByIdAsync(id);
 
             if (oOrder == null)
                 throw new NotFoundException(id, nameof(Order));
+
+            if (currentUserId.HasValue)
+            {
+                var oClient = await _unitOfWork.Client.GetByUserIdAsync(currentUserId.Value);
+
+                if (oClient != null)
+                {
+                    if (oClient.Id != oOrder.ClientId)
+                        throw new UnauthorizedException();
+                }
+            }
 
             return oOrder;
         }

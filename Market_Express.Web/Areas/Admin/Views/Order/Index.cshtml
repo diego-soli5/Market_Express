@@ -3,6 +3,7 @@
     ViewData["Title"] = "Pedidos";
 }
 
+
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
     <div class="container">
@@ -28,99 +29,93 @@
                 </div>
             </aside>
             <main class="col-md-10">
-                <article class="card mb-3">
-                    <div class="card-body">
-                        <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "" : "show active")" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
-                                <div>
-                                    <h4>Resumen</h4>
-                                    <hr />
-                                    <div class="row">
-                                        Aquí va un gráfico
+
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "" : "show active")" id="v-pills-re" role="tabpanel" aria-labelledby="v-pills-re-tab">
+                        <div class="card mb-3">
+                            <div class="card-header bg-blue">
+                                <h4 class="text-white">Resumen</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 d-flex mb-3 mb-md-0">
                                     </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-md-4 d-flex mb-3 mb-md-0">
-                                        </div>
-                                        <div class="col-md-8" id="divOrderStats">
-                                            @{ await Html.RenderPartialAsync("_OrderStatsPartial", Model.OrderStats); }
-                                        </div>
+                                    <div class="col-md-8" id="divOrderStats">
+                                        @{ await Html.RenderPartialAsync("_OrderStatsPartial", Model.OrderStats); }
                                     </div>
                                 </div>
                                 <hr />
-                                <div>
-                                    <h4 class="card-title mb-4">Pedidos Pendientes</h4>
-
-                                    <div class="row" id="divMostRecentPendingOrders">
-                                        @{ await Html.RenderPartialAsync("_MostRecentPendingOrdersPartial", Model.RecentOrders); }
-                                    </div>
+                                <div id="divMostRecentPendingOrders">
+                                    @{ await Html.RenderPartialAsync("_RecentPendingOrdersPartial", Model.RecentPendingOrders); }
                                 </div>
                             </div>
-
-                            <div class="tab-pane fade @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "show active" : "")" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
-                                <div>
-                                    <h4>Todos los Pedidos</h4>
-                                    <hr />
-                                    <div>
-                                        <form asp-area="Client" asp-controller="Order" asp-action="Index" method="get" class="row" id="frmTable">
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label class="font-weight-bold">Fecha Inicial</label>
-                                                    <input type="date"
-                                                           asp-for="Filters.StartDate"
-                                                           name="@(nameof(Model.Filters.StartDate))"
-                                                           class="form-control-original-small" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label class="font-weight-bold">Fecha Final</label>
-                                                    <input type="date"
-                                                           asp-for="Filters.EndDate"
-                                                           name="@(nameof(Model.Filters.EndDate))"
-                                                           class="form-control-original-small" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label class="font-weight-bold">Estado</label>
-                                                    <select asp-items="Html.GetEnumSelectList<OrderStatus>()"
-                                                            asp-for="Filters.Status"
-                                                            name="@(nameof(Model.Filters.Status))"
-                                                            class="form-control-original-small">
-                                                        <option>TODOS</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3 d-flex">
-                                                <div class="align-self-center mx-auto mb-3 mb-md-0" style=" width: 120px;">
-                                                    <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div id="divTableAllOrders">
-                                        @{ await Html.RenderPartialAsync("_OrdersTablePartial", Model); }
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-                </article>
+
+                    <div class="tab-pane fade @(Model?.Filters?.Tab?.Trim().ToLower() == "all" ? "show active" : "")" id="v-pills-od" role="tabpanel" aria-labelledby="v-pills-od-tab">
+                        <div class="card mb-3">
+                            <div class="card-header bg-blue">
+                                <h4 class="text-white">Todos los Pedidos</h4>
+                            </div>
+                            <div class="card-body">
+                                <form asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-tab="all" method="get" class="row" id="frmTable">
+                                    <input type="hidden" name="tab" value="all" />
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Cliente</label>
+                                            <input type="text"
+                                                   asp-for="Filters.ClientName"
+                                                   name="clientName"
+                                                   class="form-control-original-small" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Estado</label>
+                                            <select asp-items="Html.GetEnumSelectList<OrderStatus>()"
+                                                    asp-for="Filters.Status"
+                                                    name="status"
+                                                    class="form-control-original-small">
+                                                <option>TODOS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Fecha Inicial</label>
+                                            <input type="date"
+                                                   asp-for="Filters.StartDate"
+                                                   name="startDate"
+                                                   class="form-control-original-small" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Fecha Final</label>
+                                            <input type="date"
+                                                   asp-for="Filters.EndDate"
+                                                   name="endDate"
+                                                   class="form-control-original-small" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mb-3">
+                                        <div class="float-right" style=" width: 120px;">
+                                            <button class="btn btn-primary btn-block">Buscar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="divTableAllOrders">
+                                    @{ await Html.RenderPartialAsync("_OrdersTablePartial", Model); }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </main>
         </div>
-    </div>
-</section>
-
-<section class="section-name bg padding-y">
-    <div class="container">
-        <h6>Cancelación de Pedidos</h6>
-        <p>
-            No puedes cancelar pedidos que tengan más de 5 minutos de haber sido realizados.
-        </p>
     </div>
 </section>
 
@@ -129,6 +124,6 @@
 
 @section Scripts{
 
-    <script src="~/js/orderIndex.js"></script>
+    <script src="~/js/order.admin.index.js"></script>
 }
 

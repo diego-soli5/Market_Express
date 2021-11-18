@@ -61,7 +61,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                                                                           .Select(b => _mapper.Map<BinnacleMovementDTO>(b))
                                                                           .ToList();
 
-            return new ViewAsPdf("MovementReport",oViewModel);
+            return new ViewAsPdf("MovementReport", oViewModel);
         }
 
         [HttpGet]
@@ -123,9 +123,9 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("/Admin/Binnacle/Access/SearchUser")]
-        public IActionResult SearchUser(string query)
+        public IActionResult SearchUser(string query, bool onlyAdmin)
         {
-            var lstResult = _appUserService.SearchNames(query);
+            var lstResult = _appUserService.SearchNames(query, onlyAdmin);
 
             return Ok(lstResult.Select(s => new { Name = s }));
         }

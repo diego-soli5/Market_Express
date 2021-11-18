@@ -18,6 +18,7 @@ namespace Market_Express.Domain.QueryFilter.Order
         [BindProperty(Name = "ClientName")]
         public string ClientName { get; set; }
 
+        [BindProperty(Name = "Tab")]
         public string Tab { get; set; }
     }
 }

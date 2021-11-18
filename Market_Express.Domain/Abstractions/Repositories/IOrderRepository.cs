@@ -15,5 +15,6 @@ namespace Market_Express.Domain.Abstractions.Repositories
         IEnumerable<Order> GetAllByUserId(Guid userId);
         Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid orderId);
         IEnumerable<Order> GetAllIncludeAppUser();
+        Task<Order> GetByIdIncludeAppUserAsync(Guid id);
     }
 }

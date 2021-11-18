@@ -1,13 +1,13 @@
 ﻿@model Market_Express.Web.ViewModels.Order.AdminOrderIndexViewModel
 
-<table class="table table-sm table-hover table-resposive">
+<table class="table table-sm table-hover table-responsive w-100 d-block d-md-table">
     <thead>
         <tr class="small text-uppercase font-weight-bold">
             <th>Número de Pedido</th>
             <th>Fecha de Pedido</th>
             <th>Cliente</th>
-            <th>Total</th>
             <th>Estado</th>
+            <th>Total</th>
             <th class="text-center">Opciones</th>
         </tr>
     </thead>
@@ -16,7 +16,7 @@
         {
             foreach (var order in Model.Orders)
             {
-                string textClass = "";
+                string textClass = "text-danger";
 
                 if (order.Status == OrderStatus.PENDIENTE)
                 {
@@ -31,10 +31,10 @@
                     <td>@order.OrderNumber</td>
                     <td>@order.CreationDate.ToShortDateString()</td>
                     <td>@order.Client.AppUser.Name.Capitalize()</td>
-                    <td>₡@order.Total</td>
                     <td class="text-capitalize-first @textClass">@order.Status.ToString()</td>
+                    <td>₡@order.Total</td>
                     <td class="text-center">
-                        <a asp-area="Client"
+                        <a asp-area="Admin"
                            asp-controller="Order"
                            asp-action="Details"
                            asp-route-id="@order.Id"

@@ -51,11 +51,11 @@ namespace Market_Express.Web.Areas.Client.Controllers
         {
             OrderClientDetailViewModel oViewModel = new();
 
-            oViewModel.Order = _mapper.Map<OrderDTO>(await _orderService.GetById(id));
+            oViewModel.Order = _mapper.Map<OrderDTO>(await _orderService.GetById(id, CurrentUserId));
             oViewModel.Details = (await _orderService.GetOrderArticleDetailsById(id))
                                                      .Select(o => _mapper.Map<OrderArticleDetailDTO>(o))
                                                      .ToList();
-            
+
             return View(oViewModel);
         }
 
