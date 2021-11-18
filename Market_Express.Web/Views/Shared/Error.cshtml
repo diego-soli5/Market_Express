@@ -4,17 +4,20 @@
 }
 
 <section class="container">
-    <h1 class="text-danger">500 - Internal Server Error</h1>
-    <h5>Ocurrió un error mientras se procesaba tu solicitud. Por favor intentalo más tarde.</h5>
-    <h4 class="mt-3">¿Es un error habitual?</h4>
-    <p>
-        Si el error sucede habitualmente por favor comunicate con el administrador del sistema y muestra el valor del <strong>Request ID</strong>.
-    </p>
+    
+</section>
 
-    @if (Model.ShowRequestId)
-    {
-        <p>
-            <strong>Request ID:</strong> <code>@Model.RequestId</code>
-        </p>
-    }
+
+<section class="section-content padding-y">
+    <div class="container" style="height: 200px;">
+        <h1 class="text-danger">500 - Internal Server Error</h1>
+        <h5>Ocurrió un error mientras se procesaba tu solicitud. Por favor intentalo más tarde.</h5>
+
+        @if (Model.ShowRequestId)
+        {
+            <p>
+                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+            </p>
+        }
+    </div>
 </section>
