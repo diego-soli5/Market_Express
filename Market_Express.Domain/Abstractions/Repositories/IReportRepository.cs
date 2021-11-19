@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.CustomEntities.Article;
+using Market_Express.Domain.CustomEntities.Client;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.QueryFilter.Report;
 using System.Collections.Generic;
@@ -10,5 +11,7 @@ namespace Market_Express.Domain.Abstractions.Repositories
     {
         Task<SQLServerPagedList<ArticleForReport>> GetMostSoldArticlesPaginated(ReportArticleQueryFilter filters);
         Task<List<ArticleForReport>> GetMostSoldArticles(ReportArticleQueryFilter filters);
+        Task<SQLServerPagedList<ClientForReport>> GetClientsStatsPaginated(ReportClientQueryFilter filters);
+        Task<List<ClientForReport>> GetClientsStats(ReportClientQueryFilter filters);
     }
 }

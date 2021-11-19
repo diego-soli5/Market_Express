@@ -215,6 +215,96 @@ BEGIN
 END;
 GO
 
+-- Obtiene estadisticas de los clientes paginado y filtrado por fechas de realizacion del pedido
+CREATE PROCEDURE Sp_Report_GetClientsStatsPaginated
+(
+	@startDate DATE = NULL,
+	@endDate DATE = NULL,
+	@pageNumber INT = NULL,
+	@pageSize INT= NULL,
+	@totalPages INT = NULL OUTPUT,
+	@totalCount INT = NULL OUTPUT
+)
+AS
+BEGIN
+	DECLARE @skip int = @pageNumber*@pageSize;
+	
+	SET @totalCount = ( SELECT COUNT(1)
+						FROM Client cl
+						INNER JOIN AppUser ap
+						ON ap.Id = cl.AppUserId);
+	
+	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
+
+	SELECT  ap.Name,
+			ap.Identification,
+			ap.Phone,
+			ap.Email,
+			cl.ClientCode,
+			(SELECT COUNT(1) 
+			FROM [Order] o 
+			WHERE o.ClientId = cl.Id 
+			AND o.Status = 'PENDIENTE'
+			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
+			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Pending,
+			(SELECT COUNT(1) 
+			FROM [Order] o 
+			WHERE o.ClientId = cl.Id 
+			AND o.Status = 'TERMINADO'
+			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
+			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Finished,
+			(SELECT COUNT(1)
+			FROM [Order] o
+			WHERE o.ClientId = cl.Id
+			AND o.Status = 'CANCELADO'
+			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
+			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Canceled
+	FROM Client cl
+	INNER JOIN AppUser ap
+	ON ap.Id = cl.AppUserId
+	ORDER BY ap.Name ASC
+	OFFSET @skip ROWS 
+	FETCH NEXT @pageSize ROWS ONLY;
+END;
+GO
+
+CREATE PROCEDURE Sp_Report_GetClientsStats
+(
+	@startDate DATE = NULL,
+	@endDate DATE = NULL
+)
+AS
+BEGIN
+	SELECT  ap.Name,
+			ap.Identification,
+			ap.Phone,
+			ap.Email,
+			cl.ClientCode,
+			(SELECT COUNT(1) 
+			FROM [Order] o 
+			WHERE o.ClientId = cl.Id 
+			AND o.Status = 'PENDIENTE'
+			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
+			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Pending,
+			(SELECT COUNT(1) 
+			FROM [Order] o 
+			WHERE o.ClientId = cl.Id 
+			AND o.Status = 'TERMINADO'
+			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
+			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Finished,
+			(SELECT COUNT(1)
+			FROM [Order] o
+			WHERE o.ClientId = cl.Id
+			AND o.Status = 'CANCELADO'
+			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
+			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Canceled
+	FROM Client cl
+	INNER JOIN AppUser ap
+	ON ap.Id = cl.AppUserId
+	ORDER BY ap.Name ASC
+END;
+GO
+
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS BINNACLE_MOVEMENT
 ---------------------------------------------------------------------------------------------------------------
@@ -304,58 +394,6 @@ BEGIN
 END;
 GO
 
--- Obtiene estadisticas de los clientes paginado y filtrado por fechas de realizacion del pedido
-CREATE PROCEDURE Sp_Report_GetClientsStatsPaginated
-(
-	@startDate DATE = NULL,
-	@endDate DATE = NULL,
-	@pageNumber INT = NULL,
-	@pageSize INT= NULL,
-	@totalPages INT = NULL OUTPUT,
-	@totalCount INT = NULL OUTPUT
-)
-AS
-BEGIN
-	DECLARE @skip int = @pageNumber*@pageSize;
-	
-	SET @totalCount = ( SELECT COUNT(1)
-						FROM Client cl
-						INNER JOIN AppUser ap
-						ON ap.Id = cl.AppUserId);
-	
-	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
-
-	SELECT  ap.Name,
-			ap.Identification,
-			ap.Phone,
-			ap.Email,
-			cl.ClientCode,
-			(SELECT COUNT(1) 
-			FROM [Order] o 
-			WHERE o.ClientId = cl.Id 
-			AND o.Status = 'PENDIENTE'
-			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
-			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Pending,
-			(SELECT COUNT(1) 
-			FROM [Order] o 
-			WHERE o.ClientId = cl.Id 
-			AND o.Status = 'TERMINADO'
-			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
-			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Finished,
-			(SELECT COUNT(1)
-			FROM [Order] o
-			WHERE o.ClientId = cl.Id
-			AND o.Status = 'CANCELADO'
-			AND (@startDate IS NULL OR CAST(o.CreationDate AS DATE) >= @startDate)
-			AND (@endDate IS NULL OR CAST(o.CreationDate AS DATE) <= @endDate)) Canceled
-	FROM Client cl
-	INNER JOIN AppUser ap
-	ON ap.Id = cl.AppUserId
-	ORDER BY ap.Name ASC
-	OFFSET @skip ROWS 
-	FETCH NEXT @pageSize ROWS ONLY;
-END;
-GO
 
 ---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS APPUSER
