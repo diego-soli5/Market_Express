@@ -49,12 +49,15 @@
                                        name="@nameof(Model.QueryFilter.Description)"
                                        class="form-control-original-small" />
                             </div>
-
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="font-weight-bold">Código Barras</label>
-                                <input type="text"
-                                       asp-for="QueryFilter.BarCode"
-                                       name="@nameof(Model.QueryFilter.BarCode)" class="form-control-original-small" />
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Código Barras</label>
+                                    <input type="text"
+                                           asp-for="QueryFilter.BarCode"
+                                           name="@nameof(Model.QueryFilter.BarCode)" class="form-control-original-small" />
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-3">

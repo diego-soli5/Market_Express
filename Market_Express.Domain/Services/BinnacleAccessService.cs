@@ -32,10 +32,10 @@ namespace Market_Express.Domain.Services
             var lstBinnacleAccess = _unitOfWork.BinnacleAccess.GetAll(nameof(BinnacleAccess.AppUser));
 
             if (filters.StartDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => DateTimeUtility.Truncate(b.EntryDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.EntryDate.Date >= filters.StartDate.Value.Date);
 
             if (filters.EndDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate.HasValue && DateTimeUtility.Truncate(b.ExitDate.Value) <= DateTimeUtility.Truncate(filters.EndDate.Value));
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value.Date <= filters.EndDate.Value);
 
             if (filters.User != null)
                 lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
@@ -52,14 +52,14 @@ namespace Market_Express.Domain.Services
             var lstBinnacleAccess = _unitOfWork.BinnacleAccess.GetAll(nameof(BinnacleAccess.AppUser));
 
             if (filters.StartDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => DateTimeUtility.Truncate(b.EntryDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.EntryDate.Date >= filters.StartDate.Value.Date);
 
             if (filters.EndDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate.HasValue && DateTimeUtility.Truncate(b.ExitDate.Value) <= DateTimeUtility.Truncate(filters.EndDate.Value));
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value <= filters.EndDate.Value.Date);
 
             if (filters.User != null)
                 lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
-            
+
             lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate);
 
             return lstBinnacleAccess;

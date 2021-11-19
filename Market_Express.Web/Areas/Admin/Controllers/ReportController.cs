@@ -27,6 +27,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
+        #region ORDER REPORT ENDPOINTS
         [HttpGet]
         public IActionResult Order(ReportOrderQueryFilter filters)
         {
@@ -66,7 +67,9 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             return PartialView("_OrderReportTablePartial", oViewModel);
         }
+        #endregion
 
+        #region ARTICLE REPORT ENDPOINTS
         [HttpGet]
         public IActionResult Article(ReportClientQueryFilter filters)
         {
@@ -74,7 +77,9 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             return View(oViewModel);
         }
+        #endregion
 
+        #region CLIENT REPORT ENDPOINTS
         [HttpGet]
         public IActionResult Client(ReportClientQueryFilter filters)
         {
@@ -82,6 +87,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             return View(oViewModel);
         }
+        #endregion
 
         #region UTILITY METHODS
         public (List<OrderDTO>,Metadata) GetOrderDTOList(ReportOrderQueryFilter filters)

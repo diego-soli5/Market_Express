@@ -6,6 +6,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.Report;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,10 +57,13 @@ namespace Market_Express.Domain.Services
                 orders = orders.Where(o => o.Status == filters.Status.Value);
 
             if (filters.StartDate.HasValue)
-                orders = orders.Where(o => DateTimeUtility.Truncate(o.CreationDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
+            {
+
+                orders = orders.Where(o => o.CreationDate.Date >= filters.StartDate.Value.Date);
+            }
 
             if (filters.EndDate.HasValue)
-                orders = orders.Where(o => DateTimeUtility.Truncate(o.CreationDate) <= DateTimeUtility.Truncate(filters.EndDate.Value));
+                orders = orders.Where(o => o.CreationDate.Date <= filters.StartDate.Value.Date);
 
             orders = orders.OrderByDescending(o => o.CreationDate);
         }

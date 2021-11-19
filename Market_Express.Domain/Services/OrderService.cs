@@ -39,10 +39,10 @@ namespace Market_Express.Domain.Services
             var lstOrders = _unitOfWork.Order.GetAllIncludeAppUser();
 
             if (filters.StartDate != null)
-                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
+                lstOrders = lstOrders.Where(o => o.CreationDate.Date >= filters.StartDate.Value.Date);
 
             if (filters.EndDate != null)
-                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) <= DateTimeUtility.Truncate(filters.EndDate.Value));
+                lstOrders = lstOrders.Where(o => o.CreationDate.Date <= filters.EndDate.Value.Date);
 
             if (filters.Status != null)
                 lstOrders = lstOrders.Where(o => o.Status == filters.Status);
@@ -65,10 +65,10 @@ namespace Market_Express.Domain.Services
             var lstOrders = _unitOfWork.Order.GetAllByUserId(userId);
 
             if (filters.StartDate != null)
-                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) >= DateTimeUtility.Truncate(filters.StartDate.Value));
+                lstOrders = lstOrders.Where(o => o.CreationDate.Date >= filters.StartDate.Value.Date);
 
             if (filters.EndDate != null)
-                lstOrders = lstOrders.Where(o => DateTimeUtility.Truncate(o.CreationDate) <= DateTimeUtility.Truncate(filters.EndDate.Value));
+                lstOrders = lstOrders.Where(o => o.CreationDate.Date <= filters.EndDate.Value.Date);
 
             if (filters.Status != null)
                 lstOrders = lstOrders.Where(o => o.Status == filters.Status);
