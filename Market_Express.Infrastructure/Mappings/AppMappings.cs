@@ -79,6 +79,15 @@ namespace Market_Express.Infrastructure.Mappings
             CreateMap<Article, ArticuloSyncDTO>()
                 .ReverseMap();
 
+            CreateMap<ArticleForReport, ArticleForReportDTO>()
+                .ForPath(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForPath(dest => dest.BarCode, opt => opt.MapFrom(src => src.BarCode))
+                .ForPath(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForPath(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+                .ForPath(dest => dest.SoldUnitsCount, opt => opt.MapFrom(src => src.SoldUnitsCount))
+                .ForPath(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ReverseMap();
+
             CreateMap<Article, ArticleDTO>()
                 .ForPath(dest => dest.Category.Id, opt => opt.MapFrom(src => src.Category.Id))
                 .ForPath(dest => dest.Category.Name, opt => opt.MapFrom(src => src.Category.Name))

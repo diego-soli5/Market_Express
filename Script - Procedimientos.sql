@@ -128,6 +128,92 @@ END;
 GO
 
 ---------------------------------------------------------------------------------------------------------------
+-- PROCEDIMIENTOS REPORT
+---------------------------------------------------------------------------------------------------------------
+--Fuente de datos para la vista de reporte de articulos paginado
+CREATE PROCEDURE Sp_Report_GetMostSoldArticlesPaginated
+(
+	@categoryId UNIQUEIDENTIFIER = NULL,
+	@description VARCHAR(255) = NULL,
+	@maxPrice DECIMAL(19,2) = NULL,
+	@minPrice DECIMAL(19,2) = NULL,
+	@pageNumber INT = NULL,
+	@pageSize INT= NULL,
+	@totalPages INT = NULL OUTPUT,
+	@totalCount INT = NULL OUTPUT
+)
+AS
+BEGIN
+	DECLARE @skip int = @pageNumber*@pageSize;
+	
+	SET @totalCount = ( SELECT COUNT(1)
+					    FROM Article a
+						LEFT JOIN Category c
+						ON a.CategoryId = c.Id
+						WHERE (@categoryId IS NULL OR c.Id = @categoryId)
+						AND (@description IS NULL OR a.Description LIKE '%'+@description+'%')
+						AND (@maxPrice IS NULL OR a.Price <= @maxPrice)
+						AND (@minPrice IS NULL OR a.Price >= @minPrice));
+	
+	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
+
+	SELECT a.Description,
+		   a.BarCode,
+		   a.Price,
+		   c.Name CategoryName,
+		   (SELECT COUNT(1)
+			FROM Order_Detail od
+			INNER JOIN [Order] o
+			ON o.Id = od.OrderId
+			WHERE od.ArticleId = a.Id
+			AND o.Status = 'TERMINADO') SoldUnitsCount,
+		   a.Status
+	FROM Article a
+	LEFT JOIN Category c
+	ON a.CategoryId = c.Id
+	WHERE (@categoryId IS NULL OR c.Id = @categoryId)
+	AND (@description IS NULL OR a.Description LIKE '%'+@description+'%')
+	AND (@maxPrice IS NULL OR a.Price <= @maxPrice)
+	AND (@minPrice IS NULL OR a.Price >= @minPrice)
+	ORDER BY SoldUnitsCount DESC
+	OFFSET @skip ROWS 
+	FETCH NEXT @pageSize ROWS ONLY; 
+END;
+GO
+
+--Fuente de datos para el reporte de articulos mas vendidos
+CREATE PROCEDURE Sp_Report_GetMostSoldArticles
+(
+	@categoryId UNIQUEIDENTIFIER = NULL,
+	@description VARCHAR(255) = NULL,
+	@maxPrice DECIMAL(19,2) = NULL,
+	@minPrice DECIMAL(19,2) = NULL
+)
+AS
+BEGIN
+	SELECT a.Description,
+		   a.BarCode,
+		   a.Price,
+		   c.Name CategoryName,
+		   (SELECT COUNT(1)
+			FROM Order_Detail od
+			INNER JOIN [Order] o
+			ON o.Id = od.OrderId
+			WHERE od.ArticleId = a.Id
+			AND o.Status = 'TERMINADO') SoldUnitsCount,
+		   a.Status
+	FROM Article a
+	LEFT JOIN Category c
+	ON a.CategoryId = c.Id
+	WHERE (@categoryId IS NULL OR c.Id = @categoryId)
+	AND (@description IS NULL OR a.Description LIKE '%'+@description+'%')
+	AND (@maxPrice IS NULL OR a.Price <= @maxPrice)
+	AND (@minPrice IS NULL OR a.Price >= @minPrice)
+	ORDER BY SoldUnitsCount DESC
+END;
+GO
+
+---------------------------------------------------------------------------------------------------------------
 -- PROCEDIMIENTOS BINNACLE_MOVEMENT
 ---------------------------------------------------------------------------------------------------------------
 -- Obtiene todos los registros paginados

@@ -21,6 +21,7 @@ namespace Market_Express.Domain.Abstractions.Repositories
         public IOrderDetailRepository OrderDetail { get; }
         public IPermissionRepository Permission { get; }
         public IRolePermissionRepository RolePermission { get; }
+        public IReportRepository Report { get; }
 
 
         Task BeginTransactionAsync();

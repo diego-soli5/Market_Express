@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Rotativa.AspNetCore;
+using Market_Express.Application.DTOs.Article;
+using System.Threading.Tasks;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -71,11 +73,38 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         #region ARTICLE REPORT ENDPOINTS
         [HttpGet]
-        public IActionResult Article(ReportClientQueryFilter filters)
+        public async Task<IActionResult> Article(ReportArticleQueryFilter filters)
         {
             ReportArticleViewModel oViewModel = new();
 
+            var tplArticleForReportDTOList = await GetArticleDTOList(filters);
+
+            oViewModel.Articles = tplArticleForReportDTOList.Item1;
+            oViewModel.Metadata = tplArticleForReportDTOList.Item2;
+            oViewModel.Filters = filters;
+
             return View(oViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ArticleReport(ReportArticleQueryFilter filters)
+        {
+            ReportArticleViewModel oViewModel = new();
+
+            oViewModel.Articles = (await _reportService.GetMostSoldArticles(filters))
+                                                       .Select(a => _mapper.Map<ArticleForReportDTO>(a))
+                                                       .ToList();
+            oViewModel.Filters = filters;
+
+            return new ViewAsPdf(oViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetArticleTable(ReportArticleQueryFilter filters)
+        {
+            ReportArticleViewModel oViewModel = new();
+
+            return PartialView("_ArticleReportTablePartial", oViewModel);
         }
         #endregion
 
@@ -87,10 +116,35 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
             return View(oViewModel);
         }
+
+        [HttpGet]
+        public IActionResult ArticleReport(ReportClientQueryFilter filters)
+        {
+            ReportClientViewModel oViewModel = new();
+
+            return new ViewAsPdf(oViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetClientTable(ReportClientQueryFilter filters)
+        {
+            ReportClientViewModel oViewModel = new();
+
+            return PartialView("_ClientReportTablePartial", oViewModel);
+        }
         #endregion
 
         #region UTILITY METHODS
-        public (List<OrderDTO>,Metadata) GetOrderDTOList(ReportOrderQueryFilter filters)
+        public async Task<(List<ArticleForReportDTO>, Metadata)> GetArticleDTOList(ReportArticleQueryFilter filters)
+        {
+            var lstArticle = await _reportService.GetMostSoldArticlesPaginated(filters);
+
+            var oMeta = Metadata.Create(lstArticle);
+
+            return (lstArticle.Select(o => _mapper.Map<ArticleForReportDTO>(o)).ToList(), oMeta);
+        }
+
+        public (List<OrderDTO>, Metadata) GetOrderDTOList(ReportOrderQueryFilter filters)
         {
             var lstOrders = _reportService.GetOrdersPaginated(filters);
 

@@ -25,6 +25,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IPermissionRepository _permissionRepository;
         private readonly IRolePermissionRepository _rolePermissionRepository;
+        private readonly IReportRepository _reportRepository;
         #endregion
 
         #region CONSTRUCTOR
@@ -52,6 +53,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
         public IOrderDetailRepository OrderDetail => _orderDetailRepository ?? new OrderDetailRepository(_context, _configuration);
         public IPermissionRepository Permission => _permissionRepository ?? new PermissionRepository(_context, _configuration);
         public IRolePermissionRepository RolePermission => _rolePermissionRepository ?? new RolePermissionRepository(_context, _configuration);
+        public IReportRepository Report => _reportRepository ?? new ReportRepository(_configuration);
         #endregion
 
         #region METHODS
