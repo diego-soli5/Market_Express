@@ -24,7 +24,9 @@ namespace Market_Express.Domain.Services
 
         public CategoryService(IUnitOfWork unitOfWork,
                                IAzureBlobStorageService storageService,
-                               IOptions<CategoryOptions> categoryOptions)
+                               IOptions<CategoryOptions> categoryOptions,
+                               IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _storageService = storageService;

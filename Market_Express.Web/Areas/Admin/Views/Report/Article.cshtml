@@ -1,7 +1,113 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.Report.ReportArticleViewModel
 @{
-    ViewData["Title"] = "Reporte de Articulos";
+    ViewData["Title"] = "Reporte de Artículos";
 }
 
 
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Reporte de Artículos</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Reporte de Artículos</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
+
+
+<section class="section-content padding-y">
+    <div class="container">
+        <article class="card mb-3">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Reporte de Artículos Más Vendidos</h4>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form asp-area="Admin" asp-controller="Report" asp-action="Article" method="get" class="row" id="frmTable">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Artículo</label>
+                                <input type="text"
+                                       asp-for="Filters.Description"
+                                       name="description"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Precio Máximo</label>
+                                <input type="text"
+                                       onkeypress="return valideKey(event);"
+                                       asp-for="Filters.MaxPrice"
+                                       name="maxPrice"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Precio Mínimo</label>
+                                <input type="text"
+                                       onkeypress="return valideKey(event);"
+                                       asp-for="Filters.MinPrice"
+                                       name="minPrice"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Categoría</label>
+                                @if (Model.Categories?.Count > 0)
+                                {
+                                    <select asp-for="Filters.CategoryId"
+                                            asp-items="@(new SelectList(Model.Categories,"Id", "Name"))"
+                                            name="categoryId"
+                                            class="form-control-original-small">
+                                        <option>TODAS</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <p class="text-danger">No hay categorías disponibles.</p>
+                                    <a asp-area="Admin"
+                                       asp-controller="Category"
+                                       asp-action="Create">Crear Categoría</a>
+                                }
+                            </div>
+                            <div class="d-flex">
+                                <div class="mx-auto">
+                                    <div class="btn-group" role="group" aria-label="buttomgroup">
+                                        <button type="submit" class="btn btn-primary" style=" width: 80px;">Filtrar</button>
+                                        <button type="button" class="btn btn-primary" style=" width: 80px;" id="btnGenerateReport">Reporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="divArticleTable" class="mt-3">
+                    @{ await Html.RenderPartialAsync("_ArticleReportTablePartial", Model); }
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script src="~/js/report/admin.report.article.js"></script>
+
+    @{
+        string sParams = "";
+            sParams += $"Description={Model?.Filters?.Description}&";
+            sParams += $"MaxPrice={Model?.Filters?.MaxPrice}&";
+            sParams += $"MinPrice={Model?.Filters?.MinPrice}&";
+            sParams += $"CategoryId={Model?.Filters?.CategoryId}";
+
+            <script>params = '@Html.Raw(sParams)'</script>
+    }
+}

@@ -1,6 +1,7 @@
 ﻿@model Market_Express.Web.ViewModels.BinnacleAccess.AccessReportViewModel
 @{
     ViewData["Title"] = "Reporte de Accesos y Salidas de Usuarios del Sistema";
+    ViewData["Reg"] = Model.BinnaclesAccesses.Count;
     Layout = "_ReportLayout";
 }
 
@@ -45,7 +46,7 @@
         {
             <tr>
                 <td colspan="4">
-                    <p style="text-align:center;">No hay registros.</p>
+                    <p class="text-center text-danger">No hay registros.</p>
                 </td>
             </tr>
         }

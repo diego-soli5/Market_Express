@@ -1,0 +1,53 @@
+﻿@model Market_Express.Web.ViewModels.Report.ReportArticleViewModel
+
+
+<table class="table table-sm table-hover table-responsive w-100 d-block d-md-table">
+    <thead>
+        <tr class="small text-uppercase font-weight-bold">
+            <th class="">Artículo</th>
+            <th class="">Código</th>
+            <th class="">Precio</th>
+            <th class="">Categoría</th>
+            <th class="">Unidades Vendidas</th>
+            <th class="">Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Articles?.Count > 0)
+        {
+            @foreach (var article in Model.Articles)
+            {
+                string textClass = "";
+
+                if (article.CategoryName == null)
+                {
+                    textClass = "text-danger";
+                }
+
+                <tr>
+                    <td>@article.Description</td>
+                    <td>@article.BarCode</td>
+                    <td>₡@((int)article.Price)</td>
+                    <td class="@textClass">@(article.CategoryName ?? "Sin Categoría")</td>
+                    <td>@article.SoldUnitsCount</td>
+                    <td>@article.Status.ToString().Capitalize()</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <p class="text-center text-danger">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model?.Articles?.Count > 0)
+{
+    <div>
+        @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
+    </div>
+}

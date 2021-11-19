@@ -1,4 +1,5 @@
 ﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
@@ -6,6 +7,7 @@ using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +20,9 @@ namespace Market_Express.Domain.Services
         private readonly IAzureBlobStorageService _storageService;
 
         public SliderService(IUnitOfWork unitOfWork,
-                             IAzureBlobStorageService storageService)
+                             IAzureBlobStorageService storageService,
+                             IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _storageService = storageService;

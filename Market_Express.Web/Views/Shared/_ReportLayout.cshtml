@@ -43,8 +43,11 @@
 
             <section class="footer-bottom border-top row">
                 <div class="col-12">
-                    <span class="text-muted"> &copy 2021 Market Express </span>
-                    <span class="text-muted float-right">Generado el @DateTimeUtility.NowCostaRica.ToShortDateString()</span>
+                    <span class="text-muted">&copy 2021 Market Express </span>
+                    <div class="float-right">
+                        <p class="text-muted my-0 py-0">Total de Registros: @(ViewData["Reg"] ?? 0) </p>
+                        <p class="text-muted my-0 py-0">Generado el @DateTimeUtility.NowCostaRica.ToShortDateString()</p>
+                    </div>
                 </div>
             </section>
         </div>

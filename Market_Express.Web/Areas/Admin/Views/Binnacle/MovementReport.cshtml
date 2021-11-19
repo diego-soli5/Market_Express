@@ -1,6 +1,7 @@
 ﻿@model Market_Express.Web.ViewModels.BinnacleMovement.MovementReportViewModel
 @{
     ViewData["Title"] = "Reporte de Movimientos de Usuarios del Sistema";
+    ViewData["Reg"] = Model.BinnacleMovements.Count;
     Layout = "_ReportLayout";
 }
 
@@ -63,7 +64,7 @@
             {
                 <tr>
                     <td colspan="5">
-                        <p style="text-align:center;">No hay registros.</p>
+                        <p class="text-center text-danger">No hay registros.</p>
                     </td>
                 </tr>
             }

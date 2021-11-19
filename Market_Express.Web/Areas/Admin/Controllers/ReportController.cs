@@ -11,6 +11,7 @@ using System.Linq;
 using Rotativa.AspNetCore;
 using Market_Express.Application.DTOs.Article;
 using System.Threading.Tasks;
+using Market_Express.Application.DTOs.Category;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -20,12 +21,15 @@ namespace Market_Express.Web.Areas.Admin.Controllers
     public class ReportController : Controller
     {
         private readonly IReportService _reportService;
+        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
 
         public ReportController(IReportService reportService,
+                                ICategoryService categoryService,
                                 IMapper mapper)
         {
             _reportService = reportService;
+            _categoryService = categoryService;
             _mapper = mapper;
         }
 
@@ -78,10 +82,13 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             ReportArticleViewModel oViewModel = new();
 
             var tplArticleForReportDTOList = await GetArticleDTOList(filters);
-
+            
             oViewModel.Articles = tplArticleForReportDTOList.Item1;
             oViewModel.Metadata = tplArticleForReportDTOList.Item2;
             oViewModel.Filters = filters;
+            oViewModel.Categories = _categoryService.GetAll()
+                                                    .Select(cat => _mapper.Map<CategoryDTO>(cat))
+                                                    .ToList();
 
             return View(oViewModel);
         }
@@ -96,13 +103,22 @@ namespace Market_Express.Web.Areas.Admin.Controllers
                                                        .ToList();
             oViewModel.Filters = filters;
 
+            if (filters.CategoryId.HasValue)
+                oViewModel.CategoryName = (await _categoryService.GetById(filters.CategoryId.Value))?.Name;
+
             return new ViewAsPdf(oViewModel);
         }
 
         [HttpGet]
-        public IActionResult GetArticleTable(ReportArticleQueryFilter filters)
+        public async Task<IActionResult> GetArticleTable(ReportArticleQueryFilter filters)
         {
             ReportArticleViewModel oViewModel = new();
+
+            var tplArticleForReportDTOList = await GetArticleDTOList(filters);
+
+            oViewModel.Articles = tplArticleForReportDTOList.Item1;
+            oViewModel.Metadata = tplArticleForReportDTOList.Item2;
+            oViewModel.Filters = filters;
 
             return PartialView("_ArticleReportTablePartial", oViewModel);
         }
@@ -118,7 +134,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult ArticleReport(ReportClientQueryFilter filters)
+        public IActionResult ClientReport(ReportClientQueryFilter filters)
         {
             ReportClientViewModel oViewModel = new();
 

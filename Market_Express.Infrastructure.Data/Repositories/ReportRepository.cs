@@ -59,10 +59,10 @@ namespace Market_Express.Infrastructure.Data.Repositories
                     BarCode = oRow["BarCode"].ToString(),
                     Price = Convert.ToDecimal(oRow["Price"]),
                     SoldUnitsCount = Convert.ToInt32(oRow["SoldUnitsCount"]),
-                    Status =  (EntityStatus)Enum.Parse(typeof(EntityStatus), oRow["Status"].ToString()),
+                    Status = (EntityStatus)Enum.Parse(typeof(EntityStatus), oRow["Status"].ToString()),
                     Category = new Category
                     {
-                        Name = oRow["CategoryName"].ToString()
+                        Name = oRow["CategoryName"] is DBNull ? null : oRow["CategoryName"].ToString()
                     }
                 });
             }
@@ -95,7 +95,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                     Status = (EntityStatus)Enum.Parse(typeof(EntityStatus), oRow["Status"].ToString()),
                     Category = new Category
                     {
-                        Name = oRow["CategoryName"].ToString()
+                        Name = oRow["CategoryName"] is DBNull ? null : oRow["CategoryName"].ToString()
                     }
                 });
             }

@@ -30,6 +30,7 @@ namespace Market_Express.Domain.Services
                               IAzureBlobStorageService blobService,
                               IOptions<PaginationOptions> paginationOptions,
                               IOptions<ArticleOptions> articleOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _blobService = blobService;
