@@ -1,11 +1,11 @@
 ﻿using Market_Express.Domain.Entities;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Market_Express.Domain.Abstractions.Repositories
 {
     public interface IOrderDetailRepository : IGenericRepository<OrderDetail>
     {
-        IEnumerable<OrderDetail>  GetAllByOrderId(Guid orderId);
+        IQueryable<OrderDetail>  GetAllByOrderId(Guid orderId);
     }
 }

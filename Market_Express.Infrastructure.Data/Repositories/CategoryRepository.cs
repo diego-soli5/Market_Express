@@ -22,10 +22,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public IEnumerable<Category> GetAllActive()
+        public IQueryable<Category> GetAllActive()
         {
-            return _dbEntity.Where(cat => cat.Status == EntityStatus.ACTIVADO)
-                            .AsEnumerable();
+            return _dbEntity.Where(cat => cat.Status == EntityStatus.ACTIVADO);
         }
 
         public async Task<List<CategoryForSearch>> GetAllAvailableForSearch()

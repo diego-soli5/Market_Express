@@ -7,7 +7,6 @@ using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.BinnacleAccess;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,14 +40,14 @@ namespace Market_Express.Domain.Services
             if (filters.User != null)
                 lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
 
-            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate).AsEnumerable();
+            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate);
 
             var pagedList = PagedList<BinnacleAccess>.Create(lstBinnacleAccess, filters.PageNumber.Value, filters.PageSize.Value);
 
             return pagedList;
         }
 
-        public IEnumerable<BinnacleAccess> GetResultForReport(BinnacleAccessQueryFilter filters)
+        public IQueryable<BinnacleAccess> GetResultForReport(BinnacleAccessQueryFilter filters)
         {
             var lstBinnacleAccess = _unitOfWork.BinnacleAccess.GetAll(nameof(BinnacleAccess.AppUser));
 
@@ -61,7 +60,7 @@ namespace Market_Express.Domain.Services
             if (filters.User != null)
                 lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
             
-            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate).AsEnumerable();
+            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate);
 
             return lstBinnacleAccess;
         }

@@ -17,21 +17,22 @@ namespace Market_Express.Infrastructure.Data
         {
         }
 
-        public DbSet<Address> Address { get; set; }
-        public DbSet<AppUser> AppUser { get; set; }
-        public DbSet<AppUserRole> AppUserRole { get; set; }
-        public DbSet<Article> Article { get; set; }
-        public DbSet<BinnacleAccess> BinnacleAccess { get; set; }
-        public DbSet<BinnacleMovement> BinnacleMovement { get; set; }
-        public DbSet<Cart> Cart { get; set; }
-        public DbSet<CartDetail> CartDetail { get; set; }
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Client> Client { get; set; }
-        public DbSet<OrderDetail> OrderDetail { get; set; }
-        public DbSet<Permission> Permission { get; set; }
-        public DbSet<Role> Role { get; set; }
-        public DbSet<RolePermission> RolePermission { get; set; }
-        public DbSet<Order> Order { get; set; }
+
+        public virtual DbSet<Address> Address { get; set; }
+        public virtual DbSet<AppUser> AppUser { get; set; }
+        public virtual DbSet<AppUserRole> AppUserRole { get; set; }
+        public virtual DbSet<Article> Article { get; set; }
+        public virtual DbSet<BinnacleAccess> BinnacleAccess { get; set; }
+        public virtual DbSet<BinnacleMovement> BinnacleMovement { get; set; }
+        public virtual DbSet<Cart> Cart { get; set; }
+        public virtual DbSet<CartDetail> CartDetail { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Client> Client { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<Permission> Permission { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<RolePermission> RolePermission { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

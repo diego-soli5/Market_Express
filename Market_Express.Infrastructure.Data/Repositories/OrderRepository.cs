@@ -25,9 +25,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public IEnumerable<Order> GetAllByUserId(Guid userId)
+        public IQueryable<Order> GetAllByUserId(Guid userId)
         {
-            return _dbEntity.Where(o => o.Client.AppUserId == userId).AsEnumerable();
+            return _dbEntity.Where(o => o.Client.AppUserId == userId);
         }
 
         public async Task<OrderStats> GetStats()
@@ -151,11 +151,11 @@ namespace Market_Express.Infrastructure.Data.Repositories
             return lstOrderDetails;
         }
 
-        public IEnumerable<Order> GetAllIncludeAppUser()
+        public IQueryable<Order> GetAllIncludeAppUser()
         {
             return _dbEntity.Include(o => o.Client)
                             .ThenInclude(c => c.AppUser)
-                            .AsEnumerable();
+                            .AsQueryable();
         }
 
         public async Task<Order> GetByIdIncludeAppUserAsync(Guid id)

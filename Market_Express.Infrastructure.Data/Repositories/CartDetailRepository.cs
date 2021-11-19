@@ -2,7 +2,6 @@
 using Market_Express.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -13,9 +12,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
     
-        public IEnumerable<CartDetail> GetAllByCartId(Guid id)
+        public IQueryable<CartDetail> GetAllByCartId(Guid id)
         {
-            return _dbEntity.Where(cd => cd.CartId == id).AsEnumerable();
+            return _dbEntity.Where(cd => cd.CartId == id);
         }
 
     }

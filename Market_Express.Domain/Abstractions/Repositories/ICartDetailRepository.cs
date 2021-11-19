@@ -1,11 +1,11 @@
 ﻿using Market_Express.Domain.Entities;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Market_Express.Domain.Abstractions.Repositories
 {
     public interface ICartDetailRepository : IGenericRepository<CartDetail>
     {
-        IEnumerable<CartDetail> GetAllByCartId(Guid id);
+        IQueryable<CartDetail> GetAllByCartId(Guid id);
     }
 }

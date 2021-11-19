@@ -39,7 +39,7 @@ namespace Market_Express.Domain.Services
 
         public PagedList<Article> GetAll(ArticleIndexQueryFilter filters, bool includeCategory = false)
         {
-            IEnumerable<Article> lstArticles;
+            IQueryable<Article> lstArticles;
 
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
@@ -64,10 +64,10 @@ namespace Market_Express.Domain.Services
             }
 
             if (filters.CategoryIdIsNull)
-                lstArticles = lstArticles.Where(article => article.CategoryId is null);
+                lstArticles = lstArticles.Where(article => article.CategoryId == null);
 
             if (filters.ImgIsNull)
-                lstArticles = lstArticles.Where(article => article.Image is null);
+                lstArticles = lstArticles.Where(article => article.Image == null);
 
             if (filters.Status != null)
                 lstArticles = lstArticles.Where(article => article.Status == filters.Status);

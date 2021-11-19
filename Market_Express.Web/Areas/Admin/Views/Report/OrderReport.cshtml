@@ -1,0 +1,73 @@
+﻿@model Market_Express.Web.ViewModels.Report.ReportOrderViewModel
+@{
+    ViewData["Title"] = "Reporte de Pedidos";
+    Layout = "_ReportLayout";
+}
+
+@{
+    string sClient = Model?.Filters?.ClientName != null ? Model.Filters.ClientName : "Todos los clientes";
+    dynamic dStartDate = Model?.Filters?.StartDate != null ? Model.Filters.StartDate.Value.ToShortDateString() : "Todas las fechas";
+    dynamic dEndDate = Model?.Filters?.EndDate != null ? Model.Filters.EndDate.Value.ToShortDateString() : "Todas las fechas";
+    string sStatus = Model?.Filters.Status != null ? Model.Filters.Status.ToString().Capitalize() : "Todos";
+}
+
+
+<p><strong>Cliente: </strong>@sClient</p>
+<p><strong>Rango de Fecha Inicial: </strong> @dStartDate</p>
+<p><strong>Rango de Fecha Final: </strong> @dEndDate</p>
+
+<table class="table table-sm">
+    <thead class="bg-blue text-white">
+        <tr>
+            <th class="">N° de Pedido</th>
+            <th class="text-center">Cliente</th>
+            <th class="">Identificación</th>
+            <th class="">Teléfono</th>
+            <th class="">Código del Cliente</th>
+            <th class="text-center">Fecha y Hora</th>
+            <th class="text-center">Estado</th>
+            <th class="">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Orders?.Count > 0)
+        {
+            @foreach (var order in Model?.Orders)
+            {
+                string textClass = "text-danger";
+
+                if (order.Status == OrderStatus.PENDIENTE)
+                {
+                    textClass = "text-warning";
+                }
+                else if (order.Status == OrderStatus.TERMINADO)
+                {
+                    textClass = "text-success";
+                }
+
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td class="">@order.Client.AppUser.Name.Capitalize()</td>
+                    <td class="">@order.Client.AppUser.Identification</td>
+                    <td class="">@order.Client.AppUser.Phone</td>
+                    <td class="">@(order.Client.ClientCode ?? "No es Cliente del POS")</td>
+                    <td class="">@order.CreationDate</td>
+                    <td class="@textClass">@order.Status.ToString().Capitalize()</td>
+                    <td class="text-right">₡@((int)order.Total)</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <p class="text-center">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

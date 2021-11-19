@@ -1,0 +1,60 @@
+﻿@model Market_Express.Web.ViewModels.Report.ReportOrderViewModel
+
+<table class="table table-sm table-hover table-responsive w-100 d-block d-md-table">
+    <thead>
+        <tr class="small text-uppercase font-weight-bold">
+            <th class="">N° de Pedido</th>
+            <th class="">Cliente</th>
+            <th class="">Identificación</th>
+            <th class="">Teléfono</th>
+            <th class="">Código del Cliente</th>
+            <th class="">Fecha y Hora</th>
+            <th class="">Estado</th>
+            <th class="">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Orders?.Count > 0)
+        {
+            @foreach (var order in Model.Orders)
+            {
+                string textClass = "text-danger";
+
+                if (order.Status == OrderStatus.PENDIENTE)
+                {
+                    textClass = "text-warning";
+                }
+                else if (order.Status == OrderStatus.TERMINADO)
+                {
+                    textClass = "text-success";
+                }
+
+                <tr>
+                    <td>@order.OrderNumber</td>
+                    <td class="">@order.Client.AppUser.Name.Capitalize()</td>
+                    <td class="">@order.Client.AppUser.Identification</td>
+                    <td class="">@order.Client.AppUser.Phone</td>
+                    <td class="">@(order.Client.ClientCode ?? "No es Cliente del POS")</td>
+                    <td class="">@order.CreationDate</td>
+                    <td class="@textClass">@order.Status.ToString().Capitalize()</td>
+                    <td class="">@((int)order.Total)</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <p class="text-center text-danger">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model?.Orders?.Count > 0)
+{
+    <div>
+        @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
+    </div>
+}

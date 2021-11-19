@@ -20,7 +20,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
             _dbEntity = context.Set<TEntity>();
         }
 
-        public IEnumerable<TEntity> GetAll(string sIncludeProperties = null)
+        public IQueryable<TEntity> GetAll(string sIncludeProperties = null)
         {
             IQueryable<TEntity> query = _dbEntity;
 
@@ -32,7 +32,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 }
             }
 
-            return query.AsEnumerable();
+            return query;
         }
 
         public async Task<TEntity> GetByIdAsync(Guid id, string sIncludeProperties = null)

@@ -63,8 +63,27 @@
 
                         @if (User.IsInRole("REP_USE_GEN"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Report" asp-action="Index">Reportes</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" data-toggle="dropdown" href="#">
+                                    Reportes
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" 
+                                       asp-area="Admin"
+                                       asp-controller="Report"
+                                       asp-action="Order">Reporte de Pedidos</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" 
+                                       asp-area="Admin"
+                                       asp-controller="Report"
+                                       asp-action="Article">Reporte de Artículos</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" 
+                                       asp-area="Admin"
+                                       asp-controller="Report"
+                                       asp-action="Client">Reporte de Clientes</a>
+                                </div>
                             </li>
                         }
 
@@ -78,12 +97,12 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" asp-area="Admin"
                                        asp-controller="Binnacle"
-                                       asp-action="Access">Accesos</a>
+                                       asp-action="Access">Bitácora de Accesos</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item"
                                        asp-area="Admin"
                                        asp-controller="Binnacle"
-                                       asp-action="Movement">Movimientos</a>
+                                       asp-action="Movement">Bitácora de Movimientos</a>
                                 </div>
                             </li>
                         }

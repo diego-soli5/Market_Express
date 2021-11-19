@@ -24,10 +24,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public IEnumerable<Article> GetAllActiveWithCategoryAsigned()
+        public IQueryable<Article> GetAllActiveWithCategoryAsigned()
         {
-            return _dbEntity.Where(article => article.Status == EntityStatus.ACTIVADO && article.CategoryId != null)
-                            .AsEnumerable();
+            return _dbEntity.Where(article => article.Status == EntityStatus.ACTIVADO && article.CategoryId != null);
         }
 
         public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId)

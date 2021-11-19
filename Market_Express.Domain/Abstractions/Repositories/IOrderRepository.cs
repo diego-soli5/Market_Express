@@ -2,6 +2,7 @@
 using Market_Express.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Abstractions.Repositories
@@ -12,9 +13,9 @@ namespace Market_Express.Domain.Abstractions.Repositories
         Task<OrderStats> GetStats();
         Task<List<RecentOrder>> GetMostRecentByUserId(Guid userId, int? take = null);
         Task<List<RecentOrder>> GetMostRecent(int? take = null, bool onlyPending = false);
-        IEnumerable<Order> GetAllByUserId(Guid userId);
+        IQueryable<Order> GetAllByUserId(Guid userId);
         Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid orderId);
-        IEnumerable<Order> GetAllIncludeAppUser();
+        IQueryable<Order> GetAllIncludeAppUser();
         Task<Order> GetByIdIncludeAppUserAsync(Guid id);
     }
 }

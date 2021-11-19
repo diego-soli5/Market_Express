@@ -2,7 +2,6 @@
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -14,9 +13,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public IEnumerable<Slider> GetAllActive()
+        public IQueryable<Slider> GetAllActive()
         {
-            return _dbEntity.Where(x => x.Status == EntityStatus.ACTIVADO).AsEnumerable();
+            return _dbEntity.Where(x => x.Status == EntityStatus.ACTIVADO);
         }
     
     }

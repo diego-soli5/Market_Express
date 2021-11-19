@@ -16,7 +16,7 @@ namespace Market_Express.Domain.CustomEntities.Pagination
         public int? NextPageNumber => HasNextPage ? CurrentPage + 1 : null;
         public int? PreviousPageNumber => HasPreviousPage ? CurrentPage - 1 : null;
 
-        public PagedList(IEnumerable<TEntity> entities, int totalCount, int currentPage, int pageSize)
+        public PagedList(IQueryable<TEntity> entities, int totalCount, int currentPage, int pageSize)
         {
             TotalCount = totalCount;
             PageSize = pageSize;
@@ -26,10 +26,10 @@ namespace Market_Express.Domain.CustomEntities.Pagination
             AddRange(entities);
         }
 
-        public static PagedList<TEntity> Create(IEnumerable<TEntity> entities, int pageNumber, int pageSize)
+        public static PagedList<TEntity> Create(IQueryable<TEntity> entities, int pageNumber, int pageSize)
         {
             var count = entities.Count();
-            var entitiesPaginated = entities.Skip((pageNumber - 1) * pageSize).Take(pageSize).AsEnumerable();
+            var entitiesPaginated = entities.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             return new PagedList<TEntity>(entitiesPaginated, count, pageNumber, pageSize);
         }

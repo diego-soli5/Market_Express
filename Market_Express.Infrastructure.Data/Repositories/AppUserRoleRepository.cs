@@ -17,7 +17,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
             : base(context, configuration)
         { }
 
-        public IEnumerable<AppUserRole> GetAllByUserId(Guid id)
+        public IQueryable<AppUserRole> GetAllByUserId(Guid id)
         {
             return _dbEntity.Where(ar => ar.AppUserId == id);
         }

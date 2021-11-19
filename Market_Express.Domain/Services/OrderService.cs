@@ -50,7 +50,7 @@ namespace Market_Express.Domain.Services
             if (filters.ClientName != null)
                 lstOrders = lstOrders.Where(o => o.Client.AppUser.Name.Trim().ToUpper().Contains(filters.ClientName.Trim().ToUpper()));
 
-            lstOrders = lstOrders.OrderByDescending(o => o.CreationDate).AsEnumerable();
+            lstOrders = lstOrders.OrderByDescending(o => o.CreationDate);
 
             var pagedOrders = PagedList<Order>.Create(lstOrders, filters.PageNumber.Value, filters.PageSize.Value);
 
@@ -73,7 +73,7 @@ namespace Market_Express.Domain.Services
             if (filters.Status != null)
                 lstOrders = lstOrders.Where(o => o.Status == filters.Status);
 
-            lstOrders = lstOrders.OrderByDescending(o => o.CreationDate).AsEnumerable();
+            lstOrders = lstOrders.OrderByDescending(o => o.CreationDate);
 
             var pagedOrders = PagedList<Order>.Create(lstOrders, filters.PageNumber.Value, filters.PageSize.Value);
 

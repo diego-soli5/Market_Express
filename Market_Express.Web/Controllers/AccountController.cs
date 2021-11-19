@@ -73,9 +73,9 @@ namespace Market_Express.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO model, string returnUrl)
         {
-            AppUser oUser = new(model.Email, model.Password);
+            AppUser oAppUser = new(model.Email, model.Password);
 
-            var oResult = _accountService.TryAuthenticate(ref oUser);
+            var oResult = _accountService.TryAuthenticate(ref oAppUser);
 
             if (!oResult.Success)
             {
@@ -87,38 +87,11 @@ namespace Market_Express.Web.Controllers
                 return View();
             }
 
-            List<Claim> lstClaims = new();
+            await LoginUserAsync(oAppUser);
 
-            if (oUser.Type == AppUserType.ADMINISTRADOR)
-            {
-                var lstPermisos = await _accountService.GetPermissionList(oUser.Id);
+            await _binnacleAccessService.RegisterAccess(oAppUser.Id);
 
-                lstPermisos.ForEach(per =>
-                {
-                    lstClaims.Add(new Claim(ClaimTypes.Role, per.PermissionCode));
-                });
-            }
-
-            lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, oUser.Id.ToString()));
-            lstClaims.Add(new Claim(ClaimTypes.Name, oUser.Name));
-            lstClaims.Add(new Claim("Identification", oUser.Identification));
-            lstClaims.Add(new Claim(ClaimTypes.Email, oUser.Email));
-            lstClaims.Add(new Claim(ClaimTypes.MobilePhone, oUser.Phone));
-            lstClaims.Add(new Claim(ClaimTypes.Role, oUser.Type.ToString()));
-
-            var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var oPrincipal = new ClaimsPrincipal(oIdentity);
-
-            await HttpContext.SignInAsync(oPrincipal, new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTime.Now.AddHours(12),
-            });
-
-            await _binnacleAccessService.RegisterAccess(oUser.Id);
-
-            if (await _accountService.HasValidPassword(oUser.Id))
+            if (await _accountService.HasValidPassword(oAppUser.Id))
                 oResult.ResultCode = 1;
             else
                 oResult.ResultCode = 0;
@@ -127,17 +100,12 @@ namespace Market_Express.Web.Controllers
                 return Ok(oResult);
 
             if (!string.IsNullOrEmpty(returnUrl))
-            {
                 return LocalRedirect(returnUrl);
-            }
 
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult AccessDenied()
-        {
-            return View();
+            if (oAppUser.Type == AppUserType.CLIENTE)
+                return RedirectToAction("Index", "Home");
+            else
+                return RedirectToAction("Index", "Order", new { area = "Admin" });
         }
 
         [HttpGet]
@@ -151,6 +119,33 @@ namespace Market_Express.Web.Controllers
             await HttpContext.SignOutAsync();
 
             return RedirectToAction(nameof(Login));
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
+        {
+            var oResult = await _accountService.ChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation, model.IsFirstLogin);
+
+            if (model.IsFirstLogin)
+            {
+                if (oResult.Success)
+                    return RedirectToAction("Index", "Home");
+
+                ViewData["MessageResult"] = oResult.Message;
+
+                return View();
+            }
+
+            if (oResult.Success)
+                return Ok(oResult);
+            else
+                return BadRequest(oResult);
         }
 
         [HttpGet]
@@ -169,6 +164,12 @@ namespace Market_Express.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult GetUserNavigationButtons()
         {
             return PartialView("_NavigationButtonsPartial");
@@ -181,6 +182,40 @@ namespace Market_Express.Web.Controllers
 
             return PartialView("_AccountButtonsPartial", oUser.Alias ?? "");
         }
+
+        #region UTILITY METHODS
+        private async Task LoginUserAsync(AppUser appUser)
+        {
+            List<Claim> lstClaims = new();
+
+            if (appUser.Type == AppUserType.ADMINISTRADOR)
+            {
+                var lstPermisos = await _accountService.GetPermissionList(appUser.Id);
+
+                lstPermisos.ForEach(per =>
+                {
+                    lstClaims.Add(new Claim(ClaimTypes.Role, per.PermissionCode));
+                });
+            }
+
+            lstClaims.Add(new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()));
+            lstClaims.Add(new Claim(ClaimTypes.Name, appUser.Name));
+            lstClaims.Add(new Claim("Identification", appUser.Identification));
+            lstClaims.Add(new Claim(ClaimTypes.Email, appUser.Email));
+            lstClaims.Add(new Claim(ClaimTypes.MobilePhone, appUser.Phone));
+            lstClaims.Add(new Claim(ClaimTypes.Role, appUser.Type.ToString()));
+
+            var oIdentity = new ClaimsIdentity(lstClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var oPrincipal = new ClaimsPrincipal(oIdentity);
+
+            await HttpContext.SignInAsync(oPrincipal, new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTime.Now.AddHours(12),
+            });
+        }
+        #endregion
 
         #region API CALLS
         [HttpPost]
@@ -223,33 +258,6 @@ namespace Market_Express.Web.Controllers
             };
 
             return Ok(oResult);
-        }
-
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO model)
-        {
-            var oResult = await _accountService.ChangePassword(CurrentUserId, model.CurrentPass, model.NewPass, model.NewPassConfirmation, model.IsFirstLogin);
-
-            if (model.IsFirstLogin)
-            {
-                if (oResult.Success)
-                    return RedirectToAction("Index", "Home");
-
-                ViewData["MessageResult"] = oResult.Message;
-
-                return View();
-            }
-
-            if (oResult.Success)
-                return Ok(oResult);
-            else
-                return BadRequest(oResult);
         }
 
         [HttpGet]

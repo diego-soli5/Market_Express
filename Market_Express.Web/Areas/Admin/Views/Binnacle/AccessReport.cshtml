@@ -1,35 +1,19 @@
 ﻿@model Market_Express.Web.ViewModels.BinnacleAccess.AccessReportViewModel
 @{
-    ViewData["ReportName"] = "Reporte de Accesos y Salidas de Usuarios del Sistema";
+    ViewData["Title"] = "Reporte de Accesos y Salidas de Usuarios del Sistema";
     Layout = "_ReportLayout";
 }
 
-@if (Model?.Filters?.User != null)
-{
-    <p><strong>Usuario: </strong> @Model.Filters.User</p>
-}
-else
-{
-    <p><strong>Usuario: </strong> Todos los usuarios</p>
+@{
+    string sUser = Model?.Filters?.User != null ? Model.Filters.User : "Todos los usuarios";
+    dynamic dStartDate = Model?.Filters?.StartDate != null ? Model.Filters.StartDate.Value.ToShortDateString() : "Todas las fechas";
+    dynamic dEndDate = Model?.Filters?.EndDate != null ? Model.Filters.EndDate.Value.ToShortDateString() : "Todas las fechas";
 }
 
-@if (Model?.Filters?.StartDate != null)
-{
-    <p><strong>Rango de Fecha Inicial: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
-}
-else
-{
-    <p><strong>Rango de Fecha Inicial: </strong> Todas las fechas</p>
-}
 
-@if (Model?.Filters?.EndDate != null)
-{
-    <p><strong>Rango de Fecha Final: </strong> @Model.Filters.StartDate.Value.ToShortDateString()</p>
-}
-else
-{
-    <p><strong>Rango de Fecha Final: </strong> Todas las fechas</p>
-}
+<p><strong>Usuario: @sUser</strong> </p>
+<p><strong>Rango de Fecha Inicial: </strong> @dStartDate</p>
+<p><strong>Rango de Fecha Final: </strong> @dEndDate</p>
 
 <table class="table table-sm">
     <thead class="bg-blue text-white">

@@ -2,7 +2,6 @@
 using Market_Express.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -14,9 +13,9 @@ namespace Market_Express.Infrastructure.Data.Repositories
         { }
     
 
-        public IEnumerable<OrderDetail> GetAllByOrderId(Guid orderId)
+        public IQueryable<OrderDetail> GetAllByOrderId(Guid orderId)
         {
-            return _dbEntity.Where(od => od.OrderId == orderId).AsEnumerable();
+            return _dbEntity.Where(od => od.OrderId == orderId);
         }
 
     }
