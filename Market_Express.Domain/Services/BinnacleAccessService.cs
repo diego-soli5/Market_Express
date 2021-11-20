@@ -12,13 +12,14 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class BinnacleAccessService : IBinnacleAccessService
+    public class BinnacleAccessService : BaseService, IBinnacleAccessService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaginationOptions _paginationOptions;
 
         public BinnacleAccessService(IUnitOfWork unitOfWork,
                                      IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _paginationOptions = paginationOptions.Value;

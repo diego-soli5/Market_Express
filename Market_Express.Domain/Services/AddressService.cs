@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class AddressService : IAddressService
+    public class AddressService : BaseService, IAddressService
     {
         private readonly IUnitOfWork _unitOfWork;
 
         public AddressService(IUnitOfWork unitOfWork,
                               IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
         }

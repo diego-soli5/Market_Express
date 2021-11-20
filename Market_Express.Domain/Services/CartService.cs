@@ -14,12 +14,13 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class CartService : ICartService
+    public class CartService : BaseService, ICartService
     {
         private readonly IUnitOfWork _unitOfWork;
 
         public CartService(IUnitOfWork unitOfWork,
                            IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
         }

@@ -15,7 +15,7 @@ using Market_Express.CrossCutting.Options;
 
 namespace Market_Express.Domain.Services
 {
-    public class AppUserService : IAppUserService
+    public class AppUserService : BaseService, IAppUserService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordService _passwordService;
@@ -23,6 +23,7 @@ namespace Market_Express.Domain.Services
         public AppUserService(IUnitOfWork unitOfWork,
                               IPasswordService passwordService,
                               IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _passwordService = passwordService;

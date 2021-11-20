@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class BinnacleMovementService : IBinnacleMovementService
+    public class BinnacleMovementService : BaseService, IBinnacleMovementService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaginationOptions _paginationOptions;
 
         public BinnacleMovementService(IUnitOfWork unitOfWork,
                                        IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _paginationOptions = paginationOptions.Value;

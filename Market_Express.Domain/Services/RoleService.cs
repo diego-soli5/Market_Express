@@ -3,7 +3,6 @@ using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
-using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
@@ -15,12 +14,13 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class RoleService : IRoleService
+    public class RoleService : BaseService, IRoleService
     {
         private readonly IUnitOfWork _unitOfWork;
 
         public RoleService(IUnitOfWork unitOfWork,
                            IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
         }

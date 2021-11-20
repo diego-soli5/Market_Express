@@ -8,12 +8,13 @@ using System.Linq;
 
 namespace Market_Express.Domain.Services
 {
-    public class HomeService : IHomeService
+    public class HomeService : BaseService, IHomeService
     {
         private readonly IUnitOfWork _unitOfWork;
 
         public HomeService(IUnitOfWork unitOfWork,
                            IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
         }

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService : BaseService, IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly OrderOptions _orderOptions;
@@ -25,6 +25,7 @@ namespace Market_Express.Domain.Services
         public OrderService(IUnitOfWork unitOfWork,
                             IOptions<OrderOptions> orderOptions,
                             IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _orderOptions = orderOptions.Value;

@@ -22,6 +22,7 @@ namespace Market_Express.Domain.Services
                               IPasswordService passwordService,
                               IBusisnessMailService mailService,
                               IOptions<PaginationOptions> paginationOptions)
+            : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _passwordService = passwordService;
