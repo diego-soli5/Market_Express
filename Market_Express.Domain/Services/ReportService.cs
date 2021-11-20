@@ -2,6 +2,7 @@
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.CustomEntities.Article;
+using Market_Express.Domain.CustomEntities.Client;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.Report;
@@ -14,27 +15,20 @@ namespace Market_Express.Domain.Services
 {
     public class ReportService : BaseService, IReportService
     {
+        #region ATTRIBUTES
         private readonly IUnitOfWork _unitOfWork;
+        #endregion
 
+        #region CONSTRUCTOR
         public ReportService(IUnitOfWork unitOfWork,
                              IOptions<PaginationOptions> paginationOptions)
             : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
         }
+        #endregion
 
-        public async Task<SQLServerPagedList<ArticleForReport>> GetMostSoldArticlesPaginated(ReportArticleQueryFilter filters)
-        {
-            CheckPaginationFilters(filters);
-
-            return await _unitOfWork.Report.GetMostSoldArticlesPaginated(filters);
-        }
-
-        public async Task<List<ArticleForReport>> GetMostSoldArticles(ReportArticleQueryFilter filters)
-        {
-            return await _unitOfWork.Report.GetMostSoldArticles(filters);
-        }
-
+        #region ORDERS
         public PagedList<Order> GetOrdersPaginated(ReportOrderQueryFilter filters)
         {
             var lstOrders = _unitOfWork.Order.GetAllIncludeAppUser();
@@ -54,6 +48,35 @@ namespace Market_Express.Domain.Services
 
             return lstOrders;
         }
+        #endregion
+
+        #region ARTICLES
+        public async Task<SQLServerPagedList<ArticleForReport>> GetMostSoldArticlesPaginated(ReportArticleQueryFilter filters)
+        {
+            CheckPaginationFilters(filters);
+
+            return await _unitOfWork.Report.GetMostSoldArticlesPaginated(filters);
+        }
+
+        public async Task<List<ArticleForReport>> GetMostSoldArticles(ReportArticleQueryFilter filters)
+        {
+            return await _unitOfWork.Report.GetMostSoldArticles(filters);
+        }
+        #endregion
+
+        #region CLIENTS
+        public async Task<SQLServerPagedList<ClientForReport>> GetClientsStatsPaginated(ReportClientQueryFilter filters)
+        {
+            CheckPaginationFilters(filters);
+
+            return await _unitOfWork.Report.GetClientsStatsPaginated(filters);
+        }
+
+        public async Task<List<ClientForReport>> GetClientsStats(ReportClientQueryFilter filters)
+        {
+            return await _unitOfWork.Report.GetClientsStats(filters);
+        }
+        #endregion
 
         #region UTILITY METHODS
         private void ApplyOrderFilters(ref IQueryable<Order> orders, ReportOrderQueryFilter filters)

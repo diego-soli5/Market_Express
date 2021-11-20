@@ -108,7 +108,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
         public async Task<SQLServerPagedList<ClientForReport>> GetClientsStatsPaginated(ReportClientQueryFilter filters)
         {
-            List<ClientForReport> lstArticles = new();
+            List<ClientForReport> lstClients = new();
 
             SqlParameter pTotalPages = new("@totalPages", 0)
             {
@@ -124,6 +124,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
             {
                 new SqlParameter("@startDate",filters.StartDate),
                 new SqlParameter("@endDate",filters.EndDate),
+                new SqlParameter("@pageNumber",filters.PageNumber-1),
+                new SqlParameter("@pageSize",filters.PageSize),
                 pTotalPages,
                 pTotalCount
             };
@@ -132,28 +134,29 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             foreach (DataRow oRow in dtResult.Rows)
             {
-                lstArticles.Add(new ClientForReport
+                lstClients.Add(new ClientForReport
                 {
                     AppUser = new()
                     {
+                        Id = (Guid)oRow["Id"],
                         Name = oRow["Name"].ToString(),
                         Identification = oRow["Identification"].ToString(),
                         Phone = oRow["Phone"].ToString(),
                         Email = oRow["Email"].ToString(),
                     },
-                    ClientCode = oRow["ClientCode"].ToString(),
+                    ClientCode = oRow["ClientCode"] is DBNull ? null : oRow["ClientCode"].ToString(),
                     Pending = Convert.ToInt32(oRow["Pending"]),
                     Finished = Convert.ToInt32(oRow["Finished"]),
                     Canceled = Convert.ToInt32(oRow["Canceled"]),
                 });
             }
 
-            return new SQLServerPagedList<ClientForReport>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
+            return new SQLServerPagedList<ClientForReport>(lstClients, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
         }
 
         public async Task<List<ClientForReport>> GetClientsStats(ReportClientQueryFilter filters)
         {
-            List<ClientForReport> lstArticles = new();
+            List<ClientForReport> lstClients = new();
 
             var arrParams = new[]
             {
@@ -165,7 +168,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
 
             foreach (DataRow oRow in dtResult.Rows)
             {
-                lstArticles.Add(new ClientForReport
+                lstClients.Add(new ClientForReport
                 {
                     AppUser = new()
                     {
@@ -174,14 +177,14 @@ namespace Market_Express.Infrastructure.Data.Repositories
                         Phone = oRow["Phone"].ToString(),
                         Email = oRow["Email"].ToString(),
                     },
-                    ClientCode = oRow["ClientCode"].ToString(),
+                    ClientCode = oRow["ClientCode"] is DBNull ? null : oRow["ClientCode"].ToString(),
                     Pending = Convert.ToInt32(oRow["Pending"]),
                     Finished = Convert.ToInt32(oRow["Finished"]),
                     Canceled = Convert.ToInt32(oRow["Canceled"]),
                 });
             }
 
-            return lstArticles;
+            return lstClients;
         }
     }
 }

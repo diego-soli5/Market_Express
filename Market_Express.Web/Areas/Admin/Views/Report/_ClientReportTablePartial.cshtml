@@ -1,0 +1,57 @@
+﻿@model Market_Express.Web.ViewModels.Report.ReportClientViewModel
+
+
+<table class="table table-sm table-hover table-responsive w-100 d-block d-md-table">
+    <thead>
+        <tr class="small text-uppercase font-weight-bold">
+            <th class="">Cliente</th>
+            <th class="">Identificación</th>
+            <th class="">Teléfono</th>
+            <th class="">Código de Cliente</th>
+            <th class="text-center">Pedidos Terminados</th>
+            <th class="text-center">Pedidos Pendientes</th>
+            <th class="text-center">Pedidos Cancelados</th>
+            <th class="text-center">Total de Pedidos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Clients?.Count > 0)
+        {
+            @foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td>
+                        <a asp-area="Admin"
+                           asp-controller="Users"
+                           asp-action="Details"
+                           asp-route-id="@client.AppUser.Id">
+                            @client.AppUser.Name
+                        </a>
+                    </td>
+                    <td>@client.AppUser.Identification</td>
+                    <td>@client.AppUser.Phone</td>
+                    <td>@(client.ClientCode ?? "No es cliente del POS")</td>
+                    <td class="text-center">@client.Finished</td>
+                    <td class="text-center">@client.Pending</td>
+                    <td class="text-center">@client.Canceled</td>
+                    <td class="text-center">@client.TotalOrders</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9">
+                    <p class="text-center text-danger">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model?.Clients?.Count > 0)
+{
+    <div>
+        @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
+    </div>
+}

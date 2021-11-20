@@ -12,6 +12,7 @@ using Rotativa.AspNetCore;
 using Market_Express.Application.DTOs.Article;
 using System.Threading.Tasks;
 using Market_Express.Application.DTOs.Category;
+using Market_Express.Application.DTOs.Client;
 
 namespace Market_Express.Web.Areas.Admin.Controllers
 {
@@ -126,25 +127,42 @@ namespace Market_Express.Web.Areas.Admin.Controllers
 
         #region CLIENT REPORT ENDPOINTS
         [HttpGet]
-        public IActionResult Client(ReportClientQueryFilter filters)
+        public async Task<IActionResult> Client(ReportClientQueryFilter filters)
         {
             ReportClientViewModel oViewModel = new();
+
+            var tplClientDTOList = await GetClientDTOList(filters);
+
+            oViewModel.Clients = tplClientDTOList.Item1;
+            oViewModel.Metadata = tplClientDTOList.Item2;
+            oViewModel.Filters = filters;
 
             return View(oViewModel);
         }
 
         [HttpGet]
-        public IActionResult ClientReport(ReportClientQueryFilter filters)
+        public async Task<IActionResult> ClientReport(ReportClientQueryFilter filters)
         {
             ReportClientViewModel oViewModel = new();
+
+            oViewModel.Filters = filters;
+            oViewModel.Clients = (await _reportService.GetClientsStats(filters))
+                                                      .Select(c => _mapper.Map<ClientForReportDTO>(c))
+                                                      .ToList();
 
             return new ViewAsPdf(oViewModel);
         }
 
         [HttpGet]
-        public IActionResult GetClientTable(ReportClientQueryFilter filters)
+        public async Task<IActionResult> GetClientTable(ReportClientQueryFilter filters)
         {
             ReportClientViewModel oViewModel = new();
+
+            var tplClientDTOList = await GetClientDTOList(filters);
+
+            oViewModel.Clients = tplClientDTOList.Item1;
+            oViewModel.Metadata = tplClientDTOList.Item2;
+            oViewModel.Filters = filters;
 
             return PartialView("_ClientReportTablePartial", oViewModel);
         }
@@ -167,6 +185,15 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             var oMeta = Metadata.Create(lstOrders);
 
             return (lstOrders.Select(o => _mapper.Map<OrderDTO>(o)).ToList(), oMeta);
+        }
+
+        public async Task<(List<ClientForReportDTO>, Metadata)> GetClientDTOList(ReportClientQueryFilter filters)
+        {
+            var lstClient = await _reportService.GetClientsStatsPaginated(filters);
+
+            var oMeta = Metadata.Create(lstClient);
+
+            return (lstClient.Select(o => _mapper.Map<ClientForReportDTO>(o)).ToList(), oMeta);
         }
         #endregion
     }

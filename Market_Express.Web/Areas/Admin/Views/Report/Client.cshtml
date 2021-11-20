@@ -1,5 +1,81 @@
-﻿
+﻿@model Market_Express.Web.ViewModels.Report.ReportClientViewModel
 @{
     ViewData["Title"] = "Reporte de Clientes";
 }
 
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Reporte de Clientes</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Reporte de Clientes</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+
+
+<section class="section-content padding-y">
+    <div class="container">
+        <article class="card mb-3">
+            <div class="card-header bg-primary">
+                <h4 class="text-white">Reporte de Estadísticas de Pedidos de Clientes</h4>
+            </div>
+            <div class="card-body">
+                <div>
+                    <form asp-area="Admin" asp-controller="Report" asp-action="Client" method="get" class="row" id="frmTable">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Pedidos Con Fecha Inicial Desde</label>
+                                <input type="date"
+                                       asp-for="Filters.StartDate"
+                                       name="startDate"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="font-weight-bold">Pedidos Con Fecha Final Hasta</label>
+                                <input type="date"
+                                       asp-for="Filters.EndDate"
+                                       name="endDate"
+                                       class="form-control-original-small" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex mt-0 mt-md-4">
+                                <div class="mx-auto align-self-center">
+                                    <div class="btn-group" role="group" aria-label="buttomgroup">
+                                        <button type="submit" class="btn btn-primary" style=" width: 80px;">Filtrar</button>
+                                        <button type="button" class="btn btn-primary" style=" width: 80px;" id="btnGenerateReport">Reporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="divClientTable" class="mt-3">
+                    @{ await Html.RenderPartialAsync("_ClientReportTablePartial", Model); }
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script src="~/js/report/admin.report.client.js"></script>
+
+    @{
+        string sParams = "";
+        sParams += $"StartDate={Model?.Filters?.StartDate}&";
+        sParams += $"EndDate={Model?.Filters?.EndDate}";
+
+        <script>params = '@Html.Raw(sParams)'</script>
+    }
+}

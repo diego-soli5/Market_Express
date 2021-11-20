@@ -1,0 +1,60 @@
+﻿@model Market_Express.Web.ViewModels.Report.ReportClientViewModel
+@{
+    ViewData["Title"] = "Reporte de Estadísticas de Pedidos de Clientes";
+    ViewData["Reg"] = Model.Clients.Count;
+    Layout = "_ReportLayout";
+}
+
+@{
+    dynamic dStartDate = Model?.Filters?.StartDate != null ? Model.Filters.StartDate.Value.ToShortDateString() : "Todas las fechas";
+    dynamic dEndDate = Model?.Filters?.EndDate != null ? Model.Filters.EndDate.Value.ToShortDateString() : "Todas las fechas";
+}
+
+<p><strong>Pedidos con Rango de Fecha Inicial: </strong> @dStartDate</p>
+<p><strong>Pedidos con Rango de Fecha Final: </strong> @dEndDate</p>
+
+<table class="table table-sm">
+    <thead class="bg-blue text-white">
+        <tr>
+            <th class="">Cliente</th>
+            <th class="">Identificación</th>
+            <th class="">Teléfono</th>
+            <th class="">Código de Cliente</th>
+            <th class="text-center">Pedidos Terminados</th>
+            <th class="text-center">Pedidos Pendientes</th>
+            <th class="text-center">Pedidos Cancelados</th>
+            <th class="text-center">Total de Pedidos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Clients?.Count > 0)
+        {
+            @foreach (var client in Model?.Clients)
+            {
+
+                <tr>
+                    <td>@client.AppUser.Name</td>
+                    <td>@client.AppUser.Identification</td>
+                    <td>@client.AppUser.Phone</td>
+                    <td>@(client.ClientCode ?? "No es cliente del POS")</td>
+                    <td class="text-center">@client.Finished</td>
+                    <td class="text-center">@client.Pending</td>
+                    <td class="text-center">@client.Canceled</td>
+                    <td class="text-center">@client.TotalOrders</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <p class="text-center text-danger">No hay registros.</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

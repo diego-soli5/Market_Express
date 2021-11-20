@@ -10,6 +10,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Market_Express.CrossCutting.CustomExceptions;
+using Microsoft.Extensions.Options;
+using Market_Express.CrossCutting.Options;
 
 namespace Market_Express.Domain.Services
 {
@@ -19,7 +21,8 @@ namespace Market_Express.Domain.Services
         private readonly IPasswordService _passwordService;
 
         public AppUserService(IUnitOfWork unitOfWork,
-                              IPasswordService passwordService)
+                              IPasswordService passwordService,
+                              IOptions<PaginationOptions> paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _passwordService = passwordService;

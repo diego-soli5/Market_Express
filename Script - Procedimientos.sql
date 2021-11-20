@@ -236,7 +236,8 @@ BEGIN
 	
 	SET @totalPages = CEILING(@totalCount / CONVERT(decimal,@pageSize));
 
-	SELECT  ap.Name,
+	SELECT  ap.Id,
+			ap.Name,
 			ap.Identification,
 			ap.Phone,
 			ap.Email,

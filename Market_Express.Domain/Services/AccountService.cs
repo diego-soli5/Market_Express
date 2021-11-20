@@ -1,16 +1,18 @@
-﻿using Market_Express.CrossCutting.Utility;
+﻿using Market_Express.CrossCutting.Options;
+using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : BaseService, IAccountService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordService _passwordService;
@@ -18,7 +20,8 @@ namespace Market_Express.Domain.Services
 
         public AccountService(IUnitOfWork unitOfWork,
                               IPasswordService passwordService,
-                              IBusisnessMailService mailService)
+                              IBusisnessMailService mailService,
+                              IOptions<PaginationOptions> paginationOptions)
         {
             _unitOfWork = unitOfWork;
             _passwordService = passwordService;

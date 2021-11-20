@@ -17,6 +17,7 @@ using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Domain.CustomEntities.Cart;
 using Market_Express.Domain.CustomEntities.Category;
+using Market_Express.Domain.CustomEntities.Client;
 using Market_Express.Domain.CustomEntities.Order;
 using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
@@ -116,6 +117,10 @@ namespace Market_Express.Infrastructure.Mappings
         private void CreateClientMappings()
         {
             CreateMap<Client, ClientDTO>()
+                .ReverseMap();
+
+            CreateMap<ClientForReport, ClientForReportDTO>()
+                .ForPath(dest => dest.AppUser, opt => opt.MapFrom(src => src.AppUser))
                 .ReverseMap();
 
             CreateMap<Client, ClienteSyncDTO>()

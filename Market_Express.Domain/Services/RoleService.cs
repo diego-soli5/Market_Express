@@ -1,4 +1,5 @@
 ﻿using Market_Express.CrossCutting.CustomExceptions;
+using Market_Express.CrossCutting.Options;
 using Market_Express.CrossCutting.Utility;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.Repositories;
@@ -6,6 +7,7 @@ using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.CustomEntities.Role;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +19,8 @@ namespace Market_Express.Domain.Services
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public RoleService(IUnitOfWork unitOfWork)
+        public RoleService(IUnitOfWork unitOfWork,
+                           IOptions<PaginationOptions> paginationOptions)
         {
             _unitOfWork = unitOfWork;
         }
