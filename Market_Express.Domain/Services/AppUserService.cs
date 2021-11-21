@@ -176,6 +176,16 @@ namespace Market_Express.Domain.Services
                 throw ex;
             }
 
+            _unitOfWork.Cart.Create(new Cart
+            {
+                Id = new Guid(),
+                ClientId = client.Id,
+                OpeningDate = DateTimeUtility.NowCostaRica,
+                Status = CartStatus.ABIERTO
+            });
+
+            await _unitOfWork.Save();
+
             oResult.Message = "El usuario se creó correctamente!";
 
             return oResult;

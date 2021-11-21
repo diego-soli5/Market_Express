@@ -14,14 +14,16 @@ namespace Market_Express.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
-        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews(options =>
             {
@@ -45,9 +47,9 @@ namespace Market_Express.Web
 
             services.ConfigureOptions(Configuration);
 
-            services.ConfigureAzureClients(Configuration, env.IsDevelopment());
+            services.ConfigureAzureClients(Configuration, Environment.IsDevelopment());
 
-            services.ConfigureDbContext(Configuration, env.IsDevelopment());
+            services.ConfigureDbContext(Configuration, Environment.IsDevelopment());
 
             services.AddAntiforgery(setup => setup.HeaderName = "X-Anti-Forgery-Token");
 
@@ -92,9 +94,9 @@ namespace Market_Express.Web
             //Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../WkHTMLToPDF");
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "../WkHTMLToPDF/Windows");
+                Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "WkHTMLToPDF/Windows");
             else
-                Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "../WkHTMLToPDF/Linux");
+                Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "WkHTMLToPDF/Linux");
         }
     }
 }

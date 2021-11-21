@@ -46,6 +46,8 @@ async function eventAdd(e) {
 
     const url = `/Client/Cart/AddDetail?articleId=${articleId}`;
 
+    this.disabled = true;
+
     try {
         showLoading();
 
@@ -64,6 +66,10 @@ async function eventAdd(e) {
             popUp(false, "Ocurrio un error inesperado..");
         }
     }
+
+    await delayAsync(500);
+
+    this.disabled = false;
 }
 
 function updateDetailElementsForAdd(json, btn, articleId) {
