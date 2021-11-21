@@ -8,6 +8,7 @@ using Market_Express.Infrastructure.Mappings;
 using Market_Express.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Runtime.InteropServices;
 
 namespace Market_Express.Web
 {
@@ -59,16 +60,15 @@ namespace Market_Express.Web
         {
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
-
-                app.UseExceptionHandler("/Error/Handle");
+                app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Error/Handle");
-               
+
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -89,7 +89,12 @@ namespace Market_Express.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../WkHTMLToPDF");
+            //Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../WkHTMLToPDF");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "../WkHTMLToPDF/Windows");
+            else
+                Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "../WkHTMLToPDF/Linux");
         }
     }
 }

@@ -88,7 +88,8 @@ namespace Market_Express.Infrastructure.Extensions
         {
             services.AddAzureClients(builder =>
             {
-                builder.AddBlobServiceClient(configuration.GetConnectionString("Local_Desa_AzureBlobStorage"));
+                //builder.AddBlobServiceClient(configuration.GetConnectionString("Local_Desa_AzureBlobStorage"));
+                builder.AddBlobServiceClient(configuration.GetConnectionString("Production_AzureBlobStorage"));
             });
         }
 

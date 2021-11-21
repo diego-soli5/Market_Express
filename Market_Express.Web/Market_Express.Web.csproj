@@ -25,12 +25,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="WkHTMLToPDF\wkhtmltoimage.exe">
+    <None Update="WkHTMLToPDF\Windows\wkhtmltoimage.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="WkHTMLToPDF\wkhtmltopdf.exe">
+    <None Update="WkHTMLToPDF\Windows\wkhtmltopdf.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WkHTMLToPDF\Linux\" />
   </ItemGroup>
 
 </Project>
