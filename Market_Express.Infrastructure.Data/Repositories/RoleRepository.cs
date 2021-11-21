@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Market_Express.Infrastructure.Data.Repositories
 {
@@ -13,8 +14,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         private const string _Sp_Role_GetAllByUserId = "Sp_Role_GetAllByUserId";
 
-        public RoleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public RoleRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public async Task<List<Role>> GetAllByUserId(Guid id)
@@ -26,7 +27,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 new SqlParameter("@userId",id)
             };
 
-            var dtResult = await ExecuteQuery(_Sp_Role_GetAllByUserId,arrParams);
+            var dtResult = await ExecuteQuery(_Sp_Role_GetAllByUserId, arrParams);
 
             foreach (DataRow oRow in dtResult.Rows)
             {

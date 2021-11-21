@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Threading.Tasks;
@@ -7,8 +8,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
 {
     public abstract class ADORepository : ConnectionSql
     {
-        public ADORepository(IConfiguration configuration)
-            : base(configuration)
+        public ADORepository(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(configuration, hostingEnvironment)
         { }
 
         protected async Task<DataTable> ExecuteQuery(string sSpName, SqlParameter[] arrParameters = null)

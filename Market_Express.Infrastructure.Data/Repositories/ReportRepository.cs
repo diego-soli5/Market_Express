@@ -5,6 +5,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Report;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -21,8 +22,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_Report_GetClientsStatsPaginated = "Sp_Report_GetClientsStatsPaginated";
         private const string _Sp_Report_GetClientsStats = "Sp_Report_GetClientsStats";
 
-        public ReportRepository(IConfiguration configuration)
-            : base(configuration)
+        public ReportRepository(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(configuration, hostingEnvironment)
         {
         }
 

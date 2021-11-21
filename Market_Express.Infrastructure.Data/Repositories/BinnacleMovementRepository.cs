@@ -2,6 +2,7 @@
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.QueryFilter.BinnacleMovement;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,8 +17,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_BinnacleMovement_GetAllPaginated = "Sp_BinnacleMovement_GetAllPaginated";
         private const string _Sp_BinnacleMovement_GetAllForReport = "Sp_BinnacleMovement_GetAllForReport";
 
-        public BinnacleMovementRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public BinnacleMovementRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public async Task<SQLServerPagedList<BinnacleMovement>> GetAllPaginated(BinnacleMovementQueryFilter filters)

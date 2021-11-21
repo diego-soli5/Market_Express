@@ -1,5 +1,6 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,8 +15,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         protected readonly DbSet<TEntity> _dbEntity;
 
-        public GenericRepository(DbContext context, IConfiguration configuration)
-            : base(configuration)
+        public GenericRepository(DbContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment) 
+            : base(configuration, hostingEnvironment)
         {
             _dbEntity = context.Set<TEntity>();
         }

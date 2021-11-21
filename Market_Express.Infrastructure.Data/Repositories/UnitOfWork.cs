@@ -1,4 +1,5 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         #region ATTRIBUTES
         private readonly MARKET_EXPRESSContext _context;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IConfiguration _configuration;
         private readonly IArticleRepository _articleRepository;
         private readonly IClientRepository _clientRepository;
@@ -29,31 +31,32 @@ namespace Market_Express.Infrastructure.Data.Repositories
         #endregion
 
         #region CONSTRUCTOR
-        public UnitOfWork(MARKET_EXPRESSContext context, IConfiguration configuration)
+        public UnitOfWork(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
         #endregion
 
         #region PROPERTIES
-        public IArticleRepository Article => _articleRepository ?? new ArticleRepository(_context, _configuration);
-        public IClientRepository Client => _clientRepository ?? new ClientRepository(_context, _configuration);
-        public IAppUserRepository AppUser => _appUserRepository ?? new AppUserRepository(_context, _configuration);
-        public ICartRepository Cart => _cartRepository ?? new CartRepository(_context, _configuration);
-        public IAddressRepository Address => _addressRepository ?? new AddressRepository(_context, _configuration);
-        public ISliderRepository Slider => _sliderRepository ?? new SliderRepository(_context, _configuration);
-        public ICategoryRepository Category => _categoryRepository ?? new CategoryRepository(_context, _configuration);
-        public IRoleRepository Role => _roleRepository ?? new RoleRepository(_context, _configuration);
-        public IBinnacleAccessRepository BinnacleAccess => _binnacleAccessRepository ?? new BinnacleAccessRepository(_context, _configuration);
-        public IBinnacleMovementRepository BinnacleMovement => _binnacleMovementRepository ?? new BinnacleMovementRepository(_context, _configuration);
-        public IOrderRepository Order => _orderRepository ?? new OrderRepository(_context, _configuration);
-        public IAppUserRoleRepository AppUserRole => _appUserRoleRepository ?? new AppUserRoleRepository(_context, _configuration);
-        public ICartDetailRepository CartDetail => _cartDetailRepository ?? new CartDetailRepository(_context, _configuration);
-        public IOrderDetailRepository OrderDetail => _orderDetailRepository ?? new OrderDetailRepository(_context, _configuration);
-        public IPermissionRepository Permission => _permissionRepository ?? new PermissionRepository(_context, _configuration);
-        public IRolePermissionRepository RolePermission => _rolePermissionRepository ?? new RolePermissionRepository(_context, _configuration);
-        public IReportRepository Report => _reportRepository ?? new ReportRepository(_configuration);
+        public IArticleRepository Article => _articleRepository ?? new ArticleRepository(_context, _configuration, _hostingEnvironment);
+        public IClientRepository Client => _clientRepository ?? new ClientRepository(_context, _configuration, _hostingEnvironment);
+        public IAppUserRepository AppUser => _appUserRepository ?? new AppUserRepository(_context, _configuration, _hostingEnvironment);
+        public ICartRepository Cart => _cartRepository ?? new CartRepository(_context, _configuration, _hostingEnvironment);
+        public IAddressRepository Address => _addressRepository ?? new AddressRepository(_context, _configuration, _hostingEnvironment);
+        public ISliderRepository Slider => _sliderRepository ?? new SliderRepository(_context, _configuration, _hostingEnvironment);
+        public ICategoryRepository Category => _categoryRepository ?? new CategoryRepository(_context, _configuration, _hostingEnvironment);
+        public IRoleRepository Role => _roleRepository ?? new RoleRepository(_context, _configuration, _hostingEnvironment);
+        public IBinnacleAccessRepository BinnacleAccess => _binnacleAccessRepository ?? new BinnacleAccessRepository(_context, _configuration, _hostingEnvironment);
+        public IBinnacleMovementRepository BinnacleMovement => _binnacleMovementRepository ?? new BinnacleMovementRepository(_context, _configuration, _hostingEnvironment);
+        public IOrderRepository Order => _orderRepository ?? new OrderRepository(_context, _configuration, _hostingEnvironment);
+        public IAppUserRoleRepository AppUserRole => _appUserRoleRepository ?? new AppUserRoleRepository(_context, _configuration, _hostingEnvironment);
+        public ICartDetailRepository CartDetail => _cartDetailRepository ?? new CartDetailRepository(_context, _configuration, _hostingEnvironment);
+        public IOrderDetailRepository OrderDetail => _orderDetailRepository ?? new OrderDetailRepository(_context, _configuration, _hostingEnvironment);
+        public IPermissionRepository Permission => _permissionRepository ?? new PermissionRepository(_context, _configuration, _hostingEnvironment);
+        public IRolePermissionRepository RolePermission => _rolePermissionRepository ?? new RolePermissionRepository(_context, _configuration, _hostingEnvironment);
+        public IReportRepository Report => _reportRepository ?? new ReportRepository(_configuration, _hostingEnvironment);
         #endregion
 
         #region METHODS

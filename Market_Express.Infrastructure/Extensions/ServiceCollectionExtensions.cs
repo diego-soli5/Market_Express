@@ -71,7 +71,7 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IPasswordService), typeof(PasswordService));
 
             services.AddScoped(typeof(IBusisnessMailService), typeof(BusisnessMailService));
-            
+
             services.AddScoped(typeof(IAzureBlobStorageService), typeof(AzureBlobStorageService));
         }
 
@@ -84,12 +84,13 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddTransient(typeof(IArticleValidations), typeof(ArticleValidations));
         }
 
-        public static void ConfigureAzureClients(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureAzureClients(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
         {
+            string cnn = isDevelopment ? "Development_AzureBlobStorage" : "Production_AzureBlobStorage";
+
             services.AddAzureClients(builder =>
             {
-                //builder.AddBlobServiceClient(configuration.GetConnectionString("Local_Desa_AzureBlobStorage"));
-                builder.AddBlobServiceClient(configuration.GetConnectionString("Production_AzureBlobStorage"));
+                builder.AddBlobServiceClient(configuration.GetConnectionString(cnn));
             });
         }
 
@@ -100,9 +101,9 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<PasswordOptions>(configuration.GetSection("Options:PasswordOptions"));
 
             services.Configure<EmailServicesOptions>(configuration.GetSection("Options:EmailServicesOptions"));
-            
+
             services.Configure<AzureBlobStorageOptions>(configuration.GetSection("Options:AzureBlobStorageOptions"));
-            
+
             services.Configure<PaginationOptions>(configuration.GetSection("Options:PaginationOptions"));
 
             services.Configure<ArticleOptions>(configuration.GetSection("Options:ArticleOptions"));
@@ -112,15 +113,16 @@ namespace Market_Express.Infrastructure.Extensions
             services.Configure<OrderOptions>(configuration.GetSection("Options:OrderOptions"));
         }
 
-        public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration, bool isDevelopment)
         {
+            string cnn = isDevelopment ? "Development_SQL" : "Production_SQL";
+
             services.AddDbContext<MARKET_EXPRESSContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("Local_Desa"), sqlServerOptions =>
+                options.UseSqlServer(configuration.GetConnectionString(cnn), sqlServerOptions =>
                 {
                     sqlServerOptions.CommandTimeout(420);
                 });
-                
             });
         }
 

@@ -1,12 +1,10 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Market_Express.Infrastructure.Data.Repositories
@@ -17,8 +15,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_Cart_GetOpenCountByArticleId = "Sp_Cart_GetOpenCountByArticleId";
         private const string _Sp_Cart_GetCurrentByUserId = "Sp_Cart_GetCurrentByUserId";
 
-        public CartRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public CartRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public async Task<int> GetArticlesCount(Guid userId)

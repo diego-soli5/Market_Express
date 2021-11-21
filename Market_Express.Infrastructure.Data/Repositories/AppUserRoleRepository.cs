@@ -1,9 +1,9 @@
 ﻿using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,8 +13,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
     {
         private const string _Sp_AppUserRole_GetUserCountUsingARole = "Sp_AppUserRole_GetUserCountUsingARole";
 
-        public AppUserRoleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public AppUserRoleRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public IQueryable<AppUserRole> GetAllByUserId(Guid id)

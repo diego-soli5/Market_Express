@@ -2,6 +2,7 @@
 using Market_Express.Domain.CustomEntities.Order;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +22,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_Order_GetDetailsById = "Sp_Order_GetDetailsById";
         private const string _Sp_Order_GetMostRecent = "Sp_Order_GetMostRecent";
 
-        public OrderRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public OrderRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public IQueryable<Order> GetAllByUserId(Guid userId)

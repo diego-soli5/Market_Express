@@ -2,6 +2,7 @@
 using Market_Express.Domain.CustomEntities.Category;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -18,8 +19,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_Category_GetAllAvailableForSearch = "Sp_Category_GetAllAvailableForSearch";
         private const string _Sp_Category_GetMostPopular = "Sp_Category_GetMostPopular";
 
-        public CategoryRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public CategoryRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public IQueryable<Category> GetAllActive()

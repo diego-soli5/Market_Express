@@ -4,6 +4,7 @@ using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
 using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Home;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -21,8 +22,8 @@ namespace Market_Express.Infrastructure.Data.Repositories
         private const string _Sp_Article_GetAllForCartDetails = "Sp_Article_GetAllForCartDetails";
         private const string _Sp_Article_GetByIdForSell = "Sp_Article_GetByIdForSell";
 
-        public ArticleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
-            : base(context, configuration)
+        public ArticleRepository(MARKET_EXPRESSContext context, IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+            : base(context, configuration, hostingEnvironment)
         { }
 
         public IQueryable<Article> GetAllActiveWithCategoryAsigned()

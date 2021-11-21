@@ -21,7 +21,7 @@ namespace Market_Express.Web
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
         {
             services.AddControllersWithViews(options =>
             {
@@ -45,9 +45,9 @@ namespace Market_Express.Web
 
             services.ConfigureOptions(Configuration);
 
-            services.ConfigureAzureClients(Configuration);
+            services.ConfigureAzureClients(Configuration, env.IsDevelopment());
 
-            services.ConfigureDbContext(Configuration);
+            services.ConfigureDbContext(Configuration, env.IsDevelopment());
 
             services.AddAntiforgery(setup => setup.HeaderName = "X-Anti-Forgery-Token");
 
