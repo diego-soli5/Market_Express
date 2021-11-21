@@ -1,0 +1,44 @@
+﻿@model List<Market_Express.Application.DTOs.Category.CategoryDTO>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page font-weight-bold">Todas las Categorías</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Todas las Categorías</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+<!--Popular Categories-->
+<section class="container mt-5">
+
+    <div class="row align-items-strech">
+        @foreach (var category in Model)
+        {
+            string src = category.Image != null
+            ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })
+            : "/img/NotAvailable.png";
+
+            <div class="col-md-4">
+                <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-category="@category.Id" class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="@src"
+                             class="img-fluid"
+                             alt="@category.Name" />
+                    </div>
+                    <figcaption class="info-wrap">
+                        <span class="title font-weight-bold">@category.Name</span>
+                        <p class="text-justify">@category.Description</p>
+                    </figcaption>
+                </a>
+            </div>
+        }
+    </div>
+</section>

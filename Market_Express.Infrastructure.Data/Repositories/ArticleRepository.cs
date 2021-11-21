@@ -16,9 +16,10 @@ namespace Market_Express.Infrastructure.Data.Repositories
 {
     public class ArticleRepository : GenericRepository<Article>, IArticleRepository
     {
-        private const string _Sp_Article_GetAllForSearch = "Sp_Article_GetAllForSearch";
+        private const string _Sp_Article_GetAllForSell = "Sp_Article_GetAllForSell";
         private const string _Sp_Article_GetMostPopular = "Sp_Article_GetMostPopular";
         private const string _Sp_Article_GetAllForCartDetails = "Sp_Article_GetAllForCartDetails";
+        private const string _Sp_Article_GetByIdForSell = "Sp_Article_GetByIdForSell";
 
         public ArticleRepository(MARKET_EXPRESSContext context, IConfiguration configuration)
             : base(context, configuration)
@@ -29,7 +30,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
             return _dbEntity.Where(article => article.Status == EntityStatus.ACTIVADO && article.CategoryId != null);
         }
 
-        public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId)
+        public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSellPaginated(HomeSearchQueryFilter filters, Guid? userId)
         {
             List<ArticleToAddInCart> lstArticles = new();
 
@@ -56,7 +57,7 @@ namespace Market_Express.Infrastructure.Data.Repositories
                 pTotalCount
             };
 
-            var dtResult = await ExecuteQuery(_Sp_Article_GetAllForSearch, arrParams);
+            var dtResult = await ExecuteQuery(_Sp_Article_GetAllForSell, arrParams);
 
             foreach (DataRow oRow in dtResult.Rows)
             {
@@ -73,6 +74,46 @@ namespace Market_Express.Infrastructure.Data.Repositories
             }
 
             return new SQLServerPagedList<ArticleToAddInCart>(lstArticles, filters.PageNumber.Value, filters.PageSize.Value, Convert.ToInt32(pTotalPages.Value), Convert.ToInt32(pTotalCount.Value));
+        }
+
+        public async Task<ArticleToAddInCart> GetByIdForSell(Guid articleId, Guid? userId)
+        {
+            ArticleToAddInCart oArticle = null;
+
+            var arrParams = new[]
+            {
+                new SqlParameter("@articleId",articleId),
+                new SqlParameter("@userId",userId),
+            };
+
+            var dtResult = await ExecuteQuery(_Sp_Article_GetByIdForSell, arrParams);
+
+            if(dtResult?.Rows?.Count > 0)
+            {
+                var drResult = dtResult.Rows[0];
+
+                oArticle = new()
+                {
+                    Id = (Guid)drResult["Id"],
+                    CategoryId = (Guid)drResult["CategoryId"],
+                    Description = drResult["Description"].ToString(),
+                    BarCode = drResult["BarCode"].ToString(),
+                    Price = Convert.ToDecimal(drResult["Price"].ToString()),
+                    Image = drResult["Image"] is DBNull ? null : drResult["Image"].ToString(),
+                    Status = (EntityStatus)Enum.Parse(typeof(EntityStatus), drResult["Status"].ToString()),
+                    CountInCart = Convert.ToInt32(drResult["CountInCart"]),
+                    Category = new()
+                    {
+                        Id = (Guid)drResult["CategoryId"],
+                        Name = drResult["CategoryName"].ToString(),
+                        Description = drResult["CategoryDescription"].ToString(),
+                        Status = (EntityStatus)Enum.Parse(typeof(EntityStatus), drResult["CategoryStatus"].ToString()),
+                        Image = drResult["CategoryImage"] is DBNull ? null : drResult["CategoryImage"].ToString(),
+                    }
+                };
+            }
+
+            return oArticle;
         }
 
         public async Task<List<Article>> GetMostPopular(int? take = null)

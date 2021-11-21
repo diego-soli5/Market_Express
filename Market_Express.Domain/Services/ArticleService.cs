@@ -78,15 +78,28 @@ namespace Market_Express.Domain.Services
             return pagedArticles;
         }
 
-        public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSearch(HomeSearchQueryFilter filters, Guid? userId)
+        public async Task<SQLServerPagedList<ArticleToAddInCart>> GetAllForSell(HomeSearchQueryFilter filters, Guid? userId)
         {
             filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
             filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultClientArticleSearchPageSize;
             filters.PageSize = filters.PageSize > 24 ? 24 : filters.PageSize;
 
-            var lstArticles = await _unitOfWork.Article.GetAllForSearch(filters,userId);
+            var lstArticles = await _unitOfWork.Article.GetAllForSellPaginated(filters, userId);
 
             return lstArticles;
+        }
+
+        public async Task<ArticleToAddInCart> GetByIdForSell(Guid articleId, Guid? userId)
+        {
+            var oArticle = await _unitOfWork.Article.GetByIdForSell(articleId, userId);
+
+            if (oArticle == null)
+                throw new NotFoundException(articleId, nameof(Article));
+
+            if (oArticle.Status == EntityStatus.DESACTIVADO && oArticle.Category.Status == EntityStatus.DESACTIVADO)
+                throw new NotFoundException();
+
+            return oArticle;
         }
 
         public async Task<List<Article>> GetMostPopular(int? take = null)

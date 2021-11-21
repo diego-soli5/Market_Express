@@ -8,11 +8,14 @@
     <figure class="card card-product-grid">
         <div class="img-wrap">
             <img src="@src">
-            <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Ver</a>
+            <a class="btn-overlay" 
+               href="@src"
+               data-toggle="lightbox"
+               data-title="@Model.Description"><i class="fa fa-search-plus"></i> Ver</a>
         </div>
         <figcaption class="info-wrap border-top">
             <div class="fix-height">
-                <a href="#" class="title">@Model.Description</a>
+                <a asp-area="" asp-controller="Home" asp-action="Article" asp-route-id="@Model.Id" class="title">@Model.Description</a>
                 <div class="price-wrap mt-2">
                     <span class="price">₡@Model.Price</span>
                 </div>

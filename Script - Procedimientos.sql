@@ -28,7 +28,8 @@ BEGIN
 					   INNER JOIN Client cl
 					   ON c.ClientId = cl.Id
 					   WHERE c.Status = 'ABIERTO'
-					   AND cl.AppUserId = @userId);
+					   AND cl.AppUserId = @userId
+					   ORDER BY c.OpeningDate DESC);
 END;
 GO
 
@@ -62,7 +63,7 @@ END;
 GO
 
 -- Obtiene los articulos para la vista de busqueda de articulos para agregar al carrito
-CREATE PROCEDURE Sp_Article_GetAllForSearch
+CREATE PROCEDURE Sp_Article_GetAllForSell
 (
 	@description VARCHAR(255) = null,
 	@maxPrice decimal(19,2) = null,
@@ -124,6 +125,49 @@ BEGIN
 	ORDER BY a.Description
 	OFFSET @skip ROWS 
 	FETCH NEXT @pageSize ROWS ONLY; 
+END;
+GO
+
+--Obtiene un articulo por Id con data de estado en el carrito del usuario
+CREATE PROCEDURE Sp_Article_GetByIdForSell
+(
+	@userId UNIQUEIDENTIFIER = null,
+	@articleId UNIQUEIDENTIFIER = null
+)
+AS
+BEGIN
+	DECLARE @cartId UNIQUEIDENTIFIER;
+
+	IF @userId IS NOT NULL
+	BEGIN
+	SET @cartId = (SELECT TOP 1 c.Id 
+				   FROM Cart c 
+				   WHERE c.ClientId = (SELECT TOP 1 cl.Id 
+									   FROM Client cl 
+									   WHERE cl.AppUserId = @userId)
+				   AND c.Status = 'ABIERTO'
+				   ORDER BY c.OpeningDate DESC);
+	END;
+	
+	SELECT a.Id,
+			a.CategoryId,
+			a.Description,
+			a.BarCode,
+			a.Price,
+			a.Image,
+			a.Status,
+			c.Name AS CategoryName, 
+			c.Description AS CategoryDescription,
+			c.Status AS CategoryStatus,
+			c.Image AS CategoryImage,
+			(SELECT COALESCE(SUM(cd.Quantity),0)
+			 FROM Cart_Detail cd 
+			 WHERE cd.CartId = @cartId
+			 AND cd.ArticleId = a.Id) CountInCart
+	FROM Article a
+	INNER JOIN  Category c
+	ON c.Id = a.CategoryId
+	WHERE a.Id = @articleId;
 END;
 GO
 

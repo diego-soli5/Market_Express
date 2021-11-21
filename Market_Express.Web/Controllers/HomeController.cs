@@ -99,6 +99,31 @@ namespace Market_Express.Web.Controllers
             return PartialView("_ArticlesSearchResultPartial", oViewModel);
         }
 
+        [HttpGet]
+        [Route("/Article/{id}")]
+        public async Task<IActionResult> Article(Guid id)
+        {
+            Guid? userId = null;
+
+            if (IsAuthenticated)
+                userId = CurrentUserId;
+
+            var oArticle = _mapper.Map<ArticleToAddInCartDTO>(await _articleService.GetByIdForSell(id, userId));
+
+            return View(oArticle);
+        }
+
+        [HttpGet]
+        [Route("/Categories")]
+        public IActionResult Categories()
+        {
+            var lstCategories = _categoryService.GetAllActive()
+                                                .Select(c => _mapper.Map<CategoryDTO>(c))
+                                                .ToList();
+
+            return View(lstCategories);
+        }
+
         #region UTILITY METHODS
         private async Task<(List<ArticleToAddInCartDTO>, Metadata)> GetArticleDTOListAndMetaForSearch(HomeSearchQueryFilter filters)
         {
@@ -109,7 +134,7 @@ namespace Market_Express.Web.Controllers
                 userId = CurrentUserId;
             }
 
-            var lstPagedArticles = await _articleService.GetAllForSearch(filters, userId);
+            var lstPagedArticles = await _articleService.GetAllForSell(filters, userId);
 
             var oMeta = Metadata.Create(lstPagedArticles);
 
