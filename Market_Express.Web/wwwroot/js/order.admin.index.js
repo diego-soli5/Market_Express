@@ -56,7 +56,7 @@ document.querySelector("#frmChangeStatus").addEventListener("submit", async func
                 textClass);
 
             $("#divOrderStats").load("/Admin/Order/GetStats");
-            $("#divMostRecentPendingOrders").load("/Admin/Order/GetPendingdidos ");
+            $("#divMostRecentPendingOrders").load("/Admin/Order/GetPending");
 
             $('#modalChangeStatus').modal('hide');
         } else {
