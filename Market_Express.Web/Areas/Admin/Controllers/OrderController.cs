@@ -2,6 +2,7 @@
 using Market_Express.Application.DTOs.Order;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.CustomEntities.Pagination;
+using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Order;
 using Market_Express.Web.Controllers;
 using Market_Express.Web.ViewModels.Order;
@@ -92,6 +93,17 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             oViewModel.Filters = filters;
 
             return PartialView("_OrdersTablePartial", oViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(Guid? orderId, OrderStatus? status)
+        {
+            if (!orderId.HasValue && !status.HasValue)
+                return BadRequest();
+
+            var oResult = await _orderService.ChangeStatus(orderId.Value, status.Value);
+
+            return Ok(oResult);
         }
 
         public IActionResult SearchClient(string query)

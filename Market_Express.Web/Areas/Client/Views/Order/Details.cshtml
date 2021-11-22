@@ -21,7 +21,7 @@
             <ol class="breadcrumb text-white">
                 <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
                 <li class="breadcrumb-item"><a asp-area="Client" asp-controller="Order" asp-action="Index">Mis Pedidos</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Detalles</li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Order.OrderNumber</li>
             </ol>
         </nav>
     </div>
@@ -52,7 +52,7 @@
 
                 <article class="card mb-3">
                     <div class="card-body">
-                        <h4>Detalles</h4>
+                        <h4>Pedido @Model.Order.OrderNumber</h4>
                         <hr>
                         <div class="row">
                             <div class="col-md-8">

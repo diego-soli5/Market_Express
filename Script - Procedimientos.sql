@@ -46,9 +46,12 @@ BEGIN
 		   a.BarCode,
 		   a.Price,
 		   a.Image,
-		   (SELECT COUNT(1)
-		    FROM Order_Detail od
-		    WHERE od.ArticleId = a.Id) repeatedCount
+		   COALESCE((SELECT SUM(od.Quantity)
+					 FROM Order_Detail od
+					 INNER JOIN [Order] o
+					 ON o.Id = od.OrderId
+					 WHERE od.ArticleId = a.Id
+					 AND o.Status = 'TERMINADO'),0) repeatedCount
 	FROM Article a, Category c
 	WHERE a.CategoryId = c.Id
 	AND c.Status = 'ACTIVADO'
@@ -511,7 +514,7 @@ BEGIN
 	
 	IF (SELECT Status FROM Cart WHERE Id = @cartId) = 'ABIERTO'
 	BEGIN
-		SET @count = (SELECT COUNT(1) 
+		SET @count = (SELECT COALESCE(SUM(cd.Quantity),0) 
 					  FROM Cart_Detail cd 
 					  WHERE cd.CartId = @cartId);
 	END
@@ -624,15 +627,17 @@ CREATE PROCEDURE Sp_Category_GetMostPopular
 AS
 BEGIN
 	SELECT c.Id,
-		   c.Name,
+	       c.Name,
 		   c.Description,
 		   c.Image,
-		   (SELECT COUNT(1) 
-			FROM (SELECT a.CategoryId
-				  FROM Article a,
-					   Order_Detail od
-				  WHERE a.Id = od.ArticleId
-				  AND a.CategoryId = c.Id) AS CategorieIdsByArticleFromOrderDetail) repeated
+		   COALESCE(( SELECT SUM(od.Quantity)
+					  FROM Order_Detail od
+					  INNER JOIN Article a
+					  ON od.ArticleId = a.Id
+					  INNER JOIN [Order] o
+					  ON od.OrderId = o.Id
+					  WHERE a.CategoryId = c.Id
+					  AND o.Status = 'TERMINADO'),0) repeated
 	FROM Category c
 	WHERE c.Status = 'ACTIVADO'
 	ORDER BY repeated DESC

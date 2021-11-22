@@ -31,7 +31,18 @@
                     <td>@order.OrderNumber</td>
                     <td>@order.CreationDate.ToShortDateString()</td>
                     <td>@order.Client.AppUser.Name.Capitalize()</td>
-                    <td class="text-capitalize-first @textClass">@order.Status.ToString()</td>
+                    <td class="text-capitalize-first"
+                        data-id="ord-@order.Id"
+                        data-field="status">
+                        <p class="@textClass"
+                              data-val="@((int)order.Status)"
+                              data-toggle="modal"
+                              data-id="@order.Id"
+                              data-ordernumber="@order.OrderNumber"
+                              data-target="#modalChangeStatus">
+                            @order.Status.ToString()
+                        </p>
+                    </td>
                     <td>₡@order.Total</td>
                     <td class="text-center">
                         <a asp-area="Admin"
@@ -39,7 +50,7 @@
                            asp-action="Details"
                            asp-route-id="@order.Id"
                            class="btn btn-success btn-sm text-white"
-                           title="Detalles">
+                           title="Ver Detalles">
                             <i class="fas fa-list-alt"></i>
                         </a>
                     </td>
@@ -63,3 +74,6 @@
         @{ await Html.RenderPartialAsync("_PaginationButtonsPartial", Model.Metadata); }
     </div>
 }
+
+
+

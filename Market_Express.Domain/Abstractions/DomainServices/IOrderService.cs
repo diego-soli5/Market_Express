@@ -1,6 +1,7 @@
 ﻿using Market_Express.Domain.CustomEntities.Order;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.Entities;
+using Market_Express.Domain.Enumerations;
 using Market_Express.Domain.QueryFilter.Order;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task<OrderStats> GetOrderStats();
         Task<BusisnessResult> CancelMostRecent(Guid userId);
         Task<List<OrderArticleDetail>> GetOrderArticleDetailsById(Guid id);
+        Task<BusisnessResult> ChangeStatus(Guid orderId, OrderStatus status);
     }
 }

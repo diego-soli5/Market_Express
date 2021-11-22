@@ -336,5 +336,37 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        public async Task<BusisnessResult> ChangeStatus(Guid orderId, OrderStatus status)
+        {
+            BusisnessResult oResult = new();
+
+            var oOrderFromDb = await _unitOfWork.Order.GetByIdAsync(orderId);
+
+            if(oOrderFromDb == null)
+            {
+                oResult.Message = "El pedido no existe.";
+
+                return oResult;
+            }
+
+            oOrderFromDb.Status = status;
+
+            _unitOfWork.Order.Update(oOrderFromDb);
+
+            oResult.Success = await _unitOfWork.Save();
+
+            oResult.Message = "Se cambió el estado del pedido.";
+
+            oResult.Data = new
+            {
+                id = oOrderFromDb.Id.ToString(),
+                val = (int)oOrderFromDb.Status,
+                text = oOrderFromDb.Status.ToString(),
+                number = oOrderFromDb.OrderNumber
+            };
+
+            return oResult;
+        }
     }
 }

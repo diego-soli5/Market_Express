@@ -1,4 +1,6 @@
-﻿const htmlPlusMinus = (data, id) => {
+﻿var isSearchView = true;
+
+const htmlPlusMinus = (data, id) => {
     return ` <div align="center">
                     <div class="form-group col-md flex-grow-0">
                         <div class="input-group input-spinner">
@@ -130,7 +132,12 @@ function updateDetailElementsForMinus(json, btn, articleId) {
         return;
     }
 
-    let div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
+    let div;
+
+    if (isSearchView)
+        div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
+    else
+        div = document.querySelector("#divButtonCart");
 
     if (json.resultCode == 0) {
         div.innerHTML = htmlAddToCart(articleId);
@@ -185,7 +192,12 @@ function updateDetailElementsForPlus(json, btn, articleId) {
         return;
     }
 
-    let div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
+    let div;
+
+    if (isSearchView)
+        div = btn.parentElement.parentElement.parentElement.parentElement.parentElement;
+    else
+        div = document.querySelector("#divButtonCart");
 
     div.innerHTML = htmlPlusMinus(json.data, articleId);
 

@@ -119,7 +119,40 @@
     </div>
 </section>
 
+<div class="modal fade" id="modalChangeStatus" tabindex="-1" role="dialog" aria-labelledby="modalChangeStatusTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Cambiar Estado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmChangeStatus" asp-area="Admin" asp-controller="Order" asp-action="ChangeStatus" method="post">
+                    <input type="hidden" name="orderId" id="hdId" />
+                    <div class="form-group">
+                        <p>Número de Pedido: <span id="modalOrderNumber"></span></p>
+                        <hr />
+                    </div>
 
+                    <div class="form-group">
+                        <label class="col-form-label font-weight-bold">Estado</label>
+                        <select asp-items="@Html.GetEnumSelectList<OrderStatus>()"
+                                name="status"
+                                class="form-control"
+                                id="slStatus">
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary" form="frmChangeStatus">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts{

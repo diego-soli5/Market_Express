@@ -17,13 +17,13 @@
                     <article class="gallery-wrap">
                         <div class="img-big-wrap">
                             <div align="center">
-                                <img src="@src" style="cursor: default !important">
+                                <img src="@src" class="img-fluid" style="cursor: default !important">
                             </div>
                         </div> <!-- img-big-wrap.// -->
                     </article> <!-- gallery-wrap .end// -->
                 </aside>
                 <main class="col-md-6 border-left">
-                    
+
                     <article class="content-body h-100">
                         <a asp-area=""
                            asp-controller="Home"
@@ -37,53 +37,51 @@
                         </div>
 
 
-                        <dl class="row">
-                            <dt class="col-sm-2">Código</dt>
-                            <dd class="col-sm-9">@Model.BarCode</dd>
-                        </dl>
-
+                        <p><b>Código: </b> @Model.BarCode</p>
                         <hr>
 
-                        @if (!Model.IsInCart)
-                        {
-                            <div align="center">
+                        <div align="center" id="divButtonCart">
+                            @if (!Model.IsInCart)
+                            {
+
                                 <button data-article-id="@Model.Id"
                                         class="btn btn-primary btn-block"
                                         id="btnAdd">
                                     Añadir al carrito
                                 </button>
-                            </div>
-                        }
-                        else
-                        {
-                            <div align="center">
-                                <div class="input-group input-spinner">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-light font-weight-bold"
-                                                type="button"
-                                                data-article-id="@Model.Id"
-                                                id="btnPlus">
-                                            <i class="fas fa-plus text-primary"></i>
-                                        </button>
-                                    </div>
 
-                                    <input type="text"
-                                           class="form-control-original font-weight-bold text-center"
-                                           value="@Model.CountInCart"
-                                           readonly style="background: #fff !important; ">
+                            }
+                            else
+                            {
 
-                                    <div class="input-group-append">
-                                        <button class="btn btn-light font-weight-bold"
-                                                type="button"
-                                                data-article-id="@Model.Id"
-                                                id="btnMinus">
-                                            <i class="fas fa-minus text-primary"></i>
-                                        </button>
+                                <div align="center">
+                                    <div class="input-group input-spinner">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-light font-weight-bold"
+                                                    type="button"
+                                                    data-article-id="@Model.Id"
+                                                    id="btnPlus">
+                                                <i class="fas fa-plus text-primary"></i>
+                                            </button>
+                                        </div>
+
+                                        <input type="text"
+                                               class="form-control-original font-weight-bold text-center"
+                                               value="@Model.CountInCart"
+                                               readonly style="background: #fff !important; ">
+
+                                        <div class="input-group-append">
+                                            <button class="btn btn-light font-weight-bold"
+                                                    type="button"
+                                                    data-article-id="@Model.Id"
+                                                    id="btnMinus">
+                                                <i class="fas fa-minus text-primary"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        }
+                            }
+                        </div>
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->
             </div> <!-- row.// -->
@@ -91,6 +89,10 @@
     </div>
 </section>
 
-@section Scripts{ 
+@section Scripts{
     <script src="~/js/home.search.articleActions.js"></script>
+
+    <script>
+        isSearchView = false;
+    </script>
 }
