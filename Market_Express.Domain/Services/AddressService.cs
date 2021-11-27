@@ -146,20 +146,7 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.Address.Update(addressFromDb);
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             oResult.Message = "Se estableció la dirección para ser usada.";
 

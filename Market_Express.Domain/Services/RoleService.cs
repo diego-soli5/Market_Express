@@ -96,37 +96,6 @@ namespace Market_Express.Domain.Services
             return await _unitOfWork.AppUserRole.GetUserCountUsingARole(id);
         }
 
-        private bool ValidateRoleFields(BusisnessResult result, Role role)
-        {
-            if (string.IsNullOrEmpty(role.Name?.Trim()))
-            {
-                result.Message = "El campo nombre es obligario.";
-
-                return false;
-            }
-            else if (role.Name.Length > 30)
-            {
-                result.Message = "El campo nombre no puede superar los 30 caracteres.";
-
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(role.Description?.Trim()))
-            {
-                result.Message = "El campo descripción es obligatorio.";
-
-                return false;
-            }
-            else if (role.Description.Length > 30)
-            {
-                result.Message = "El campo descripción no puede superar los 255 caracteres.";
-
-                return false;
-            }
-
-            return true;
-        }
-
         public async Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId)
         {
             BusisnessResult oResult = new();
@@ -168,20 +137,7 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.Role.Create(role);
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             oResult.Message = "El rol se creó correctamente!";
 
@@ -258,20 +214,7 @@ namespace Market_Express.Domain.Services
                 });
             }
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             oResult.Message = "El rol se modificó correctamente!";
 
@@ -331,22 +274,42 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.Role.Update(oRoleFromDb);
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             return oResult;
         }
+
+        #region UTILITY METHODS
+        private bool ValidateRoleFields(BusisnessResult result, Role role)
+        {
+            if (string.IsNullOrEmpty(role.Name?.Trim()))
+            {
+                result.Message = "El campo nombre es obligario.";
+
+                return false;
+            }
+            else if (role.Name.Length > 30)
+            {
+                result.Message = "El campo nombre no puede superar los 30 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(role.Description?.Trim()))
+            {
+                result.Message = "El campo descripción es obligatorio.";
+
+                return false;
+            }
+            else if (role.Description.Length > 255)
+            {
+                result.Message = "El campo descripción no puede superar los 255 caracteres.";
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

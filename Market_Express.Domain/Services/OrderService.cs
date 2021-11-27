@@ -300,20 +300,7 @@ namespace Market_Express.Domain.Services
             _unitOfWork.Order.Create(oOrder);
             _unitOfWork.Cart.Update(oCart);
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             oResult.Message = "El pedido se generó correctamente!";
 

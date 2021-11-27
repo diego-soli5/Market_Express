@@ -147,20 +147,7 @@ namespace Market_Express.Domain.Services
             _unitOfWork.AppUser.Create(appUser);
             _unitOfWork.Client.Create(client);
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             _unitOfWork.Cart.Create(new Cart
             {
@@ -237,20 +224,7 @@ namespace Market_Express.Domain.Services
 
             _unitOfWork.AppUser.Update(oUserFromDb);
 
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync();
-
-                oResult.Success = await _unitOfWork.Save();
-
-                await _unitOfWork.CommitTransactionAsync();
-            }
-            catch (Exception ex)
-            {
-                await _unitOfWork.RollBackAsync();
-
-                throw ex;
-            }
+            oResult.Success = await SaveWithTransaction(_unitOfWork);
 
             oResult.Message = "El usuario se modificó correctamente!";
 

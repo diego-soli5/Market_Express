@@ -1,8 +1,11 @@
 ﻿using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Abstractions.Repositories;
 using Market_Express.Domain.QueryFilter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Market_Express.Domain.Services
 {
@@ -13,6 +16,26 @@ namespace Market_Express.Domain.Services
         public BaseService(IOptions<PaginationOptions> paginationOptions)
         {
             _paginationOptions = paginationOptions.Value;
+        }
+
+        protected async Task<bool> SaveWithTransaction(IUnitOfWork unitOfWork)
+        {
+            try
+            {
+                await unitOfWork.BeginTransactionAsync();
+
+                bool ok = await unitOfWork.Save();
+
+                await unitOfWork.CommitTransactionAsync();
+
+                return ok;
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollBackAsync();
+
+                throw ex;
+            }
         }
 
         protected bool IsValidImage(IFormFile image)
