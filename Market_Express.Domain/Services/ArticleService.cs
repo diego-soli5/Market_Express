@@ -42,8 +42,7 @@ namespace Market_Express.Domain.Services
         {
             IQueryable<Article> lstArticles;
 
-            filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
-            filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
+            CheckPaginationFilters(filters);
 
             if (includeCategory)
                 lstArticles = _unitOfWork.Article.GetAll(nameof(Article.Category));
@@ -104,8 +103,6 @@ namespace Market_Express.Domain.Services
 
         public async Task<List<Article>> GetMostPopular(int? take = null)
         {
-            //take = take is null ? _articleOptions.DefaultTakeForMostPopular : take;
-
             return await _unitOfWork.Article.GetMostPopular(take);
         }
 
@@ -137,32 +134,8 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrEmpty(article.Description) ||
-                string.IsNullOrEmpty(article.BarCode) ||
-                article.CategoryId == null)
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!await ValidateArticle(oResult, article))
                 return oResult;
-            }
-
-            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(art => art.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
-
-            if (oArticleToValidate != null)
-            {
-                oResult.Message = "El código de barras ya existe.";
-
-                return oResult;
-            }
-
-            var oCategoryToValidate = await _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
-
-            if (oCategoryToValidate == null)
-            {
-                oResult.Message = "La categoría no existe.";
-
-                return oResult;
-            }
 
             if (image?.Length > 0)
             {
@@ -197,41 +170,8 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrEmpty(article.Description) ||
-                string.IsNullOrEmpty(article.BarCode))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!await ValidateArticle(oResult, article, true))
                 return oResult;
-            }
-
-            if (article.CategoryId == null)
-            {
-                oResult.Message = "Se debe seleccionar una categoría.";
-
-                return oResult;
-            }
-
-            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(art => art.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
-
-            if (oArticleToValidate != null)
-            {
-                if (oArticleToValidate.Id != article.Id)
-                {
-                    oResult.Message = "El código de barras ya existe.";
-
-                    return oResult;
-                }
-            }
-
-            var oCategoryToValidate = await _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
-
-            if (oCategoryToValidate == null)
-            {
-                oResult.Message = "La categoría no existe.";
-
-                return oResult;
-            }
 
             var oArticleFromDb = await _unitOfWork.Article.GetByIdAsync(article.Id);
 
@@ -417,5 +357,75 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        #region UTILITY METHODS
+        private async Task<bool> ValidateArticle(BusisnessResult result, Article article, bool isEdit = false)
+        {
+            if (string.IsNullOrEmpty(article.Description))
+            {
+                result.Message = "El campo descripción es obligatorio.";
+
+                return false;
+            }
+            else if (article.Description.Length > 255)
+            {
+                result.Message = "El campo descripción no puede superar los 255 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(article.BarCode))
+            {
+                result.Message = "El campo código de barras es obligatorio.";
+
+                return false;
+            }
+            else if (article.BarCode.Length > 255)
+            {
+                result.Message = "El campo código de barras no puede superar los 255 caracteres.";
+
+                return false;
+            }
+
+            if (article.CategoryId == null)
+            {
+                result.Message = "Se debe seleccionar una categoría.";
+
+                return false;
+            }
+
+            var oArticleToValidate = _unitOfWork.Article.GetFirstOrDefault(art => art.BarCode.Trim().ToUpper() == article.BarCode.Trim().ToUpper());
+
+            if (oArticleToValidate != null)
+            {
+                if (isEdit)
+                {
+                    if (oArticleToValidate.Id != article.Id)
+                    {
+                        result.Message = "El código de barras ya existe.";
+
+                        return false;
+                    }
+                }
+                else
+                {
+                    result.Message = "El código de barras ya existe.";
+
+                    return false;
+                }
+            }
+
+            var oCategoryToValidate = await _unitOfWork.Category.GetByIdAsync(article.CategoryId.Value);
+
+            if (oCategoryToValidate == null)
+            {
+                result.Message = "La categoría no existe.";
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

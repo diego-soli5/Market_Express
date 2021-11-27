@@ -33,12 +33,12 @@ namespace Market_Express.Domain.Services
             _categoryOptions = categoryOptions.Value;
         }
 
-        public IEnumerable<Category> GetAll()
+        public IQueryable<Category> GetAll()
         {
             return _unitOfWork.Category.GetAll();
         }
 
-        public IEnumerable<Category> GetAllActive()
+        public IQueryable<Category> GetAllActive()
         {
             return _unitOfWork.Category.GetAllActive();
         }
@@ -65,8 +65,6 @@ namespace Market_Express.Domain.Services
 
         public async Task<List<Category>> GetMostPopular(int? take = null)
         {
-            //take = take is null ? _categoryOptions.DefaultTakeForMostPopular : take;
-
             return await _unitOfWork.Category.GetMostPopular(take);
         }
 
@@ -75,14 +73,8 @@ namespace Market_Express.Domain.Services
             BusisnessResult oResult = new();
             string sImageName = null;
 
-            if (string.IsNullOrEmpty(category.Name) || string.IsNullOrWhiteSpace(category.Description))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
-                oResult.ResultCode = 1;
-
+            if (!ValidateCategory(oResult, category))
                 return oResult;
-            }
 
             if (image != null)
             {
@@ -118,14 +110,8 @@ namespace Market_Express.Domain.Services
             BusisnessResult oResult = new();
             string sNewImageName = null;
 
-            if (string.IsNullOrEmpty(category.Name) || string.IsNullOrWhiteSpace(category.Description))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
-                oResult.ResultCode = 1;
-
+            if (!ValidateCategory(oResult, category))
                 return oResult;
-            }
 
             if (image != null)
             {
@@ -238,5 +224,46 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        #region UTILITY METHODS
+        private bool ValidateCategory(BusisnessResult result, Category category)
+        {
+            if (string.IsNullOrEmpty(category.Name))
+            {
+                result.Message = "El campo nombre es obligatorio.";
+
+                result.ResultCode = 1;
+
+                return false;
+            }
+            else if (category.Name.Length > 50)
+            {
+                result.Message = "El campo nombre no puede superar los 50 caracteres.";
+
+                result.ResultCode = 1;
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(category.Description))
+            {
+                result.Message = "El campo descripción es obligatorio.";
+
+                result.ResultCode = 1;
+
+                return false;
+            }
+            else if (category.Description.Length > 255)
+            {
+                result.Message = "El campo descripción no puede superar los 255 caracteres.";
+
+                result.ResultCode = 1;
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

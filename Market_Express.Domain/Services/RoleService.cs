@@ -27,14 +27,12 @@ namespace Market_Express.Domain.Services
 
         public List<Role> GetAll(bool onlyActive = false)
         {
-            var lstRoles = _unitOfWork.Role.GetAll()
-                                   .OrderBy(r => r.Name)
-                                   .AsEnumerable();
+            var lstRoles = _unitOfWork.Role.GetAll();
 
             if (onlyActive)
-            {
                 lstRoles = lstRoles.Where(role => role.Status == EntityStatus.ACTIVADO);
-            }
+
+            lstRoles = lstRoles.OrderBy(r => r.Name);
 
             return lstRoles.ToList();
         }
@@ -93,21 +91,48 @@ namespace Market_Express.Domain.Services
             return oRoleWithPermissions;
         }
 
-        public async Task<(int,int)> GetUsersCountUsingARoleByRoleId(Guid id)
+        public async Task<(int, int)> GetUsersCountUsingARoleByRoleId(Guid id)
         {
             return await _unitOfWork.AppUserRole.GetUserCountUsingARole(id);
+        }
+
+        private bool ValidateRoleFields(BusisnessResult result, Role role)
+        {
+            if (string.IsNullOrEmpty(role.Name?.Trim()))
+            {
+                result.Message = "El campo nombre es obligario.";
+
+                return false;
+            }
+            else if (role.Name.Length > 30)
+            {
+                result.Message = "El campo nombre no puede superar los 30 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(role.Description?.Trim()))
+            {
+                result.Message = "El campo descripción es obligatorio.";
+
+                return false;
+            }
+            else if (role.Description.Length > 30)
+            {
+                result.Message = "El campo descripción no puede superar los 255 caracteres.";
+
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<BusisnessResult> Create(Role role, List<Guid> permissions, Guid currentUserId)
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrEmpty(role.Name?.Trim()) || string.IsNullOrEmpty(role.Description?.Trim()))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!ValidateRoleFields(oResult, role))
                 return oResult;
-            }
 
             if (permissions?.Count <= 0)
             {
@@ -167,12 +192,8 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrEmpty(role.Name?.Trim()) || string.IsNullOrEmpty(role.Description?.Trim()))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!ValidateRoleFields(oResult, role))
                 return oResult;
-            }
 
             if (permissions?.Count <= 0)
             {
@@ -190,7 +211,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            if(oRoleFromDb.Status == EntityStatus.ACTIVADO && role.Status == EntityStatus.DESACTIVADO)
+            if (oRoleFromDb.Status == EntityStatus.ACTIVADO && role.Status == EntityStatus.DESACTIVADO)
             {
                 var oAppUserRoleToValidate = _unitOfWork.AppUserRole.GetFirstOrDefault(userRole => userRole.RoleId == oRoleFromDb.Id);
 
@@ -263,7 +284,7 @@ namespace Market_Express.Domain.Services
 
             var oRoleFromDb = await _unitOfWork.Role.GetByIdAsync(roleId);
 
-            if(oRoleFromDb == null)
+            if (oRoleFromDb == null)
             {
                 oResult.Message = "El rol no existe.";
 
@@ -272,7 +293,7 @@ namespace Market_Express.Domain.Services
 
             var oAppUserRoleToValidate = _unitOfWork.AppUserRole.GetFirstOrDefault(userRole => userRole.RoleId == oRoleFromDb.Id);
 
-            if(oAppUserRoleToValidate != null && oRoleFromDb.Status == EntityStatus.ACTIVADO)
+            if (oAppUserRoleToValidate != null && oRoleFromDb.Status == EntityStatus.ACTIVADO)
             {
                 oResult.Message = "El rol no se puede desactivar porque está en uso.";
 
@@ -281,7 +302,7 @@ namespace Market_Express.Domain.Services
 
             var lstRoles = _unitOfWork.Role.GetAll();
 
-            if(lstRoles?.Count() <= 1 && oRoleFromDb.Status == EntityStatus.ACTIVADO)
+            if (lstRoles?.Count() <= 1 && oRoleFromDb.Status == EntityStatus.ACTIVADO)
             {
                 oResult.Message = "El rol no se puede desactivar porque es el único existente.";
 
@@ -291,7 +312,7 @@ namespace Market_Express.Domain.Services
             oRoleFromDb.ModifiedBy = currentUserId.ToString();
             oRoleFromDb.ModificationDate = DateTimeUtility.NowCostaRica;
 
-            if(oRoleFromDb.Status == EntityStatus.DESACTIVADO)
+            if (oRoleFromDb.Status == EntityStatus.DESACTIVADO)
             {
                 oRoleFromDb.Status = EntityStatus.ACTIVADO;
 

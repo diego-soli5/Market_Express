@@ -84,7 +84,7 @@ namespace Market_Express.Web.Areas.Admin.Controllers
             AccessReportViewModel oViewModel = new();
 
             oViewModel.Filters = filters;
-            oViewModel.BinnaclesAccesses = _binnacleAccessService.GetResultForReport(filters)
+            oViewModel.BinnaclesAccesses = _binnacleAccessService.GetAllForReport(filters)
                                                              .Select(b => _mapper.Map<BinnacleAccessDTO>(b))
                                                              .ToList();
 

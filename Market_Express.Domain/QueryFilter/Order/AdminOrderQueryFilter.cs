@@ -4,7 +4,7 @@ using System;
 
 namespace Market_Express.Domain.QueryFilter.Order
 {
-    public class AdminOrderQueryFilter : PaginationQueryFilter
+    public class AdminOrderQueryFilter : PaginationQueryFilter, IOrderQueryFilter
     {
         [BindProperty(Name = "StartDate")]
         public DateTime? StartDate { get; set; }

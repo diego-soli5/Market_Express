@@ -34,12 +34,8 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrEmpty(address.Name) || string.IsNullOrEmpty(address.Detail))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!ValidateAddress(oResult, address))
                 return oResult;
-            }
 
             var oClient = _unitOfWork.Client.GetFirstOrDefault(x => x.AppUserId == userId);
 
@@ -74,12 +70,8 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            if (string.IsNullOrEmpty(address.Name) || string.IsNullOrEmpty(address.Detail))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!ValidateAddress(oResult, address))
                 return oResult;
-            }
 
             var addressFromDb = await _unitOfWork.Address.GetByIdAsync(address.Id);
 
@@ -183,5 +175,38 @@ namespace Market_Express.Domain.Services
         {
             return await _unitOfWork.Address.GetAllByUserId(userId);
         }
+
+        #region UTILITY METHODS
+        public bool ValidateAddress(BusisnessResult result, Address address)
+        {
+            if (string.IsNullOrEmpty(address.Name))
+            {
+                result.Message = "El campo nombre es obligatorio.";
+
+                return false;
+            }
+            else if (address.Name.Length > 50)
+            {
+                result.Message = "El campo nombre no puede superar los 50 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(address.Detail))
+            {
+                result.Message = "El campo detalle es obligatorio.";
+
+                return false;
+            }
+            else if (address.Name.Length > 255)
+            {
+                result.Message = "El campo detalle no puede superar los 255 caracteres.";
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

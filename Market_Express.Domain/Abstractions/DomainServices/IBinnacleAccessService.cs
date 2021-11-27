@@ -12,6 +12,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
         Task RegisterAccess(Guid userId);
         Task RegisterExit(Guid userId);
         PagedList<BinnacleAccess> GetAllPaginated(BinnacleAccessQueryFilter filters);
-        IQueryable<BinnacleAccess> GetResultForReport(BinnacleAccessQueryFilter filters);
+        IQueryable<BinnacleAccess> GetAllForReport(BinnacleAccessQueryFilter filters);
     }
 }

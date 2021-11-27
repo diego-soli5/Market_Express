@@ -171,50 +171,30 @@ namespace Market_Express.Domain.Services
             BusisnessResult oResult = new();
             Cart oNewCart = null;
             CartDetail oNewCartDetail = null;
-
+            Client oClientFromDb = null;
+            Cart oCartFromDb = null;
+            CartDetail oCartDetailFromDb = null;
             bool bMustUseNewCart = false;
 
-            Article oArticleFromDb = await _unitOfWork.Article.GetByIdAsync(articleId);
-
-            if (oArticleFromDb == null)
-            {
-                oResult.Message = "El artículo no existe.";
-
+            if (!await ValidateEntities(oResult, articleId, userId))
                 return oResult;
-            }
 
-            if (oArticleFromDb.Status == EntityStatus.DESACTIVADO)
-            {
-                oResult.Message = "El artículo está desactivado.";
+            oClientFromDb = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
 
-                return oResult;
-            }
-
-            AppUser oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(userId);
-
-            if (oUserFromDb == null)
-            {
-                oResult.Message = "El usuario no existe.";
-
-                return oResult;
-            }
-
-            Client oClient = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
-
-            if (oClient == null)
+            if (oClientFromDb == null)
             {
                 oResult.Message = "El cliente no existe.";
 
                 return oResult;
             }
 
-            Cart oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClient.Id && cart.Status == CartStatus.ABIERTO);
+            oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClientFromDb.Id && cart.Status == CartStatus.ABIERTO);
 
             if (oCartFromDb == null)
             {
                 bMustUseNewCart = true;
 
-                oNewCart = new(Guid.NewGuid(), oClient.Id, DateTimeUtility.NowCostaRica, CartStatus.ABIERTO);
+                oNewCart = new(Guid.NewGuid(), oClientFromDb.Id, DateTimeUtility.NowCostaRica, CartStatus.ABIERTO);
 
                 _unitOfWork.Cart.Create(oNewCart);
             }
@@ -231,7 +211,7 @@ namespace Market_Express.Domain.Services
             }
             else
             {
-                CartDetail oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
+                oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
 
                 if (oCartDetailFromDb == null)
                 {
@@ -278,50 +258,30 @@ namespace Market_Express.Domain.Services
             BusisnessResult oResult = new();
             Cart oNewCart = null;
             CartDetail oNewCartDetail = null;
-
+            Client oClientFromDb = null;
+            Cart oCartFromDb = null;
+            CartDetail oCartDetailFromDb = null;
             bool bMustUseNewCart = false;
 
-            var oArticleFromDb = await _unitOfWork.Article.GetByIdAsync(articleId);
-
-            if (oArticleFromDb == null)
-            {
-                oResult.Message = "El artículo no existe.";
-
+            if (!await ValidateEntities(oResult, articleId, userId))
                 return oResult;
-            }
 
-            if (oArticleFromDb.Status == EntityStatus.DESACTIVADO)
-            {
-                oResult.Message = "El artículo está desactivado.";
+            oClientFromDb = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
 
-                return oResult;
-            }
-
-            var oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(userId);
-
-            if (oUserFromDb == null)
-            {
-                oResult.Message = "El usuario no existe.";
-
-                return oResult;
-            }
-
-            Client oClient = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
-
-            if (oClient == null)
+            if (oClientFromDb == null)
             {
                 oResult.Message = "El cliente no existe.";
 
                 return oResult;
             }
 
-            Cart oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClient.Id && cart.Status == CartStatus.ABIERTO);
+            oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClientFromDb.Id && cart.Status == CartStatus.ABIERTO);
 
             if (oCartFromDb == null)
             {
                 bMustUseNewCart = true;
 
-                oNewCart = new(Guid.NewGuid(), oClient.Id, DateTimeUtility.NowCostaRica, CartStatus.ABIERTO);
+                oNewCart = new(Guid.NewGuid(), oClientFromDb.Id, DateTimeUtility.NowCostaRica, CartStatus.ABIERTO);
             }
 
             if (bMustUseNewCart)
@@ -341,7 +301,7 @@ namespace Market_Express.Domain.Services
             }
             else
             {
-                CartDetail oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
+                oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
 
                 if (oCartDetailFromDb != null)
                 {
@@ -412,42 +372,23 @@ namespace Market_Express.Domain.Services
         public async Task<BusisnessResult> DeleteDetail(Guid articleId, Guid userId)
         {
             BusisnessResult oResult = new();
+            Client oClientFromDb = null;
+            Cart oCartFromDb = null;
+            CartDetail oCartDetailFromDb;
 
-            var oArticleFromDb = await _unitOfWork.Article.GetByIdAsync(articleId);
-
-            if (oArticleFromDb == null)
-            {
-                oResult.Message = "El artículo no existe.";
-
+            if (!await ValidateEntities(oResult, articleId, userId))
                 return oResult;
-            }
 
-            if (oArticleFromDb.Status == EntityStatus.DESACTIVADO)
-            {
-                oResult.Message = "El artículo está desactivado.";
+            oClientFromDb = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
 
-                return oResult;
-            }
-
-            var oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(userId);
-
-            if (oUserFromDb == null)
-            {
-                oResult.Message = "El usuario no existe.";
-
-                return oResult;
-            }
-
-            Client oClient = _unitOfWork.Client.GetFirstOrDefault(c => c.AppUserId == userId);
-
-            if (oClient == null)
+            if (oClientFromDb == null)
             {
                 oResult.Message = "El cliente no existe.";
 
                 return oResult;
             }
 
-            Cart oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClient.Id && cart.Status == CartStatus.ABIERTO);
+            oCartFromDb = _unitOfWork.Cart.GetFirstOrDefault(cart => cart.ClientId == oClientFromDb.Id && cart.Status == CartStatus.ABIERTO);
 
             if (oCartFromDb == null)
             {
@@ -456,7 +397,7 @@ namespace Market_Express.Domain.Services
                 return oResult;
             }
 
-            CartDetail oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
+            oCartDetailFromDb = _unitOfWork.CartDetail.GetFirstOrDefault(c => c.ArticleId == articleId && c.CartId == oCartFromDb.Id);
 
             if (oCartDetailFromDb != null)
             {
@@ -488,5 +429,37 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        #region UTILITY METHODS
+        private async Task<bool> ValidateEntities(BusisnessResult result, Guid articleId, Guid userId)
+        {
+            Article oArticleToValidate = await _unitOfWork.Article.GetByIdAsync(articleId);
+
+            if (oArticleToValidate == null)
+            {
+                result.Message = "El artículo no existe.";
+
+                return false;
+            }
+
+            if (oArticleToValidate.Status == EntityStatus.DESACTIVADO)
+            {
+                result.Message = "El artículo está desactivado.";
+
+                return false;
+            }
+
+            AppUser oAppUserToValidate = await _unitOfWork.AppUser.GetByIdAsync(userId);
+
+            if (oAppUserToValidate == null)
+            {
+                result.Message = "El usuario no existe.";
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

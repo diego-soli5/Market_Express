@@ -49,14 +49,14 @@ namespace Market_Express.Domain.Services
 
             if (string.IsNullOrWhiteSpace(alias))
             {
-                oResult.Message = "No se pueden enviar campos vacíos.";
+                oResult.Message = "El campo alias es obligatorio.";
 
                 return oResult;
             }
 
             if (alias.Trim().Length > 10)
             {
-                oResult.Message = "El alias no puede superar 10 caracteres.";
+                oResult.Message = "El campo alias no puede superar 10 caracteres.";
 
                 return oResult;
             }

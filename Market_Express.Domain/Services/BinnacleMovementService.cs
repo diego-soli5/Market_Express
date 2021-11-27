@@ -13,20 +13,17 @@ namespace Market_Express.Domain.Services
     public class BinnacleMovementService : BaseService, IBinnacleMovementService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly PaginationOptions _paginationOptions;
 
         public BinnacleMovementService(IUnitOfWork unitOfWork,
                                        IOptions<PaginationOptions> paginationOptions)
             : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
-            _paginationOptions = paginationOptions.Value;
         }
 
         public async Task<SQLServerPagedList<BinnacleMovement>> GetAllPaginated(BinnacleMovementQueryFilter filters)
         {
-            filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
-            filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
+            CheckPaginationFilters(filters);
 
             return await _unitOfWork.BinnacleMovement.GetAllPaginated(filters);
         }

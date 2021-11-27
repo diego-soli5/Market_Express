@@ -34,19 +34,11 @@ namespace Market_Express.Domain.Services
 
         public PagedList<Order> GetAllPaginated(AdminOrderQueryFilter filters)
         {
-            filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
-            filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
+            CheckPaginationFilters(filters);
 
             var lstOrders = _unitOfWork.Order.GetAllIncludeAppUser();
 
-            if (filters.StartDate != null)
-                lstOrders = lstOrders.Where(o => o.CreationDate.Date >= filters.StartDate.Value.Date);
-
-            if (filters.EndDate != null)
-                lstOrders = lstOrders.Where(o => o.CreationDate.Date <= filters.EndDate.Value.Date);
-
-            if (filters.Status != null)
-                lstOrders = lstOrders.Where(o => o.Status == filters.Status);
+            ApplyCommonFilters(ref lstOrders, filters);
 
             if (filters.ClientName != null)
                 lstOrders = lstOrders.Where(o => o.Client.AppUser.Name.Trim().ToUpper().Contains(filters.ClientName.Trim().ToUpper()));
@@ -65,14 +57,7 @@ namespace Market_Express.Domain.Services
 
             var lstOrders = _unitOfWork.Order.GetAllByUserId(userId);
 
-            if (filters.StartDate != null)
-                lstOrders = lstOrders.Where(o => o.CreationDate.Date >= filters.StartDate.Value.Date);
-
-            if (filters.EndDate != null)
-                lstOrders = lstOrders.Where(o => o.CreationDate.Date <= filters.EndDate.Value.Date);
-
-            if (filters.Status != null)
-                lstOrders = lstOrders.Where(o => o.Status == filters.Status);
+            ApplyCommonFilters(ref lstOrders, filters);
 
             lstOrders = lstOrders.OrderByDescending(o => o.CreationDate);
 
@@ -368,5 +353,19 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        #region UTILITY METHODS
+        private void ApplyCommonFilters(ref IQueryable<Order> lstOrders, IOrderQueryFilter filters)
+        {
+            if (filters.StartDate != null)
+                lstOrders = lstOrders.Where(o => o.CreationDate.Date >= filters.StartDate.Value.Date);
+
+            if (filters.EndDate != null)
+                lstOrders = lstOrders.Where(o => o.CreationDate.Date <= filters.EndDate.Value.Date);
+
+            if (filters.Status != null)
+                lstOrders = lstOrders.Where(o => o.Status == filters.Status);
+        }
+        #endregion
     }
 }

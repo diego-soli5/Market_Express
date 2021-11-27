@@ -58,7 +58,7 @@ namespace Market_Express.Domain.Services
             if (query != null)
                 lstAppUser = lstAppUser.Where(a => a.Name.ToUpper().Contains(query.ToUpper()));
 
-            if(onlyAdmin)
+            if (onlyAdmin)
                 lstAppUser = lstAppUser.Where(a => a.Type == AppUserType.ADMINISTRADOR);
 
             return lstAppUser.OrderBy(a => a.Name)
@@ -84,22 +84,8 @@ namespace Market_Express.Domain.Services
             Client client;
             AppUser oUserToValidate;
 
-            if (string.IsNullOrEmpty(appUser.Name) ||
-                string.IsNullOrEmpty(appUser.Identification) ||
-                string.IsNullOrEmpty(appUser.Email) ||
-                string.IsNullOrEmpty(appUser.Phone))
-            {
-                oResult.Message = "No se pueden enviar campos vacíos.";
-
+            if (!ValidateAppUser(oResult, appUser, roles))
                 return oResult;
-            }
-
-            if (appUser.Type == AppUserType.ADMINISTRADOR && roles?.Count <= 0)
-            {
-                oResult.Message = "Se debe seleccionar al menos un rol.";
-
-                return oResult;
-            }
 
             oUserToValidate = _unitOfWork.AppUser.GetFirstOrDefault(u => u.Identification.Trim().ToUpper() == appUser.Identification.Trim().ToUpper());
 
@@ -195,7 +181,7 @@ namespace Market_Express.Domain.Services
         {
             BusisnessResult oResult = new();
 
-            var oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(appUser.Id,nameof(AppUser.Client));
+            var oUserFromDb = await _unitOfWork.AppUser.GetByIdAsync(appUser.Id, nameof(AppUser.Client));
 
             if (oUserFromDb == null)
             {
@@ -315,5 +301,71 @@ namespace Market_Express.Domain.Services
 
             return oResult;
         }
+
+        #region UTILITY METHODS
+        private bool ValidateAppUser(BusisnessResult result, AppUser appUser, List<Guid> roles)
+        {
+            if (string.IsNullOrEmpty(appUser.Name))
+            {
+                result.Message = "El campo nombre es obligatorio.";
+
+                return false;
+            }
+            else if (appUser.Name.Length > 50)
+            {
+                result.Message = "El campo nombre no puede superar los 50 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(appUser.Identification))
+            {
+                result.Message = "El campo identificación es obligatorio.";
+
+                return false;
+            }
+            else if (appUser.Identification.Length > 12)
+            {
+                result.Message = "El campo identificación no puede superar los 12 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(appUser.Email))
+            {
+                result.Message = "El campo correo electrónico es obligatorio.";
+
+                return false;
+            }
+            else if (appUser.Email.Length > 40)
+            {
+                result.Message = "El campo correo electrónico no puede superar los 40 caracteres.";
+
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(appUser.Phone))
+            {
+                result.Message = "El campo teléfono es obligatorio.";
+
+                return false;
+            }
+            else if (appUser.Phone.Length < 8 || appUser.Phone.Length > 8)
+            {
+                result.Message = "El campo teléfono debe contener 8 caracteres.";
+
+                return false;
+            }
+
+            if (appUser.Type == AppUserType.ADMINISTRADOR && roles?.Count <= 0)
+            {
+                result.Message = "Se debe seleccionar al menos un rol.";
+
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

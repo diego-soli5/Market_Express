@@ -15,62 +15,41 @@ namespace Market_Express.Domain.Services
     public class BinnacleAccessService : BaseService, IBinnacleAccessService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly PaginationOptions _paginationOptions;
 
         public BinnacleAccessService(IUnitOfWork unitOfWork,
                                      IOptions<PaginationOptions> paginationOptions)
             : base(paginationOptions)
         {
             _unitOfWork = unitOfWork;
-            _paginationOptions = paginationOptions.Value;
         }
 
         public PagedList<BinnacleAccess> GetAllPaginated(BinnacleAccessQueryFilter filters)
         {
-            filters.PageNumber = filters.PageNumber != null && filters.PageNumber > 0 ? filters.PageNumber.Value : _paginationOptions.DefaultPageNumber;
-            filters.PageSize = filters.PageSize != null && filters.PageSize > 0 ? filters.PageSize.Value : _paginationOptions.DefaultPageSize;
+            CheckPaginationFilters(filters);
 
             var lstBinnacleAccess = _unitOfWork.BinnacleAccess.GetAll(nameof(BinnacleAccess.AppUser));
 
-            if (filters.StartDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.EntryDate.Date >= filters.StartDate.Value.Date);
-
-            if (filters.EndDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value.Date <= filters.EndDate.Value);
-
-            if (filters.User != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
-
-            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate);
+            ApplyFilters(ref lstBinnacleAccess, filters);
 
             var pagedList = PagedList<BinnacleAccess>.Create(lstBinnacleAccess, filters.PageNumber.Value, filters.PageSize.Value);
 
             return pagedList;
         }
 
-        public IQueryable<BinnacleAccess> GetResultForReport(BinnacleAccessQueryFilter filters)
+        public IQueryable<BinnacleAccess> GetAllForReport(BinnacleAccessQueryFilter filters)
         {
             var lstBinnacleAccess = _unitOfWork.BinnacleAccess.GetAll(nameof(BinnacleAccess.AppUser));
 
-            if (filters.StartDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.EntryDate.Date >= filters.StartDate.Value.Date);
-
-            if (filters.EndDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value <= filters.EndDate.Value.Date);
-
-            if (filters.User != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
-
-            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate);
+            ApplyFilters(ref lstBinnacleAccess, filters);
 
             return lstBinnacleAccess;
         }
 
         public async Task RegisterAccess(Guid userId)
         {
-            var oUser = await _unitOfWork.AppUser.GetByIdAsync(userId);
+            var oAppUser = await _unitOfWork.AppUser.GetByIdAsync(userId);
 
-            if (oUser == null)
+            if (oAppUser == null)
                 return;
 
             BinnacleAccess oBinnacleAccess = new()
@@ -104,5 +83,21 @@ namespace Market_Express.Domain.Services
 
             await _unitOfWork.Save();
         }
+
+        #region UTILITY METHODS
+        private void ApplyFilters(ref IQueryable<BinnacleAccess> lstBinnacleAccess,BinnacleAccessQueryFilter filters)
+        {
+            if (filters.StartDate != null)
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.EntryDate.Date >= filters.StartDate.Value.Date);
+
+            if (filters.EndDate != null)
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value <= filters.EndDate.Value.Date);
+
+            if (filters.User != null)
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());
+
+            lstBinnacleAccess = lstBinnacleAccess.OrderByDescending(b => b.EntryDate);
+        }
+        #endregion
     }
 }
