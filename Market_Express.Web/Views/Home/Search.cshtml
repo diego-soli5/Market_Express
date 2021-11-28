@@ -179,9 +179,9 @@
 }
 
 @section Scripts{
-    <script src="~/js/home.search.js"></script>
-    <script src="~/js/home.search.articleActions.js"></script>
-    <script src="~/js/home.search.pagination.js"></script>
+    <script src="~/js/home/home.search.js"></script>
+    <script src="~/js/home/home.search.article.actions.js"></script>
+    <script src="~/js/home/home.search.pagination.js"></script>
     <script>
         params = '@Html.Raw(sParams)';
     </script>
@@ -192,11 +192,6 @@
             event.preventDefault();
             $(this).ekkoLightbox();
         });
-
-        /*lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true
-        })*/
     </script>
 
 }
