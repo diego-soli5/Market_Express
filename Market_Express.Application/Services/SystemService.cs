@@ -16,8 +16,8 @@ namespace Market_Express.Application.Services
     public class SystemService : ISystemService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAppUserValidations _usuarioValidations;
-        private readonly IClientValidations _clienteValidations;
+        private readonly IAppUserValidations _appUserValidations;
+        private readonly IClientValidations _clientValidations;
         private readonly IArticleValidations _articuloValidations;
         private readonly IPasswordService _passwordService;
 
@@ -28,8 +28,8 @@ namespace Market_Express.Application.Services
                              IPasswordService passwordService)
         {
             _unitOfWork = unitOfWork;
-            _usuarioValidations = usuarioValidations;
-            _clienteValidations = clienteValidations;
+            _appUserValidations = usuarioValidations;
+            _clientValidations = clienteValidations;
             _articuloValidations = articuloValidations;
             _passwordService = passwordService;
         }
@@ -49,7 +49,8 @@ namespace Market_Express.Application.Services
 
             var lstClientsFromDb = _unitOfWork.Client.GetAll(nameof(Client.AppUser));
 
-            lstClientsToClient.ForEach(oClientPOS =>
+            //lstClientsToClient.ForEach(oClientPOS =>
+            foreach(var oClientPOS in lstClientsToClient)
             {
                 bIsNew = true;
 
@@ -59,18 +60,18 @@ namespace Market_Express.Application.Services
                     {
                         if (oClientDb.AutoSync)
                         {
-                            if (oClientDb.AppUser.Name.Trim() != oClientPOS.AppUser.Name?.Trim() ||
-                                oClientDb.AppUser.Identification.Trim() != oClientPOS.AppUser.Identification?.Trim() ||
-                                oClientDb.AppUser.Email.Trim() != oClientPOS.AppUser.Email?.Trim() ||
-                                oClientDb.AppUser.Phone.Trim() != oClientPOS.AppUser.Phone?.Trim())
+                            if (oClientDb.AppUser.Name.Trim().ToUpper() != oClientPOS.AppUser.Name?.Trim().ToUpper() ||
+                                oClientDb.AppUser.Identification.Trim().ToUpper() != oClientPOS.AppUser.Identification?.Trim().ToUpper() ||
+                                oClientDb.AppUser.Email.Trim().ToUpper() != oClientPOS.AppUser.Email?.Trim().ToUpper() ||
+                                oClientDb.AppUser.Phone.Trim().ToUpper() != oClientPOS.AppUser.Phone?.Trim().ToUpper())
                             {
-                                _usuarioValidations.Usuario = oClientPOS.AppUser;
+                                _appUserValidations.AppUser = oClientPOS.AppUser;
 
-                                if (!_usuarioValidations.ExistsEmail())
+                                if (!_appUserValidations.ExistsEmail())
                                     oClientDb.AppUser.Email = oClientPOS.AppUser.Email?.Trim();
 
 
-                                if (!_usuarioValidations.ExistsIdentification())
+                                if (!_appUserValidations.ExistsIdentification())
                                     oClientDb.AppUser.Identification = oClientPOS.AppUser.Identification?.Trim();
 
 
@@ -96,12 +97,12 @@ namespace Market_Express.Application.Services
                 {
                     if (!lstClientsToAdd.Contains(oClientPOS))
                     {
-                        _clienteValidations.Cliente = oClientPOS;
-                        _usuarioValidations.Usuario = oClientPOS.AppUser;
+                        _clientValidations.Client = oClientPOS;
+                        _appUserValidations.AppUser = oClientPOS.AppUser;
 
-                        if (!_clienteValidations.ExistsCodCliente() &&
-                            !_usuarioValidations.ExistsIdentification() &&
-                            !_usuarioValidations.ExistsEmail())
+                        if (!_clientValidations.ExistsClientCode() &&
+                            !_appUserValidations.ExistsIdentification() &&
+                            !_appUserValidations.ExistsEmail())
                         {
                             oClientPOS.AutoSync = false;
                             oClientPOS.AppUser.CreationDate = DateTimeUtility.NowCostaRica;
@@ -113,7 +114,7 @@ namespace Market_Express.Application.Services
                         }
                     }
                 }
-            });
+            }
 
             iAdded = lstClientsToAdd.Count;
 

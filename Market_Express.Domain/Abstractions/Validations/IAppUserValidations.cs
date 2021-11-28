@@ -6,6 +6,6 @@ namespace Market_Express.Domain.Abstractions.Validations
     {
         bool ExistsIdentification();
         bool ExistsEmail();
-        AppUser Usuario { set; }
+        AppUser AppUser { set; }
     }
 }

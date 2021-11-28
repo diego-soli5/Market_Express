@@ -14,7 +14,7 @@ namespace Market_Express.Domain.EntityValidations
             _unitOfWork = unitOfWork;
         }
 
-        public AppUser Usuario
+        public AppUser AppUser
         {
             private get { return _usuario; }
             set { _usuario = value; }
@@ -23,19 +23,19 @@ namespace Market_Express.Domain.EntityValidations
         public bool ExistsIdentification()
         {
             return _unitOfWork.AppUser
-                .GetFirstOrDefault(x => x.Identification == Usuario.Identification) != null;
+                .GetFirstOrDefault(x => x.Identification == AppUser.Identification) != null;
         }
 
         public bool OwnsExistingCedula()
         {
             return _unitOfWork.AppUser
-                .GetFirstOrDefault(x => x.Identification == Usuario.Identification && x.Id == Usuario.Id) != null;
+                .GetFirstOrDefault(x => x.Identification == AppUser.Identification && x.Id == AppUser.Id) != null;
         }
 
         public bool ExistsEmail()
         {
             return _unitOfWork.AppUser
-                .GetFirstOrDefault(x => x.Email == Usuario.Email) != null;
+                .GetFirstOrDefault(x => x.Email == AppUser.Email) != null;
         }
     }
 }

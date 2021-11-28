@@ -311,9 +311,9 @@ namespace Market_Express.Domain.Services
 
                 return false;
             }
-            else if (appUser.Email.Length > 40)
+            else if (appUser.Email.Length > 100)
             {
-                result.Message = "El campo correo electrónico no puede superar los 40 caracteres.";
+                result.Message = "El campo correo electrónico no puede superar los 100 caracteres.";
 
                 return false;
             }

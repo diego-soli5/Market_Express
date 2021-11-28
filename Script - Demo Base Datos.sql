@@ -36,7 +36,7 @@ CREATE TABLE [dbo].[AppUser](
 	[Name] [varchar](50) NOT NULL,
 	[Alias] [varchar](10) NULL,
 	[Identification] [varchar](12) NOT NULL,
-	[Email] [varchar](40) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
 	[Phone] [varchar](40) NOT NULL,
 	[Password] [varchar](80) NOT NULL,
 	[Type] [varchar](15) NOT NULL,

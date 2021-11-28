@@ -124,11 +124,11 @@ namespace Market_Express.Infrastructure.Mappings
                 .ReverseMap();
 
             CreateMap<Client, ClienteSyncDTO>()
-                .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.AppUser.Name))
-                .ForMember(dest => dest.Cedula, opt => opt.MapFrom(src => src.AppUser.Identification))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.AppUser.Name))
+                .ForMember(dest => dest.Identification, opt => opt.MapFrom(src => src.AppUser.Identification))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.AppUser.Email))
-                .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.AppUser.Phone))
-                .ForMember(dest => dest.CodCliente, opt => opt.MapFrom(src => src.ClientCode))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.AppUser.Phone))
+                .ForMember(dest => dest.ClientCode, opt => opt.MapFrom(src => src.ClientCode))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap();
         }

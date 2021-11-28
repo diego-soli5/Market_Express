@@ -43,7 +43,7 @@ namespace Market_Express.Web.Controllers
             return Ok(oResponse);
         }
 
-        [HttpPost]
+        [HttpPost(nameof(SyncClients))]
         public async Task<IActionResult> SyncClients([FromBody] List<ClienteSyncDTO> lstClientsToSyncDTO)
         {
             if (!IsSyncAuthorized())

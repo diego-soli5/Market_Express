@@ -30,7 +30,7 @@ namespace Market_Express.Infrastructure.Data.Configurations
 
             builder.Property(e => e.Email)
                 .IsRequired()
-                .HasMaxLength(40)
+                .HasMaxLength(100)
                 .IsUnicode(false);
 
             builder.Property(e => e.Identification)

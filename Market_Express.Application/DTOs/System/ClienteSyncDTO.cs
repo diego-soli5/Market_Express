@@ -9,18 +9,18 @@ namespace Market_Express.Application.DTOs.System
         public Guid Id { get; set; }
 
         [Required]
-        public string CodCliente { get; set; }
+        public string ClientCode { get; set; }
 
         [Required]
-        public string Nombre { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public string Cedula { get; set; }
+        public string Identification { get; set; }
 
         [Required]
         public string Email { get; set; }
 
         [Required]
-        public string Telefono { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

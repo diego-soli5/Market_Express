@@ -14,15 +14,15 @@ namespace Market_Express.Domain.EntityValidations
             _unitOfWork = unitOfWork;
         }
 
-        public Client Cliente
+        public Client Client
         {
             private get { return _cliente; }
             set { _cliente = value; }
         }
 
-        public bool ExistsCodCliente()
+        public bool ExistsClientCode()
         {
-            return _unitOfWork.Client.GetFirstOrDefault(x => x.ClientCode == Cliente.ClientCode) != null;
+            return _unitOfWork.Client.GetFirstOrDefault(x => x.ClientCode == Client.ClientCode) != null;
         }
     }
 }
