@@ -69,12 +69,12 @@ function bindAddressEvts() {
                 if (json.success) {
                     $("#divAddressTable").load("/Account/GetAddressTable", function () {
                         bindAddressEvts();
+                        hideLoading();
                     });
                 } else {
+                    hideLoading();
                     popUp(json.success, json.message);
                 }
-
-                hideLoading();
             } catch (e) {
                 console.error(e);
                 hideLoading();
