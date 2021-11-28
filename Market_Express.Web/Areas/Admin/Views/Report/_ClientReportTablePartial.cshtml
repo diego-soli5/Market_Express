@@ -7,7 +7,7 @@
             <th class="">Cliente</th>
             <th class="">Identificación</th>
             <th class="">Teléfono</th>
-            <th class="">Código de Cliente</th>
+            <th class="text-center">Código de Cliente</th>
             <th class="text-center">Pedidos Terminados</th>
             <th class="text-center">Pedidos Pendientes</th>
             <th class="text-center">Pedidos Cancelados</th>
@@ -30,7 +30,7 @@
                     </td>
                     <td>@client.AppUser.Identification</td>
                     <td>@client.AppUser.Phone</td>
-                    <td>@(client.ClientCode ?? "No es cliente del POS")</td>
+                    <td class="text-center">@(client.ClientCode ?? "N/A")</td>
                     <td class="text-center">@client.Finished</td>
                     <td class="text-center">@client.Pending</td>
                     <td class="text-center">@client.Canceled</td>
