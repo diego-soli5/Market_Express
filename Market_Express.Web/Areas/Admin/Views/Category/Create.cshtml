@@ -67,7 +67,7 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
     <script src="~/js/categoryCreate.js"></script>
-    <script src="~/js/formSubmitDelay.js"></script>
+    <script src="~/js/utility/utility.preventFormDuplicate.js"></script>
 
     @if (ViewData["MessageResult"] != null)
     {
