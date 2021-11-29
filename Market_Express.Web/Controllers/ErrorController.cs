@@ -1,5 +1,5 @@
 ﻿using Market_Express.CrossCutting.CustomExceptions;
-using Market_Express.CrossCutting.Log;
+using Market_Express.CrossCutting.Logging;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Web.ViewModels;
 using Microsoft.AspNetCore.Diagnostics;

@@ -1,4 +1,4 @@
-﻿using Market_Express.CrossCutting.Log;
+﻿using Market_Express.CrossCutting.Logging;
 using Market_Express.CrossCutting.Options;
 using Microsoft.Extensions.Options;
 using System;
