@@ -220,6 +220,16 @@ namespace Market_Express.Web.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult SendMessageToDeveloper(string name, string phone, string email, string message)
+        {
+            var oResult = _homeService.SendMessageToDeveloper(name, phone, email, message);
+
+            TempData["MessageResult"] = oResult.Message;
+
+            return RedirectToAction(nameof(ContactSystem));
+        }
         #endregion
 
         #endregion

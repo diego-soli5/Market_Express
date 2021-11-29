@@ -128,7 +128,27 @@ namespace Market_Express.Application.Services
             oResponse.UpdatedCount = iUpdated;
             oResponse.Success = true;
 
+#pragma warning disable CS4014 // Dado que no se esperaba esta llamada, la ejecución del método actual continuará antes de que se complete la llamada
+            Task.Run(() => CreateCarts(lstClientsToAdd));
+#pragma warning restore CS4014 // Dado que no se esperaba esta llamada, la ejecución del método actual continuará antes de que se complete la llamada
+
             return oResponse;
+        }
+
+        private async Task CreateCarts(List<Client> clients)
+        {
+            foreach (var client in clients)
+            {
+                _unitOfWork.Cart.Create(new Cart
+                {
+                    Status = CartStatus.ABIERTO,
+                    OpeningDate = DateTimeUtility.NowCostaRica,
+                    ClientId = client.Id,
+                    Id = new System.Guid()
+                });
+            }
+
+            await _unitOfWork.Save();
         }
 
         public async Task<SyncResponse> SyncArticles(List<Article> lstArticlesToSync)

@@ -9,6 +9,5 @@ namespace Market_Express.Infrastructure.EmailServices
         public BusisnessMailService(IOptions<EmailServicesOptions> options)
             : base(options)
         { }
-
     }
 }

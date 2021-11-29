@@ -91,7 +91,7 @@ namespace Market_Express.Domain.Services
                 lstBinnacleAccess = lstBinnacleAccess.Where(b => b.EntryDate.Date >= filters.StartDate.Value.Date);
 
             if (filters.EndDate != null)
-                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value <= filters.EndDate.Value.Date);
+                lstBinnacleAccess = lstBinnacleAccess.Where(b => b.ExitDate != null && b.ExitDate.Value.Date <= filters.EndDate.Value.Date);
 
             if (filters.User != null)
                 lstBinnacleAccess = lstBinnacleAccess.Where(b => b.AppUser.Name.ToUpper() == filters.User.ToUpper());

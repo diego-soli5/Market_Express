@@ -37,8 +37,8 @@ namespace Market_Express.Domain.Services
                 lstAppUser = lstAppUser.Where(u => u.Name.Trim().ToUpper().Contains(filters.Name.Trim().ToUpper()));
 
             if (filters.Identification != null)
-                lstAppUser = lstAppUser.Where(u => u.Identification.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()) ||
-                                                   u.IdentificationWithoutHypens.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()));
+                lstAppUser = lstAppUser.Where(u => u.Identification.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()) /*||
+                                                   u.IdentificationWithoutHypens.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper())*/);
 
             if (filters.Type != null)
                 lstAppUser = lstAppUser.Where(u => u.Type == filters.Type);

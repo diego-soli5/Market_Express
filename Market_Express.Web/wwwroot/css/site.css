@@ -48,6 +48,7 @@ span.text-danger {
 }
 
 input[type="text"].form-control-original,
+input[type="email"].form-control-original,
 input[type="password"].form-control-original,
 input[type="search"].form-control-original,
 select.form-control-original,

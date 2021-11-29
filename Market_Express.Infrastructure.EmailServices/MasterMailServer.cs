@@ -26,6 +26,15 @@ namespace Market_Express.Infrastructure.EmailServices
             SendMail(subject, body, receiversMails);
         }
 
+        public void SendMail(string subject, string body, string[] receiverMails)
+        {
+            var receiversMailList = new List<string>();
+
+            receiversMailList.AddRange(receiverMails);
+
+            SendMail(subject, body, receiversMailList);
+        }
+
         public void SendMail(string subject, string body, List<string> receiversMails)
         {
             using (var smtpClient = new SmtpClient())
@@ -44,6 +53,7 @@ namespace Market_Express.Infrastructure.EmailServices
                     mailMessage.Subject = subject;
                     mailMessage.Body = body;
                     mailMessage.Priority = MailPriority.Normal;
+                    mailMessage.IsBodyHtml = true;
 
                     try
                     {

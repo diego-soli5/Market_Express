@@ -21,31 +21,47 @@
 
 <section class="section-content padding-y">
     <div class="container">
-        <div class="card mx-auto box-md">
-            <div class="card-body">
-                <h4>Envianos un mensaje</h4>
-                <hr />
-                <form method="post">
-                    <div class="form-group">
-                        <label class="font-weight-bold">Nombre</label>
-                        <input type="text" name="name" class="form-control-original" placeholder="Escribe tu nombre" />
-                    </div>
-                    <div class="form-group">
-                        <label class="font-weight-bold">Teléfono</label>
-                        <input type="text" name="name" class="form-control-original" placeholder="Escribe tu numero de teléfono" />
-                    </div>
-                    <div class="form-group">
-                        <label class="font-weight-bold">Email</label>
-                        <input type="text" name="email" class="form-control-original" placeholder="Escribe tu email" />
-                    </div>
-                    <div class="form-group">
-                        <label class="font-weight-bold">Mensaje</label>
-                        <textarea class="form-control-original"  style="resize: none; height:140px;" placeholder="Escribe un mensaje"></textarea>
-                    </div>
-                    <button class="btn btn-primary">Enviar</button>
-                </form>
+        <div class="mx-auto box-md">
+            @if (TempData["MessageResult"] != null)
+            {
+                <div class="alert alert-dismissible fade show alert-success mb-3" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="alert-heading"><i class="fas fa-check"></i> Éxito!</h4>
+                    <p class="mb-0">
+                        @TempData["MessageResult"].ToString()
+                    </p>
+                </div>
+            }
+            <div class="card">
+
+                <div class="card-body">
+                    <h4>Envianos un mensaje</h4>
+                    <hr />
+                    <form method="post" asp-area="" asp-controller="Home" asp-action="SendMessageToDeveloper">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Nombre</label>
+                            <input type="text" name="name" class="form-control-original" placeholder="Escribe tu nombre" maxlength="80" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Teléfono</label>
+                            <input type="text" name="phone" class="form-control-original" placeholder="Escribe tu numero de teléfono" maxlength="80" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Email</label>
+                            <input type="email" name="email" class="form-control-original" placeholder="Escribe tu email" maxlength="80" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Mensaje</label>
+                            <textarea class="form-control-original" name="message" style="resize: none; height:140px;" placeholder="Escribe un mensaje" maxlength="400" required></textarea>
+                        </div>
+                        <button class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
             </div>
         </div>
 
     </div>
 </section>
+
