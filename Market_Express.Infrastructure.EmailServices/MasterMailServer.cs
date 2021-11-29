@@ -1,4 +1,5 @@
-﻿using Market_Express.CrossCutting.Options;
+﻿using Market_Express.CrossCutting.Log;
+using Market_Express.CrossCutting.Options;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace Market_Express.Infrastructure.EmailServices
                     }
                     catch (Exception ex)
                     {
-                     
+                        ExceptionLogger.LogException(ex);
                     }
                 }
             }
