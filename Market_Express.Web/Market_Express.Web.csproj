@@ -43,4 +43,10 @@
     <Folder Include="WkHTMLToPDF\Linux\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\MANUAL_DE_USUARIO.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,7 @@
-﻿using Market_Express.Domain.Abstractions.InfrastructureServices;
+﻿using Market_Express.Domain.Abstractions.DomainServices;
+using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Market_Express.Web.Controllers
@@ -8,20 +10,20 @@ namespace Market_Express.Web.Controllers
     [ApiController]
     public class ResourceController : ControllerBase
     {
-        private readonly IAzureBlobStorageService _storageService;
+        private readonly IResourceService _resourceService;
 
-        public ResourceController(IAzureBlobStorageService storageService)
+        public ResourceController(IResourceService resourceService)
         {
-            _storageService = storageService;
+            _resourceService = resourceService;
         }
 
         [HttpGet("Img")]
-        public async Task<IActionResult> GetImage([FromQuery(Name = "n")]string n)
+        public async Task<IActionResult> GetImage([FromQuery(Name = "n")] string n)
         {
             if (string.IsNullOrWhiteSpace(n))
                 return BadRequest();
 
-            var oResult = await _storageService.GetBlobAsync(n);
+            var oResult = await _resourceService.GetImage(n);
 
             if (oResult.Item1 == null && oResult.Item2 == null)
                 return NotFound();
@@ -29,9 +31,14 @@ namespace Market_Express.Web.Controllers
             return File(oResult.Item1, oResult.Item2);
         }
 
-        public async Task<IActionResult> UserManual()
+        [HttpGet("UserManual")]
+        public IActionResult UserManual()
         {
-            return Ok();
+            Stream oFileStream = _resourceService.GetUserManual();
+
+            string contentType = "application/pdf";
+            
+            return File(oFileStream, contentType);
         }
     }
 }
