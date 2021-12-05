@@ -57,6 +57,8 @@ namespace Market_Express.Infrastructure.Extensions
             services.AddScoped(typeof(IBinnacleMovementService), typeof(BinnacleMovementService));
 
             services.AddScoped(typeof(IReportService), typeof(ReportService));
+
+            services.AddScoped(typeof(IResourceService), typeof(ResourceService));
         }
 
         public static void AddApplicationServices(this IServiceCollection services)

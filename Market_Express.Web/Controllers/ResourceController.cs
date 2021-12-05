@@ -28,5 +28,10 @@ namespace Market_Express.Web.Controllers
 
             return File(oResult.Item1, oResult.Item2);
         }
+
+        public async Task<IActionResult> UserManual()
+        {
+            return Ok();
+        }
     }
 }
