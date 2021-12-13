@@ -62,9 +62,9 @@ namespace Market_Express.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error/Handle");
+                //app.UseExceptionHandler("/Error/Handle");
 
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
             }
             else
             {

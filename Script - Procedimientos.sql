@@ -543,7 +543,7 @@ GO
 -- PROCEDIMIENTOS ADDRESS
 ---------------------------------------------------------------------------------------------------------------
 --Obtiene las direcciones del cliente por Id de usuario
-CREATE alter PROCEDURE Sp_Address_GetAllByClient
+CREATE PROCEDURE Sp_Address_GetAllByClient
 (
 	@UserId UNIQUEIDENTIFIER
 )

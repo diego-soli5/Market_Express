@@ -1,5 +1,4 @@
 ﻿using Market_Express.Domain.Abstractions.DomainServices;
-using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Threading.Tasks;
