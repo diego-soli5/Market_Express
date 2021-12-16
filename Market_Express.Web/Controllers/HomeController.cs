@@ -2,7 +2,7 @@
 using Market_Express.Application.DTOs.Article;
 using Market_Express.Application.DTOs.Category;
 using Market_Express.Application.DTOs.Slider;
-using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Options;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.CustomEntities.Pagination;
 using Market_Express.Domain.QueryFilter.Home;

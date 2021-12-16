@@ -1,5 +1,5 @@
 ﻿using Market_Express.CrossCutting.Logging;
-using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Options;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using Market_Express.Application.Services;
-using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Options;
 using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;

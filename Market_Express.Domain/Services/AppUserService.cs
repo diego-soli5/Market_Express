@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Market_Express.CrossCutting.CustomExceptions;
 using Microsoft.Extensions.Options;
-using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Options;
 
 namespace Market_Express.Domain.Services
 {

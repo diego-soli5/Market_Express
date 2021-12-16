@@ -13,7 +13,6 @@ using Market_Express.Application.DTOs.Permission;
 using Market_Express.Application.DTOs.Role;
 using Market_Express.Application.DTOs.Slider;
 using Market_Express.Application.DTOs.System;
-using Market_Express.Domain.CustomEntities;
 using Market_Express.Domain.CustomEntities.Article;
 using Market_Express.Domain.CustomEntities.Cart;
 using Market_Express.Domain.CustomEntities.Category;

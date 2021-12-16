@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Market_Express.CrossCutting.Options;
+using Market_Express.Domain.Options;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

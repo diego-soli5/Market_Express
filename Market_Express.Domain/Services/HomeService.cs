@@ -1,4 +1,4 @@
-﻿using Market_Express.CrossCutting.Options;
+﻿using Market_Express.Domain.Options;
 using Market_Express.Domain.Abstractions.DomainServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Abstractions.Repositories;

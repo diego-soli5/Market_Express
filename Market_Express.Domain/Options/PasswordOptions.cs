@@ -1,4 +1,4 @@
-﻿namespace Market_Express.CrossCutting.Options
+﻿namespace Market_Express.Domain.Options
 {
     public class PasswordOptions
     {
