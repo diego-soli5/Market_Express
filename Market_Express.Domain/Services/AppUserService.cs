@@ -31,14 +31,14 @@ namespace Market_Express.Domain.Services
 
         public IEnumerable<AppUser> GetAll(AppUserIndexQueryFilter filters)
         {
-            var lstAppUser = _unitOfWork.AppUser.GetAll();
+            var lstAppUser = _unitOfWork.AppUser.GetAll().AsEnumerable();
 
             if (filters.Name != null)
                 lstAppUser = lstAppUser.Where(u => u.Name.Trim().ToUpper().Contains(filters.Name.Trim().ToUpper()));
 
             if (filters.Identification != null)
-                lstAppUser = lstAppUser.Where(u => u.Identification.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()) /*||
-                                                   u.IdentificationWithoutHypens.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper())*/);
+                lstAppUser = lstAppUser.Where(u => u.Identification.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()) ||
+                                                   u.IdentificationWithoutHypens.Trim().ToUpper().Contains(filters.Identification.Trim().ToUpper()));
 
             if (filters.Type != null)
                 lstAppUser = lstAppUser.Where(u => u.Type == filters.Type);

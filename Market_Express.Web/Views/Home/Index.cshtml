@@ -76,7 +76,7 @@
             ? @Url.Action("GetImage", "Resource", new { area = "", n = category.Image })
             : "/img/NotAvailable.png";
 
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
                 <a asp-area="" asp-controller="Home" asp-action="Index" asp-route-category="@category.Id" class="card card-product-grid">
                     <div class="img-wrap">
                         <img src="@src"
@@ -105,7 +105,7 @@
             ? @Url.Action("GetImage", "Resource", new { area = "", n = article.Image })
             : "/img/NotAvailable.png";
 
-            <div class="col-md-3 mb-5">
+            <div class="col-md-6 col-lg-3 mb-5">
                 <div href="#" class="card card-product-grid h-100">
                     <a asp-area="" asp-controller="Home" asp-action="Article" asp-route-id="@article.Id" class="img-wrap">
                         <img src="@src"
