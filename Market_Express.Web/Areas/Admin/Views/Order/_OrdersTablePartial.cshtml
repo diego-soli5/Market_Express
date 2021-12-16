@@ -33,7 +33,8 @@
                     <td>@order.Client.AppUser.Name.Capitalize()</td>
                     <td class="text-capitalize-first"
                         data-id="ord-@order.Id"
-                        data-field="status">
+                        data-field="status"
+                        style="cursor: pointer;">
                         <p class="@textClass"
                               data-val="@((int)order.Status)"
                               data-toggle="modal"
