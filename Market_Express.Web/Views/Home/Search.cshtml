@@ -184,6 +184,7 @@
     <script src="~/js/home/home.search.pagination.js"></script>
     <script>
         params = '@Html.Raw(sParams)';
+        currentPage = '@(Model?.Filters?.PageNumber ?? '1')';
     </script>
 
 

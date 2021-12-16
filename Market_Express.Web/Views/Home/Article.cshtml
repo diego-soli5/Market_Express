@@ -41,46 +41,7 @@
                         <hr>
 
                         <div align="center" id="divButtonCart">
-                            @if (!Model.IsInCart)
-                            {
-
-                                <button data-article-id="@Model.Id"
-                                        class="btn btn-primary btn-block"
-                                        id="btnAdd">
-                                    Añadir al carrito
-                                </button>
-
-                            }
-                            else
-                            {
-
-                                <div align="center">
-                                    <div class="input-group input-spinner">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-light font-weight-bold"
-                                                    type="button"
-                                                    data-article-id="@Model.Id"
-                                                    id="btnPlus">
-                                                <i class="fas fa-plus text-primary"></i>
-                                            </button>
-                                        </div>
-
-                                        <input type="text"
-                                               class="form-control-original font-weight-bold text-center"
-                                               value="@Model.CountInCart"
-                                               readonly style="background: #fff !important; ">
-
-                                        <div class="input-group-append">
-                                            <button class="btn btn-light font-weight-bold"
-                                                    type="button"
-                                                    data-article-id="@Model.Id"
-                                                    id="btnMinus">
-                                                <i class="fas fa-minus text-primary"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
+                            @{ await Html.RenderPartialAsync("_ArticleCartButtonsPartial", Model); }
                         </div>
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->

@@ -209,6 +209,25 @@ function updateDetailElementsForPlus(json, btn, articleId) {
 //----------------------------------------------FIN PLUS--------------------------------------------------------------------
 
 
+async function refreshArticleView() {
+    try {
+        let articleId = document.querySelector("#hdArticleId").value;
+        let fetchResponse;
+        let text;
+
+        const url = `/Article/${articleId}?refresh=true`;
+        fetchResponse = await fetch(url, { method: 'GET' });
+        text = await fetchResponse.text();
+
+        document.querySelector("#divButtonCart").innerHTML = text;
+
+        bindArticleCartButtons();
+
+    } catch (e) {
+
+    }
+}
+
 function bindArticleCartButtons() {
 
     document.querySelectorAll("#btnPlus").forEach(btn => {

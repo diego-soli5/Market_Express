@@ -1,4 +1,5 @@
 ﻿var params = '';
+var currentPage = '';
 var frm = document.querySelector("#frmFilters");
 
 function bindSelectPageSizeEvt() {
@@ -19,7 +20,9 @@ function bindSelectPageSizeEvt() {
                 params = arrParams.join("&");
             }
 
-            await getPaginatedPage("1");
+            currentPage = '1';
+
+            await getPaginatedPage(currentPage);
         });
 }
 
@@ -29,26 +32,26 @@ function bindPaginationEvts() {
         x.addEventListener('click', async (e) => {
             e.preventDefault();
 
-            let pgnum = e.target.getAttribute('data-page');
+            currentPage = e.target.getAttribute('data-page');
 
-            await getPaginatedPage(pgnum);
+            await getPaginatedPage(currentPage);
         });
     });
 
     document.querySelector('#btnNextPage')?.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        let pgnum = e.target.getAttribute('data-page');
+        currentPage = e.target.getAttribute('data-page');
 
-        await getPaginatedPage(pgnum);
+        await getPaginatedPage(currentPage);
     });
 
     document.querySelector('#btnPrevPage')?.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        let pgnum = e.target.getAttribute('data-page');
+        currentPage = e.target.getAttribute('data-page');
 
-        await getPaginatedPage(pgnum);
+        await getPaginatedPage(currentPage);
     });
 }
 
@@ -59,7 +62,9 @@ frm.addEventListener("submit", async function (e) {
 
     params = createQueryStringParams(formData);
 
-    await getPaginatedPage("1");
+    currentPage = '1';
+
+    await getPaginatedPage(currentPage);
 });
 
 async function getPaginatedPage(pgnum) {
@@ -88,6 +93,9 @@ async function getPaginatedPage(pgnum) {
     }
 }
 
+async function refreshArticleSearchView() {
+    await getPaginatedPage(currentPage);
+}
 
 bindPaginationEvts();
 bindSelectPageSizeEvt();

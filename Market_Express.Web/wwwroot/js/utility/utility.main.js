@@ -51,6 +51,14 @@ async function setAuthenticatedUserInterface() {
         const textNav = await fetchResponseNav.text();
         const textAcc = await fetchResponseAcc.text();
 
+        try {
+            await refreshArticleSearchView();
+        } catch (e) {
+            try {
+                await refreshArticleView();
+            } catch (ex) { }
+        }
+
         updateCartCount();
 
         document.querySelector("#divNavigationButtons").innerHTML = textNav;

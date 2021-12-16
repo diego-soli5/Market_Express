@@ -101,7 +101,7 @@ namespace Market_Express.Web.Controllers
 
         [HttpGet]
         [Route("/Article/{id}")]
-        public async Task<IActionResult> Article(Guid id)
+        public async Task<IActionResult> Article(Guid id, bool? refresh)
         {
             Guid? userId = null;
 
@@ -109,6 +109,10 @@ namespace Market_Express.Web.Controllers
                 userId = CurrentUserId;
 
             var oArticle = _mapper.Map<ArticleToAddInCartDTO>(await _articleService.GetByIdForSell(id, userId));
+
+            if (refresh.HasValue)
+                if (refresh.Value)
+                    return PartialView("_ArticleCartButtonsPartial", oArticle);
 
             return View(oArticle);
         }
