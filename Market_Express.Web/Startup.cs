@@ -9,6 +9,8 @@ using Market_Express.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Runtime.InteropServices;
+using System.Reflection;
+using System;
 
 namespace Market_Express.Web
 {
@@ -55,7 +57,7 @@ namespace Market_Express.Web
 
             services.ConfigureAuthentication();
 
-            services.AddAutoMapper(typeof(AppMappings));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

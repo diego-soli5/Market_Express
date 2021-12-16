@@ -28,18 +28,18 @@ namespace Market_Express.Infrastructure.Mappings
     {
         public AppMappings()
         {
-            CreateArticleMappings();
-            CreateClientMappings();
-            CreateAppUserMappings();
-            CreateAddressMappings();
-            CreateSliderMappings();
-            CreateCategoryMappings();
-            CreateRoleMappings();
-            CreatePermissionMappings();
-            CreateCartMappings();
-            CreateOrderMappings();
-            CreateBinnacleAccessMappings();
-            CreateBinnacleMovementMappings();
+            //CreateArticleMappings();
+            //CreateClientMappings();
+            //CreateAppUserMappings();
+            //CreateAddressMappings();
+            //CreateSliderMappings();
+            //CreateCategoryMappings();
+            //CreateRoleMappings();
+            //CreatePermissionMappings();
+            //CreateCartMappings();
+            //CreateOrderMappings();
+            //CreateBinnacleAccessMappings();
+            //CreateBinnacleMovementMappings();
         }
 
         private void CreateBinnacleMovementMappings()
