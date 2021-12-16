@@ -44,7 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\MANUAL_DE_USUARIO.pdf">
+    <Content Update="wwwroot\MANUAL_DE USUARIO_ADMINISTRADOR.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\MANUAL_DE_USUARIO_CLIENTE.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

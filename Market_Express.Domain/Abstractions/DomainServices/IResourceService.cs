@@ -6,6 +6,6 @@ namespace Market_Express.Domain.Abstractions.DomainServices
     public interface IResourceService
     {
         Task<(Stream, string)> GetImage(string name);
-        Stream GetUserManual();
+        Stream GetUserManual(bool isAdmin);
     }
 }

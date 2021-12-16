@@ -23,10 +23,11 @@ namespace Market_Express.Domain.Services
             return await _storageService.GetBlobAsync(name);
         }
 
-        public Stream GetUserManual()
+        public Stream GetUserManual(bool isAdmin)
         {
             string rootPath = _hostEnvironment.ContentRootPath;
-            string fileName = "MANUAL_DE_USUARIO.pdf";
+            string fileName = isAdmin ? "MANUAL_DE USUARIO_ADMINISTRADOR.pdf"
+                                      : "MANUAL_DE_USUARIO_CLIENTE.pdf";
             string filePath = $"{rootPath}/wwwroot/{fileName}";
 
             var fs = new FileStream(filePath, FileMode.Open);

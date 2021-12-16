@@ -33,7 +33,9 @@ namespace Market_Express.Web.Controllers
         [HttpGet("UserManual")]
         public IActionResult UserManual()
         {
-            Stream oFileStream = _resourceService.GetUserManual();
+            bool bAdmin = User.Identity.IsAuthenticated ? User.IsInRole("ADMINISTRADOR") ? true : false : false;
+
+            Stream oFileStream = _resourceService.GetUserManual(bAdmin);
 
             string contentType = "application/pdf";
             
