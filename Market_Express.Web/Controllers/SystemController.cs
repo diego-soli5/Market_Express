@@ -25,6 +25,15 @@ namespace Market_Express.Web.Controllers
             _authenticationService = authenticationService;
         }
 
+        [HttpPost(nameof(ConnectionTest))]
+        public IActionResult ConnectionTest()
+        {
+            if (!IsSyncAuthorized())
+                return Unauthorized();
+
+            return Ok();
+        }
+
         [HttpPost(nameof(SyncArticles))]
         public async Task<IActionResult> SyncArticles([FromBody] List<ArticuloSyncDTO> lstArticlesToSyncDTO)
         {

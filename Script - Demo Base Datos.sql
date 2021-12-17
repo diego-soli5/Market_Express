@@ -1,4 +1,4 @@
-USE master;
+/*USE master;
 GO
 
 DROP DATABASE IF EXISTS MARKET_EXPRESS;
@@ -8,7 +8,7 @@ CREATE DATABASE MARKET_EXPRESS;
 GO
 
 USE [MARKET_EXPRESS]
-GO
+GO*/
 /****** Object:  Table [dbo].[Address]    Script Date: 23/10/2021 16:36:07 ******/
 SET ANSI_NULLS ON
 GO

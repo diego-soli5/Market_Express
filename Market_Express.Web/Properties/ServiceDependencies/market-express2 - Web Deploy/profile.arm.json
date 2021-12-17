@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "m-express",
+      "defaultValue": "market-express2",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
