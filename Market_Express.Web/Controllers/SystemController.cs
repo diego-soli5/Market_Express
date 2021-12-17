@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Market_Express.Application.DTOs.System;
+using Market_Express.CrossCutting.Response;
 using Market_Express.Domain.Abstractions.ApplicationServices;
 using Market_Express.Domain.Abstractions.InfrastructureServices;
 using Market_Express.Domain.Entities;
@@ -31,7 +32,7 @@ namespace Market_Express.Web.Controllers
             if (!IsSyncAuthorized())
                 return Unauthorized();
 
-            return Ok();
+            return Ok(new SyncResponse { Success = true });
         }
 
         [HttpPost(nameof(SyncArticles))]
