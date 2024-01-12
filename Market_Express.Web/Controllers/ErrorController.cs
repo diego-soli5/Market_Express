@@ -41,7 +41,7 @@ namespace Market_Express.Web.Controllers
                 NotifiError(exception);
             });
 
-            return View("Error", new ErrorViewModel(Activity.Current?.Id ?? HttpContext.TraceIdentifier));
+            return View("Error", new ErrorViewModel(Activity.Current?.Id ?? HttpContext.TraceIdentifier,exception.Message));
         }
 
         private void NotifiError(Exception exeption)
